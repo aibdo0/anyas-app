@@ -1,7 +1,5 @@
-anyas-app/
-│
+anyas-app
 ├── index.html
 ├── script.js
-│
-└── audio/
+└── audio
     └── adhan.mp3
