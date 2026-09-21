@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -9,9 +10,13 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   >
 
-  <meta name="theme-color" content="#f5f5f7">
+  <meta
+    name="theme-color"
+    content="#f5f5f7"
+  >
 
   <title>أنياس</title>
+
 
   <style>
 
@@ -21,7 +26,9 @@
       padding: 0;
     }
 
+
     body {
+
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -31,19 +38,26 @@
         sans-serif;
 
       background: #f5f5f7;
+
       color: #1c1c1e;
 
       min-height: 100vh;
+
     }
 
+
     .app {
+
       width: 100%;
+
       max-width: 520px;
+
       min-height: 100vh;
 
       margin: auto;
 
       padding-bottom: 100px;
+
     }
 
 
@@ -52,20 +66,29 @@
     ========================= */
 
     header {
+
       padding: 24px 20px 14px;
+
     }
+
 
     .brand {
+
       font-size: 28px;
+
       font-weight: 700;
+
     }
 
+
     .date {
+
       margin-top: 5px;
 
       font-size: 14px;
 
       color: #8e8e93;
+
     }
 
 
@@ -85,7 +108,9 @@
 
       box-shadow:
         0 8px 30px rgba(0, 0, 0, 0.05);
+
     }
+
 
     .next-label {
 
@@ -94,7 +119,9 @@
       color: #8e8e93;
 
       margin-bottom: 8px;
+
     }
+
 
     .prayer-name {
 
@@ -103,14 +130,18 @@
       font-weight: 700;
 
       margin-bottom: 5px;
+
     }
+
 
     .prayer-time {
 
       font-size: 20px;
 
       color: #636366;
+
     }
+
 
     .countdown {
 
@@ -121,6 +152,7 @@
       font-weight: 600;
 
       color: #007aff;
+
     }
 
 
@@ -131,7 +163,9 @@
     .section {
 
       padding: 0 16px;
+
     }
+
 
     .section-title {
 
@@ -140,6 +174,7 @@
       font-weight: 700;
 
       margin: 20px 4px 12px;
+
     }
 
 
@@ -154,7 +189,9 @@
       border-radius: 24px;
 
       overflow: hidden;
+
     }
+
 
     .prayer-row {
 
@@ -168,19 +205,25 @@
 
       border-bottom:
         1px solid #f0f0f2;
+
     }
+
 
     .prayer-row:last-child {
 
       border-bottom: none;
+
     }
+
 
     .prayer-title {
 
       font-size: 16px;
 
       font-weight: 500;
+
     }
+
 
     .prayer-value {
 
@@ -189,6 +232,7 @@
       font-weight: 600;
 
       color: #636366;
+
     }
 
 
@@ -208,7 +252,9 @@
 
       box-shadow:
         0 5px 20px rgba(0, 0, 0, 0.035);
+
     }
+
 
     .card-title {
 
@@ -217,7 +263,9 @@
       color: #8e8e93;
 
       margin-bottom: 14px;
+
     }
+
 
     .ayah {
 
@@ -226,7 +274,9 @@
       line-height: 1.9;
 
       font-weight: 500;
+
     }
+
 
     .reference {
 
@@ -235,13 +285,16 @@
       font-size: 13px;
 
       color: #8e8e93;
+
     }
+
 
     .dhikr {
 
       font-size: 20px;
 
       line-height: 1.9;
+
     }
 
 
@@ -272,11 +325,190 @@
       cursor: pointer;
 
       transition: 0.2s;
+
     }
+
 
     .adhan-button:active {
 
       transform: scale(0.97);
+
+    }
+
+
+    /* =========================
+       إعدادات الصوت
+    ========================= */
+
+    .setting-row {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding: 15px 0;
+
+      border-bottom:
+        1px solid #f0f0f2;
+
+    }
+
+
+    .setting-row:last-child {
+
+      border-bottom: none;
+
+    }
+
+
+    .setting-title {
+
+      font-size: 16px;
+
+      font-weight: 600;
+
+    }
+
+
+    .setting-description {
+
+      margin-top: 5px;
+
+      font-size: 13px;
+
+      color: #8e8e93;
+
+    }
+
+
+    /* =========================
+       السويتش
+    ========================= */
+
+    .switch {
+
+      position: relative;
+
+      width: 52px;
+
+      height: 32px;
+
+      flex-shrink: 0;
+
+    }
+
+
+    .switch input {
+
+      display: none;
+
+    }
+
+
+    .switch-track {
+
+      position: absolute;
+
+      inset: 0;
+
+      background: #d1d1d6;
+
+      border-radius: 20px;
+
+      transition: 0.2s;
+
+    }
+
+
+    .switch-knob {
+
+      position: absolute;
+
+      width: 28px;
+
+      height: 28px;
+
+      top: 2px;
+
+      right: 22px;
+
+      background: #ffffff;
+
+      border-radius: 50%;
+
+      box-shadow:
+        0 2px 5px rgba(0,0,0,0.2);
+
+      transition: 0.2s;
+
+    }
+
+
+    .switch input:checked
+    + .switch-track {
+
+      background: #34c759;
+
+    }
+
+
+    .switch input:checked
+    + .switch-track
+    + .switch-knob {
+
+      right: 2px;
+
+    }
+
+
+    /* =========================
+       مستوى الصوت
+    ========================= */
+
+    .volume-container {
+
+      padding: 18px 0;
+
+    }
+
+
+    .volume-header {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      margin-bottom: 10px;
+
+    }
+
+
+    .volume-title {
+
+      font-size: 16px;
+
+      font-weight: 600;
+
+    }
+
+
+    .volume-value {
+
+      font-size: 14px;
+
+      color: #8e8e93;
+
+    }
+
+
+    #adhanVolume {
+
+      width: 100%;
+
+      accent-color: #007aff;
+
     }
 
 
@@ -319,445 +551,4 @@
       justify-content: space-around;
 
       box-shadow:
-        0 8px 30px
-        rgba(0, 0, 0, 0.12);
-
-      z-index: 100;
-    }
-
-    .nav-item {
-
-      border: none;
-
-      background: transparent;
-
-      color: #8e8e93;
-
-      font-size: 12px;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      gap: 5px;
-
-      cursor: pointer;
-
-      padding: 8px 12px;
-
-      transition: 0.2s;
-    }
-
-    .nav-icon {
-
-      font-size: 21px;
-    }
-
-    .nav-item.active {
-
-      color: #007aff;
-
-      font-weight: 600;
-    }
-
-    .nav-item:active {
-
-      transform: scale(0.92);
-    }
-
-
-    /* =========================
-       الشاشات الصغيرة
-    ========================= */
-
-    @media (max-width: 380px) {
-
-      .brand {
-        font-size: 25px;
-      }
-
-      .prayer-name {
-        font-size: 27px;
-      }
-
-      .ayah,
-      .dhikr {
-        font-size: 18px;
-      }
-
-      .prayer-row {
-        padding: 15px 17px;
-      }
-
-    }
-
-  </style>
-
-</head>
-
-
-<body>
-
-
-  <div class="app">
-
-
-    <!-- =====================
-         الهيدر
-    ====================== -->
-
-    <header>
-
-      <div class="brand">
-        أنياس
-      </div>
-
-      <div
-        class="date"
-        id="todayDate"
-      >
-        اليوم
-      </div>
-
-    </header>
-
-
-    <!-- =====================
-         الصلاة القادمة
-    ====================== -->
-
-    <section class="next-prayer">
-
-      <div class="next-label">
-        الصلاة القادمة
-      </div>
-
-      <div
-        class="prayer-name"
-        id="nextPrayerName"
-      >
-        الفجر
-      </div>
-
-      <div
-        class="prayer-time"
-        id="nextPrayerTime"
-      >
-        --
-      </div>
-
-      <div
-        class="countdown"
-        id="countdown"
-      >
-        جاري حساب الوقت...
-      </div>
-
-    </section>
-
-
-    <!-- =====================
-         مواقيت الصلاة
-    ====================== -->
-
-    <section class="section">
-
-      <div class="section-title">
-        مواقيت الصلاة
-      </div>
-
-
-      <div class="prayer-list">
-
-
-        <div class="prayer-row">
-
-          <span class="prayer-title">
-            الفجر
-          </span>
-
-          <span
-            class="prayer-value"
-            id="fajrTime"
-          >
-            --
-          </span>
-
-        </div>
-
-
-        <div class="prayer-row">
-
-          <span class="prayer-title">
-            الشروق
-          </span>
-
-          <span
-            class="prayer-value"
-            id="sunriseTime"
-          >
-            --
-          </span>
-
-        </div>
-
-
-        <div class="prayer-row">
-
-          <span class="prayer-title">
-            الظهر
-          </span>
-
-          <span
-            class="prayer-value"
-            id="dhuhrTime"
-          >
-            --
-          </span>
-
-        </div>
-
-
-        <div class="prayer-row">
-
-          <span class="prayer-title">
-            العصر
-          </span>
-
-          <span
-            class="prayer-value"
-            id="asrTime"
-          >
-            --
-          </span>
-
-        </div>
-
-
-        <div class="prayer-row">
-
-          <span class="prayer-title">
-            المغرب
-          </span>
-
-          <span
-            class="prayer-value"
-            id="maghribTime"
-          >
-            --
-          </span>
-
-        </div>
-
-
-        <div class="prayer-row">
-
-          <span class="prayer-title">
-            العشاء
-          </span>
-
-          <span
-            class="prayer-value"
-            id="ishaTime"
-          >
-            --
-          </span>
-
-        </div>
-
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================
-         آية اليوم
-    ====================== -->
-
-    <section class="section">
-
-      <div class="card">
-
-        <div class="card-title">
-          آية اليوم
-        </div>
-
-        <div class="ayah">
-
-          ﴿ أَلَا بِذِكْرِ اللَّهِ
-          تَطْمَئِنُّ الْقُلُوبُ ﴾
-
-        </div>
-
-        <div class="reference">
-
-          سورة الرعد — 28
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================
-         ذكر اليوم
-    ====================== -->
-
-    <section class="section">
-
-      <div class="card">
-
-        <div class="card-title">
-          ذكر اليوم
-        </div>
-
-        <div class="dhikr">
-
-          سبحان الله وبحمده،
-          سبحان الله العظيم
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================
-         الأذان
-    ====================== -->
-
-    <section class="section">
-
-      <div class="card">
-
-        <div class="card-title">
-          الأذان
-        </div>
-
-
-        <div class="ayah">
-
-          استمع إلى الأذان
-
-        </div>
-
-
-        <button
-          id="adhanButton"
-          class="adhan-button"
-          type="button"
-        >
-
-          ▶ تشغيل الأذان
-
-        </button>
-
-
-        <audio
-          id="adhanAudio"
-          preload="none"
-        >
-
-          <source
-            src="adhan.mp3"
-            type="audio/mpeg"
-          >
-
-        </audio>
-
-
-      </div>
-
-    </section>
-
-
-  </div>
-
-
-  <!-- =====================
-       القائمة السفلية
-  ====================== -->
-
-  <nav class="bottom-nav">
-
-
-    <button
-      class="nav-item active"
-      type="button"
-    >
-
-      <span class="nav-icon">
-        ⌂
-      </span>
-
-      <span>
-        الرئيسية
-      </span>
-
-    </button>
-
-
-    <button
-      class="nav-item"
-      type="button"
-    >
-
-      <span class="nav-icon">
-        ◫
-      </span>
-
-      <span>
-        القرآن
-      </span>
-
-    </button>
-
-
-    <button
-      class="nav-item"
-      type="button"
-    >
-
-      <span class="nav-icon">
-        ◉
-      </span>
-
-      <span>
-        الأذكار
-      </span>
-
-    </button>
-
-
-    <button
-      class="nav-item"
-      type="button"
-    >
-
-      <span class="nav-icon">
-        ◎
-      </span>
-
-      <span>
-        القبلة
-      </span>
-
-    </button>
-
-
-  </nav>
-
-
-  <!-- JavaScript -->
-
-  <script src="script.js"></script>
-
-
-</body>
-
-</html>
+       
