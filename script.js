@@ -75,44 +75,19 @@ function detectLocationAndLoadTimes() {
   const fallbackLng = 31.2357;
 
 
-  const statusEl =
-    document.getElementById(
-      "locationStatus"
-    );
-
-
-  function setStatus(text) {
-
-    if (statusEl) {
-      statusEl.textContent = text;
-    }
-
-    console.log(text);
-
-  }
-
-
-  if (!window.isSecureContext) {
-
-    setStatus(
-      "⚠️ الصفحة مش شغالة على HTTPS، الموقع مش هيشتغل"
-    );
-
-    loadPrayerTimes(
-      fallbackLat,
-      fallbackLng
-    );
-
-    return;
-
-  }
-
-
   if (!navigator.geolocation) {
 
-    setStatus(
-      "⚠️ المتصفح لا يدعم تحديد الموقع"
-    );
+    const nameEl =
+      document.getElementById(
+        "locationName"
+      );
+
+    if (nameEl) {
+
+      nameEl.textContent =
+        "📍 القاهرة (المتصفح لا يدعم تحديد الموقع)";
+
+    }
 
     loadPrayerTimes(
       fallbackLat,
@@ -122,11 +97,6 @@ function detectLocationAndLoadTimes() {
     return;
 
   }
-
-
-  setStatus(
-    "⏳ جاري طلب إذن الموقع..."
-  );
 
 
   navigator.geolocation.getCurrentPosition(
@@ -136,11 +106,12 @@ function detectLocationAndLoadTimes() {
       const { latitude, longitude } =
         position.coords;
 
-      setStatus(
-        `✅ تم تحديد الموقع: ${latitude.toFixed(2)}, ${longitude.toFixed(2)}`
+      loadPrayerTimes(
+        latitude,
+        longitude
       );
 
-      loadPrayerTimes(
+      fetchCityName(
         latitude,
         longitude
       );
@@ -149,9 +120,17 @@ function detectLocationAndLoadTimes() {
 
     (error) => {
 
-      setStatus(
-        `❌ فشل تحديد الموقع (كود ${error.code}): ${error.message}`
-      );
+      const nameEl =
+        document.getElementById(
+          "locationName"
+        );
+
+      if (nameEl) {
+
+        nameEl.textContent =
+          "📍 القاهرة (تعذر تحديد موقعك)";
+
+      }
 
       loadPrayerTimes(
         fallbackLat,
@@ -162,10 +141,90 @@ function detectLocationAndLoadTimes() {
 
     {
       timeout: 8000,
-      maximumAge: 0
+      maximumAge: 1000 * 60 * 30
     }
 
   );
+
+}
+
+
+// ===============================
+// جلب اسم المدينة من الإحداثيات
+// ===============================
+
+async function fetchCityName(
+  latitude,
+  longitude
+) {
+
+
+  const nameEl =
+    document.getElementById(
+      "locationName"
+    );
+
+
+  try {
+
+
+    const url =
+      `https://nominatim.openstreetmap.org/reverse` +
+      `?format=json&lat=${latitude}&lon=${longitude}` +
+      `&accept-language=ar`;
+
+
+    const response =
+      await fetch(url);
+
+
+    const data =
+      await response.json();
+
+
+    const address =
+      data.address || {};
+
+
+    const city =
+      address.city ||
+      address.town ||
+      address.village ||
+      address.county ||
+      "موقعك الحالي";
+
+
+    const country =
+      address.country ||
+      "";
+
+
+    if (nameEl) {
+
+      nameEl.textContent =
+        `📍 ${city}${country ? "، " + country : ""}`;
+
+    }
+
+
+  } catch (error) {
+
+
+    console.error(
+      "تعذر جلب اسم المدينة:",
+      error
+    );
+
+
+    if (nameEl) {
+
+      nameEl.textContent =
+        "📍 موقعك الحالي";
+
+    }
+
+
+  }
 
 }
 
@@ -1116,4 +1175,4 @@ function formatNumber(
   return String(number)
     .padStart(2, "0");
 
-}
+      }
