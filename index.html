@@ -551,4 +551,563 @@
       justify-content: space-around;
 
       box-shadow:
-       
+        0 8px 30px
+        rgba(0, 0, 0, 0.12);
+
+      z-index: 100;
+
+    }
+
+
+    .nav-item {
+
+      border: none;
+
+      background: transparent;
+
+      color: #8e8e93;
+
+      font-size: 12px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      gap: 5px;
+
+      cursor: pointer;
+
+      padding: 8px 12px;
+
+      transition: 0.2s;
+
+    }
+
+
+    .nav-icon {
+
+      font-size: 21px;
+
+    }
+
+
+    .nav-item.active {
+
+      color: #007aff;
+
+      font-weight: 600;
+
+    }
+
+
+    .nav-item:active {
+
+      transform: scale(0.92);
+
+    }
+
+
+    /* =========================
+       شاشات صغيرة
+    ========================= */
+
+    @media (max-width: 380px) {
+
+      .brand {
+
+        font-size: 25px;
+
+      }
+
+
+      .prayer-name {
+
+        font-size: 27px;
+
+      }
+
+
+      .ayah,
+      .dhikr {
+
+        font-size: 18px;
+
+      }
+
+
+      .prayer-row {
+
+        padding: 15px 17px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <div class="app">
+
+
+    <!-- =====================
+         الهيدر
+    ====================== -->
+
+    <header>
+
+      <div class="brand">
+        أنياس
+      </div>
+
+      <div
+        class="date"
+        id="todayDate"
+      >
+        اليوم
+      </div>
+
+    </header>
+
+
+    <!-- =====================
+         الصلاة القادمة
+    ====================== -->
+
+    <section class="next-prayer">
+
+      <div class="next-label">
+        الصلاة القادمة
+      </div>
+
+      <div
+        class="prayer-name"
+        id="nextPrayerName"
+      >
+        الفجر
+      </div>
+
+      <div
+        class="prayer-time"
+        id="nextPrayerTime"
+      >
+        --
+      </div>
+
+      <div
+        class="countdown"
+        id="countdown"
+      >
+        جاري حساب الوقت...
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         مواقيت الصلاة
+    ====================== -->
+
+    <section class="section">
+
+      <div class="section-title">
+        مواقيت الصلاة
+      </div>
+
+
+      <div class="prayer-list">
+
+
+        <div class="prayer-row">
+
+          <span class="prayer-title">
+            الفجر
+          </span>
+
+          <span
+            class="prayer-value"
+            id="fajrTime"
+          >
+            --
+          </span>
+
+        </div>
+
+
+        <div class="prayer-row">
+
+          <span class="prayer-title">
+            الشروق
+          </span>
+
+          <span
+            class="prayer-value"
+            id="sunriseTime"
+          >
+            --
+          </span>
+
+        </div>
+
+
+        <div class="prayer-row">
+
+          <span class="prayer-title">
+            الظهر
+          </span>
+
+          <span
+            class="prayer-value"
+            id="dhuhrTime"
+          >
+            --
+          </span>
+
+        </div>
+
+
+        <div class="prayer-row">
+
+          <span class="prayer-title">
+            العصر
+          </span>
+
+          <span
+            class="prayer-value"
+            id="asrTime"
+          >
+            --
+          </span>
+
+        </div>
+
+
+        <div class="prayer-row">
+
+          <span class="prayer-title">
+            المغرب
+          </span>
+
+          <span
+            class="prayer-value"
+            id="maghribTime"
+          >
+            --
+          </span>
+
+        </div>
+
+
+        <div class="prayer-row">
+
+          <span class="prayer-title">
+            العشاء
+          </span>
+
+          <span
+            class="prayer-value"
+            id="ishaTime"
+          >
+            --
+          </span>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         آية اليوم
+    ====================== -->
+
+    <section class="section">
+
+      <div class="card">
+
+        <div class="card-title">
+          آية اليوم
+        </div>
+
+        <div class="ayah">
+
+          ﴿ أَلَا بِذِكْرِ اللَّهِ
+          تَطْمَئِنُّ الْقُلُوبُ ﴾
+
+        </div>
+
+        <div class="reference">
+          سورة الرعد — 28
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         ذكر اليوم
+    ====================== -->
+
+    <section class="section">
+
+      <div class="card">
+
+        <div class="card-title">
+          ذكر اليوم
+        </div>
+
+        <div class="dhikr">
+
+          سبحان الله وبحمده،
+          سبحان الله العظيم
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         الأذان
+    ====================== -->
+
+    <section class="section">
+
+      <div class="card">
+
+        <div class="card-title">
+          الأذان
+        </div>
+
+        <div class="ayah">
+          استمع إلى الأذان
+        </div>
+
+        <button
+          id="adhanButton"
+          class="adhan-button"
+          type="button"
+        >
+          ▶ تشغيل الأذان
+        </button>
+
+
+        <!-- الأذان العادي -->
+
+        <audio
+          id="adhanAudio"
+          preload="auto"
+        >
+
+          <source
+            src="adhan.mp3"
+            type="audio/mpeg"
+          >
+
+        </audio>
+
+
+        <!-- أذان الفجر -->
+
+        <audio
+          id="fajrAudio"
+          preload="auto"
+        >
+
+          <source
+            src="audio/fajr.mp3"
+            type="audio/mpeg"
+          >
+
+        </audio>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         إعدادات الصوت
+    ====================== -->
+
+    <section class="section">
+
+      <div class="section-title">
+        الصوت والأذان
+      </div>
+
+
+      <div class="card">
+
+
+        <!-- الأذان التلقائي -->
+
+        <div class="setting-row">
+
+          <div>
+
+            <div class="setting-title">
+              الأذان التلقائي
+            </div>
+
+            <div class="setting-description">
+              تشغيل الأذان عند دخول وقت الصلاة
+            </div>
+
+          </div>
+
+
+          <label class="switch">
+
+            <input
+              id="autoAdhan"
+              type="checkbox"
+            >
+
+            <span class="switch-track"></span>
+
+            <span class="switch-knob"></span>
+
+          </label>
+
+        </div>
+
+
+        <!-- مستوى الصوت -->
+
+        <div class="volume-container">
+
+          <div class="volume-header">
+
+            <span class="volume-title">
+              مستوى الصوت
+            </span>
+
+            <span
+              class="volume-value"
+              id="volumeValue"
+            >
+              100%
+            </span>
+
+          </div>
+
+
+          <input
+            id="adhanVolume"
+            type="range"
+            min="0"
+            max="100"
+            value="100"
+          >
+
+        </div>
+
+
+        <!-- تجربة الأذان -->
+
+        <button
+          id="testAdhanButton"
+          class="adhan-button"
+          type="button"
+        >
+          ▶ تجربة الأذان
+        </button>
+
+      </div>
+
+    </section>
+
+
+  </div>
+
+
+  <!-- =====================
+       القائمة السفلية
+  ====================== -->
+
+  <nav class="bottom-nav">
+
+
+    <button
+      class="nav-item active"
+      type="button"
+    >
+
+      <span class="nav-icon">
+        ⌂
+      </span>
+
+      <span>
+        الرئيسية
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-item"
+      type="button"
+    >
+
+      <span class="nav-icon">
+        ◫
+      </span>
+
+      <span>
+        القرآن
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-item"
+      type="button"
+    >
+
+      <span class="nav-icon">
+        ◉
+      </span>
+
+      <span>
+        الأذكار
+      </span>
+
+    </button>
+
+
+    <button
+      class="nav-item"
+      type="button"
+    >
+
+      <span class="nav-icon">
+        ◎
+      </span>
+
+      <span>
+        القبلة
+      </span>
+
+    </button>
+
+
+  </nav>
+
+
+  <script src="script.js"></script>
+
+
+</body>
+
+              </html>
