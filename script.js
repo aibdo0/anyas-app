@@ -71,17 +71,31 @@ function updateDate() {
 function detectLocationAndLoadTimes() {
 
 
-  // إحداثيات القاهرة كاحتياطي
-  // في حالة رفض الإذن أو عدم الدعم
-
   const fallbackLat = 30.0444;
   const fallbackLng = 31.2357;
 
 
-  if (!navigator.geolocation) {
+  const statusEl =
+    document.getElementById(
+      "locationStatus"
+    );
 
-    console.warn(
-      "المتصفح لا يدعم تحديد الموقع، سيتم استخدام القاهرة"
+
+  function setStatus(text) {
+
+    if (statusEl) {
+      statusEl.textContent = text;
+    }
+
+    console.log(text);
+
+  }
+
+
+  if (!window.isSecureContext) {
+
+    setStatus(
+      "⚠️ الصفحة مش شغالة على HTTPS، الموقع مش هيشتغل"
     );
 
     loadPrayerTimes(
@@ -94,12 +108,37 @@ function detectLocationAndLoadTimes() {
   }
 
 
+  if (!navigator.geolocation) {
+
+    setStatus(
+      "⚠️ المتصفح لا يدعم تحديد الموقع"
+    );
+
+    loadPrayerTimes(
+      fallbackLat,
+      fallbackLng
+    );
+
+    return;
+
+  }
+
+
+  setStatus(
+    "⏳ جاري طلب إذن الموقع..."
+  );
+
+
   navigator.geolocation.getCurrentPosition(
 
     (position) => {
 
       const { latitude, longitude } =
         position.coords;
+
+      setStatus(
+        `✅ تم تحديد الموقع: ${latitude.toFixed(2)}, ${longitude.toFixed(2)}`
+      );
 
       loadPrayerTimes(
         latitude,
@@ -110,9 +149,8 @@ function detectLocationAndLoadTimes() {
 
     (error) => {
 
-      console.warn(
-        "تعذر الحصول على الموقع، سيتم استخدام القاهرة:",
-        error.message
+      setStatus(
+        `❌ فشل تحديد الموقع (كود ${error.code}): ${error.message}`
       );
 
       loadPrayerTimes(
@@ -124,7 +162,7 @@ function detectLocationAndLoadTimes() {
 
     {
       timeout: 8000,
-      maximumAge: 1000 * 60 * 30
+      maximumAge: 0
     }
 
   );
