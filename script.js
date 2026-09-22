@@ -85,7 +85,7 @@ function detectLocationAndLoadTimes() {
     if (nameEl) {
 
       nameEl.textContent =
-        "📍 القاهرة (المتصفح لا يدعم تحديد الموقع)";
+        " القاهرة (المتصفح لا يدعم تحديد الموقع)";
 
     }
 
