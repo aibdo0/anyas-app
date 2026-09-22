@@ -1,10 +1,7 @@
 // ===============================
 // أنياس
-// مواقيت الصلاة
-// العد التنازلي
-// نظام الأذان
-// أذان الفجر منفصل
-// إعدادات الصوت
+// مواقيت الصلاة + العد التنازلي
+// + مشغل الأذان
 // ===============================
 
 
@@ -18,13 +15,18 @@ document.addEventListener(
 
     setupAdhan();
 
-    setupAudioSettings();
+    setupAdhanSettings();
 
-    loadPrayerTimes();
+    detectLocationAndLoadTimes();
 
     setInterval(
       updateCountdown,
       1000
+    );
+
+    setInterval(
+      checkAutoAdhan,
+      1000 * 20
     );
 
   }
@@ -63,19 +65,81 @@ function updateDate() {
 
 
 // ===============================
+// تحديد الموقع الجغرافي
+// ===============================
+
+function detectLocationAndLoadTimes() {
+
+
+  // إحداثيات القاهرة كاحتياطي
+  // في حالة رفض الإذن أو عدم الدعم
+
+  const fallbackLat = 30.0444;
+  const fallbackLng = 31.2357;
+
+
+  if (!navigator.geolocation) {
+
+    console.warn(
+      "المتصفح لا يدعم تحديد الموقع، سيتم استخدام القاهرة"
+    );
+
+    loadPrayerTimes(
+      fallbackLat,
+      fallbackLng
+    );
+
+    return;
+
+  }
+
+
+  navigator.geolocation.getCurrentPosition(
+
+    (position) => {
+
+      const { latitude, longitude } =
+        position.coords;
+
+      loadPrayerTimes(
+        latitude,
+        longitude
+      );
+
+    },
+
+    (error) => {
+
+      console.warn(
+        "تعذر الحصول على الموقع، سيتم استخدام القاهرة:",
+        error.message
+      );
+
+      loadPrayerTimes(
+        fallbackLat,
+        fallbackLng
+      );
+
+    },
+
+    {
+      timeout: 8000,
+      maximumAge: 1000 * 60 * 30
+    }
+
+  );
+
+}
+
+
+// ===============================
 // مواقيت الصلاة
 // ===============================
 
-async function loadPrayerTimes() {
-
-  // القاهرة مؤقتًا
-  // لاحقًا سنستخدم موقع الهاتف
-
-  const latitude =
-    30.0444;
-
-  const longitude =
-    31.2357;
+async function loadPrayerTimes(
+  latitude,
+  longitude
+) {
 
 
   const today =
@@ -107,6 +171,7 @@ async function loadPrayerTimes() {
 
   try {
 
+
     const response =
       await fetch(url);
 
@@ -130,6 +195,15 @@ async function loadPrayerTimes() {
 
     const timings =
       data.data.timings;
+
+
+    window.todayTimings =
+      timings;
+
+    window.lastKnownLocation = {
+      latitude,
+      longitude
+    };
 
 
     setPrayerTime(
@@ -175,10 +249,12 @@ async function loadPrayerTimes() {
 
   } catch (error) {
 
+
     console.error(
-      "خطأ في جلب مواقيت الصلاة:",
+      "حدث خطأ في جلب مواقيت الصلاة:",
       error
     );
+
 
   }
 
@@ -194,10 +270,9 @@ function setPrayerTime(
   time
 ) {
 
+
   const element =
-    document.getElementById(
-      id
-    );
+    document.getElementById(id);
 
 
   if (!element) return;
@@ -216,6 +291,7 @@ function setPrayerTime(
 function convertTo12Hour(
   time
 ) {
+
 
   const [
     hour,
@@ -237,9 +313,7 @@ function convertTo12Hour(
 
 
   if (h === 0) {
-
     h = 12;
-
   }
 
 
@@ -258,6 +332,7 @@ function convertTo12Hour(
 function updateNextPrayer(
   timings
 ) {
+
 
   const prayers = [
 
@@ -306,6 +381,7 @@ function updateNextPrayer(
     const prayer of prayers
   ) {
 
+
     const [
       hour,
       minute
@@ -331,6 +407,7 @@ function updateNextPrayer(
       prayerDate > now
     ) {
 
+
       nextPrayer = {
 
         ...prayer,
@@ -352,6 +429,7 @@ function updateNextPrayer(
   // ننتقل لفجر الغد
 
   if (!nextPrayer) {
+
 
     const tomorrow =
       new Date();
@@ -437,16 +515,21 @@ function updateNextPrayer(
 
 function updateCountdown() {
 
+
   const countdownElement =
     document.getElementById(
       "countdown"
     );
 
 
-  if (!countdownElement) return;
+  if (!countdownElement) {
+    return;
+  }
 
 
-  if (!window.nextPrayerData) return;
+  if (!window.nextPrayerData) {
+    return;
+  }
 
 
   const now =
@@ -460,9 +543,22 @@ function updateCountdown() {
 
   if (difference <= 0) {
 
-    playAutomaticAdhan();
 
-    loadPrayerTimes();
+    const location =
+      window.lastKnownLocation;
+
+    if (location) {
+
+      loadPrayerTimes(
+        location.latitude,
+        location.longitude
+      );
+
+    } else {
+
+      detectLocationAndLoadTimes();
+
+    }
 
     return;
 
@@ -505,47 +601,11 @@ function updateCountdown() {
 
 
 // ===============================
-// اختيار ملف الأذان
-// ===============================
-
-function getAdhanAudio() {
-
-  const prayer =
-    window.nextPrayerData;
-
-
-  if (!prayer) {
-
-    return document.getElementById(
-      "adhanAudio"
-    );
-
-  }
-
-
-  if (
-    prayer.key === "Fajr"
-  ) {
-
-    return document.getElementById(
-      "fajrAudio"
-    );
-
-  }
-
-
-  return document.getElementById(
-    "adhanAudio"
-  );
-
-}
-
-
-// ===============================
-// زر تشغيل الأذان
+// مشغل الأذان (الزرار الأساسي)
 // ===============================
 
 function setupAdhan() {
+
 
   const adhanButton =
     document.getElementById(
@@ -553,30 +613,33 @@ function setupAdhan() {
     );
 
 
-  if (!adhanButton) return;
+  const adhanAudio =
+    document.getElementById(
+      "adhanAudio"
+    );
+
+
+  if (
+    !adhanButton ||
+    !adhanAudio
+  ) {
+
+    return;
+
+  }
 
 
   adhanButton.addEventListener(
     "click",
     () => {
 
-      const audio =
-        getAdhanAudio();
+
+      if (
+        adhanAudio.paused
+      ) {
 
 
-      if (!audio) return;
-
-
-      audio.volume =
-        getSavedVolume();
-
-
-      if (audio.paused) {
-
-        audio.currentTime = 0;
-
-
-        audio
+        adhanAudio
           .play()
           .then(() => {
 
@@ -584,18 +647,23 @@ function setupAdhan() {
               "⏸ إيقاف الأذان";
 
           })
-          .catch(error => {
+          .catch((error) => {
 
             console.error(
               "تعذر تشغيل الأذان:",
               error
             );
 
+            adhanButton.textContent =
+              "▶ تشغيل الأذان";
+
           });
+
 
       } else {
 
-        audio.pause();
+
+        adhanAudio.pause();
 
 
         adhanButton.textContent =
@@ -607,46 +675,29 @@ function setupAdhan() {
   );
 
 
-  const normalAudio =
-    document.getElementById(
-      "adhanAudio"
-    );
+  adhanAudio.addEventListener(
+    "ended",
+    () => {
 
+      adhanButton.textContent =
+        "▶ تشغيل الأذان";
 
-  const fajrAudio =
-    document.getElementById(
-      "fajrAudio"
-    );
+    }
+  );
 
-
-  [normalAudio, fajrAudio]
-    .forEach(audio => {
-
-      if (!audio) return;
-
-
-      audio.addEventListener(
-        "ended",
-        () => {
-
-          adhanButton.textContent =
-            "▶ تشغيل الأذان";
-
-        }
-      );
-
-    });
 
 }
 
 
 // ===============================
 // إعدادات الصوت
+// (السويتش + الفوليوم + زر التجربة)
 // ===============================
 
-function setupAudioSettings() {
+function setupAdhanSettings() {
 
-  const autoAdhan =
+
+  const autoAdhanToggle =
     document.getElementById(
       "autoAdhan"
     );
@@ -670,159 +721,165 @@ function setupAudioSettings() {
     );
 
 
-  if (
-    !autoAdhan ||
-    !volumeSlider ||
-    !volumeValue ||
-    !testButton
-  ) {
-
-    return;
-
-  }
+  const adhanAudio =
+    document.getElementById(
+      "adhanAudio"
+    );
 
 
-  // =========================
-  // استرجاع الإعدادات
-  // =========================
+  const fajrAudio =
+    document.getElementById(
+      "fajrAudio"
+    );
+
 
   const savedAuto =
     localStorage.getItem(
-      "anyas_auto_adhan"
+      "anyas_autoAdhan"
     );
 
 
   const savedVolume =
     localStorage.getItem(
-      "anyas_adhan_volume"
+      "anyas_adhanVolume"
     );
 
 
-  autoAdhan.checked =
-    savedAuto === null
-      ? true
-      : savedAuto === "true";
+  if (
+    autoAdhanToggle &&
+    savedAuto !== null
+  ) {
+
+    autoAdhanToggle.checked =
+      savedAuto === "true";
+
+  }
 
 
-  volumeSlider.value =
-    savedVolume === null
-      ? 100
-      : savedVolume;
+  const initialVolume =
+    savedVolume !== null
+      ? Number(savedVolume)
+      : 100;
 
 
-  updateVolume();
+  if (volumeSlider) {
+
+    volumeSlider.value =
+      initialVolume;
+
+  }
 
 
-  // =========================
-  // الأذان التلقائي
-  // =========================
-
-  autoAdhan.addEventListener(
-    "change",
-    () => {
-
-      localStorage.setItem(
-        "anyas_auto_adhan",
-        autoAdhan.checked
-      );
-
-    }
-  );
-
-
-  // =========================
-  // مستوى الصوت
-  // =========================
-
-  volumeSlider.addEventListener(
-    "input",
-    () => {
-
-      localStorage.setItem(
-        "anyas_adhan_volume",
-        volumeSlider.value
-      );
-
-
-      updateVolume();
-
-
-      const normalAudio =
-        document.getElementById(
-          "adhanAudio"
-        );
-
-
-      const fajrAudio =
-        document.getElementById(
-          "fajrAudio"
-        );
-
-
-      const volume =
-        getSavedVolume();
-
-
-      if (normalAudio) {
-
-        normalAudio.volume =
-          volume;
-
-      }
-
-
-      if (fajrAudio) {
-
-        fajrAudio.volume =
-          volume;
-
-      }
-
-    }
-  );
-
-
-  // =========================
-  // تجربة الأذان
-  // =========================
-
-  testButton.addEventListener(
-    "click",
-    () => {
-
-      const audio =
-        getAdhanAudio();
-
-
-      if (!audio) return;
-
-
-      audio.volume =
-        getSavedVolume();
-
-
-      audio.currentTime = 0;
-
-
-      audio
-        .play()
-        .catch(error => {
-
-          console.error(
-            "تعذر تشغيل الأذان:",
-            error
-          );
-
-        });
-
-    }
-  );
-
-
-  function updateVolume() {
+  if (volumeValue) {
 
     volumeValue.textContent =
-      `${volumeSlider.value}%`;
+      `${initialVolume}%`;
+
+  }
+
+
+  applyVolume(
+    initialVolume
+  );
+
+
+  if (autoAdhanToggle) {
+
+    autoAdhanToggle.addEventListener(
+      "change",
+      () => {
+
+        localStorage.setItem(
+          "anyas_autoAdhan",
+          autoAdhanToggle.checked
+        );
+
+      }
+    );
+
+  }
+
+
+  if (volumeSlider) {
+
+    volumeSlider.addEventListener(
+      "input",
+      () => {
+
+
+        const value =
+          Number(
+            volumeSlider.value
+          );
+
+
+        if (volumeValue) {
+
+          volumeValue.textContent =
+            `${value}%`;
+
+        }
+
+
+        applyVolume(value);
+
+
+        localStorage.setItem(
+          "anyas_adhanVolume",
+          value
+        );
+
+      }
+    );
+
+  }
+
+
+  if (testButton && adhanAudio) {
+
+    testButton.addEventListener(
+      "click",
+      () => {
+
+        adhanAudio.currentTime = 0;
+
+        adhanAudio
+          .play()
+          .catch((error) => {
+
+            console.error(
+              "تعذر تشغيل تجربة الأذان:",
+              error
+            );
+
+          });
+
+      }
+    );
+
+  }
+
+
+  function applyVolume(
+    value
+  ) {
+
+    const normalized =
+      value / 100;
+
+    if (adhanAudio) {
+
+      adhanAudio.volume =
+        normalized;
+
+    }
+
+    if (fajrAudio) {
+
+      fajrAudio.volume =
+        normalized;
+
+    }
 
   }
 
@@ -830,19 +887,22 @@ function setupAudioSettings() {
 
 
 // ===============================
-// تشغيل الأذان تلقائيًا
+// التحقق من دخول وقت صلاة
+// وتشغيل الأذان تلقائيًا
 // ===============================
 
-function playAutomaticAdhan() {
+function checkAutoAdhan() {
 
-  const autoAdhan =
-    localStorage.getItem(
-      "anyas_auto_adhan"
+
+  const autoAdhanToggle =
+    document.getElementById(
+      "autoAdhan"
     );
 
 
   if (
-    autoAdhan === "false"
+    !autoAdhanToggle ||
+    !autoAdhanToggle.checked
   ) {
 
     return;
@@ -850,57 +910,111 @@ function playAutomaticAdhan() {
   }
 
 
-  const audio =
-    getAdhanAudio();
+  if (!window.todayTimings) {
 
-
-  if (!audio) return;
-
-
-  audio.volume =
-    getSavedVolume();
-
-
-  audio.currentTime =
-    0;
-
-
-  audio
-    .play()
-    .catch(error => {
-
-      console.log(
-        "المتصفح منع التشغيل التلقائي:",
-        error
-      );
-
-    });
-
-}
-
-
-// ===============================
-// مستوى الصوت المحفوظ
-// ===============================
-
-function getSavedVolume() {
-
-  const volume =
-    localStorage.getItem(
-      "anyas_adhan_volume"
-    );
-
-
-  if (volume === null) {
-
-    return 1;
+    return;
 
   }
 
 
-  return (
-    Number(volume) / 100
-  );
+  const prayers = [
+
+    { key: "Fajr", time: window.todayTimings.Fajr },
+    { key: "Dhuhr", time: window.todayTimings.Dhuhr },
+    { key: "Asr", time: window.todayTimings.Asr },
+    { key: "Maghrib", time: window.todayTimings.Maghrib },
+    { key: "Isha", time: window.todayTimings.Isha }
+
+  ];
+
+
+  const now =
+    new Date();
+
+
+  const currentHM =
+    `${String(now.getHours()).padStart(2, "0")}:` +
+    `${String(now.getMinutes()).padStart(2, "0")}`;
+
+
+  const todayKey =
+    now.toDateString();
+
+
+  for (
+    const prayer of prayers
+  ) {
+
+
+    if (
+      prayer.time === currentHM &&
+      window.lastAdhanFired !==
+        `${todayKey}-${prayer.key}`
+    ) {
+
+
+      window.lastAdhanFired =
+        `${todayKey}-${prayer.key}`;
+
+
+      playAdhanFor(
+        prayer.key
+      );
+
+
+      break;
+
+    }
+
+  }
+
+}
+
+
+function playAdhanFor(
+  prayerKey
+) {
+
+
+  const fajrAudio =
+    document.getElementById(
+      "fajrAudio"
+    );
+
+
+  const adhanAudio =
+    document.getElementById(
+      "adhanAudio"
+    );
+
+
+  const audioToPlay =
+    prayerKey === "Fajr" &&
+    fajrAudio
+      ? fajrAudio
+      : adhanAudio;
+
+
+  if (!audioToPlay) {
+
+    return;
+
+  }
+
+
+  audioToPlay.currentTime = 0;
+
+
+  audioToPlay
+    .play()
+    .catch((error) => {
+
+      console.error(
+        "تعذر تشغيل الأذان التلقائي:",
+        error
+      );
+
+    });
 
 }
 
@@ -911,6 +1025,7 @@ function getSavedVolume() {
 
 function setupNavigation() {
 
+
   const navItems =
     document.querySelectorAll(
       ".nav-item"
@@ -918,14 +1033,16 @@ function setupNavigation() {
 
 
   navItems.forEach(
-    item => {
+    (item) => {
+
 
       item.addEventListener(
         "click",
         () => {
 
+
           navItems.forEach(
-            nav => {
+            (nav) => {
 
               nav.classList.remove(
                 "active"
@@ -938,6 +1055,7 @@ function setupNavigation() {
           item.classList.add(
             "active"
           );
+
 
         }
       );
@@ -955,6 +1073,7 @@ function setupNavigation() {
 function formatNumber(
   number
 ) {
+
 
   return String(number)
     .padStart(2, "0");
