@@ -4,7 +4,6 @@
 // + مشغل الأذان + أبواب الأذكار
 // ===============================
 
-
 document.addEventListener("DOMContentLoaded", () => {
 
   updateDate();
@@ -65,7 +64,7 @@ function detectLocationAndLoadTimes() {
 
     if (nameEl) {
       nameEl.textContent =
-        "📍 القاهرة (المتصفح لا يدعم تحديد الموقع)";
+        "القاهرة (المتصفح لا يدعم تحديد الموقع)";
     }
 
     loadPrayerTimes(
@@ -75,7 +74,6 @@ function detectLocationAndLoadTimes() {
 
     return;
   }
-
 
   navigator.geolocation.getCurrentPosition(
 
@@ -105,7 +103,7 @@ function detectLocationAndLoadTimes() {
 
       if (nameEl) {
         nameEl.textContent =
-          "📍 القاهرة (تعذر تحديد موقعك)";
+          "القاهرة (تعذر تحديد موقعك)";
       }
 
       loadPrayerTimes(
@@ -166,7 +164,7 @@ async function fetchCityName(
     if (nameEl) {
 
       nameEl.textContent =
-        `📍 ${city}` +
+        `${city}` +
         `${country ? "، " + country : ""}`;
 
     }
@@ -180,7 +178,7 @@ async function fetchCityName(
 
     if (nameEl) {
       nameEl.textContent =
-        "📍 موقعك الحالي";
+        "موقعك الحالي";
     }
 
   }
@@ -210,14 +208,12 @@ async function loadPrayerTimes(
   const year =
     today.getFullYear();
 
-
   const url =
     `https://api.aladhan.com/v1/timings/` +
     `${day}-${month}-${year}` +
     `?latitude=${latitude}` +
     `&longitude=${longitude}` +
     `&method=5`;
-
 
   try {
 
@@ -226,7 +222,6 @@ async function loadPrayerTimes(
 
     const data =
       await response.json();
-
 
     if (
       data.code !== 200 ||
@@ -240,10 +235,8 @@ async function loadPrayerTimes(
 
     }
 
-
     const timings =
       data.data.timings;
-
 
     window.todayTimings =
       timings;
@@ -252,7 +245,6 @@ async function loadPrayerTimes(
       latitude,
       longitude
     };
-
 
     setPrayerTime(
       "fajrTime",
@@ -284,11 +276,9 @@ async function loadPrayerTimes(
       timings.Isha
     );
 
-
     updateNextPrayer(
       timings
     );
-
 
   } catch (error) {
 
@@ -389,13 +379,11 @@ function updateNextPrayer(
 
   ];
 
-
   const now =
     new Date();
 
   let nextPrayer =
     null;
-
 
   for (
     const prayer of prayers
@@ -409,7 +397,6 @@ function updateNextPrayer(
         .split(":")
         .map(Number);
 
-
     const prayerDate =
       new Date();
 
@@ -419,7 +406,6 @@ function updateNextPrayer(
       0,
       0
     );
-
 
     if (
       prayerDate > now
@@ -436,7 +422,6 @@ function updateNextPrayer(
 
   }
 
-
   if (!nextPrayer) {
 
     const tomorrow =
@@ -446,7 +431,6 @@ function updateNextPrayer(
       tomorrow.getDate() + 1
     );
 
-
     const [
       hour,
       minute
@@ -455,14 +439,12 @@ function updateNextPrayer(
         .split(":")
         .map(Number);
 
-
     tomorrow.setHours(
       hour,
       minute,
       0,
       0
     );
-
 
     nextPrayer = {
       ...prayers[0],
@@ -471,10 +453,8 @@ function updateNextPrayer(
 
   }
 
-
   window.nextPrayerData =
     nextPrayer;
-
 
   const nameElement =
     document.getElementById(
@@ -486,12 +466,10 @@ function updateNextPrayer(
       "nextPrayerTime"
     );
 
-
   if (nameElement) {
     nameElement.textContent =
       nextPrayer.name;
   }
-
 
   if (timeElement) {
     timeElement.textContent =
@@ -499,7 +477,6 @@ function updateNextPrayer(
         nextPrayer.time
       );
   }
-
 
   updateCountdown();
 
@@ -517,13 +494,11 @@ function updateCountdown() {
       "countdown"
     );
 
-
   if (!countdownElement) return;
 
   if (!window.nextPrayerData) {
     return;
   }
-
 
   const now =
     new Date();
@@ -531,12 +506,10 @@ function updateCountdown() {
   const difference =
     window.nextPrayerData.date - now;
 
-
   if (difference <= 0) {
 
     const location =
       window.lastKnownLocation;
-
 
     if (location) {
 
@@ -555,13 +528,11 @@ function updateCountdown() {
 
   }
 
-
   const hours =
     Math.floor(
       difference /
       (1000 * 60 * 60)
     );
-
 
   const minutes =
     Math.floor(
@@ -572,7 +543,6 @@ function updateCountdown() {
       (1000 * 60)
     );
 
-
   const seconds =
     Math.floor(
       (
@@ -581,7 +551,6 @@ function updateCountdown() {
       ) /
       1000
     );
-
 
   countdownElement.textContent =
     `متبقي ${formatNumber(hours)}:` +
@@ -607,14 +576,12 @@ function setupAdhan() {
       "adhanAudio"
     );
 
-
   if (
     !adhanButton ||
     !adhanAudio
   ) {
     return;
   }
-
 
   adhanButton.addEventListener(
     "click",
@@ -627,7 +594,7 @@ function setupAdhan() {
           .then(() => {
 
             adhanButton.textContent =
-              "⏸ إيقاف الأذان";
+              "إيقاف الأذان";
 
           })
           .catch((error) => {
@@ -638,7 +605,7 @@ function setupAdhan() {
             );
 
             adhanButton.textContent =
-              "▶ تشغيل الأذان";
+              "تشغيل الأذان";
 
           });
 
@@ -647,20 +614,19 @@ function setupAdhan() {
         adhanAudio.pause();
 
         adhanButton.textContent =
-          "▶ تشغيل الأذان";
+          "تشغيل الأذان";
 
       }
 
     }
   );
 
-
   adhanAudio.addEventListener(
     "ended",
     () => {
 
       adhanButton.textContent =
-        "▶ تشغيل الأذان";
+        "تشغيل الأذان";
 
     }
   );
@@ -704,18 +670,15 @@ function setupAdhanSettings() {
       "fajrAudio"
     );
 
-
   const savedAuto =
     localStorage.getItem(
       "anyas_autoAdhan"
     );
 
-
   const savedVolume =
     localStorage.getItem(
       "anyas_adhanVolume"
     );
-
 
   if (
     autoAdhanToggle &&
@@ -727,29 +690,24 @@ function setupAdhanSettings() {
 
   }
 
-
   const initialVolume =
     savedVolume !== null
       ? Number(savedVolume)
       : 100;
-
 
   if (volumeSlider) {
     volumeSlider.value =
       initialVolume;
   }
 
-
   if (volumeValue) {
     volumeValue.textContent =
       `${initialVolume}%`;
   }
 
-
   applyVolume(
     initialVolume
   );
-
 
   if (autoAdhanToggle) {
 
@@ -767,7 +725,6 @@ function setupAdhanSettings() {
 
   }
 
-
   if (volumeSlider) {
 
     volumeSlider.addEventListener(
@@ -779,7 +736,6 @@ function setupAdhanSettings() {
             volumeSlider.value
           );
 
-
         if (volumeValue) {
 
           volumeValue.textContent =
@@ -787,11 +743,9 @@ function setupAdhanSettings() {
 
         }
 
-
         applyVolume(
           value
         );
-
 
         localStorage.setItem(
           "anyas_adhanVolume",
@@ -802,7 +756,6 @@ function setupAdhanSettings() {
     );
 
   }
-
 
   if (
     testButton &&
@@ -832,7 +785,6 @@ function setupAdhanSettings() {
 
   }
 
-
   function applyVolume(
     value
   ) {
@@ -840,12 +792,10 @@ function setupAdhanSettings() {
     const normalized =
       value / 100;
 
-
     if (adhanAudio) {
       adhanAudio.volume =
         normalized;
     }
-
 
     if (fajrAudio) {
       fajrAudio.volume =
@@ -868,7 +818,6 @@ function checkAutoAdhan() {
       "autoAdhan"
     );
 
-
   if (
     !autoAdhanToggle ||
     !autoAdhanToggle.checked
@@ -876,11 +825,9 @@ function checkAutoAdhan() {
     return;
   }
 
-
   if (!window.todayTimings) {
     return;
   }
-
 
   const prayers = [
 
@@ -916,19 +863,15 @@ function checkAutoAdhan() {
 
   ];
 
-
   const now =
     new Date();
-
 
   const currentHM =
     `${String(now.getHours()).padStart(2, "0")}:` +
     `${String(now.getMinutes()).padStart(2, "0")}`;
 
-
   const todayKey =
     now.toDateString();
-
 
   for (
     const prayer of prayers
@@ -943,11 +886,9 @@ function checkAutoAdhan() {
       window.lastAdhanFired =
         `${todayKey}-${prayer.key}`;
 
-
       playAdhanFor(
         prayer.key
       );
-
 
       break;
 
@@ -972,20 +913,16 @@ function playAdhanFor(
       "adhanAudio"
     );
 
-
   const audioToPlay =
     prayerKey === "Fajr" &&
     fajrAudio
       ? fajrAudio
       : adhanAudio;
 
-
   if (!audioToPlay) return;
-
 
   audioToPlay.currentTime =
     0;
-
 
   audioToPlay
     .play()
@@ -1012,7 +949,6 @@ function setupNavigation() {
       ".nav-item"
     );
 
-
   navItems.forEach(
     (item) => {
 
@@ -1025,11 +961,9 @@ function setupNavigation() {
               "data-page"
             );
 
-
           if (!targetPage) {
             return;
           }
-
 
           navItems.forEach(
             (nav) =>
@@ -1038,11 +972,9 @@ function setupNavigation() {
               )
           );
 
-
           item.classList.add(
             "active"
           );
-
 
           goToPage(
             targetPage
@@ -1070,12 +1002,10 @@ function goToPage(
         )
     );
 
-
   const pageElement =
     document.getElementById(
       `page-${pageId}`
     );
-
 
   if (pageElement) {
 
@@ -1104,25 +1034,31 @@ function setupAzkarTopics() {
       "azkarBackButton"
     );
 
-
   if (!grid) {
+
+    console.error(
+      "لم يتم العثور على categoryGrid"
+    );
+
     return;
   }
 
-
   grid.innerHTML = "";
 
-
   const topics =
-    window.azkarTopics || [];
+    Array.isArray(window.azkarTopics)
+      ? window.azkarTopics
+      : [];
 
+  console.log(
+    "عدد أبواب الأذكار:",
+    topics.length
+  );
 
-  // عنوان عدد الأبواب إن وجد
   const countElement =
     document.getElementById(
       "azkarTopicsCount"
     );
-
 
   if (countElement) {
 
@@ -1132,6 +1068,43 @@ function setupAzkarTopics() {
   }
 
 
+  // ===============================
+  // التأكد من تحميل الأذكار
+  // ===============================
+
+  if (topics.length === 0) {
+
+    const errorBox =
+      document.createElement(
+        "div"
+      );
+
+    errorBox.className =
+      "azkar-item";
+
+    errorBox.innerHTML =
+
+      `<div class="azkar-text">
+        لم يتم تحميل أبواب الأذكار.
+        تأكد أن ملف azkar-topics.js موجود في نفس مجلد index.html.
+      </div>`;
+
+    grid.appendChild(
+      errorBox
+    );
+
+    console.error(
+      "window.azkarTopics غير موجود أو فارغ"
+    );
+
+    return;
+  }
+
+
+  // ===============================
+  // إنشاء الأبواب
+  // ===============================
+
   topics.forEach(
     (topic) => {
 
@@ -1140,20 +1113,16 @@ function setupAzkarTopics() {
           "button"
         );
 
-
       card.type =
         "button";
 
-
       card.className =
         "category-card";
-
 
       const itemCount =
         Array.isArray(topic.items)
           ? topic.items.length
           : 0;
-
 
       card.innerHTML =
 
@@ -1162,13 +1131,16 @@ function setupAzkarTopics() {
         `</div>` +
 
         `<div class="category-name">` +
-        `${topic.title}` +
+        `${topic.title || "باب الأذكار"}` +
         `</div>` +
 
         `<div class="category-count">` +
-        `${itemCount > 0 ? itemCount + " أذكار" : "باب"}` +
+        `${
+          itemCount > 0
+            ? itemCount + " أذكار"
+            : "باب"
+        }` +
         `</div>`;
-
 
       card.addEventListener(
         "click",
@@ -1181,7 +1153,6 @@ function setupAzkarTopics() {
         }
       );
 
-
       grid.appendChild(
         card
       );
@@ -1190,6 +1161,10 @@ function setupAzkarTopics() {
   );
 
 
+  // ===============================
+  // زر الرجوع
+  // ===============================
+
   if (backButton) {
 
     backButton.onclick = () => {
@@ -1197,7 +1172,6 @@ function setupAzkarTopics() {
       goToPage(
         "azkar"
       );
-
 
       document
         .querySelectorAll(
@@ -1210,12 +1184,10 @@ function setupAzkarTopics() {
             )
         );
 
-
       const azkarNav =
         document.querySelector(
           '.nav-item[data-page="azkar"]'
         );
-
 
       if (azkarNav) {
 
@@ -1241,8 +1213,9 @@ function openAzkarTopic(
 ) {
 
   const topics =
-    window.azkarTopics || [];
-
+    Array.isArray(window.azkarTopics)
+      ? window.azkarTopics
+      : [];
 
   const topic =
     topics.find(
@@ -1250,34 +1223,34 @@ function openAzkarTopic(
         item.number === number
     );
 
-
   if (!topic) {
+
+    console.error(
+      "لم يتم العثور على الباب:",
+      number
+    );
+
     return;
   }
-
 
   const titleEl =
     document.getElementById(
       "categoryDetailTitle"
     );
 
-
   if (titleEl) {
 
     titleEl.textContent =
-      `${topic.number}. ${topic.title}`;
+      `${topic.number}. ${topic.title || "باب الأذكار"}`;
 
   }
-
 
   window.currentAzkarTopic =
     number;
 
-
   goToPage(
     "azkar-detail"
   );
-
 
   renderAzkarTopic(
     number
@@ -1297,7 +1270,6 @@ function getTopicStorageKey(
   const todayKey =
     new Date().toDateString();
 
-
   return (
     `anyas_topic_${number}_${todayKey}`
   );
@@ -1314,11 +1286,9 @@ function loadTopicProgress(
       getTopicStorageKey(number)
     );
 
-
   if (!raw) {
     return {};
   }
-
 
   try {
 
@@ -1327,6 +1297,11 @@ function loadTopicProgress(
     );
 
   } catch (error) {
+
+    console.error(
+      "خطأ في قراءة التقدم:",
+      error
+    );
 
     return {};
 
@@ -1357,8 +1332,9 @@ function renderAzkarTopic(
 ) {
 
   const topics =
-    window.azkarTopics || [];
-
+    Array.isArray(window.azkarTopics)
+      ? window.azkarTopics
+      : [];
 
   const topic =
     topics.find(
@@ -1366,25 +1342,31 @@ function renderAzkarTopic(
         item.number === number
     );
 
-
   const container =
     document.getElementById(
       "azkarList"
     );
 
-
   if (!container) {
+
+    console.error(
+      "لم يتم العثور على azkarList"
+    );
+
     return;
   }
-
 
   container.innerHTML = "";
 
-
   if (!topic) {
+
+    console.error(
+      "الباب غير موجود:",
+      number
+    );
+
     return;
   }
-
 
   const items =
     Array.isArray(topic.items)
@@ -1392,7 +1374,10 @@ function renderAzkarTopic(
       : [];
 
 
-  // لو الباب لسه بدون محتوى
+  // ===============================
+  // الباب بدون محتوى
+  // ===============================
+
   if (items.length === 0) {
 
     const empty =
@@ -1400,37 +1385,40 @@ function renderAzkarTopic(
         "div"
       );
 
-
     empty.className =
       "azkar-item";
 
-
     empty.innerHTML =
 
-      `<div class="azkar-text">` +
-      `سيتم إضافة أذكار هذا الباب قريبًا بإذن الله.` +
-      `</div>`;
-
+      `<div class="azkar-text">
+        سيتم إضافة أذكار هذا الباب قريبًا بإذن الله.
+      </div>`;
 
     container.appendChild(
       empty
     );
 
-
     renderTopicNavigation(
       number
     );
 
-
     return;
   }
 
+
+  // ===============================
+  // تحميل التقدم
+  // ===============================
 
   const progress =
     loadTopicProgress(
       number
     );
 
+
+  // ===============================
+  // عرض الأذكار
+  // ===============================
 
   items.forEach(
     (zikr, index) => {
@@ -1440,71 +1428,57 @@ function renderAzkarTopic(
           "div"
         );
 
-
       item.className =
         "azkar-item";
-
 
       const textDiv =
         document.createElement(
           "div"
         );
 
-
       textDiv.className =
         "azkar-text";
-
 
       textDiv.textContent =
         zikr.text || "";
 
-
       item.appendChild(
         textDiv
       );
-
 
       const count =
         Number(
           zikr.count || 1
         );
 
-
       let current =
         progress[index] !== undefined
           ? Number(progress[index])
           : count;
-
 
       const row =
         document.createElement(
           "div"
         );
 
-
       row.className =
         "azkar-counter-row";
-
 
       const remaining =
         document.createElement(
           "span"
         );
 
-
       remaining.className =
         "azkar-remaining";
-
 
       const button =
         document.createElement(
           "button"
         );
 
-
       button.type =
         "button";
-
 
       button.className =
         "azkar-count-button";
@@ -1515,10 +1489,10 @@ function renderAzkarTopic(
         if (current <= 0) {
 
           remaining.textContent =
-            "✓ تم";
+            "تم";
 
           button.textContent =
-            "✓";
+            "تم";
 
           item.classList.add(
             "done"
@@ -1552,23 +1526,19 @@ function renderAzkarTopic(
             return;
           }
 
-
           current =
             Math.max(
               0,
               current - 1
             );
 
-
           progress[index] =
             current;
-
 
           saveTopicProgress(
             number,
             progress
           );
-
 
           updateCounter();
 
@@ -1580,16 +1550,13 @@ function renderAzkarTopic(
         remaining
       );
 
-
       row.appendChild(
         button
       );
 
-
       item.appendChild(
         row
       );
-
 
       container.appendChild(
         item
@@ -1619,15 +1586,14 @@ function renderTopicNavigation(
       "azkarTopicNavigation"
     );
 
-
   if (!container) {
     return;
   }
 
-
   const topics =
-    window.azkarTopics || [];
-
+    Array.isArray(window.azkarTopics)
+      ? window.azkarTopics
+      : [];
 
   const index =
     topics.findIndex(
@@ -1635,28 +1601,22 @@ function renderTopicNavigation(
         topic.number === currentNumber
     );
 
-
   if (index === -1) {
     return;
   }
 
-
   const previous =
     topics[index - 1];
-
 
   const next =
     topics[index + 1];
 
-
   container.innerHTML = "";
-
 
   const row =
     document.createElement(
       "div"
     );
-
 
   row.style.display =
     "flex";
@@ -1667,10 +1627,13 @@ function renderTopicNavigation(
   row.style.marginTop =
     "15px";
 
-
   row.style.width =
     "100%";
 
+
+  // ===============================
+  // السابق
+  // ===============================
 
   if (previous) {
 
@@ -1679,22 +1642,17 @@ function renderTopicNavigation(
         "button"
       );
 
-
     button.type =
       "button";
 
-
     button.textContent =
-      "← الباب السابق";
-
+      "الباب السابق";
 
     button.className =
       "azkar-count-button";
 
-
     button.style.flex =
       "1";
-
 
     button.addEventListener(
       "click",
@@ -1707,13 +1665,16 @@ function renderTopicNavigation(
       }
     );
 
-
     row.appendChild(
       button
     );
 
   }
 
+
+  // ===============================
+  // التالي
+  // ===============================
 
   if (next) {
 
@@ -1722,22 +1683,17 @@ function renderTopicNavigation(
         "button"
       );
 
-
     button.type =
       "button";
 
-
     button.textContent =
-      "الباب التالي →";
-
+      "الباب التالي";
 
     button.className =
       "azkar-count-button";
 
-
     button.style.flex =
       "1";
-
 
     button.addEventListener(
       "click",
@@ -1750,13 +1706,11 @@ function renderTopicNavigation(
       }
     );
 
-
     row.appendChild(
       button
     );
 
   }
-
 
   container.appendChild(
     row
@@ -1780,4 +1734,4 @@ function formatNumber(
     "0"
   );
 
-        }
+      }
