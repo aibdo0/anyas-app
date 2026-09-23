@@ -17,7 +17,7 @@ document.addEventListener(
 
     setupAdhanSettings();
 
-    setupAzkar();
+    setupAzkarCategories();
 
     detectLocationAndLoadTimes();
 
@@ -42,26 +42,18 @@ document.addEventListener(
 function updateDate() {
 
   const dateElement =
-    document.getElementById(
-      "todayDate"
-    );
+    document.getElementById("todayDate");
 
   if (!dateElement) return;
 
-
-  const today =
-    new Date();
-
+  const today = new Date();
 
   dateElement.textContent =
-    today.toLocaleDateString(
-      "ar-EG",
-      {
-        weekday: "long",
-        day: "numeric",
-        month: "long"
-      }
-    );
+    today.toLocaleDateString("ar-EG", {
+      weekday: "long",
+      day: "numeric",
+      month: "long"
+    });
 
 }
 
@@ -79,23 +71,14 @@ function detectLocationAndLoadTimes() {
 
   if (!navigator.geolocation) {
 
-    const nameEl =
-      document.getElementById(
-        "locationName"
-      );
+    const nameEl = document.getElementById("locationName");
 
     if (nameEl) {
-
       nameEl.textContent =
         "📍 القاهرة (المتصفح لا يدعم تحديد الموقع)";
-
     }
 
-    loadPrayerTimes(
-      fallbackLat,
-      fallbackLng
-    );
-
+    loadPrayerTimes(fallbackLat, fallbackLng);
     return;
 
   }
@@ -105,126 +88,67 @@ function detectLocationAndLoadTimes() {
 
     (position) => {
 
-      const { latitude, longitude } =
-        position.coords;
+      const { latitude, longitude } = position.coords;
 
-      loadPrayerTimes(
-        latitude,
-        longitude
-      );
-
-      fetchCityName(
-        latitude,
-        longitude
-      );
+      loadPrayerTimes(latitude, longitude);
+      fetchCityName(latitude, longitude);
 
     },
 
     (error) => {
 
-      const nameEl =
-        document.getElementById(
-          "locationName"
-        );
+      const nameEl = document.getElementById("locationName");
 
       if (nameEl) {
-
         nameEl.textContent =
           "📍 القاهرة (تعذر تحديد موقعك)";
-
       }
 
-      loadPrayerTimes(
-        fallbackLat,
-        fallbackLng
-      );
+      loadPrayerTimes(fallbackLat, fallbackLng);
 
     },
 
-    {
-      timeout: 8000,
-      maximumAge: 1000 * 60 * 30
-    }
+    { timeout: 8000, maximumAge: 1000 * 60 * 30 }
 
   );
 
 }
 
 
-// ===============================
-// جلب اسم المدينة من الإحداثيات
-// ===============================
-
-async function fetchCityName(
-  latitude,
-  longitude
-) {
+async function fetchCityName(latitude, longitude) {
 
 
-  const nameEl =
-    document.getElementById(
-      "locationName"
-    );
+  const nameEl = document.getElementById("locationName");
 
 
   try {
-
 
     const url =
       `https://nominatim.openstreetmap.org/reverse` +
       `?format=json&lat=${latitude}&lon=${longitude}` +
       `&accept-language=ar`;
 
-
-    const response =
-      await fetch(url);
-
-
-    const data =
-      await response.json();
-
-
-    const address =
-      data.address || {};
-
+    const response = await fetch(url);
+    const data = await response.json();
+    const address = data.address || {};
 
     const city =
-      address.city ||
-      address.town ||
-      address.village ||
-      address.county ||
+      address.city || address.town ||
+      address.village || address.county ||
       "موقعك الحالي";
 
-
-    const country =
-      address.country ||
-      "";
-
+    const country = address.country || "";
 
     if (nameEl) {
-
       nameEl.textContent =
         `📍 ${city}${country ? "، " + country : ""}`;
-
     }
-
 
   } catch (error) {
 
+    console.error("تعذر جلب اسم المدينة:", error);
 
-    console.error(
-      "تعذر جلب اسم المدينة:",
-      error
-    );
-
-
-    if (nameEl) {
-
-      nameEl.textContent =
-        "📍 موقعك الحالي";
-
-    }
-
+    if (nameEl) nameEl.textContent = "📍 موقعك الحالي";
 
   }
 
@@ -235,75 +159,38 @@ async function fetchCityName(
 // مواقيت الصلاة
 // ===============================
 
-async function loadPrayerTimes(
-  latitude,
-  longitude
-) {
+async function loadPrayerTimes(latitude, longitude) {
 
 
-  const today =
-    new Date();
+  const today = new Date();
 
-
-  const day =
-    String(
-      today.getDate()
-    ).padStart(2, "0");
-
-
-  const month =
-    String(
-      today.getMonth() + 1
-    ).padStart(2, "0");
-
-
-  const year =
-    today.getFullYear();
+  const day = String(today.getDate()).padStart(2, "0");
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const year = today.getFullYear();
 
 
   const url =
     `https://api.aladhan.com/v1/timings/${day}-${month}-${year}` +
-    `?latitude=${latitude}` +
-    `&longitude=${longitude}` +
-    `&method=5`;
+    `?latitude=${latitude}&longitude=${longitude}&method=5`;
 
 
   try {
 
-
-    const response =
-      await fetch(url);
-
-
-    const data =
-      await response.json();
-
+    const response = await fetch(url);
+    const data = await response.json();
 
     if (
       data.code !== 200 ||
       !data.data ||
       !data.data.timings
     ) {
-
-      throw new Error(
-        "فشل الحصول على المواقيت"
-      );
-
+      throw new Error("فشل الحصول على المواقيت");
     }
 
+    const timings = data.data.timings;
 
-    const timings =
-      data.data.timings;
-
-
-    window.todayTimings =
-      timings;
-
-    window.lastKnownLocation = {
-      latitude,
-      longitude
-    };
-
+    window.todayTimings = timings;
+    window.lastKnownLocation = { latitude, longitude };
 
     setPrayerTime("fajrTime", timings.Fajr);
     setPrayerTime("sunriseTime", timings.Sunrise);
@@ -312,18 +199,11 @@ async function loadPrayerTimes(
     setPrayerTime("maghribTime", timings.Maghrib);
     setPrayerTime("ishaTime", timings.Isha);
 
-
     updateNextPrayer(timings);
-
 
   } catch (error) {
 
-
-    console.error(
-      "حدث خطأ في جلب مواقيت الصلاة:",
-      error
-    );
-
+    console.error("حدث خطأ في جلب مواقيت الصلاة:", error);
 
   }
 
@@ -332,27 +212,18 @@ async function loadPrayerTimes(
 
 function setPrayerTime(id, time) {
 
-  const element =
-    document.getElementById(id);
-
+  const element = document.getElementById(id);
   if (!element) return;
-
-  element.textContent =
-    convertTo12Hour(time);
+  element.textContent = convertTo12Hour(time);
 
 }
 
 
 function convertTo12Hour(time) {
 
-  const [hour, minute] =
-    time.split(":").map(Number);
-
-  const period =
-    hour >= 12 ? "م" : "ص";
-
+  const [hour, minute] = time.split(":").map(Number);
+  const period = hour >= 12 ? "م" : "ص";
   let h = hour % 12;
-
   if (h === 0) h = 12;
 
   return (
@@ -380,24 +251,18 @@ function updateNextPrayer(timings) {
 
 
   const now = new Date();
-
   let nextPrayer = null;
 
 
   for (const prayer of prayers) {
 
-    const [hour, minute] =
-      prayer.time.split(":").map(Number);
-
+    const [hour, minute] = prayer.time.split(":").map(Number);
     const prayerDate = new Date();
-
     prayerDate.setHours(hour, minute, 0, 0);
 
     if (prayerDate > now) {
-
       nextPrayer = { ...prayer, date: prayerDate };
       break;
-
     }
 
   }
@@ -408,9 +273,7 @@ function updateNextPrayer(timings) {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    const [hour, minute] =
-      prayers[0].time.split(":").map(Number);
-
+    const [hour, minute] = prayers[0].time.split(":").map(Number);
     tomorrow.setHours(hour, minute, 0, 0);
 
     nextPrayer = { ...prayers[0], date: tomorrow };
@@ -420,20 +283,11 @@ function updateNextPrayer(timings) {
 
   window.nextPrayerData = nextPrayer;
 
-
-  const nameElement =
-    document.getElementById("nextPrayerName");
-
-  const timeElement =
-    document.getElementById("nextPrayerTime");
-
+  const nameElement = document.getElementById("nextPrayerName");
+  const timeElement = document.getElementById("nextPrayerTime");
 
   if (nameElement) nameElement.textContent = nextPrayer.name;
-
-  if (timeElement) {
-    timeElement.textContent = convertTo12Hour(nextPrayer.time);
-  }
-
+  if (timeElement) timeElement.textContent = convertTo12Hour(nextPrayer.time);
 
   updateCountdown();
 
@@ -447,18 +301,14 @@ function updateNextPrayer(timings) {
 function updateCountdown() {
 
 
-  const countdownElement =
-    document.getElementById("countdown");
+  const countdownElement = document.getElementById("countdown");
 
   if (!countdownElement) return;
-
   if (!window.nextPrayerData) return;
 
 
   const now = new Date();
-
-  const difference =
-    window.nextPrayerData.date - now;
+  const difference = window.nextPrayerData.date - now;
 
 
   if (difference <= 0) {
@@ -476,14 +326,15 @@ function updateCountdown() {
   }
 
 
-  const hours =
-    Math.floor(difference / (1000 * 60 * 60));
+  const hours = Math.floor(difference / (1000 * 60 * 60));
 
-  const minutes =
-    Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  const minutes = Math.floor(
+    (difference % (1000 * 60 * 60)) / (1000 * 60)
+  );
 
-  const seconds =
-    Math.floor((difference % (1000 * 60)) / 1000);
+  const seconds = Math.floor(
+    (difference % (1000 * 60)) / 1000
+  );
 
 
   countdownElement.textContent =
@@ -501,11 +352,8 @@ function updateCountdown() {
 function setupAdhan() {
 
 
-  const adhanButton =
-    document.getElementById("adhanButton");
-
-  const adhanAudio =
-    document.getElementById("adhanAudio");
+  const adhanButton = document.getElementById("adhanButton");
+  const adhanAudio = document.getElementById("adhanAudio");
 
   if (!adhanButton || !adhanAudio) return;
 
@@ -548,30 +396,16 @@ function setupAdhan() {
 function setupAdhanSettings() {
 
 
-  const autoAdhanToggle =
-    document.getElementById("autoAdhan");
-
-  const volumeSlider =
-    document.getElementById("adhanVolume");
-
-  const volumeValue =
-    document.getElementById("volumeValue");
-
-  const testButton =
-    document.getElementById("testAdhanButton");
-
-  const adhanAudio =
-    document.getElementById("adhanAudio");
-
-  const fajrAudio =
-    document.getElementById("fajrAudio");
+  const autoAdhanToggle = document.getElementById("autoAdhan");
+  const volumeSlider = document.getElementById("adhanVolume");
+  const volumeValue = document.getElementById("volumeValue");
+  const testButton = document.getElementById("testAdhanButton");
+  const adhanAudio = document.getElementById("adhanAudio");
+  const fajrAudio = document.getElementById("fajrAudio");
 
 
-  const savedAuto =
-    localStorage.getItem("anyas_autoAdhan");
-
-  const savedVolume =
-    localStorage.getItem("anyas_adhanVolume");
+  const savedAuto = localStorage.getItem("anyas_autoAdhan");
+  const savedVolume = localStorage.getItem("anyas_adhanVolume");
 
 
   if (autoAdhanToggle && savedAuto !== null) {
@@ -584,19 +418,15 @@ function setupAdhanSettings() {
 
 
   if (volumeSlider) volumeSlider.value = initialVolume;
-
   if (volumeValue) volumeValue.textContent = `${initialVolume}%`;
-
 
   applyVolume(initialVolume);
 
 
   if (autoAdhanToggle) {
-
     autoAdhanToggle.addEventListener("change", () => {
       localStorage.setItem("anyas_autoAdhan", autoAdhanToggle.checked);
     });
-
   }
 
 
@@ -648,11 +478,9 @@ function setupAdhanSettings() {
 function checkAutoAdhan() {
 
 
-  const autoAdhanToggle =
-    document.getElementById("autoAdhan");
+  const autoAdhanToggle = document.getElementById("autoAdhan");
 
   if (!autoAdhanToggle || !autoAdhanToggle.checked) return;
-
   if (!window.todayTimings) return;
 
 
@@ -695,11 +523,8 @@ function checkAutoAdhan() {
 function playAdhanFor(prayerKey) {
 
 
-  const fajrAudio =
-    document.getElementById("fajrAudio");
-
-  const adhanAudio =
-    document.getElementById("adhanAudio");
+  const fajrAudio = document.getElementById("fajrAudio");
+  const adhanAudio = document.getElementById("adhanAudio");
 
   const audioToPlay =
     prayerKey === "Fajr" && fajrAudio ? fajrAudio : adhanAudio;
@@ -722,40 +547,21 @@ function playAdhanFor(prayerKey) {
 function setupNavigation() {
 
 
-  const navItems =
-    document.querySelectorAll(".nav-item");
+  const navItems = document.querySelectorAll(".nav-item");
 
 
   navItems.forEach((item) => {
 
     item.addEventListener("click", () => {
 
-      const targetPage =
-        item.getAttribute("data-page");
+      const targetPage = item.getAttribute("data-page");
 
       if (!targetPage) return;
 
-
-      navItems.forEach((nav) => {
-        nav.classList.remove("active");
-      });
-
+      navItems.forEach((nav) => nav.classList.remove("active"));
       item.classList.add("active");
 
-
-      document
-        .querySelectorAll(".page")
-        .forEach((page) => {
-          page.classList.remove("active");
-        });
-
-
-      const pageElement =
-        document.getElementById(`page-${targetPage}`);
-
-      if (pageElement) {
-        pageElement.classList.add("active");
-      }
+      goToPage(targetPage);
 
     });
 
@@ -764,147 +570,503 @@ function setupNavigation() {
 }
 
 
+function goToPage(pageId) {
+
+  document
+    .querySelectorAll(".page")
+    .forEach((page) => page.classList.remove("active"));
+
+  const pageElement =
+    document.getElementById(`page-${pageId}`);
+
+  if (pageElement) pageElement.classList.add("active");
+
+}
+
+
 // ===============================
-// بيانات أذكار الصباح والمساء
+// بيانات الأذكار (مقسّمة بالفئات)
+// من "حصن المسلم" - سعيد بن علي القحطاني
+// الأقسام المؤكدة دقتها من المصدر الرسمي
+// موسومة بـ verified: true
 // ===============================
 
-const morningAzkar = [
+const azkarCategories = {
 
-  {
-    text: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ",
-    count: 1
+
+  morning: {
+
+    title: "أذكار الصباح",
+    icon: "🌅",
+    dailyReset: true,
+
+    items: [
+
+      {
+        text: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+        count: 1
+      },
+
+      {
+        text: "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ",
+        count: 1
+      },
+
+      {
+        text: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ",
+        count: 3
+      },
+
+      {
+        text: "حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
+        count: 7
+      },
+
+      {
+        text: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
+        count: 3
+      },
+
+      {
+        text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+        count: 100
+      },
+
+      {
+        text: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ",
+        count: 100
+      }
+
+    ]
+
   },
 
-  {
-    text: "اللَّهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ",
-    count: 1
+
+  evening: {
+
+    title: "أذكار المساء",
+    icon: "🌙",
+    dailyReset: true,
+
+    items: [
+
+      {
+        text: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+        count: 1
+      },
+
+      {
+        text: "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ",
+        count: 1
+      },
+
+      {
+        text: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ",
+        count: 3
+      },
+
+      {
+        text: "حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
+        count: 7
+      },
+
+      {
+        text: "اللَّهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيعَ خَلْقِكَ أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيكَ لَكَ وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُولُكَ",
+        count: 1
+      },
+
+      {
+        text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+        count: 100
+      },
+
+      {
+        text: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ",
+        count: 100
+      }
+
+    ]
+
   },
 
-  {
-    text: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي",
-    count: 3
+
+  sleep: {
+
+    title: "أذكار النوم",
+    icon: "😴",
+    dailyReset: false,
+
+    items: [
+
+      {
+        text: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا",
+        count: 1
+      },
+
+      {
+        text: "اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ",
+        count: 3
+      },
+
+      {
+        text: "اللَّهُمَّ أَسْلَمْتُ نَفْسِي إِلَيْكَ، وَفَوَّضْتُ أَمْرِي إِلَيْكَ، وَوَجَّهْتُ وَجْهِي إِلَيْكَ، وَأَلْجَأْتُ ظَهْرِي إِلَيْكَ، رَغْبَةً وَرَهْبَةً إِلَيْكَ، لَا مَلْجَأَ وَلَا مَنْجَا مِنْكَ إِلَّا إِلَيْكَ، آمَنْتُ بِكِتَابِكَ الَّذِي أَنْزَلْتَ، وَبِنَبِيِّكَ الَّذِي أَرْسَلْتَ",
+        count: 1
+      },
+
+      {
+        text: "سُبْحَانَ اللَّهِ (٣٣)، وَالْحَمْدُ لِلَّهِ (٣٣)، وَاللَّهُ أَكْبَرُ (٣٤)",
+        count: 1
+      }
+
+    ]
+
   },
 
-  {
-    text: "حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
-    count: 7
+
+  waking: {
+
+    title: "أذكار الاستيقاظ",
+    icon: "🌄",
+    dailyReset: false,
+
+    items: [
+
+      {
+        text: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
+        count: 1
+      },
+
+      {
+        text: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، سُبْحَانَ اللَّهِ، وَالْحَمْدُ لِلَّهِ، وَلَا إِلَهَ إِلَّا اللَّهُ، وَاللَّهُ أَكْبَرُ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+        count: 1
+      }
+
+    ]
+
   },
 
-  {
-    text: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
-    count: 3
+
+  wuduBefore: {
+
+    title: "الذكر قبل الوضوء",
+    icon: "💧",
+    dailyReset: false,
+    verified: true,
+
+    items: [
+
+      {
+        text: "بِسْمِ اللَّهِ",
+        count: 1
+      }
+
+    ]
+
   },
 
-  {
-    text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
-    count: 100
+
+  wuduAfter: {
+
+    title: "الذكر بعد الوضوء",
+    icon: "✅",
+    dailyReset: false,
+    verified: true,
+
+    items: [
+
+      {
+        text: "أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ",
+        count: 1
+      },
+
+      {
+        text: "اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ، وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ",
+        count: 1
+      },
+
+      {
+        text: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ",
+        count: 1
+      }
+
+    ]
+
   },
 
-  {
-    text: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ",
-    count: 100
+
+  khalaa: {
+
+    title: "دخول وخروج الخلاء",
+    icon: "🚪",
+    dailyReset: false,
+    verified: true,
+
+    items: [
+
+      {
+        text: "عند الدخول: بِسْمِ اللَّهِ، اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبْثِ وَالْخَبَائِثِ",
+        count: 1
+      },
+
+      {
+        text: "عند الخروج: غُفْرَانَكَ",
+        count: 1
+      }
+
+    ]
+
+  },
+
+
+  afterPrayer: {
+
+    title: "بعد الصلاة",
+    icon: "🕌",
+    dailyReset: false,
+
+    items: [
+
+      {
+        text: "أَسْتَغْفِرُ اللَّهَ (٣ مرات)، اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ",
+        count: 1
+      },
+
+      {
+        text: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، اللَّهُمَّ لَا مَانِعَ لِمَا أَعْطَيْتَ، وَلَا مُعْطِيَ لِمَا مَنَعْتَ، وَلَا يَنْفَعُ ذَا الْجَدِّ مِنْكَ الْجَدُّ",
+        count: 1
+      },
+
+      {
+        text: "سُبْحَانَ اللَّهِ",
+        count: 33
+      },
+
+      {
+        text: "الْحَمْدُ لِلَّهِ",
+        count: 33
+      },
+
+      {
+        text: "اللَّهُ أَكْبَرُ",
+        count: 33
+      },
+
+      {
+        text: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ (تكملة المئة)",
+        count: 1
+      }
+
+    ]
+
+  },
+
+
+  distress: {
+
+    title: "الهمّ والحزن",
+    icon: "🤲",
+    dailyReset: false,
+
+    items: [
+
+      {
+        text: "اللَّهُمَّ إِنِّي عَبْدُكَ، ابْنُ عَبْدِكَ، ابْنُ أَمَتِكَ، نَاصِيَتِي بِيَدِكَ، مَاضٍ فِيَّ حُكْمُكَ، عَدْلٌ فِيَّ قَضَاؤُكَ، أَسْأَلُكَ بِكُلِّ اسْمٍ هُوَ لَكَ... أَنْ تَجْعَلَ الْقُرْآنَ رَبِيعَ قَلْبِي، وَنُورَ صَدْرِي، وَجَلَاءَ حُزْنِي، وَذَهَابَ هَمِّي",
+        count: 1
+      },
+
+      {
+        text: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
+        count: 1
+      },
+
+      {
+        text: "لَا إِلَهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ",
+        count: 1
+      }
+
+    ]
+
+  },
+
+
+  travel: {
+
+    title: "دعاء السفر",
+    icon: "🧳",
+    dailyReset: false,
+
+    items: [
+
+      {
+        text: "اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ، اللَّهُ أَكْبَرُ، سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ",
+        count: 1
+      },
+
+      {
+        text: "اللَّهُمَّ إِنَّا نَسْأَلُكَ فِي سَفَرِنَا هَذَا الْبِرَّ وَالتَّقْوَى، وَمِنَ الْعَمَلِ مَا تَرْضَى، اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ، اللَّهُمَّ أَنْتَ الصَّاحِبُ فِي السَّفَرِ، وَالْخَلِيفَةُ فِي الْأَهْلِ",
+        count: 1
+      },
+
+      {
+        text: "آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ (تقال عند الرجوع من السفر)",
+        count: 1
+      }
+
+    ]
+
+  },
+
+
+  home: {
+
+    title: "دخول وخروج المنزل",
+    icon: "🏠",
+    dailyReset: false,
+    verified: true,
+
+    items: [
+
+      {
+        text: "عند الدخول: بِسْمِ اللَّهِ وَلَجْنَا، وَبِسْمِ اللَّهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا، ثُمَّ يُسَلِّمُ عَلَى أَهْلِهِ",
+        count: 1
+      },
+
+      {
+        text: "عند الخروج: بِسْمِ اللَّهِ، تَوَكَّلْتُ عَلَى اللَّهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+        count: 1
+      },
+
+      {
+        text: "عند الخروج أيضًا: اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَنْ أَضِلَّ أَوْ أُضَلَّ، أَوْ أَزِلَّ أَوْ أُزَلَّ، أَوْ أَظْلِمَ أَوْ أُظْلَمَ، أَوْ أَجْهَلَ أَوْ يُجْهَلَ عَلَيَّ",
+        count: 1
+      }
+
+    ]
+
+  },
+
+
+  mosque: {
+
+    title: "دخول وخروج المسجد",
+    icon: "🕋",
+    dailyReset: false,
+
+    items: [
+
+      {
+        text: "عند الدخول: أَعُوذُ بِاللَّهِ الْعَظِيمِ، وَبِوَجْهِهِ الْكَرِيمِ، وَسُلْطَانِهِ الْقَدِيمِ، مِنَ الشَّيْطَانِ الرَّجِيمِ، اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ",
+        count: 1
+      },
+
+      {
+        text: "عند الخروج: اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ",
+        count: 1
+      }
+
+    ]
+
   }
 
-];
 
-
-const eveningAzkar = [
-
-  {
-    text: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ",
-    count: 1
-  },
-
-  {
-    text: "اللَّهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ",
-    count: 1
-  },
-
-  {
-    text: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي",
-    count: 3
-  },
-
-  {
-    text: "حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ، عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",
-    count: 7
-  },
-
-  {
-    text: "اللَّهُمَّ إِنِّي أَمْسَيْتُ أُشْهِدُكَ وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ أَنَّكَ أَنْتَ اللَّهُ لَا إِلَهَ إِلَّا أَنْتَ",
-    count: 1
-  },
-
-  {
-    text: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
-    count: 100
-  },
-
-  {
-    text: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ",
-    count: 100
-  }
-
-];
+};
 
 
 // ===============================
-// نظام الأذكار
+// عرض قائمة أقسام الأذكار
 // ===============================
 
-function setupAzkar() {
+function setupAzkarCategories() {
 
 
-  const tabMorning =
-    document.getElementById("tabMorning");
-
-  const tabEvening =
-    document.getElementById("tabEvening");
+  const grid = document.getElementById("categoryGrid");
+  const backButton = document.getElementById("azkarBackButton");
 
 
-  if (tabMorning) {
+  if (grid) {
 
-    tabMorning.addEventListener("click", () => {
-      tabMorning.classList.add("active");
-      if (tabEvening) tabEvening.classList.remove("active");
-      renderAzkar("morning");
+    Object.keys(azkarCategories).forEach((key) => {
+
+      const category = azkarCategories[key];
+
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "category-card";
+
+      card.innerHTML =
+        `<div class="category-icon">${category.icon}</div>` +
+        `<div class="category-name">${category.title}</div>`;
+
+      card.addEventListener("click", () => {
+        openAzkarCategory(key);
+      });
+
+      grid.appendChild(card);
+
     });
 
   }
 
 
-  if (tabEvening) {
+  if (backButton) {
 
-    tabEvening.addEventListener("click", () => {
-      tabEvening.classList.add("active");
-      if (tabMorning) tabMorning.classList.remove("active");
-      renderAzkar("evening");
+    backButton.addEventListener("click", () => {
+
+      goToPage("azkar");
+
+      document
+        .querySelectorAll(".nav-item")
+        .forEach((nav) => nav.classList.remove("active"));
+
+      const azkarNav =
+        document.querySelector('.nav-item[data-page="azkar"]');
+
+      if (azkarNav) azkarNav.classList.add("active");
+
     });
 
   }
 
+}
 
-  renderAzkar("morning");
+
+function openAzkarCategory(key) {
+
+
+  const category = azkarCategories[key];
+
+  if (!category) return;
+
+
+  const titleEl =
+    document.getElementById("categoryDetailTitle");
+
+  if (titleEl) titleEl.textContent = category.title;
+
+
+  goToPage("azkar-detail");
+
+
+  renderAzkarCategory(key);
 
 }
 
 
-function getAzkarStorageKey(type) {
+// ===============================
+// تخزين تقدّم الفئات اليومية
+// ===============================
 
-  const todayKey =
-    new Date().toDateString();
+function getAzkarStorageKey(key) {
 
-  return `anyas_azkar_${type}_${todayKey}`;
+  const todayKey = new Date().toDateString();
+  return `anyas_azkar_${key}_${todayKey}`;
 
 }
 
 
-function loadAzkarProgress(type) {
+function loadAzkarProgress(key) {
 
-  const raw =
-    localStorage.getItem(
-      getAzkarStorageKey(type)
-    );
+  const raw = localStorage.getItem(getAzkarStorageKey(key));
 
   if (!raw) return {};
 
@@ -917,113 +1079,134 @@ function loadAzkarProgress(type) {
 }
 
 
-function saveAzkarProgress(type, progress) {
+function saveAzkarProgress(key, progress) {
 
   localStorage.setItem(
-    getAzkarStorageKey(type),
+    getAzkarStorageKey(key),
     JSON.stringify(progress)
   );
 
 }
 
 
-function renderAzkar(type) {
+// ===============================
+// عرض أذكار قسم معيّن
+// ===============================
+
+function renderAzkarCategory(key) {
 
 
-  const list =
-    type === "morning" ? morningAzkar : eveningAzkar;
+  const category = azkarCategories[key];
 
-  const progress =
-    loadAzkarProgress(type);
+  if (!category) return;
 
-  const container =
-    document.getElementById("azkarList");
+
+  const container = document.getElementById("azkarList");
 
   if (!container) return;
-
 
   container.innerHTML = "";
 
 
-  list.forEach((zikr, index) => {
-
-    const remaining =
-      progress[index] !== undefined
-        ? progress[index]
-        : zikr.count;
-
-    const isDone =
-      remaining <= 0;
+  const progress =
+    category.dailyReset ? loadAzkarProgress(key) : {};
 
 
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "azkar-item" + (isDone ? " done" : "");
+  category.items.forEach((zikr, index) => {
 
 
-    const textDiv =
-      document.createElement("div");
-
-    textDiv.className = "azkar-text";
-    textDiv.textContent = zikr.text;
+    const item = document.createElement("div");
 
 
-    const row =
-      document.createElement("div");
+    if (category.dailyReset) {
 
-    row.className = "azkar-counter-row";
-
-
-    const remainingSpan =
-      document.createElement("span");
-
-    remainingSpan.className = "azkar-remaining";
-
-    remainingSpan.textContent =
-      isDone
-        ? "✓ تم"
-        : `متبقي ${remaining} من ${zikr.count}`;
-
-
-    const button =
-      document.createElement("button");
-
-    button.type = "button";
-    button.className = "azkar-count-button";
-
-    button.textContent =
-      isDone ? "✓" : "تسبيح";
-
-
-    button.addEventListener("click", () => {
-
-      const currentProgress =
-        loadAzkarProgress(type);
-
-      const current =
-        currentProgress[index] !== undefined
-          ? currentProgress[index]
+      const remaining =
+        progress[index] !== undefined
+          ? progress[index]
           : zikr.count;
 
-      const updated =
-        Math.max(0, current - 1);
+      const isDone = remaining <= 0;
 
-      currentProgress[index] = updated;
-
-      saveAzkarProgress(type, currentProgress);
-
-      renderAzkar(type);
-
-    });
+      item.className =
+        "azkar-item" + (isDone ? " done" : "");
 
 
-    row.appendChild(remainingSpan);
-    row.appendChild(button);
+      const textDiv = document.createElement("div");
+      textDiv.className = "azkar-text";
+      textDiv.textContent = zikr.text;
 
-    item.appendChild(textDiv);
-    item.appendChild(row);
+
+      const row = document.createElement("div");
+      row.className = "azkar-counter-row";
+
+
+      const remainingSpan = document.createElement("span");
+      remainingSpan.className = "azkar-remaining";
+
+      remainingSpan.textContent =
+        isDone
+          ? "✓ تم"
+          : `متبقي ${remaining} من ${zikr.count}`;
+
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "azkar-count-button";
+      button.textContent = isDone ? "✓" : "تسبيح";
+
+
+      button.addEventListener("click", () => {
+
+        const currentProgress = loadAzkarProgress(key);
+
+        const current =
+          currentProgress[index] !== undefined
+            ? currentProgress[index]
+            : zikr.count;
+
+        const updated = Math.max(0, current - 1);
+
+        currentProgress[index] = updated;
+
+        saveAzkarProgress(key, currentProgress);
+
+        renderAzkarCategory(key);
+
+      });
+
+
+      row.appendChild(remainingSpan);
+      row.appendChild(button);
+
+      item.appendChild(textDiv);
+      item.appendChild(row);
+
+
+    } else {
+
+
+      item.className = "azkar-item";
+
+
+      const textDiv = document.createElement("div");
+      textDiv.className = "azkar-text";
+      textDiv.textContent = zikr.text;
+
+      item.appendChild(textDiv);
+
+
+      if (zikr.count > 1) {
+
+        const badge = document.createElement("span");
+        badge.className = "repeat-badge";
+        badge.textContent = `يُكرر ${zikr.count} مرات`;
+
+        item.appendChild(badge);
+
+      }
+
+    }
+
 
     container.appendChild(item);
 
@@ -1038,4 +1221,4 @@ function renderAzkar(type) {
 
 function formatNumber(number) {
   return String(number).padStart(2, "0");
-}
+  }
