@@ -1,1 +1,283 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
+:root {
+    --primary: #0f6f5c;
+    --primary-dark: #0b5548;
+    --accent: #c9a227;
+
+    --bg: #f5f5f7;
+    --card: #ffffff;
+
+    --text: #1c1c1e;
+    --muted: #8e8e93;
+    --border: #ececef;
+
+    --success: #34c759;
+
+    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.07);
+}
+
+body.dark-mode {
+    --bg: #111513;
+    --card: #1b211f;
+    --text: #f5f5f7;
+    --muted: #a8aaa8;
+    --border: #303634;
+
+    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    background: var(--bg);
+    color: var(--text);
+
+    min-height: 100vh;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+    width: 100%;
+    max-width: 520px;
+    min-height: 100vh;
+
+    margin: 0 auto;
+
+    padding-bottom: 105px;
+}
+
+.page {
+    display: none;
+    min-height: 100vh;
+}
+
+.page.active {
+    display: block;
+}
+
+.section {
+    padding: 0 16px;
+}
+
+.section-title {
+    margin: 22px 4px 12px;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.card {
+    margin-top: 18px;
+
+    padding: 20px;
+
+    background: var(--card);
+    border-radius: 22px;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.card-title {
+    margin-bottom: 12px;
+
+    color: var(--muted);
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.ayah,
+.dhikr {
+    font-size: 19px;
+    line-height: 1.9;
+}
+
+.reference {
+    margin-top: 12px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.plain-header {
+    padding: 24px 20px 12px;
+
+    background: transparent;
+    color: var(--text);
+}
+
+.brand {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+}
+
+.date {
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.adhan-button {
+    width: 100%;
+
+    margin-top: 16px;
+    padding: 14px;
+
+    border: none;
+    border-radius: 16px;
+
+    background: var(--primary);
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.adhan-button:active {
+    transform: scale(0.97);
+}
+
+.bottom-nav {
+    position: fixed;
+
+    bottom: 12px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: calc(100% - 24px);
+    max-width: 496px;
+    height: 68px;
+
+    padding: 6px;
+
+    background: rgba(255, 255, 255, 0.94);
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.13);
+
+    z-index: 100;
+}
+
+body.dark-mode .bottom-nav {
+    background: rgba(27, 33, 31, 0.94);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-item {
+    min-width: 60px;
+
+    padding: 8px 7px;
+
+    border: none;
+    border-radius: 15px;
+
+    background: transparent;
+    color: var(--muted);
+
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.nav-icon {
+    display: block;
+}
+
+.nav-item.active {
+    background: rgba(15, 111, 92, 0.10);
+    color: var(--primary);
+}
+
+.nav-item:active {
+    transform: scale(0.92);
+}
+
+.qibla-card {
+    text-align: center;
+}
+
+.qibla-placeholder {
+    padding: 35px 15px;
+
+    color: var(--primary);
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+@media (max-width: 380px) {
+
+    .app {
+        padding-bottom: 100px;
+    }
+
+    .brand {
+        font-size: 24px;
+    }
+
+    .ayah,
+    .dhikr {
+        font-size: 17px;
+    }
+
+    .nav-item {
+        min-width: 52px;
+        font-size: 10px;
+    }
+}
