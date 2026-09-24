@@ -1,5 +1,6 @@
 // =========================
-// أنياس - مواقيت الصلاة
+// أنياس - النسخة الجديدة
+// مواقيت الصلاة
 // =========================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -14,21 +15,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadPrayerTimes() {
 
-  const locationName = document.getElementById("locationName");
+  const locationName =
+    document.getElementById("locationName");
 
   if (!navigator.geolocation) {
+
     if (locationName) {
-      locationName.textContent = "تحديد الموقع غير متاح";
+      locationName.textContent =
+        "تحديد الموقع غير متاح";
     }
 
     return;
   }
 
   navigator.geolocation.getCurrentPosition(
+
     async position => {
 
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+      const latitude =
+        position.coords.latitude;
+
+      const longitude =
+        position.coords.longitude;
 
       try {
 
@@ -36,7 +44,12 @@ async function loadPrayerTimes() {
           `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=5`
         );
 
-        const data = await response.json();
+        if (!response.ok) {
+          throw new Error("فشل الاتصال بالخدمة");
+        }
+
+        const data =
+          await response.json();
 
         if (
           !data ||
@@ -44,23 +57,50 @@ async function loadPrayerTimes() {
           !data.data ||
           !data.data.timings
         ) {
-          throw new Error("تعذر الحصول على مواقيت الصلاة");
+          throw new Error(
+            "تعذر الحصول على مواقيت الصلاة"
+          );
         }
 
-        const timings = data.data.timings;
+        const timings =
+          data.data.timings;
 
         window.todayTimings = timings;
 
-        setPrayerTime("fajrTime", timings.Fajr);
-        setPrayerTime("sunriseTime", timings.Sunrise);
-        setPrayerTime("dhuhrTime", timings.Dhuhr);
-        setPrayerTime("asrTime", timings.Asr);
-        setPrayerTime("maghribTime", timings.Maghrib);
-        setPrayerTime("ishaTime", timings.Isha);
+        // عرض المواقيت
+        setPrayerTime(
+          "fajrTime",
+          timings.Fajr
+        );
+
+        setPrayerTime(
+          "sunriseTime",
+          timings.Sunrise
+        );
+
+        setPrayerTime(
+          "dhuhrTime",
+          timings.Dhuhr
+        );
+
+        setPrayerTime(
+          "asrTime",
+          timings.Asr
+        );
+
+        setPrayerTime(
+          "maghribTime",
+          timings.Maghrib
+        );
+
+        setPrayerTime(
+          "ishaTime",
+          timings.Isha
+        );
 
         if (locationName) {
           locationName.textContent =
-            `موقعك الحالي`;
+            "موقعك الحالي";
         }
 
         updateNextPrayer();
@@ -76,9 +116,7 @@ async function loadPrayerTimes() {
           locationName.textContent =
             "تعذر تحميل المواقيت";
         }
-
       }
-
     },
 
     error => {
@@ -89,10 +127,10 @@ async function loadPrayerTimes() {
       );
 
       if (locationName) {
+
         locationName.textContent =
           "اسمح بالوصول إلى الموقع";
       }
-
     },
 
     {
@@ -108,12 +146,17 @@ async function loadPrayerTimes() {
 // عرض وقت الصلاة
 // =========================
 
-function setPrayerTime(elementId, time) {
+function setPrayerTime(
+  elementId,
+  time
+) {
 
   const element =
     document.getElementById(elementId);
 
-  if (!element || !time) return;
+  if (!element || !time) {
+    return;
+  }
 
   element.textContent =
     convertTo12Hour(time);
@@ -121,20 +164,25 @@ function setPrayerTime(elementId, time) {
 
 
 // =========================
-// تحويل الوقت إلى 12 ساعة
+// تحويل الوقت
 // =========================
 
 function convertTo12Hour(time) {
 
-  const parts = time.split(":");
+  const parts =
+    time.split(":");
 
-  let hour = Number(parts[0]);
-  const minute = parts[1];
+  let hour =
+    Number(parts[0]);
+
+  const minute =
+    parts[1];
 
   const period =
     hour >= 12 ? "م" : "ص";
 
-  hour = hour % 12;
+  hour =
+    hour % 12;
 
   if (hour === 0) {
     hour = 12;
@@ -145,100 +193,139 @@ function convertTo12Hour(time) {
 
 
 // =========================
-// الصلاة القادمة
+// تحديد الصلاة القادمة
 // =========================
 
 function updateNextPrayer() {
 
-  if (!window.todayTimings) return;
+  if (!window.todayTimings) {
+    return;
+  }
 
   const prayers = [
+
     {
       name: "الفجر",
       key: "Fajr"
     },
+
     {
       name: "الظهر",
       key: "Dhuhr"
     },
+
     {
       name: "العصر",
       key: "Asr"
     },
+
     {
       name: "المغرب",
       key: "Maghrib"
     },
+
     {
       name: "العشاء",
       key: "Isha"
     }
+
   ];
 
-  const now = new Date();
+  const now =
+    new Date();
 
   let nextPrayer = null;
 
   for (const prayer of prayers) {
 
-    const [hour, minute] =
-      window.todayTimings[prayer.key]
-        .split(":")
+    const time =
+      window.todayTimings[prayer.key];
+
+    if (!time) {
+      continue;
+    }
+
+    const [
+      hour,
+      minute
+    ] =
+      time.split(":")
         .map(Number);
 
-    const prayerTime =
+    const prayerDate =
       new Date();
 
-    prayerTime.setHours(
+    prayerDate.setHours(
       hour,
       minute,
       0,
       0
     );
 
-    if (prayerTime > now) {
+    if (prayerDate > now) {
 
       nextPrayer = {
-        ...prayer,
-        time: prayerTime
+        name: prayer.name,
+        time: prayerDate
       };
 
       break;
     }
   }
 
-  // إذا انتهت صلوات اليوم
+
+  // =========================
+  // بعد العشاء → الفجر
+  // =========================
+
   if (!nextPrayer) {
 
-    nextPrayer = {
-      name: "الفجر",
-      key: "Fajr",
-      time: new Date()
-    };
+    const fajrTime =
+      window.todayTimings.Fajr;
 
-    const [hour, minute] =
-      window.todayTimings.Fajr
-        .split(":")
+    if (!fajrTime) {
+      return;
+    }
+
+    const [
+      hour,
+      minute
+    ] =
+      fajrTime.split(":")
         .map(Number);
 
-    nextPrayer.time.setDate(
-      nextPrayer.time.getDate() + 1
+    const tomorrow =
+      new Date();
+
+    tomorrow.setDate(
+      tomorrow.getDate() + 1
     );
 
-    nextPrayer.time.setHours(
+    tomorrow.setHours(
       hour,
       minute,
       0,
       0
     );
+
+    nextPrayer = {
+      name: "الفجر",
+      time: tomorrow
+    };
   }
 
-  window.nextPrayer = nextPrayer;
+
+  window.nextPrayer =
+    nextPrayer;
+
 
   const nameElement =
-    document.getElementById("nextPrayerName");
+    document.getElementById(
+      "nextPrayerName"
+    );
 
   if (nameElement) {
+
     nameElement.textContent =
       nextPrayer.name;
   }
@@ -254,7 +341,75 @@ function updateNextPrayer() {
 function updateCountdown() {
 
   const countdown =
-    document.getElementById("countdown");
+    document.getElementById(
+      "countdown"
+    );
 
   if (
-    !
+    !countdown ||
+    !window.nextPrayer
+  ) {
+    return;
+  }
+
+  const now =
+    new Date();
+
+  let difference =
+    window.nextPrayer.time -
+    now;
+
+
+  if (difference <= 0) {
+
+    updateNextPrayer();
+
+    return;
+  }
+
+
+  const hours =
+    Math.floor(
+      difference /
+      (1000 * 60 * 60)
+    );
+
+  difference %=
+    1000 * 60 * 60;
+
+
+  const minutes =
+    Math.floor(
+      difference /
+      (1000 * 60)
+    );
+
+  difference %=
+    1000 * 60;
+
+
+  const seconds =
+    Math.floor(
+      difference /
+      1000
+    );
+
+
+  countdown.textContent =
+    `${String(hours).padStart(2, "0")}:` +
+    `${String(minutes).padStart(2, "0")}:` +
+    `${String(seconds).padStart(2, "0")}`;
+}
+
+
+// =========================
+// تشغيل العد التنازلي
+// =========================
+
+function startPrayerCountdown() {
+
+  setInterval(
+    updateCountdown,
+    1000
+  );
+}
