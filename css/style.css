@@ -1,0 +1,256 @@
+/* =========================
+   أنياس - التصميم الأساسي
+========================= */
+
+:root {
+  --primary: #0f6b4f;
+  --primary-dark: #0a503b;
+  --gold: #c9a227;
+
+  --bg: #f5f7f6;
+  --card: #ffffff;
+  --text: #17221e;
+  --muted: #718079;
+  --border: #e5ebe8;
+
+  --nav-height: 70px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  direction: rtl;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Tahoma,
+    Arial,
+    sans-serif;
+
+  background: var(--bg);
+  color: var(--text);
+
+  min-height: 100vh;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================
+   التطبيق
+========================= */
+
+#app {
+  width: 100%;
+  max-width: 600px;
+  min-height: 100vh;
+  margin: 0 auto;
+
+  background: var(--bg);
+
+  position: relative;
+}
+
+
+/* =========================
+   الهيدر
+========================= */
+
+#appHeader {
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--card);
+
+  border-bottom: 1px solid var(--border);
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+#appHeader h1 {
+  font-size: 22px;
+  font-weight: 800;
+
+  color: var(--primary);
+}
+
+
+/* =========================
+   المحتوى
+========================= */
+
+#mainContent {
+  padding: 16px;
+
+  padding-bottom: calc(
+    var(--nav-height) + 25px
+  );
+}
+
+
+/* =========================
+   الصفحات
+========================= */
+
+.page {
+  display: none;
+
+  animation: pageFade 0.2s ease;
+}
+
+.page.active {
+  display: block;
+}
+
+@keyframes pageFade {
+
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* =========================
+   شريط التنقل
+========================= */
+
+#bottomNavigation {
+  position: fixed;
+
+  bottom: 0;
+  right: 0;
+  left: 0;
+
+  width: 100%;
+  max-width: 600px;
+
+  margin: 0 auto;
+
+  height: var(--nav-height);
+
+  background: rgba(255, 255, 255, 0.96);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-top: 1px solid var(--border);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  z-index: 1000;
+}
+
+
+/* =========================
+   أزرار التنقل
+========================= */
+
+#bottomNavigation button {
+  flex: 1;
+
+  height: 100%;
+
+  border: 0;
+  background: transparent;
+
+  color: var(--muted);
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+#bottomNavigation button:active {
+  transform: scale(0.94);
+}
+
+#bottomNavigation button.active {
+  color: var(--primary);
+}
+
+
+/* =========================
+   البطاقات
+========================= */
+
+.card {
+  background: var(--card);
+
+  border-radius: 18px;
+
+  padding: 16px;
+
+  border: 1px solid var(--border);
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.03);
+}
+
+
+/* =========================
+   الوضع الليلي
+========================= */
+
+body.dark {
+  --bg: #101614;
+  --card: #18201d;
+
+  --text: #f1f5f3;
+  --muted: #9ba9a3;
+  --border: #29332f;
+
+  --primary: #36a87d;
+  --primary-dark: #278460;
+}
+
+body.dark #bottomNavigation {
+  background: rgba(24, 32, 29, 0.96);
+}
+
+
+/* =========================
+   الشاشات الصغيرة
+========================= */
+
+@media (max-width: 380px) {
+
+  #mainContent {
+    padding: 12px;
+  }
+
+  #appHeader h1 {
+    font-size: 20px;
+  }
+
+}
