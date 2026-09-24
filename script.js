@@ -17,11 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setupNotifications();
 
-setupVibration();
+  setupVibration();
 
-setupMuezzinSettings();
+  setupMuezzinSettings();
 
-setupAzkarTopics();
+  setupAzkarTopics();
 
   detectLocationAndLoadTimes();
 
