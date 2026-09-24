@@ -1,1780 +1,1019 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  >
-
-  <meta
-    name="theme-color"
-    content="#f5f5f7"
-  >
-
-  <title>أنياس</title>
-
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-
-    :root {
-
-      --primary: #0f6f5c;
-      --primary-dark: #0b5548;
-      --accent: #c9a227;
-      --bg: #f5f5f7;
-      --card: #ffffff;
-      --text: #1c1c1e;
-      --muted: #8e8e93;
-      --border: #f0f0f2;
-
-    }
-
-
-    body {
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Tahoma,
-        Arial,
-        sans-serif;
-
-      background: var(--bg);
-
-      color: var(--text);
-
-      min-height: 100vh;
-
-    }
-
-
-    .app {
-
-      width: 100%;
-
-      max-width: 520px;
-
-      min-height: 100vh;
-
-      margin: auto;
-
-      padding-bottom: 100px;
-
-    }
-
-
-    .page {
-
-      display: none;
-
-    }
-
-
-    .page.active {
-
-      display: block;
-
-    }
-
-
-    /* =========================
-       الهيدر
-    ========================= */
-
-    header {
-
-      padding: 26px 20px 18px;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--primary) 0%,
-          var(--primary-dark) 100%
-        );
-
-      border-radius: 0 0 28px 28px;
-
-      color: #ffffff;
-
-      position: relative;
-
-      overflow: hidden;
-
-    }
-
-
-    header::after {
-
-      content: "";
-
-      position: absolute;
-
-      inset: 0;
-
-      background-image:
-        radial-gradient(
-          circle at 88% 12%,
-          rgba(255, 255, 255, 0.08) 0,
-          transparent 42%
-        );
-
-      pointer-events: none;
-
-    }
-
-
-    .brand {
-
-      font-size: 26px;
-
-      font-weight: 700;
-
-      position: relative;
-
-      z-index: 1;
-
-    }
-
-
-    .date {
-
-      margin-top: 5px;
-
-      font-size: 13px;
-
-      color: rgba(255, 255, 255, 0.75);
-
-      position: relative;
-
-      z-index: 1;
-
-    }
-
-
-    /* عنوان صفحات فرعية بدون خلفية ملونة */
-
-    .plain-header {
-
-      padding: 24px 20px 6px;
-
-      background: transparent;
-
-      border-radius: 0;
-
-      color: var(--text);
-
-    }
-
-
-    .plain-header::after {
-
-      display: none;
-
-    }
-
-
-    .plain-header .brand {
-
-      color: var(--text);
-
-    }
-
-
-    .plain-header .date {
-
-      color: var(--muted);
-
-    }
-
-
-    /* =========================
-       الصلاة القادمة
-    ========================= */
-
-    .next-prayer {
-
-      margin: -30px 16px 18px;
-
-      padding: 24px 22px;
-
-      background: var(--card);
-
-      border-radius: 26px;
-
-      box-shadow:
-        0 12px 30px rgba(15, 111, 92, 0.1);
-
-      position: relative;
-
-      z-index: 2;
-
-    }
-
-
-    .next-label {
-
-      font-size: 13px;
-
-      color: var(--muted);
-
-      margin-bottom: 8px;
-
-    }
-
-
-    .prayer-name {
-
-      font-size: 28px;
-
-      font-weight: 700;
-
-      margin-bottom: 4px;
-
-    }
-
-
-    .prayer-time {
-
-      font-size: 19px;
-
-      color: #636366;
-
-    }
-
-
-    .countdown {
-
-      margin-top: 14px;
-
-      font-size: 15px;
-
-      font-weight: 700;
-
-      color: var(--primary);
-
-    }
-
-
-    /* =========================
-       الأقسام
-    ========================= */
-
-    .section {
-
-      padding: 0 16px;
-
-    }
-
-
-    .section-title {
-
-      font-size: 18px;
-
-      font-weight: 700;
-
-      margin: 22px 4px 12px;
-
-    }
-
-
-    /* =========================
-       مواقيت الصلاة
-    ========================= */
-
-    .prayer-list {
-
-      background: var(--card);
-
-      border-radius: 22px;
-
-      overflow: hidden;
-
-    }
-
-
-    .prayer-row {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      padding: 15px 18px;
-
-      border-bottom:
-        1px solid var(--border);
-
-    }
-
-
-    .prayer-row:last-child {
-
-      border-bottom: none;
-
-    }
-
-
-    .prayer-title {
-
-      font-size: 15px;
-
-      font-weight: 500;
-
-    }
-
-
-    .prayer-value {
-
-      font-size: 15px;
-
-      font-weight: 600;
-
-      color: #636366;
-
-    }
-
-
-    /* =========================
-       الكروت
-    ========================= */
-
-    .card {
-
-      margin-top: 18px;
-
-      padding: 20px;
-
-      background: var(--card);
-
-      border-radius: 22px;
-
-      box-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.03);
-
-    }
-
-
-    .card-title {
-
-      font-size: 14px;
-
-      color: var(--muted);
-
-      margin-bottom: 12px;
-
-      font-weight: 600;
-
-    }
-
-
-    .ayah {
-
-      font-size: 20px;
-
-      line-height: 1.9;
-
-      font-weight: 500;
-
-    }
-
-
-    .reference {
-
-      margin-top: 12px;
-
-      font-size: 13px;
-
-      color: var(--muted);
-
-    }
-
-
-    .dhikr {
-
-      font-size: 19px;
-
-      line-height: 1.9;
-
-    }
-
-
-    /* =========================
-       زر الأذان
-    ========================= */
-
-    .adhan-button {
-
-      margin-top: 16px;
-
-      width: 100%;
-
-      border: none;
-
-      border-radius: 16px;
-
-      padding: 14px;
-
-      font-size: 15px;
-
-      font-weight: 600;
-
-      background: var(--primary);
-
-      color: #ffffff;
-
-      cursor: pointer;
-
-      transition: 0.2s;
-
-    }
-
-
-    .adhan-button:active {
-
-      transform: scale(0.97);
-
-    }
-
-
-    /* =========================
-       إعدادات الصوت
-    ========================= */
-
-    .setting-row {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      padding: 14px 0;
-
-      border-bottom:
-        1px solid var(--border);
-
-    }
-
-
-    .setting-row:last-child {
-
-      border-bottom: none;
-
-    }
-
-
-    .setting-title {
-
-      font-size: 15px;
-
-      font-weight: 600;
-
-    }
-
-
-    .setting-description {
-
-      margin-top: 4px;
-
-      font-size: 12px;
-
-      color: var(--muted);
-
-    }
-
-
-    /* =========================
-       السويتش
-    ========================= */
-
-    .switch {
-
-      position: relative;
-
-      width: 50px;
-
-      height: 30px;
-
-      flex-shrink: 0;
-
-    }
-
-
-    .switch input {
-
-      display: none;
-
-    }
-
-
-    .switch-track {
-
-      position: absolute;
-
-      inset: 0;
-
-      background: #d1d1d6;
-
-      border-radius: 20px;
-
-      transition: 0.2s;
-
-    }
-
-
-    .switch-knob {
-
-      position: absolute;
-
-      width: 26px;
-
-      height: 26px;
-
-      top: 2px;
-
-      right: 22px;
-
-      background: #ffffff;
-
-      border-radius: 50%;
-
-      box-shadow:
-        0 2px 5px rgba(0,0,0,0.2);
-
-      transition: 0.2s;
-
-    }
-
-
-    .switch input:checked
-    + .switch-track {
-
-      background: var(--primary);
-
-    }
-
-
-    .switch input:checked
-    + .switch-track
-    + .switch-knob {
-
-      right: 2px;
-
-    }
-
-
-    /* =========================
-       مستوى الصوت
-    ========================= */
-
-    .volume-container {
-
-      padding: 16px 0;
-
-    }
-
-
-    .volume-header {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      margin-bottom: 10px;
-
-    }
-
-
-    .volume-title {
-
-      font-size: 15px;
-
-      font-weight: 600;
-
-    }
-
-
-    .volume-value {
-
-      font-size: 13px;
-
-      color: var(--muted);
-
-    }
-
-
-    #adhanVolume {
-
-      width: 100%;
-
-      accent-color: var(--primary);
-
-    }
-
-
-    /* =========================
-       صفحة الأذكار - قائمة الأبواب
-       (تصميم قائمة تحت بعض)
-    ========================= */
-
-    .azkar-count {
-
-      margin-top: 6px;
-
-      font-size: 13px;
-
-      color: var(--primary);
-
-      font-weight: 700;
-
-    }
-
-
-    .category-grid {
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 10px;
-
-    }
-
-
-    .category-card {
-
-      background: var(--card);
-
-      border: none;
-
-      border-radius: 16px;
-
-      padding: 14px 16px;
-
-      text-align: right;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 3px 14px rgba(0, 0, 0, 0.03);
-
-      transition: 0.15s;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 14px;
-
-      width: 100%;
-
-    }
-
-
-    .category-card:active {
-
-      transform: scale(0.98);
-
-      background: #fafafa;
-
-    }
-
-
-    .category-icon {
-
-      flex-shrink: 0;
-
-      width: 34px;
-
-      height: 34px;
-
-      border-radius: 10px;
-
-      background: rgba(15, 111, 92, 0.08);
-
-      color: var(--primary);
-
-      font-size: 14px;
-
-      font-weight: 700;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-    }
-
-
-    .category-name {
-
-      flex: 1;
-
-      font-size: 15px;
-
-      font-weight: 600;
-
-      line-height: 1.5;
-
-    }
-
-
-    .category-count {
-
-      flex-shrink: 0;
-
-      font-size: 12px;
-
-      color: var(--muted);
-
-      background: var(--bg);
-
-      padding: 4px 10px;
-
-      border-radius: 10px;
-
-    }
-
-
-    /* =========================
-       تفاصيل الأذكار
-    ========================= */
-
-    .category-detail-header {
-
-      padding: 20px 16px 12px;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 12px;
-
-    }
-
-
-    .back-button {
-
-      border: none;
-
-      background: var(--card);
-
-      width: 38px;
-
-      height: 38px;
-
-      border-radius: 12px;
-
-      font-size: 17px;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 4px 14px rgba(0, 0, 0, 0.05);
-
-      flex-shrink: 0;
-
-    }
-
-
-    .category-detail-title {
-
-      font-size: 19px;
-
-      font-weight: 700;
-
-      line-height: 1.5;
-
-    }
-
-
-    /* الأذكار داخل الباب: قائمة تحت بعض بخط فاصل */
-
-    .azkar-item {
-
-      background: var(--card);
-
-      padding: 18px 4px;
-
-      border-bottom:
-        1px solid var(--border);
-
-      transition: 0.2s;
-
-    }
-
-
-    .azkar-item:first-child {
-
-      border-radius: 18px 18px 0 0;
-
-      padding-top: 20px;
-
-    }
-
-
-    .azkar-item:last-child {
-
-      border-bottom: none;
-
-      border-radius: 0 0 18px 18px;
-
-      padding-bottom: 20px;
-
-    }
-
-
-    #azkarList {
-
-      background: var(--card);
-
-      border-radius: 18px;
-
-      padding: 0 16px;
-
-      box-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.03);
-
-    }
-
-
-    .azkar-item.done {
-
-      opacity: 0.5;
-
-    }
-
-
-    .azkar-text {
-
-      font-size: 17px;
-
-      line-height: 1.9;
-
-      margin-bottom: 12px;
-
-    }
-
-
-    .azkar-counter-row {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 10px;
-
-    }
-
-
-    .azkar-remaining {
-
-      font-size: 13px;
-
-      color: var(--muted);
-
-      font-weight: 600;
-
-    }
-
-
-    .azkar-count-button {
-
-      border: none;
-
-      border-radius: 12px;
-
-      padding: 9px 20px;
-
-      background: var(--primary);
-
-      color: #ffffff;
-
-      font-size: 14px;
-
-      font-weight: 700;
-
-      cursor: pointer;
-
-      transition: 0.15s;
-
-    }
-
-
-    .azkar-count-button:active {
-
-      transform: scale(0.92);
-
-    }
-
-
-    .azkar-item.done
-    .azkar-count-button {
-
-      background: #34c759;
-
-    }
-
-
-    #azkarTopicNavigation {
-
-      padding-bottom: 20px;
-
-      padding-top: 6px;
-
-    }
-
-
-    /* =========================
-       صفحة الأدعية
-    ========================= */
-
-    .dua-item {
-
-      background: var(--card);
-
-      padding: 18px 18px;
-
-      border-bottom:
-        1px solid var(--border);
-
-    }
-
-
-    .dua-item:first-child {
-
-      border-radius: 18px 18px 0 0;
-
-      padding-top: 20px;
-
-    }
-
-
-    .dua-item:last-child {
-
-      border-bottom: none;
-
-      border-radius: 0 0 18px 18px;
-
-      padding-bottom: 20px;
-
-    }
-
-
-    #duasList {
-
-      background: var(--card);
-
-      border-radius: 18px;
-
-      box-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.03);
-
-    }
-
-
-    .dua-title {
-
-      font-size: 13px;
-
-      color: var(--primary);
-
-      font-weight: 700;
-
-      margin-bottom: 8px;
-
-    }
-
-
-    .dua-text {
-
-      font-size: 17px;
-
-      line-height: 1.9;
-
-    }
-
-
-    /* =========================
-       صفحة الإعدادات
-    ========================= */
-
-    .settings-list {
-
-      background: var(--card);
-
-      border-radius: 18px;
-
-      overflow: hidden;
-
-      box-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.03);
-
-    }
-
-
-    /* =========================
-       القائمة السفلية
-    ========================= */
-
-    .bottom-nav {
-
-      position: fixed;
-
-      bottom: 12px;
-
-      left: 50%;
-
-      transform:
-        translateX(-50%);
-
-      width: calc(100% - 24px);
-
-      max-width: 496px;
-
-      height: 66px;
-
-      background:
-        rgba(255, 255, 255, 0.94);
-
-      backdrop-filter:
-        blur(20px);
-
-      -webkit-backdrop-filter:
-        blur(20px);
-
-      border-radius: 22px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-around;
-
-      box-shadow:
-        0 8px 30px
-        rgba(0, 0, 0, 0.12);
-
-      z-index: 100;
-
-    }
-
-
-    .nav-item {
-
-      border: none;
-
-      background: transparent;
-
-      color: var(--muted);
-
-      font-size: 11px;
-
-      display: flex;
-
-      flex-direction: column;
-
-      align-items: center;
-
-      gap: 4px;
-
-      cursor: pointer;
-
-      padding: 6px 8px;
-
-      transition: 0.2s;
-
-    }
-
-
-    .nav-icon {
-
-      font-size: 19px;
-
-    }
-
-
-    .nav-item.active {
-
-      color: var(--primary);
-
-      font-weight: 700;
-
-    }
-
-
-    .nav-item:active {
-
-      transform: scale(0.92);
-
-    }
-
-
-    /* =========================
-       شاشات صغيرة
-    ========================= */
-
-    @media (max-width: 380px) {
-
-      .brand {
-        font-size: 24px;
-      }
-
-      .prayer-name {
-        font-size: 25px;
-      }
-
-      .ayah,
-      .dhikr,
-      .azkar-text,
-      .dua-text {
-        font-size: 17px;
-      }
-
-      .prayer-row {
-        padding: 13px 15px;
-      }
-
-      .nav-item {
-        font-size: 10px;
-      }
-
-    }
-
-  </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#f5f5f7">
+<title>أنياس</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+--primary:#0f6f5c;
+--primary-dark:#0b5548;
+--accent:#c9a227;
+--bg:#f5f5f7;
+--card:#fff;
+--text:#1c1c1e;
+--muted:#8e8e93;
+--border:#f0f0f2;
+}
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+transition:.25s;
+}
+
+body.dark-mode{
+--bg:#111513;
+--card:#1b211f;
+--text:#f5f5f7;
+--muted:#a8aaa8;
+--border:#303634;
+}
+
+.app{
+width:100%;
+max-width:520px;
+min-height:100vh;
+margin:auto;
+padding-bottom:100px;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+header{
+padding:26px 20px 18px;
+background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+border-radius:0 0 28px 28px;
+color:#fff;
+position:relative;
+overflow:hidden;
+}
+
+header::after{
+content:"";
+position:absolute;
+inset:0;
+background:radial-gradient(circle at 88% 12%,rgba(255,255,255,.08),transparent 42%);
+pointer-events:none;
+}
+
+.brand{
+font-size:26px;
+font-weight:700;
+position:relative;
+z-index:1;
+}
+
+.date{
+margin-top:5px;
+font-size:13px;
+color:rgba(255,255,255,.75);
+position:relative;
+z-index:1;
+}
+
+.plain-header{
+padding:24px 20px 10px;
+background:transparent;
+border-radius:0;
+color:var(--text);
+}
+
+.plain-header::after{display:none}
+.plain-header .brand{color:var(--text)}
+.plain-header .date{color:var(--muted)}
+
+.next-prayer{
+margin:-30px 16px 18px;
+padding:24px 22px;
+background:var(--card);
+border-radius:26px;
+box-shadow:0 12px 30px rgba(15,111,92,.1);
+position:relative;
+z-index:2;
+}
+
+.next-label{font-size:13px;color:var(--muted);margin-bottom:8px}
+.prayer-name{font-size:28px;font-weight:700;margin-bottom:4px}
+.prayer-time{font-size:19px;color:var(--muted)}
+.countdown{margin-top:14px;font-size:15px;font-weight:700;color:var(--primary)}
+
+.section{padding:0 16px}
+.section-title{font-size:18px;font-weight:700;margin:22px 4px 12px}
+
+.prayer-list{
+background:var(--card);
+border-radius:22px;
+overflow:hidden;
+}
+
+.prayer-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:15px 18px;
+border-bottom:1px solid var(--border);
+}
+
+.prayer-row:last-child{border-bottom:none}
+.prayer-title{font-size:15px;font-weight:500}
+.prayer-value{font-size:15px;font-weight:600;color:var(--muted)}
+
+.card{
+margin-top:18px;
+padding:20px;
+background:var(--card);
+border-radius:22px;
+box-shadow:0 5px 20px rgba(0,0,0,.03);
+}
+
+.card-title{
+font-size:14px;
+color:var(--muted);
+margin-bottom:12px;
+font-weight:600;
+}
+
+.ayah{
+font-size:20px;
+line-height:1.9;
+font-weight:500;
+}
+
+.reference{
+margin-top:12px;
+font-size:13px;
+color:var(--muted);
+}
+
+.dhikr{font-size:19px;line-height:1.9}
+
+.adhan-button{
+margin-top:16px;
+width:100%;
+border:none;
+border-radius:16px;
+padding:14px;
+font-size:15px;
+font-weight:600;
+background:var(--primary);
+color:#fff;
+cursor:pointer;
+transition:.2s;
+}
+
+.adhan-button:active{transform:scale(.97)}
+
+.setting-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:14px 0;
+border-bottom:1px solid var(--border);
+gap:15px;
+}
+
+.setting-row:last-child{border-bottom:none}
+
+.setting-info{flex:1}
+
+.setting-title{
+font-size:15px;
+font-weight:600;
+}
+
+.setting-description{
+margin-top:4px;
+font-size:12px;
+color:var(--muted);
+line-height:1.6;
+}
+
+.switch{
+position:relative;
+width:50px;
+height:30px;
+flex-shrink:0;
+}
+
+.switch input{display:none}
+
+.switch-track{
+position:absolute;
+inset:0;
+background:#d1d1d6;
+border-radius:20px;
+transition:.2s;
+}
+
+.switch-knob{
+position:absolute;
+width:26px;
+height:26px;
+top:2px;
+right:22px;
+background:#fff;
+border-radius:50%;
+box-shadow:0 2px 5px rgba(0,0,0,.2);
+transition:.2s;
+}
+
+.switch input:checked+.switch-track{background:var(--primary)}
+.switch input:checked+.switch-track+.switch-knob{right:2px}
+
+.settings-section-title{
+font-size:17px;
+font-weight:700;
+margin:24px 4px 10px;
+}
+
+.settings-card{
+background:var(--card);
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 5px 20px rgba(0,0,0,.03);
+padding:0 16px;
+}
+
+.select-control{
+width:100%;
+border:1px solid var(--border);
+background:var(--bg);
+color:var(--text);
+border-radius:12px;
+padding:11px 12px;
+font-size:14px;
+outline:none;
+}
+
+.volume-container{padding:16px 0}
+
+.volume-header{
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+}
+
+.volume-title{font-size:15px;font-weight:600}
+.volume-value{font-size:13px;color:var(--muted)}
+
+#adhanVolume{
+width:100%;
+accent-color:var(--primary);
+}
+
+.audio-picker{
+display:none;
+padding:0 0 12px;
+}
+
+.audio-picker.open{display:block}
+
+.muezzin-row{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px 0;
+border-top:1px solid var(--border);
+}
+
+.muezzin-select{
+display:flex;
+align-items:center;
+gap:10px;
+flex:1;
+cursor:pointer;
+}
+
+.muezzin-select input{accent-color:var(--primary)}
+
+.muezzin-name{
+font-size:14px;
+font-weight:500;
+}
+
+.preview-button{
+width:38px;
+height:38px;
+border:none;
+border-radius:12px;
+background:rgba(15,111,92,.1);
+color:var(--primary);
+font-size:15px;
+cursor:pointer;
+}
+
+.preview-button:active{transform:scale(.9)}
+
+.settings-arrow{
+font-size:18px;
+color:var(--muted);
+transition:.2s;
+}
+
+.setting-row.open .settings-arrow{
+transform:rotate(180deg);
+}
+
+.settings-note{
+padding:12px 0 16px;
+font-size:12px;
+line-height:1.7;
+color:var(--muted);
+}
+
+.category-grid{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.category-card{
+background:var(--card);
+border:none;
+border-radius:16px;
+padding:14px 16px;
+text-align:right;
+cursor:pointer;
+box-shadow:0 3px 14px rgba(0,0,0,.03);
+transition:.15s;
+display:flex;
+align-items:center;
+gap:14px;
+width:100%;
+color:var(--text);
+}
+
+.category-card:active{
+transform:scale(.98);
+}
+
+.category-icon{
+flex-shrink:0;
+width:34px;
+height:34px;
+border-radius:10px;
+background:rgba(15,111,92,.08);
+color:var(--primary);
+font-size:12px;
+font-weight:700;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.category-name{
+flex:1;
+font-size:15px;
+font-weight:600;
+line-height:1.5;
+}
+
+.category-count{
+flex-shrink:0;
+font-size:12px;
+color:var(--muted);
+background:var(--bg);
+padding:4px 10px;
+border-radius:10px;
+}
+
+.category-detail-header{
+padding:20px 16px 12px;
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.back-button{
+border:none;
+background:var(--card);
+color:var(--text);
+width:38px;
+height:38px;
+border-radius:12px;
+font-size:17px;
+cursor:pointer;
+box-shadow:0 4px 14px rgba(0,0,0,.05);
+flex-shrink:0;
+}
+
+.category-detail-title{
+font-size:19px;
+font-weight:700;
+line-height:1.5;
+}
+
+.azkar-item{
+background:var(--card);
+padding:18px 4px;
+border-bottom:1px solid var(--border);
+transition:.2s;
+}
+
+.azkar-item:first-child{
+border-radius:18px 18px 0 0;
+padding-top:20px;
+}
+
+.azkar-item:last-child{
+border-bottom:none;
+border-radius:0 0 18px 18px;
+padding-bottom:20px;
+}
+
+#azkarList{
+background:var(--card);
+border-radius:18px;
+padding:0 16px;
+box-shadow:0 5px 20px rgba(0,0,0,.03);
+}
+
+.azkar-item.done{opacity:.5}
+.azkar-text{font-size:17px;line-height:1.9;margin-bottom:12px}
+
+.azkar-counter-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+}
+
+.azkar-remaining{
+font-size:13px;
+color:var(--muted);
+font-weight:600;
+}
+
+.azkar-count-button{
+border:none;
+border-radius:12px;
+padding:9px 20px;
+background:var(--primary);
+color:#fff;
+font-size:14px;
+font-weight:700;
+cursor:pointer;
+}
+
+.azkar-item.done .azkar-count-button{background:#34c759}
+
+#azkarTopicNavigation{
+padding-bottom:20px;
+padding-top:6px;
+}
+
+.dua-item{
+background:var(--card);
+padding:18px;
+border-bottom:1px solid var(--border);
+}
+
+.dua-item:first-child{
+border-radius:18px 18px 0 0;
+padding-top:20px;
+}
+
+.dua-item:last-child{
+border-bottom:none;
+border-radius:0 0 18px 18px;
+padding-bottom:20px;
+}
+
+#duasList{
+background:var(--card);
+border-radius:18px;
+box-shadow:0 5px 20px rgba(0,0,0,.03);
+}
+
+.dua-title{
+font-size:13px;
+color:var(--primary);
+font-weight:700;
+margin-bottom:8px;
+}
+
+.dua-text{
+font-size:17px;
+line-height:1.9;
+}
+
+.bottom-nav{
+position:fixed;
+bottom:12px;
+left:50%;
+transform:translateX(-50%);
+width:calc(100% - 24px);
+max-width:496px;
+height:66px;
+background:rgba(255,255,255,.94);
+backdrop-filter:blur(20px);
+-webkit-backdrop-filter:blur(20px);
+border-radius:22px;
+display:flex;
+align-items:center;
+justify-content:space-around;
+box-shadow:0 8px 30px rgba(0,0,0,.12);
+z-index:100;
+}
+
+body.dark-mode .bottom-nav{
+background:rgba(27,33,31,.94);
+}
+
+.nav-item{
+border:none;
+background:transparent;
+color:var(--muted);
+font-size:11px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:4px;
+cursor:pointer;
+padding:6px 8px;
+transition:.2s;
+}
+
+.nav-icon{font-size:19px}
+.nav-item.active{color:var(--primary);font-weight:700}
+.nav-item:active{transform:scale(.92)}
+
+@media(max-width:380px){
+.brand{font-size:24px}
+.prayer-name{font-size:25px}
+.ayah,.dhikr,.azkar-text,.dua-text{font-size:17px}
+.prayer-row{padding:13px 15px}
+.nav-item{font-size:10px}
+}
+</style>
 </head>
-
 
 <body>
 
-
-  <div class="app">
-
-
-    <!-- =====================
-         الصفحة الرئيسية
-    ====================== -->
-
-    <div
-      class="page active"
-      id="page-home"
-    >
-
-
-      <header>
-
-        <div class="brand">
-          أنياس
-        </div>
-
-        <div
-          class="date"
-          id="todayDate"
-        >
-          اليوم
-        </div>
-
-        <div
-          class="date"
-          id="locationName"
-          style="margin-top: 4px;"
-        >
-          📍 جاري تحديد الموقع...
-        </div>
-
-      </header>
-
-
-      <section class="next-prayer">
-
-        <div class="next-label">
-          الصلاة القادمة
-        </div>
-
-        <div
-          class="prayer-name"
-          id="nextPrayerName"
-        >
-          الفجر
-        </div>
-
-        <div
-          class="prayer-time"
-          id="nextPrayerTime"
-        >
-          --
-        </div>
-
-        <div
-          class="countdown"
-          id="countdown"
-        >
-          جاري حساب الوقت...
-        </div>
-
-      </section>
-
-
-      <section class="section">
-
-        <div class="section-title">
-          مواقيت الصلاة
-        </div>
-
-
-        <div class="prayer-list">
-
-          <div class="prayer-row">
-            <span class="prayer-title">الفجر</span>
-            <span
-              class="prayer-value"
-              id="fajrTime"
-            >--</span>
-          </div>
-
-          <div class="prayer-row">
-            <span class="prayer-title">الشروق</span>
-            <span
-              class="prayer-value"
-              id="sunriseTime"
-            >--</span>
-          </div>
-
-          <div class="prayer-row">
-            <span class="prayer-title">الظهر</span>
-            <span
-              class="prayer-value"
-              id="dhuhrTime"
-            >--</span>
-          </div>
-
-          <div class="prayer-row">
-            <span class="prayer-title">العصر</span>
-            <span
-              class="prayer-value"
-              id="asrTime"
-            >--</span>
-          </div>
-
-          <div class="prayer-row">
-            <span class="prayer-title">المغرب</span>
-            <span
-              class="prayer-value"
-              id="maghribTime"
-            >--</span>
-          </div>
-
-          <div class="prayer-row">
-            <span class="prayer-title">العشاء</span>
-            <span
-              class="prayer-value"
-              id="ishaTime"
-            >--</span>
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <section class="section">
-
-        <div class="card">
-
-          <div class="card-title">
-            آية اليوم
-          </div>
-
-          <div class="ayah">
-            ﴿ أَلَا بِذِكْرِ اللَّهِ
-            تَطْمَئِنُّ الْقُلُوبُ ﴾
-          </div>
-
-          <div class="reference">
-            سورة الرعد — 28
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <section class="section">
-
-        <div class="card">
-
-          <div class="card-title">
-            ذكر اليوم
-          </div>
-
-          <div class="dhikr">
-            سبحان الله وبحمده،
-            سبحان الله العظيم
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <section class="section">
-
-        <div class="card">
-
-          <div class="card-title">
-            الأذان
-          </div>
-
-          <div class="ayah">
-            استمع إلى الأذان
-          </div>
-
-          <button
-            id="adhanButton"
-            class="adhan-button"
-            type="button"
-          >
-            ▶ تشغيل الأذان
-          </button>
-
-
-          <audio
-            id="adhanAudio"
-            preload="auto"
-          >
-            <source
-              src="audio/adhan.mp3"
-              type="audio/mpeg"
-            >
-          </audio>
-
-
-          <audio
-            id="fajrAudio"
-            preload="auto"
-          >
-            <source
-              src="audio/fajr.mp3"
-              type="audio/mpeg"
-            >
-          </audio>
-
-        </div>
-
-      </section>
-
-
-    </div>
-
-
-    <!-- =====================
-         صفحة الأدعية
-    ====================== -->
-
-    <div
-      class="page"
-      id="page-duas"
-    >
-
-
-      <header class="plain-header">
-
-        <div class="brand">
-          الأدعية
-        </div>
-
-        <div class="date">
-          أدعية مهمة تحتاجها كل يوم
-        </div>
-
-      </header>
-
-
-      <section class="section">
-
-        <div id="duasList">
-
-          <div class="dua-item">
-            <div class="dua-title">دعاء طلب العلم</div>
-            <div class="dua-text">رَبِّ زِدْنِي عِلْمًا</div>
-          </div>
-
-          <div class="dua-item">
-            <div class="dua-title">سيد الاستغفار</div>
-            <div class="dua-text">اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ</div>
-          </div>
-
-          <div class="dua-item">
-            <div class="dua-title">دعاء الكرب والهم</div>
-            <div class="dua-text">لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ</div>
-          </div>
-
-          <div class="dua-item">
-            <div class="dua-title">دعاء الرزق وقضاء الدين</div>
-            <div class="dua-text">اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ</div>
-          </div>
-
-          <div class="dua-item">
-            <div class="dua-title">دعاء طلب العافية</div>
-            <div class="dua-text">اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ</div>
-          </div>
-
-          <div class="dua-item">
-            <div class="dua-title">دعاء ثبات القلب</div>
-            <div class="dua-text">يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ</div>
-          </div>
-
-          <div class="dua-item">
-            <div class="dua-title">دعاء الوالدين</div>
-            <div class="dua-text">رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا</div>
-          </div>
-
-          <div class="dua-item">
-            <div class="dua-title">جوامع الدعاء</div>
-            <div class="dua-text">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</div>
-          </div>
-
-        </div>
-
-      </section>
-
-
-    </div>
-
-
-    <!-- =====================
-         صفحة الأذكار
-    ====================== -->
-
-    <div
-      class="page"
-      id="page-azkar"
-    >
-
-
-      <header class="plain-header">
-
-        <div class="brand">
-          الأذكار
-        </div>
-
-        <div
-          class="azkar-count"
-          id="azkarTopicsCount"
-        >
-          132 بابًا
-        </div>
-
-        <div class="date">
-          اختر الباب اللي عايزه
-        </div>
-
-      </header>
-
-
-      <section class="section">
-
-        <div
-          class="category-grid"
-          id="categoryGrid"
-        ></div>
-
-      </section>
-
-
-    </div>
-
-
-    <!-- =====================
-         صفحة تفاصيل الأذكار
-    ====================== -->
-
-    <div
-      class="page"
-      id="page-azkar-detail"
-    >
-
-
-      <div class="category-detail-header">
-
-        <button
-          class="back-button"
-          id="azkarBackButton"
-          type="button"
-        >
-          →
-        </button>
-
-        <div
-          class="category-detail-title"
-          id="categoryDetailTitle"
-        >
-          القسم
-        </div>
-
-      </div>
-
-
-      <section class="section">
-
-        <div id="azkarList"></div>
-
-        <div
-          id="azkarTopicNavigation"
-        ></div>
-
-      </section>
-
-
-    </div>
-
-
-    <!-- =====================
-         صفحة القبلة
-    ====================== -->
-
-    <div
-      class="page"
-      id="page-qibla"
-    >
-
-      <header class="plain-header">
-
-        <div class="brand">
-          القبلة
-        </div>
-
-        <div class="date">
-          اتجاه القبلة
-        </div>
-
-      </header>
-
-      <section class="section">
-
-        <div class="card">
-
-          <div
-            class="ayah"
-            style="text-align:center;"
-          >
-            🕋
-          </div>
-
-          <div
-            class="reference"
-            style="text-align:center;"
-          >
-            سيتم إضافة تحديد اتجاه القبلة هنا
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
-
-
-    <!-- =====================
-         صفحة الإعدادات
-    ====================== -->
-
-    <div
-      class="page"
-      id="page-settings"
-    >
-
-      <header class="plain-header">
-
-        <div class="brand">
-          الإعدادات
-        </div>
-
-        <div class="date">
-          الصوت والأذان
-        </div>
-
-      </header>
-
-
-      <section class="section">
-
-        <div class="card">
-
-
-          <div class="setting-row">
-
-            <div>
-
-              <div class="setting-title">
-                الأذان التلقائي
-              </div>
-
-              <div class="setting-description">
-                تشغيل الأذان عند دخول وقت الصلاة
-              </div>
-
-            </div>
-
-
-            <label class="switch">
-
-              <input
-                id="autoAdhan"
-                type="checkbox"
-              >
-
-              <span class="switch-track"></span>
-
-              <span class="switch-knob"></span>
-
-            </label>
-
-          </div>
-
-
-          <div class="volume-container">
-
-            <div class="volume-header">
-
-              <span class="volume-title">
-                مستوى الصوت
-              </span>
-
-              <span
-                class="volume-value"
-                id="volumeValue"
-              >
-                100%
-              </span>
-
-            </div>
-
-            <input
-              id="adhanVolume"
-              type="range"
-              min="0"
-              max="100"
-              value="100"
-            >
-
-          </div>
-
-
-          <button
-            id="testAdhanButton"
-            class="adhan-button"
-            type="button"
-          >
-            ▶ تجربة الأذان
-          </button>
-
-        </div>
-
-      </section>
-
-    </div>
-
-
-  </div>
-
-
-  <!-- =====================
-       القائمة السفلية
-  ====================== -->
-
-  <nav class="bottom-nav">
-
-
-    <button
-      class="nav-item active"
-      data-page="home"
-      type="button"
-    >
-
-      <span class="nav-icon">⌂</span>
-      <span>الرئيسية</span>
-
-    </button>
-
-
-    <button
-      class="nav-item"
-      data-page="duas"
-      type="button"
-    >
-
-      <span class="nav-icon"></span>
-      <span>الأدعية</span>
-
-    </button>
-
-
-    <button
-      class="nav-item"
-      data-page="azkar"
-      type="button"
-    >
-
-      <span class="nav-icon">◉</span>
-      <span>الأذكار</span>
-
-    </button>
-
-
-    <button
-      class="nav-item"
-      data-page="qibla"
-      type="button"
-    >
-
-      <span class="nav-icon">◎</span>
-      <span>القبلة</span>
-
-    </button>
-
-
-    <button
-      class="nav-item"
-      data-page="settings"
-      type="button"
-    >
-
-      <span class="nav-icon">⚙</span>
-      <span>الإعدادات</span>
-
-    </button>
-
-
-  </nav>
-
-
-  <!-- مهم جدًا:
-       تحميل أبواب الأذكار أولًا
-       ثم تشغيل script.js -->
-
-  <script src="azkar-topics.js"></script>
-
-  <script src="script.js"></script>
-
+<div class="app">
+
+<!-- الرئيسية -->
+<div class="page active" id="page-home">
+
+<header>
+<div class="brand">أنياس</div>
+<div class="date" id="todayDate">اليوم</div>
+<div class="date" id="locationName">📍 جاري تحديد الموقع...</div>
+</header>
+
+<section class="next-prayer">
+<div class="next-label">الصلاة القادمة</div>
+<div class="prayer-name" id="nextPrayerName">الفجر</div>
+<div class="prayer-time" id="nextPrayerTime">--</div>
+<div class="countdown" id="countdown">جاري حساب الوقت...</div>
+</section>
+
+<section class="section">
+<div class="section-title">مواقيت الصلاة</div>
+
+<div class="prayer-list">
+<div class="prayer-row"><span class="prayer-title">الفجر</span><span class="prayer-value" id="fajrTime">--</span></div>
+<div class="prayer-row"><span class="prayer-title">الشروق</span><span class="prayer-value" id="sunriseTime">--</span></div>
+<div class="prayer-row"><span class="prayer-title">الظهر</span><span class="prayer-value" id="dhuhrTime">--</span></div>
+<div class="prayer-row"><span class="prayer-title">العصر</span><span class="prayer-value" id="asrTime">--</span></div>
+<div class="prayer-row"><span class="prayer-title">المغرب</span><span class="prayer-value" id="maghribTime">--</span></div>
+<div class="prayer-row"><span class="prayer-title">العشاء</span><span class="prayer-value" id="ishaTime">--</span></div>
+</div>
+</section>
+
+<section class="section">
+<div class="card">
+<div class="card-title">آية اليوم</div>
+<div class="ayah">﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾</div>
+<div class="reference">سورة الرعد — 28</div>
+</div>
+</section>
+
+<section class="section">
+<div class="card">
+<div class="card-title">ذكر اليوم</div>
+<div class="dhikr">سبحان الله وبحمده، سبحان الله العظيم</div>
+</div>
+</section>
+
+<section class="section">
+<div class="card">
+<div class="card-title">الأذان</div>
+<div class="ayah">استمع إلى الأذان</div>
+
+<button id="adhanButton" class="adhan-button" type="button">
+▶ تشغيل الأذان
+</button>
+
+<audio id="adhanAudio" preload="auto">
+<source src="audio/adhan.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="fajrAudio" preload="auto">
+<source src="audio/fajr.mp3" type="audio/mpeg">
+</audio>
+
+</div>
+</section>
+
+</div>
+
+<!-- الأدعية -->
+<div class="page" id="page-duas">
+
+<header class="plain-header">
+<div class="brand">الأدعية</div>
+<div class="date">أدعية مهمة تحتاجها كل يوم</div>
+</header>
+
+<section class="section">
+<div id="duasList">
+
+<div class="dua-item">
+<div class="dua-title">دعاء طلب العلم</div>
+<div class="dua-text">رَبِّ زِدْنِي عِلْمًا</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">سيد الاستغفار</div>
+<div class="dua-text">اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">دعاء الكرب والهم</div>
+<div class="dua-text">لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">دعاء الرزق وقضاء الدين</div>
+<div class="dua-text">اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">دعاء طلب العافية</div>
+<div class="dua-text">اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">دعاء ثبات القلب</div>
+<div class="dua-text">يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">دعاء الوالدين</div>
+<div class="dua-text">رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">جوامع الدعاء</div>
+<div class="dua-text">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</div>
+</div>
+
+</div>
+</section>
+</div>
+
+<!-- الأذكار -->
+<div class="page" id="page-azkar">
+
+<header class="plain-header">
+<div class="brand">الأذكار</div>
+<div class="azkar-count" id="azkarTopicsCount">132 بابًا</div>
+<div class="date">اختر الباب اللي عايزه</div>
+</header>
+
+<section class="section">
+<div class="category-grid" id="categoryGrid"></div>
+</section>
+</div>
+
+<!-- تفاصيل الأذكار -->
+<div class="page" id="page-azkar-detail">
+
+<div class="category-detail-header">
+<button class="back-button" id="azkarBackButton" type="button">→</button>
+<div class="category-detail-title" id="categoryDetailTitle">القسم</div>
+</div>
+
+<section class="section">
+<div id="azkarList"></div>
+<div id="azkarTopicNavigation"></div>
+</section>
+</div>
+
+<!-- القبلة -->
+<div class="page" id="page-qibla">
+
+<header class="plain-header">
+<div class="brand">القبلة</div>
+<div class="date">اتجاه القبلة</div>
+</header>
+
+<section class="section">
+<div class="card">
+<div class="ayah" style="text-align:center">🕋</div>
+<div class="reference" style="text-align:center">
+سيتم إضافة تحديد اتجاه القبلة هنا
+</div>
+</div>
+</section>
+</div>
+
+<!-- الإعدادات -->
+<div class="page" id="page-settings">
+
+<header class="plain-header">
+<div class="brand">الإعدادات</div>
+<div class="date">تحكم في تجربة أنياس</div>
+</header>
+
+<section class="section">
+
+<div class="settings-section-title">عام</div>
+
+<div class="settings-card">
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">الوضع الليلي</div>
+<div class="setting-description">تفعيل المظهر الداكن للتطبيق</div>
+</div>
+
+<label class="switch">
+<input id="darkModeToggle" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">اللغة</div>
+<div class="setting-description">لغة واجهة التطبيق</div>
+</div>
+
+<select id="languageSelect" class="select-control" style="max-width:125px">
+<option value="ar">العربية</option>
+<option value="en">English</option>
+</select>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">الاهتزاز</div>
+<div class="setting-description">اهتزاز الهاتف عند التفاعل مع الأزرار</div>
+</div>
+
+<label class="switch">
+<input id="vibrationToggle" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
+
+</div>
+
+<div class="settings-section-title">الإشعارات</div>
+
+<div class="settings-card">
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">اقتراب الصلاة</div>
+<div class="setting-description">تنبيه قبل دخول وقت الصلاة</div>
+</div>
+<label class="switch">
+<input id="notifyPrayerSoon" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">الشروق</div>
+<div class="setting-description">تنبيه عند اقتراب الشروق</div>
+</div>
+<label class="switch">
+<input id="notifySunrise" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">الثلث الأول من الليل</div>
+</div>
+<label class="switch">
+<input id="notifyFirstThird" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">الثلث الثاني من الليل</div>
+</div>
+<label class="switch">
+<input id="notifySecondThird" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">الثلث الأخير من الليل</div>
+</div>
+<label class="switch">
+<input id="notifyLastThird" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">آية الكرسي</div>
+<div class="setting-description">تنبيه خاص بآية الكرسي</div>
+</div>
+<label class="switch">
+<input id="notifyAyatKursi" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">صوت الإشعارات</div>
+</div>
+<label class="switch">
+<input id="notificationSound" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
+
+</div>
+
+<div class="settings-section-title">الأذان</div>
+
+<div class="settings-card">
+
+<div class="setting-row" id="normalMuezzinRow" style="cursor:pointer">
+<div class="setting-info">
+<div class="setting-title">مؤذن الصلوات العادية</div>
+<div class="setting-description" id="normalMuezzinSelected">المؤذن الحالي</div>
+</div>
+<div class="settings-arrow">⌄</div>
+</div>
+
+<div class="audio-picker" id="normalMuezzinOptions">
+
+<div class="muezzin-row">
+<label class="muezzin-select">
+<input type="radio" name="normalMuezzin" value="current" checked>
+<span class="muezzin-name">المؤذن الحالي</span>
+</label>
+<button class="preview-button" type="button" data-audio="adhanAudio">▶</button>
+</div>
+
+</div>
+
+<div class="setting-row" id="fajrMuezzinRow" style="cursor:pointer">
+<div class="setting-info">
+<div class="setting-title">مؤذن الفجر</div>
+<div class="setting-description" id="fajrMuezzinSelected">مؤذن الفجر الحالي</div>
+</div>
+<div class="settings-arrow">⌄</div>
+</div>
+
+<div class="audio-picker" id="fajrMuezzinOptions">
+
+<div class="muezzin-row">
+<label class="muezzin-select">
+<input type="radio" name="fajrMuezzin" value="current" checked>
+<span class="muezzin-name">مؤذن الفجر الحالي</span>
+</label>
+<button class="preview-button" type="button" data-audio="fajrAudio">▶</button>
+</div>
+
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">الأذان التلقائي</div>
+<div class="setting-description">تشغيل الأذان عند دخول وقت الصلاة</div>
+</div>
+
+<label class="switch">
+<input id="autoAdhan" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
+
+<div class="volume-container">
+<div class="volume-header">
+<span class="volume-title">مستوى صوت الأذان</span>
+<span class="volume-value" id="volumeValue">100%</span>
+</div>
+
+<input id="adhanVolume" type="range" min="0" max="100" value="100">
+</div>
+
+</div>
+
+<div class="settings-section-title">الصوت</div>
+
+<div class="settings-card">
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">الأذان</div>
+<div class="setting-description">الصوت المستخدم للأذان</div>
+</div>
+<span style="color:var(--primary)">✓</span>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">آية الكرسي</div>
+<div class="setting-description">سيتم إضافة اختيار الصوت لاحقًا</div>
+</div>
+<span style="color:var(--muted)">›</span>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">الأذكار</div>
+<div class="setting-description">سيتم إضافة أصوات الأذكار لاحقًا</div>
+</div>
+<span style="color:var(--muted)">›</span>
+</div>
+
+<div class="setting-row">
+<div class="setting-info">
+<div class="setting-title">القرآن والأدعية</div>
+<div class="setting-description">سيتم إضافة الأصوات لاحقًا</div>
+</div>
+<span style="color:var(--muted)">›</span>
+</div>
+
+<button id="testAdhanButton" class="adhan-button" type="button">
+▶ تجربة الأذان
+</button>
+
+</div>
+
+</section>
+</div>
+
+</div>
+
+<!-- القائمة السفلية -->
+<nav class="bottom-nav">
+
+<button class="nav-item active" data-page="home" type="button">
+<span class="nav-icon">⌂</span>
+<span>الرئيسية</span>
+</button>
+
+<button class="nav-item" data-page="duas" type="button">
+<span class="nav-icon">♡</span>
+<span>الأدعية</span>
+</button>
+
+<button class="nav-item" data-page="azkar" type="button">
+<span class="nav-icon">◉</span>
+<span>الأذكار</span>
+</button>
+
+<button class="nav-item" data-page="qibla" type="button">
+<span class="nav-icon">◎</span>
+<span>القبلة</span>
+</button>
+
+<button class="nav-item" data-page="settings" type="button">
+<span class="nav-icon">⚙</span>
+<span>الإعدادات</span>
+</button>
+
+</nav>
+
+<script src="azkar-topics.js"></script>
+<script src="script.js"></script>
 
 </body>
-
-              </html>
+  </html>
