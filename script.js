@@ -1,6 +1,7 @@
 // =====================================================
 // أنياس
 // مواقيت الصلاة + الأذان + الإعدادات + الأذكار
+// + العبادات والمواسم
 // =====================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,6 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
   setupMuezzinSettings();
 
   setupAzkarTopics();
+
+  setupWorshipSettings();
 
   detectLocationAndLoadTimes();
 
@@ -1289,6 +1292,350 @@ function setupVibration() {
 
 
 // =====================================================
+// العبادات والمواسم
+// =====================================================
+
+function setupWorshipSettings() {
+
+  const ids = [
+
+    "reminderMondayThursday",
+    "reminderWhiteDays",
+    "reminderAshura",
+    "reminderArafah",
+    "reminderDhulHijjah",
+    "reminderEidTakbeer"
+
+  ];
+
+  ids.forEach(
+    id => {
+
+      const element =
+        document.getElementById(id);
+
+      if (!element) return;
+
+      const key =
+        `anyas_${id}`;
+
+      const saved =
+        localStorage.getItem(key);
+
+      if (saved !== null) {
+
+        element.checked =
+          saved === "true";
+
+      }
+
+      element.addEventListener(
+        "change",
+        async () => {
+
+          localStorage.setItem(
+            key,
+            element.checked
+          );
+
+          if (
+            element.checked &&
+            "Notification" in window
+          ) {
+
+            try {
+
+              if (
+                Notification.permission ===
+                "default"
+              ) {
+
+                await Notification.requestPermission();
+
+              }
+
+            } catch (error) {
+
+              console.error(
+                "تعذر طلب إذن الإشعارات:",
+                error
+              );
+
+            }
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+  updateHijriDate();
+
+  updateWorshipCountdowns();
+
+}
+
+
+// =====================================================
+// التاريخ الهجري
+// =====================================================
+
+function getHijriParts(date = new Date()) {
+
+  try {
+
+    const formatter =
+      new Intl.DateTimeFormat(
+        "ar-SA-u-ca-islamic-umalqura",
+        {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric"
+        }
+      );
+
+    const parts =
+      formatter.formatToParts(date);
+
+    const result = {};
+
+    parts.forEach(
+      part => {
+
+        if (part.type === "day") {
+          result.day =
+            Number(part.value);
+        }
+
+        if (part.type === "month") {
+          result.month =
+            Number(part.value);
+        }
+
+        if (part.type === "year") {
+          result.year =
+            Number(part.value);
+        }
+
+      }
+    );
+
+    return result;
+
+  } catch (error) {
+
+    console.error(
+      "تعذر حساب التاريخ الهجري:",
+      error
+    );
+
+    return null;
+
+  }
+
+}
+
+
+function updateHijriDate() {
+
+  const element =
+    document.getElementById(
+      "hijriDate"
+    );
+
+  if (!element) return;
+
+  const hijri =
+    getHijriParts();
+
+  if (!hijri) {
+
+    element.textContent =
+      "تعذر حساب التاريخ الهجري";
+
+    return;
+
+  }
+
+  const months = [
+
+    "",
+
+    "المحرّم",
+
+    "صفر",
+
+    "ربيع الأول",
+
+    "ربيع الآخر",
+
+    "جمادى الأولى",
+
+    "جمادى الآخرة",
+
+    "رجب",
+
+    "شعبان",
+
+    "رمضان",
+
+    "شوّال",
+
+    "ذو القعدة",
+
+    "ذو الحجة"
+
+  ];
+
+  element.textContent =
+    `${hijri.day} ` +
+    `${months[hijri.month] || ""} ` +
+    `${hijri.year} هـ`;
+
+}
+
+
+// =====================================================
+// حساب الأيام حتى تاريخ هجري
+// =====================================================
+
+function daysUntilHijri(
+  targetMonth,
+  targetDay
+) {
+
+  const today =
+    new Date();
+
+  today.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+  for (
+    let i = 0;
+    i <= 400;
+    i++
+  ) {
+
+    const date =
+      new Date(today);
+
+    date.setDate(
+      today.getDate() + i
+    );
+
+    const hijri =
+      getHijriParts(date);
+
+    if (!hijri) continue;
+
+    if (
+      hijri.month === targetMonth &&
+      hijri.day === targetDay
+    ) {
+
+      return i;
+
+    }
+
+  }
+
+  return null;
+
+}
+
+
+// =====================================================
+// عرض العد التنازلي للمواسم
+// =====================================================
+
+function setWorshipCountdown(
+  elementId,
+  days
+) {
+
+  const element =
+    document.getElementById(
+      elementId
+    );
+
+  if (!element) return;
+
+  if (days === null) {
+
+    element.textContent =
+      "غير متاح";
+
+    return;
+
+  }
+
+  if (days === 0) {
+
+    element.textContent =
+      "اليوم";
+
+    return;
+
+  }
+
+  element.textContent =
+    `باقي ${days} يوم`;
+
+}
+
+
+// =====================================================
+// تحديث عدادات المواسم
+// =====================================================
+
+function updateWorshipCountdowns() {
+
+  // 1 رمضان
+  setWorshipCountdown(
+    "ramadanCountdown",
+    daysUntilHijri(
+      9,
+      1
+    )
+  );
+
+  // 1 شوال - عيد الفطر
+  setWorshipCountdown(
+    "fitrCountdown",
+    daysUntilHijri(
+      10,
+      1
+    )
+  );
+
+  // 8 ذو الحجة - بداية أيام الحج
+  setWorshipCountdown(
+    "hajjCountdown",
+    daysUntilHijri(
+      12,
+      8
+    )
+  );
+
+  // 10 ذو الحجة - عيد الأضحى
+  setWorshipCountdown(
+    "adhaCountdown",
+    daysUntilHijri(
+      12,
+      10
+    )
+  );
+
+}
+
+
+// =====================================================
 // التنقل
 // =====================================================
 
@@ -1959,4 +2306,4 @@ function formatNumber(number) {
   return String(number)
     .padStart(2, "0");
 
-    }
+}
