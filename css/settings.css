@@ -1,1 +1,299 @@
+.settings-section-title {
+    margin: 24px 4px 10px;
 
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.settings-card,
+.worship-card {
+    overflow: hidden;
+
+    padding: 0 16px;
+
+    background: var(--card);
+
+    border-radius: 20px;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.setting-row,
+.worship-setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.setting-row:last-child,
+.worship-setting:last-child {
+    border-bottom: none;
+}
+
+.setting-info,
+.worship-setting-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.setting-title,
+.worship-setting-title {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.setting-description,
+.worship-setting-description {
+    margin-top: 4px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.switch {
+    position: relative;
+
+    width: 50px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    cursor: pointer;
+}
+
+.switch input {
+    display: none;
+}
+
+.switch-track {
+    position: absolute;
+    inset: 0;
+
+    background: #d1d1d6;
+
+    border-radius: 20px;
+
+    transition: 0.2s;
+}
+
+.switch-knob {
+    position: absolute;
+
+    top: 2px;
+    right: 22px;
+
+    width: 26px;
+    height: 26px;
+
+    background: #ffffff;
+
+    border-radius: 50%;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.20);
+
+    transition: 0.2s;
+}
+
+.switch input:checked + .switch-track {
+    background: var(--primary);
+}
+
+.switch input:checked + .switch-track + .switch-knob {
+    right: 2px;
+}
+
+.select-control {
+    width: 125px;
+
+    padding: 10px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    outline: none;
+
+    background: var(--bg);
+    color: var(--text);
+
+    font-size: 14px;
+}
+
+.hijri-date {
+    margin: 16px 0;
+
+    padding: 17px;
+
+    background: var(--primary);
+    color: #ffffff;
+
+    border-radius: 17px;
+
+    text-align: center;
+}
+
+.hijri-title {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.hijri-value {
+    margin-top: 5px;
+
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.worship-countdowns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+.worship-countdown {
+    padding: 15px 10px;
+
+    background: var(--bg);
+
+    border-radius: 15px;
+
+    text-align: center;
+}
+
+.worship-name {
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.worship-days {
+    margin-top: 6px;
+
+    color: var(--primary);
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.worship-note {
+    margin: 12px 0 16px;
+
+    padding: 11px;
+
+    background: var(--bg);
+
+    border-radius: 12px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    line-height: 1.7;
+
+    text-align: center;
+}
+
+.audio-picker {
+    display: none;
+
+    padding-bottom: 10px;
+}
+
+.audio-picker.open {
+    display: block;
+}
+
+.muezzin-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 0;
+
+    border-top: 1px solid var(--border);
+}
+
+.muezzin-select {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    flex: 1;
+
+    cursor: pointer;
+}
+
+.muezzin-select input {
+    accent-color: var(--primary);
+}
+
+.muezzin-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.preview-button {
+    min-width: 68px;
+
+    padding: 9px 10px;
+
+    border: none;
+    border-radius: 11px;
+
+    background: rgba(15, 111, 92, 0.10);
+    color: var(--primary);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.settings-arrow,
+.setting-arrow,
+.setting-status {
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.setting-status {
+    color: var(--primary);
+}
+
+.volume-container {
+    padding: 16px 0;
+}
+
+.volume-header {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+}
+
+.volume-title {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.volume-value {
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+#adhanVolume {
+    width: 100%;
+
+    accent-color: var(--primary);
+}
