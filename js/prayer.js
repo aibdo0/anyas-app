@@ -31,12 +31,61 @@ const PRAYER_DEFINITIONS = [
 
 
 // =====================================================
+// تحديد طريقة حساب مواقيت الصلاة
+// =====================================================
+
+function getCalculationMethod() {
+
+  const saved =
+    localStorage.getItem(
+      "anyas_calculation_method"
+    );
+
+  /*
+   * إذا لم يوجد إعداد محفوظ:
+   * نستخدم طريقة الهيئة المصرية
+   */
+
+  if (
+    saved === null ||
+    saved === ""
+  ) {
+
+    return 5;
+
+  }
+
+  const method =
+    parseInt(
+      saved,
+      10
+    );
+
+  return Number.isNaN(method)
+    ? 5
+    : method;
+
+}
+
+
+// =====================================================
 // تحديد الموقع وتحميل المواقيت
 // =====================================================
 
 function detectLocationAndLoadTimes() {
 
   if (!navigator.geolocation) {
+
+    window.lastKnownLocation = {
+      latitude: FALLBACK_LATITUDE,
+      longitude: FALLBACK_LONGITUDE
+    };
+
+    window.currentLatitude =
+      FALLBACK_LATITUDE;
+
+    window.currentLongitude =
+      FALLBACK_LONGITUDE;
 
     loadPrayerTimes(
       FALLBACK_LATITUDE,
@@ -51,6 +100,7 @@ function detectLocationAndLoadTimes() {
     return;
   }
 
+
   navigator.geolocation.getCurrentPosition(
 
     position => {
@@ -61,10 +111,24 @@ function detectLocationAndLoadTimes() {
       const longitude =
         position.coords.longitude;
 
+
       window.lastKnownLocation = {
         latitude,
         longitude
       };
+
+
+      /*
+       * متغيرات عامة حتى تستخدمها
+       * خاصية أقرب مسجد
+       */
+
+      window.currentLatitude =
+        latitude;
+
+      window.currentLongitude =
+        longitude;
+
 
       loadPrayerTimes(
         latitude,
@@ -77,6 +141,7 @@ function detectLocationAndLoadTimes() {
       );
 
     },
+
 
     error => {
 
@@ -85,6 +150,20 @@ function detectLocationAndLoadTimes() {
         error
       );
 
+
+      window.lastKnownLocation = {
+        latitude: FALLBACK_LATITUDE,
+        longitude: FALLBACK_LONGITUDE
+      };
+
+
+      window.currentLatitude =
+        FALLBACK_LATITUDE;
+
+      window.currentLongitude =
+        FALLBACK_LONGITUDE;
+
+
       loadPrayerTimes(
         FALLBACK_LATITUDE,
         FALLBACK_LONGITUDE
@@ -96,6 +175,7 @@ function detectLocationAndLoadTimes() {
       );
 
     },
+
 
     {
       enableHighAccuracy: true,
@@ -112,12 +192,20 @@ function detectLocationAndLoadTimes() {
 // اسم المدينة
 // =====================================================
 
-async function fetchCityName(latitude, longitude) {
+async function fetchCityName(
+  latitude,
+  longitude
+) {
 
   const locationElement =
-    document.getElementById("locationName");
+    document.getElementById(
+      "locationName"
+    );
 
-  if (!locationElement) return;
+  if (!locationElement) {
+    return;
+  }
+
 
   try {
 
@@ -128,20 +216,27 @@ async function fetchCityName(latitude, longitude) {
       `&lon=${longitude}` +
       `&accept-language=ar`;
 
+
     const response =
       await fetch(url);
 
+
     if (!response.ok) {
+
       throw new Error(
         "فشل في جلب اسم المدينة"
       );
+
     }
+
 
     const data =
       await response.json();
 
+
     const address =
       data.address || {};
+
 
     const city =
       address.city ||
@@ -151,8 +246,10 @@ async function fetchCityName(latitude, longitude) {
       address.state ||
       "موقعك الحالي";
 
+
     locationElement.textContent =
       city;
+
 
   } catch (error) {
 
@@ -160,6 +257,7 @@ async function fetchCityName(latitude, longitude) {
       "خطأ في تحديد اسم المدينة:",
       error
     );
+
 
     locationElement.textContent =
       "موقعك الحالي";
@@ -173,98 +271,162 @@ async function fetchCityName(latitude, longitude) {
 // تحميل مواقيت الصلاة
 // =====================================================
 
-async function loadPrayerTimes(latitude, longitude) {
+async function loadPrayerTimes(
+  latitude,
+  longitude
+) {
 
   try {
 
     const now =
       new Date();
 
+
     const day =
       String(
         now.getDate()
-      ).padStart(2, "0");
+      ).padStart(
+        2,
+        "0"
+      );
+
 
     const month =
       String(
         now.getMonth() + 1
-      ).padStart(2, "0");
+      ).padStart(
+        2,
+        "0"
+      );
+
 
     const year =
       now.getFullYear();
 
+
     const date =
       `${day}-${month}-${year}`;
+
+
+    const method =
+      getCalculationMethod();
+
 
     const url =
       `https://api.aladhan.com/v1/timings/${date}` +
       `?latitude=${latitude}` +
       `&longitude=${longitude}` +
-      `&method=5`;
+      `&method=${method}`;
+
 
     const response =
       await fetch(url);
 
+
     if (!response.ok) {
+
       throw new Error(
         "فشل تحميل مواقيت الصلاة"
       );
+
     }
+
 
     const data =
       await response.json();
+
 
     if (
       !data ||
       !data.data ||
       !data.data.timings
     ) {
+
       throw new Error(
         "بيانات المواقيت غير متاحة"
       );
+
     }
 
-    const timings =
+
+    const rawTimings =
       data.data.timings;
+
+
+    /*
+     * نحتفظ بالمواقيت الأصلية
+     */
+
+    window.originalPrayerTimings = {
+      ...rawTimings
+    };
+
+
+    /*
+     * نطبق التعديلات اليدوية
+     * قبل استخدامها في الحسابات
+     */
+
+    const timings =
+      applyPrayerOffsetsToTimings(
+        rawTimings
+      );
+
 
     window.todayTimings =
       timings;
+
 
     setPrayerTime(
       "fajrTime",
       timings.Fajr
     );
 
+
     setPrayerTime(
       "sunriseTime",
       timings.Sunrise
     );
+
 
     setPrayerTime(
       "dhuhrTime",
       timings.Dhuhr
     );
 
+
     setPrayerTime(
       "asrTime",
       timings.Asr
     );
+
 
     setPrayerTime(
       "maghribTime",
       timings.Maghrib
     );
 
+
     setPrayerTime(
       "ishaTime",
       timings.Isha
     );
 
-    updateNextPrayer(timings);
 
-    updatePrayerStates(timings);
+    updateNextPrayer(
+      timings
+    );
 
-    updatePrayerProgress(timings);
+
+    updatePrayerStates(
+      timings
+    );
+
+
+    updatePrayerProgress(
+      timings
+    );
+
 
   } catch (error) {
 
@@ -273,8 +435,12 @@ async function loadPrayerTimes(latitude, longitude) {
       error
     );
 
+
     const locationElement =
-      document.getElementById("locationName");
+      document.getElementById(
+        "locationName"
+      );
+
 
     if (locationElement) {
 
@@ -289,15 +455,227 @@ async function loadPrayerTimes(latitude, longitude) {
 
 
 // =====================================================
+// الحصول على تعديلات المواقيت
+// =====================================================
+
+function getPrayerOffsets() {
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "anyas_prayer_offsets"
+      );
+
+
+    if (!saved) {
+      return {};
+    }
+
+
+    const offsets =
+      JSON.parse(saved);
+
+
+    return offsets || {};
+
+
+  } catch (error) {
+
+    return {};
+
+  }
+
+}
+
+
+// =====================================================
+// تطبيق التعديلات على مواقيت API
+// =====================================================
+
+function applyPrayerOffsetsToTimings(
+  timings
+) {
+
+  if (!timings) {
+    return timings;
+  }
+
+
+  const offsets =
+    getPrayerOffsets();
+
+
+  const result = {
+    ...timings
+  };
+
+
+  const prayerKeys = [
+    "Fajr",
+    "Dhuhr",
+    "Asr",
+    "Maghrib",
+    "Isha"
+  ];
+
+
+  prayerKeys.forEach(
+    prayer => {
+
+      const offset =
+        parseInt(
+          offsets[prayer] || 0,
+          10
+        );
+
+
+      if (
+        Number.isNaN(offset) ||
+        !offset
+      ) {
+        return;
+      }
+
+
+      result[prayer] =
+        addMinutesToRawTime(
+          timings[prayer],
+          offset
+        );
+
+    }
+  );
+
+
+  /*
+   * يمكن تعديل الشروق أيضًا
+   * إذا أضيف له إعداد مستقبلًا.
+   */
+
+  if (
+    offsets.Sunrise !== undefined
+  ) {
+
+    const offset =
+      parseInt(
+        offsets.Sunrise || 0,
+        10
+      );
+
+
+    if (
+      !Number.isNaN(offset) &&
+      offset
+    ) {
+
+      result.Sunrise =
+        addMinutesToRawTime(
+          timings.Sunrise,
+          offset
+        );
+
+    }
+
+  }
+
+
+  return result;
+
+}
+
+
+// =====================================================
+// إضافة دقائق إلى وقت خام
+// =====================================================
+
+function addMinutesToRawTime(
+  time,
+  minutes
+) {
+
+  if (!time) {
+    return time;
+  }
+
+
+  const match =
+    String(time).match(
+      /(\d{1,2}):(\d{2})/
+    );
+
+
+  if (!match) {
+    return time;
+  }
+
+
+  let hours =
+    parseInt(
+      match[1],
+      10
+    );
+
+
+  let mins =
+    parseInt(
+      match[2],
+      10
+    );
+
+
+  mins += minutes;
+
+
+  while (mins >= 60) {
+
+    mins -= 60;
+    hours++;
+
+  }
+
+
+  while (mins < 0) {
+
+    mins += 60;
+    hours--;
+
+  }
+
+
+  hours =
+    (hours + 24) % 24;
+
+
+  return (
+    String(hours).padStart(2, "0") +
+    ":" +
+    String(mins).padStart(2, "0")
+  );
+
+}
+
+
+// =====================================================
 // عرض وقت الصلاة
 // =====================================================
 
-function setPrayerTime(id, time) {
+function setPrayerTime(
+  id,
+  time
+) {
 
   const element =
     document.getElementById(id);
 
-  if (!element || !time) return;
+
+  if (
+    !element ||
+    !time
+  ) {
+    return;
+  }
+
 
   element.textContent =
     convertTo12Hour(time);
@@ -309,14 +687,18 @@ function setPrayerTime(id, time) {
 // تحويل الوقت إلى 12 ساعة
 // =====================================================
 
-function convertTo12Hour(time) {
+function convertTo12Hour(
+  time
+) {
 
   if (!time) {
     return "--:--";
   }
 
+
   const parts =
-    time.split(":");
+    String(time).split(":");
+
 
   let hour =
     parseInt(
@@ -324,18 +706,29 @@ function convertTo12Hour(time) {
       10
     );
 
+
   const minute =
     parts[1] || "00";
 
-  if (Number.isNaN(hour)) {
+
+  if (
+    Number.isNaN(hour)
+  ) {
+
     return time;
+
   }
 
+
   const period =
-    hour >= 12 ? "م" : "ص";
+    hour >= 12
+      ? "م"
+      : "ص";
+
 
   hour =
     hour % 12 || 12;
+
 
   return (
     `${formatNumber(hour)}:` +
@@ -358,28 +751,38 @@ function createPrayerDate(
     return null;
   }
 
+
   const parts =
-    time.split(":");
+    String(time).split(":");
+
 
   const hour =
     Number(parts[0]);
 
+
   const minute =
     Number(parts[1]);
+
 
   if (
     Number.isNaN(hour) ||
     Number.isNaN(minute)
   ) {
+
     return null;
+
   }
+
 
   const date =
     new Date();
 
+
   date.setDate(
-    date.getDate() + dayOffset
+    date.getDate() +
+    dayOffset
   );
+
 
   date.setHours(
     hour,
@@ -387,6 +790,7 @@ function createPrayerDate(
     0,
     0
   );
+
 
   return date;
 
@@ -397,28 +801,39 @@ function createPrayerDate(
 // تحديد الصلاة القادمة
 // =====================================================
 
-function updateNextPrayer(timings) {
+function updateNextPrayer(
+  timings
+) {
 
-  if (!timings) return;
+  if (!timings) {
+    return;
+  }
+
 
   const now =
     new Date();
 
+
   let nextPrayer =
     null;
+
 
   for (
     const prayer of PRAYER_DEFINITIONS
   ) {
 
-    if (!timings[prayer.key]) {
+    if (
+      !timings[prayer.key]
+    ) {
       continue;
     }
+
 
     const prayerTime =
       createPrayerDate(
         timings[prayer.key]
       );
+
 
     if (
       prayerTime &&
@@ -430,14 +845,18 @@ function updateNextPrayer(timings) {
         time: prayerTime
       };
 
+
       break;
 
     }
 
   }
 
-  // إذا انتهت جميع صلوات اليوم
-  // تكون الصلاة القادمة فجر الغد
+
+  /*
+   * إذا انتهت جميع صلوات اليوم
+   * تكون الصلاة القادمة فجر الغد
+   */
 
   if (
     !nextPrayer &&
@@ -450,34 +869,44 @@ function updateNextPrayer(timings) {
         1
       );
 
+
     if (tomorrowFajr) {
 
       nextPrayer = {
+
         key: "Fajr",
+
         name: "الفجر",
+
         time: tomorrowFajr
+
       };
 
     }
 
   }
 
+
   if (!nextPrayer) {
     return;
   }
 
+
   window.nextPrayer =
     nextPrayer;
+
 
   const nameElement =
     document.getElementById(
       "nextPrayerName"
     );
 
+
   const timeElement =
     document.getElementById(
       "nextPrayerTime"
     );
+
 
   if (nameElement) {
 
@@ -485,6 +914,7 @@ function updateNextPrayer(timings) {
       nextPrayer.name;
 
   }
+
 
   if (timeElement) {
 
@@ -505,20 +935,26 @@ function updateNextPrayer(timings) {
 
 // =====================================================
 // تحديد حالة الصلوات
-// الحالية / القادمة / السابقة
 // =====================================================
 
-function updatePrayerStates(timings) {
+function updatePrayerStates(
+  timings
+) {
 
-  if (!timings) return;
+  if (!timings) {
+    return;
+  }
+
 
   const now =
     new Date();
+
 
   const rows =
     document.querySelectorAll(
       ".prayer-row[data-prayer]"
     );
+
 
   rows.forEach(row => {
 
@@ -529,45 +965,59 @@ function updatePrayerStates(timings) {
       "active"
     );
 
+
     const prayerKey =
       row.dataset.prayer;
+
 
     if (!prayerKey) {
       return;
     }
+
 
     const prayerTime =
       createPrayerDate(
         timings[prayerKey]
       );
 
+
     if (!prayerTime) {
       return;
     }
 
+
     const nextPrayer =
       window.nextPrayer;
+
 
     if (
       nextPrayer &&
       nextPrayer.key === prayerKey
     ) {
 
-      row.classList.add("next");
+      row.classList.add(
+        "next"
+      );
+
 
       return;
+
     }
+
 
     if (
       prayerTime.getTime() <=
       now.getTime()
     ) {
 
-      row.classList.add("past");
+      row.classList.add(
+        "past"
+      );
 
     }
 
   });
+
 
   /*
    * الصلاة الحالية:
@@ -577,6 +1027,7 @@ function updatePrayerStates(timings) {
   let currentPrayer =
     null;
 
+
   for (
     const prayer of PRAYER_DEFINITIONS
   ) {
@@ -585,6 +1036,7 @@ function updatePrayerStates(timings) {
       createPrayerDate(
         timings[prayer.key]
       );
+
 
     if (
       prayerTime &&
@@ -598,6 +1050,7 @@ function updatePrayerStates(timings) {
 
   }
 
+
   if (currentPrayer) {
 
     const currentRow =
@@ -605,11 +1058,13 @@ function updatePrayerStates(timings) {
         `.prayer-row[data-prayer="${currentPrayer.key}"]`
       );
 
+
     if (currentRow) {
 
       currentRow.classList.remove(
         "past"
       );
+
 
       currentRow.classList.add(
         "current",
@@ -627,40 +1082,54 @@ function updatePrayerStates(timings) {
 // شريط التقدم للصلاة القادمة
 // =====================================================
 
-function updatePrayerProgress(timings) {
+function updatePrayerProgress(
+  timings
+) {
 
   const progressBar =
     document.getElementById(
       "prayerProgressBar"
     );
 
+
   if (!progressBar) {
     return;
   }
 
+
   const nextPrayer =
     window.nextPrayer;
 
+
   if (!nextPrayer) {
-    progressBar.style.width = "0%";
+
+    progressBar.style.width =
+      "0%";
+
     return;
+
   }
+
 
   const now =
     new Date();
 
+
   const nextTime =
     nextPrayer.time;
 
+
   let previousTime =
     null;
+
 
   /*
    * ابحث عن الصلاة السابقة
    */
 
   for (
-    let i = PRAYER_DEFINITIONS.length - 1;
+    let i =
+      PRAYER_DEFINITIONS.length - 1;
     i >= 0;
     i--
   ) {
@@ -668,10 +1137,12 @@ function updatePrayerProgress(timings) {
     const prayer =
       PRAYER_DEFINITIONS[i];
 
+
     const prayerTime =
       createPrayerDate(
         timings[prayer.key]
       );
+
 
     if (
       prayerTime &&
@@ -686,6 +1157,7 @@ function updatePrayerProgress(timings) {
     }
 
   }
+
 
   /*
    * إذا كان الوقت قبل الفجر
@@ -706,9 +1178,6 @@ function updatePrayerProgress(timings) {
 
   }
 
-  /*
-   * حماية من القيم غير الصحيحة
-   */
 
   if (
     !previousTime ||
@@ -720,18 +1189,23 @@ function updatePrayerProgress(timings) {
       "0%";
 
     return;
+
   }
+
 
   const total =
     nextTime.getTime() -
     previousTime.getTime();
 
+
   const remaining =
     nextTime.getTime() -
     now.getTime();
 
+
   let percentage =
     (remaining / total) * 100;
+
 
   percentage =
     Math.max(
@@ -742,6 +1216,7 @@ function updatePrayerProgress(timings) {
       )
     );
 
+
   progressBar.style.width =
     `${percentage}%`;
 
@@ -750,7 +1225,6 @@ function updatePrayerProgress(timings) {
 
 // =====================================================
 // الضغط على مواقيت الصلاة
-// يفتح إعدادات الأذان
 // =====================================================
 
 function setupPrayerRowActions() {
@@ -760,16 +1234,21 @@ function setupPrayerRowActions() {
       ".prayer-row[data-prayer]"
     );
 
+
   rows.forEach(row => {
 
     if (
       row.dataset.adhanReady === "true"
     ) {
+
       return;
+
     }
+
 
     row.dataset.adhanReady =
       "true";
+
 
     row.addEventListener(
       "click",
@@ -778,19 +1257,24 @@ function setupPrayerRowActions() {
         const prayerKey =
           row.dataset.prayer;
 
+
         if (
           typeof goToPage ===
           "function"
         ) {
 
-          goToPage("settings");
+          goToPage(
+            "settings"
+          );
 
         }
+
 
         setTimeout(() => {
 
           let targetId =
             "normalMuezzinRow";
+
 
           if (
             prayerKey === "Fajr"
@@ -801,10 +1285,12 @@ function setupPrayerRowActions() {
 
           }
 
+
           const target =
             document.getElementById(
               targetId
             );
+
 
           if (target) {
 
@@ -835,38 +1321,51 @@ function updateCountdown() {
     return;
   }
 
+
   updateNextPrayer(
     window.todayTimings
   );
+
 
   updatePrayerStates(
     window.todayTimings
   );
 
+
   updatePrayerProgress(
     window.todayTimings
   );
 
+
   const nextPrayer =
     window.nextPrayer;
+
 
   if (!nextPrayer) {
     return;
   }
 
+
   const now =
     new Date();
+
 
   const difference =
     nextPrayer.time.getTime() -
     now.getTime();
 
-  // عند حلول وقت الصلاة
 
-  if (difference <= 0) {
+  /*
+   * عند حلول وقت الصلاة
+   */
+
+  if (
+    difference <= 0
+  ) {
 
     const location =
       window.lastKnownLocation;
+
 
     if (location) {
 
@@ -881,40 +1380,67 @@ function updateCountdown() {
 
     }
 
+
     return;
+
   }
+
 
   const totalSeconds =
     Math.floor(
       difference / 1000
     );
 
+
   const hours =
     Math.floor(
       totalSeconds / 3600
     );
+
 
   const minutes =
     Math.floor(
       (totalSeconds % 3600) / 60
     );
 
+
   const seconds =
     totalSeconds % 60;
+
 
   const countdownElement =
     document.getElementById(
       "countdown"
     );
 
+
   if (!countdownElement) {
     return;
   }
+
 
   countdownElement.textContent =
     `${formatNumber(hours)}:` +
     `${formatNumber(minutes)}:` +
     `${formatNumber(seconds)}`;
+
+}
+
+
+// =====================================================
+// تنسيق الأرقام
+// =====================================================
+
+function formatNumber(
+  number
+) {
+
+  return String(
+    number
+  ).padStart(
+    2,
+    "0"
+  );
 
 }
 
