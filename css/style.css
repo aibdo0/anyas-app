@@ -1,36 +1,24 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+/* =========================================
+   أنياس — الستايل العام
+========================================= */
 
 :root {
     --primary: #0f6f5c;
     --primary-dark: #0b5548;
     --accent: #c9a227;
 
-    --bg: #f5f5f7;
+    --background: #f6f6f4;
     --card: #ffffff;
-
     --text: #1c1c1e;
     --muted: #8e8e93;
-    --border: #ececef;
+    --border: #ececeb;
 
-    --success: #34c759;
-
-    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.07);
+    --nav-height: 76px;
 }
 
-body.dark-mode {
-    --bg: #111513;
-    --card: #1b211f;
-    --text: #f5f5f7;
-    --muted: #a8aaa8;
-    --border: #303634;
-
-    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.3);
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -38,246 +26,411 @@ html {
 }
 
 body {
+    margin: 0;
+    padding: 0;
+    background: var(--background);
+    color: var(--text);
     font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Tahoma,
-        Arial,
+        "Tajawal",
+        "Noto Kufi Arabic",
+        "Arial",
         sans-serif;
 
-    background: var(--bg);
-    color: var(--text);
-
     min-height: 100vh;
-
-    transition:
-        background 0.25s ease,
-        color 0.25s ease;
+    direction: rtl;
 }
 
-button,
-input,
-select {
-    font: inherit;
-}
-
-button {
-    -webkit-tap-highlight-color: transparent;
-}
+/* =========================================
+   التطبيق
+========================================= */
 
 .app {
-    width: 100%;
-    max-width: 520px;
     min-height: 100vh;
-
-    margin: 0 auto;
-
-    padding-bottom: 105px;
+    padding-bottom: calc(var(--nav-height) + 12px);
 }
+
+/* =========================================
+   الصفحات
+========================================= */
 
 .page {
     display: none;
     min-height: 100vh;
+    animation: pageFade 0.22s ease;
 }
 
 .page.active {
     display: block;
 }
 
-.section {
-    padding: 0 16px;
+@keyframes pageFade {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.section-title {
-    margin: 22px 4px 12px;
-
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.card {
-    margin-top: 18px;
-
-    padding: 20px;
-
-    background: var(--card);
-    border-radius: 22px;
-
-    box-shadow: var(--shadow-sm);
-}
-
-.card-title {
-    margin-bottom: 12px;
-
-    color: var(--muted);
-
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.ayah,
-.dhikr {
-    font-size: 19px;
-    line-height: 1.9;
-}
-
-.reference {
-    margin-top: 12px;
-
-    color: var(--muted);
-
-    font-size: 13px;
-}
+/* =========================================
+   العناوين العامة
+========================================= */
 
 .plain-header {
-    padding: 24px 20px 12px;
-
-    background: transparent;
-    color: var(--text);
+    text-align: center;
+    padding: 22px 18px 12px;
 }
 
-.brand {
-    font-size: 26px;
+.plain-header .brand {
+    color: var(--primary-dark);
+    font-size: 27px;
     font-weight: 800;
-    letter-spacing: -0.4px;
 }
 
-.date {
+.plain-header .date {
     margin-top: 5px;
-
     color: var(--muted);
-
-    font-size: 13px;
+    font-size: 12px;
 }
 
-.adhan-button {
-    width: 100%;
-
-    margin-top: 16px;
-    padding: 14px;
-
-    border: none;
-    border-radius: 16px;
-
-    background: var(--primary);
-    color: #ffffff;
-
-    font-size: 15px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        opacity 0.15s ease;
-}
-
-.adhan-button:active {
-    transform: scale(0.97);
-}
+/* =========================================
+   الشريط السفلي
+========================================= */
 
 .bottom-nav {
     position: fixed;
+    z-index: 1000;
 
-    bottom: 12px;
-    left: 50%;
+    right: 10px;
+    left: 10px;
+    bottom: 10px;
 
-    transform: translateX(-50%);
+    height: var(--nav-height);
 
-    width: calc(100% - 24px);
-    max-width: 496px;
-    height: 68px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
 
-    padding: 6px;
+    padding: 7px 5px;
 
     background: rgba(255, 255, 255, 0.94);
 
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(15, 111, 92, 0.10);
+    border-radius: 25px;
 
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    border-radius: 22px;
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.10),
+        0 2px 8px rgba(15, 111, 92, 0.05);
 
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.13);
-
-    z-index: 100;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 }
 
-body.dark-mode .bottom-nav {
-    background: rgba(27, 33, 31, 0.94);
-    border-color: rgba(255, 255, 255, 0.05);
-}
+/* =========================================
+   أزرار التنقل
+========================================= */
 
 .nav-item {
-    min-width: 60px;
+    position: relative;
 
-    padding: 8px 7px;
+    height: 62px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    padding: 5px 3px;
 
     border: none;
-    border-radius: 15px;
-
     background: transparent;
+
     color: var(--muted);
 
-    font-size: 11px;
-    font-weight: 600;
+    font-family: inherit;
 
     cursor: pointer;
 
+    border-radius: 18px;
+
     transition:
-        background 0.2s ease,
         color 0.2s ease,
-        transform 0.15s ease;
-}
-
-.nav-icon {
-    display: block;
-}
-
-.nav-item.active {
-    background: rgba(15, 111, 92, 0.10);
-    color: var(--primary);
+        transform 0.15s ease,
+        background 0.2s ease;
 }
 
 .nav-item:active {
     transform: scale(0.92);
 }
 
-.qibla-card {
-    text-align: center;
+/* =========================================
+   الأيقونات — رموز هندسية بسيطة
+========================================= */
+
+.nav-item .nav-icon {
+    position: relative;
+
+    width: 30px;
+    height: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 0;
 }
 
-.qibla-placeholder {
-    padding: 35px 15px;
+/* الرئيسية */
+.nav-item[data-page="home"] .nav-icon::before {
+    content: "";
 
+    width: 16px;
+    height: 14px;
+
+    border: 2px solid currentColor;
+    border-top: none;
+
+    border-radius: 3px;
+
+    position: absolute;
+    bottom: 2px;
+}
+
+.nav-item[data-page="home"] .nav-icon::after {
+    content: "";
+
+    width: 13px;
+    height: 13px;
+
+    border-left: 2px solid currentColor;
+    border-top: 2px solid currentColor;
+
+    transform: rotate(45deg);
+
+    position: absolute;
+    top: 1px;
+}
+
+/* الأدعية */
+.nav-item[data-page="duas"] .nav-icon::before {
+    content: "د";
+
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1.8px solid currentColor;
+    border-radius: 50%;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+/* الأذكار */
+.nav-item[data-page="azkar"] .nav-icon::before {
+    content: "ذ";
+
+    width: 25px;
+    height: 25px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1.8px solid currentColor;
+    border-radius: 50%;
+
+    font-size: 13px;
+    font-weight: 800;
+}
+
+/* القبلة */
+.nav-item[data-page="qibla"] .nav-icon::before {
+    content: "";
+
+    width: 20px;
+    height: 20px;
+
+    border: 2px solid currentColor;
+
+    transform: rotate(45deg);
+
+    border-radius: 3px;
+}
+
+/* الإعدادات */
+.nav-item[data-page="settings"] .nav-icon::before {
+    content: "";
+
+    width: 18px;
+    height: 18px;
+
+    border: 2px solid currentColor;
+
+    border-radius: 50%;
+}
+
+.nav-item[data-page="settings"] .nav-icon::after {
+    content: "";
+
+    width: 7px;
+    height: 7px;
+
+    border: 2px solid currentColor;
+
+    border-radius: 50%;
+
+    position: absolute;
+}
+
+/* =========================================
+   اسم الصفحة
+========================================= */
+
+.nav-item::after {
+    content: attr(data-label);
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* =========================================
+   أسماء التنقل
+========================================= */
+
+.nav-item[data-page="home"]::after {
+    content: "الرئيسية";
+}
+
+.nav-item[data-page="duas"]::after {
+    content: "الأدعية";
+}
+
+.nav-item[data-page="azkar"]::after {
+    content: "الأذكار";
+}
+
+.nav-item[data-page="qibla"]::after {
+    content: "القبلة";
+}
+
+.nav-item[data-page="settings"]::after {
+    content: "الإعدادات";
+}
+
+/* =========================================
+   العنصر النشط
+========================================= */
+
+.nav-item.active {
     color: var(--primary);
-
-    font-size: 20px;
-    font-weight: 700;
+    background: rgba(15, 111, 92, 0.08);
 }
 
-@media (max-width: 380px) {
+.nav-item.active::before {
+    content: "";
 
-    .app {
-        padding-bottom: 100px;
-    }
+    position: absolute;
 
-    .brand {
-        font-size: 24px;
-    }
+    top: 2px;
 
-    .ayah,
-    .dhikr {
-        font-size: 17px;
+    width: 22px;
+    height: 3px;
+
+    border-radius: 20px;
+
+    background: var(--accent);
+}
+
+/* =========================================
+   تأثير بسيط للأيقونة النشطة
+========================================= */
+
+.nav-item.active .nav-icon {
+    transform: translateY(1px);
+}
+
+/* =========================================
+   الوضع الداكن
+========================================= */
+
+body.dark-mode {
+    --background: #101010;
+    --card: #1c1c1e;
+    --text: #f5f5f7;
+    --muted: #98989d;
+    --border: #2c2c2e;
+}
+
+body.dark-mode .bottom-nav {
+    background: rgba(28, 28, 30, 0.94);
+    border-color: rgba(255, 255, 255, 0.07);
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.35);
+}
+
+body.dark-mode .nav-item.active {
+    color: #7cc8b5;
+    background: rgba(124, 200, 181, 0.08);
+}
+
+body.dark-mode .nav-item.active::before {
+    background: #d8bf67;
+}
+
+body.dark-mode .plain-header .brand {
+    color: #d8bf67;
+}
+
+/* =========================================
+   الشاشات الصغيرة جدًا
+========================================= */
+
+@media (max-width: 360px) {
+
+    .bottom-nav {
+        right: 7px;
+        left: 7px;
+        bottom: 7px;
+
+        height: 70px;
+
+        border-radius: 22px;
     }
 
     .nav-item {
-        min-width: 52px;
-        font-size: 10px;
+        height: 58px;
+    }
+
+    .nav-item::after {
+        font-size: 9px;
+    }
+
+    .nav-item .nav-icon {
+        transform: scale(0.9);
+    }
+}
+
+/* =========================================
+   الشاشات الأكبر
+========================================= */
+
+@media (min-width: 700px) {
+
+    .bottom-nav {
+        max-width: 680px;
+        margin: 0 auto;
+
+        right: 0;
+        left: 0;
     }
 }
