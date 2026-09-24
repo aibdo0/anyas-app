@@ -1,937 +1,1529 @@
-/* =========================
-   أنياس - التصميم الأساسي
-========================= */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap');
 
 :root {
+  --green-950: #032a24;
+  --green-900: #063b32;
+  --green-800: #0a5144;
+  --green-700: #116455;
 
-  --primary: #0f6b4f;
-  --primary-dark: #0a503b;
-  --gold: #c9a227;
+  --gold: #c9a45d;
+  --gold-light: #e5cd92;
 
-  --bg: #f5f7f6;
-  --card: #ffffff;
+  --cream: #f8f5ed;
+  --cream-dark: #eee8d9;
 
-  --text: #17221e;
-  --muted: #718079;
-  --border: #e5ebe8;
+  --white: #ffffff;
 
-  --nav-height: 70px;
+  --text: #173b34;
+  --muted: #77837e;
+
+  --border: rgba(6, 59, 50, .09);
+
+  --shadow: 0 12px 35px rgba(3, 42, 36, .07);
+
+  --radius-lg: 28px;
+  --radius-md: 20px;
 }
-
 
 * {
-
   box-sizing: border-box;
-
   margin: 0;
   padding: 0;
-
 }
-
 
 html {
-
-  direction: rtl;
-
   scroll-behavior: smooth;
-
 }
 
-
 body {
+  min-height: 100vh;
 
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Tahoma,
-    Arial,
-    sans-serif;
-
-  background: var(--bg);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(201,164,93,.12),
+      transparent 28%
+    ),
+    var(--cream);
 
   color: var(--text);
 
-  min-height: 100vh;
+  font-family: "Cairo", sans-serif;
 
+  overflow-x: hidden;
+}
+
+button {
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button,
+input {
   -webkit-tap-highlight-color: transparent;
-
 }
 
-
-#app {
-
+svg {
   width: 100%;
-
-  max-width: 600px;
-
-  min-height: 100vh;
-
-  margin: 0 auto;
-
-  background: var(--bg);
-
-  position: relative;
-
-}
-
-
-/* =========================
-   الهيدر
-========================= */
-
-#appHeader {
-
-  height: 64px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background: var(--card);
-
-  border-bottom: 1px solid var(--border);
-
-  position: sticky;
-
-  top: 0;
-
-  z-index: 100;
-
-}
-
-
-#appHeader h1 {
-
-  font-size: 22px;
-
-  font-weight: 800;
-
-  color: var(--primary);
-
-}
-
-
-/* =========================
-   المحتوى
-========================= */
-
-#mainContent {
-
-  padding: 16px;
-
-  padding-bottom:
-    calc(var(--nav-height) + 25px);
-
-}
-
-
-/* =========================
-   الصفحات
-========================= */
-
-.page {
-
-  display: none;
-
-  animation:
-    pageFade 0.2s ease;
-
-}
-
-
-.page.active {
-
-  display: block;
-
-}
-
-
-@keyframes pageFade {
-
-  from {
-
-    opacity: 0;
-
-    transform:
-      translateY(5px);
-
-  }
-
-  to {
-
-    opacity: 1;
-
-    transform:
-      translateY(0);
-
-  }
-
-}
-
-
-/* =========================
-   شريط التنقل
-========================= */
-
-#bottomNavigation {
-
-  position: fixed;
-
-  bottom: 0;
-
-  right: 0;
-
-  left: 0;
-
-  width: 100%;
-
-  max-width: 600px;
-
-  margin: 0 auto;
-
-  height: var(--nav-height);
-
-  background:
-    rgba(255,255,255,.96);
-
-  backdrop-filter:
-    blur(12px);
-
-  -webkit-backdrop-filter:
-    blur(12px);
-
-  border-top:
-    1px solid var(--border);
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content:
-    space-around;
-
-  z-index: 1000;
-
-}
-
-
-#bottomNavigation button {
-
-  flex: 1;
-
   height: 100%;
 
-  border: 0;
-
-  background: transparent;
-
-  color: var(--muted);
-
-  font-family: inherit;
-
-  font-size: 11px;
-
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition:
-    color .2s ease,
-    transform .2s ease;
-
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 
-#bottomNavigation button:active {
+/* ================= BACKGROUND ================= */
 
-  transform:
-    scale(.94);
+.background-pattern {
+  position: fixed;
+  inset: 0;
 
+  pointer-events: none;
+
+  opacity: .025;
+
+  background-image:
+    linear-gradient(30deg, var(--green-900) 12%, transparent 12.5%, transparent 87%, var(--green-900) 87.5%),
+    linear-gradient(150deg, var(--green-900) 12%, transparent 12.5%, transparent 87%, var(--green-900) 87.5%),
+    linear-gradient(30deg, var(--green-900) 12%, transparent 12.5%, transparent 87%, var(--green-900) 87.5%),
+    linear-gradient(150deg, var(--green-900) 12%, transparent 12.5%, transparent 87%, var(--green-900) 87.5%);
+
+  background-size: 42px 73px;
+
+  z-index: -1;
 }
 
 
-#bottomNavigation button.active {
+/* ================= APP ================= */
 
-  color: var(--primary);
+.app {
+  width: min(100%, 620px);
 
+  min-height: 100vh;
+
+  margin: auto;
+
+  padding-bottom: 100px;
 }
 
 
-#bottomNavigation button span {
+/* ================= HEADER ================= */
 
+.top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 17px 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+}
+
+.brand-mark {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--gold-light),
+      var(--gold)
+    );
+
+  color: var(--green-950);
+
+  box-shadow:
+    0 8px 22px rgba(170, 130, 55, .18);
+}
+
+.brand-mark svg {
+  width: 27px;
+  height: 27px;
+
+  stroke-width: 1.5;
+}
+
+.brand-text h1 {
+  font-family: "Amiri", serif;
+
+  font-size: 29px;
+  line-height: 1;
+
+  color: var(--green-950);
+}
+
+.brand-text span {
   display: block;
 
-  font-size: 20px;
+  margin-top: 4px;
 
-  line-height: 22px;
+  font-size: 9px;
 
-  margin-bottom: 2px;
-
+  color: var(--muted);
 }
 
+.theme-button {
+  width: 43px;
+  height: 43px;
 
-/* =========================
-   البطاقات
-========================= */
+  display: grid;
+  place-items: center;
 
-.card {
+  border-radius: 15px;
 
-  background: var(--card);
-
-  border-radius: 18px;
-
-  padding: 16px;
+  background: rgba(255,255,255,.78);
 
   border: 1px solid var(--border);
 
-  box-shadow:
-    0 5px 20px
-    rgba(0,0,0,.03);
+  color: var(--green-900);
 
+  box-shadow: 0 5px 20px rgba(3,42,36,.04);
+}
+
+.theme-button svg {
+  width: 20px;
+  height: 20px;
 }
 
 
-/* =========================
-   الوضع الليلي
-========================= */
+/* ================= PAGE ================= */
 
-body.dark {
+.page {
+  display: none;
 
-  --bg: #101614;
+  padding: 0 17px;
 
-  --card: #18201d;
+  animation: pageIn .3s ease;
+}
 
-  --text: #f1f5f3;
+.page.active {
+  display: block;
+}
 
-  --muted: #9ba9a3;
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
 
-  --border: #29332f;
-
-  --primary: #36a87d;
-
-  --primary-dark: #278460;
-
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
-body.dark #bottomNavigation {
+/* ================= HERO ================= */
+
+.hero {
+  position: relative;
+
+  min-height: 155px;
+
+  overflow: hidden;
+
+  padding: 25px 23px;
+
+  border-radius: var(--radius-lg);
 
   background:
-    rgba(24,32,29,.96);
+    linear-gradient(
+      135deg,
+      var(--green-950),
+      var(--green-800)
+    );
 
-}
-
-
-/* =========================
-   الرئيسية
-========================= */
-
-.home-welcome {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 14px;
-
-  padding:
-    20px 4px 18px;
-
-}
-
-
-.welcome-icon {
-
-  width: 54px;
-
-  height: 54px;
-
-  border-radius: 18px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  background: var(--primary);
-
-  color: white;
-
-  font-size: 27px;
+  color: var(--white);
 
   box-shadow:
-    0 8px 20px
-    rgba(15,107,79,.18);
+    0 20px 45px rgba(3, 59, 50, .18);
+}
 
+.hero::before,
+.hero::after {
+  content: "";
+
+  position: absolute;
+
+  border: 1px solid rgba(229,205,146,.12);
+
+  border-radius: 50%;
+}
+
+.hero::before {
+  width: 190px;
+  height: 190px;
+
+  left: -105px;
+  bottom: -110px;
+}
+
+.hero::after {
+  width: 125px;
+  height: 125px;
+
+  left: -72px;
+  bottom: -75px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.eyebrow {
+  font-size: 10px;
+
+  color: rgba(255,255,255,.62);
+}
+
+.hero h2 {
+  margin-top: 10px;
+
+  font-size: 22px;
+
+  font-weight: 500;
+}
+
+.hero h2 strong {
+  color: var(--gold-light);
+
+  font-weight: 800;
+}
+
+.hero p {
+  margin-top: 6px;
+
+  font-size: 11px;
+
+  color: rgba(255,255,255,.65);
+}
+
+.hero-ornament {
+  position: absolute;
+
+  width: 145px;
+  height: 145px;
+
+  left: 7px;
+  top: 5px;
+
+  color: rgba(229,205,146,.11);
+}
+
+.hero-ornament svg {
+  stroke-width: .8;
 }
 
 
-.welcome-small {
+/* ================= HIJRI ================= */
 
-  color: var(--muted);
-
-  font-size: 12px;
-
-}
-
-
-.home-welcome h2 {
-
-  color: var(--primary);
-
-  font-size: 25px;
-
-  margin-top: 2px;
-
-}
-
-
-.home-welcome p {
-
-  color: var(--muted);
-
-  font-size: 12px;
-
-  margin-top: 2px;
-
-}
-
-
-.home-date {
-
+.hijri-card {
   display: flex;
-
   align-items: center;
 
   gap: 12px;
 
+  margin-top: 12px;
+
+  padding: 14px 16px;
+
+  background: rgba(255,255,255,.82);
+
+  border: 1px solid var(--border);
+
+  border-radius: 20px;
+
+  box-shadow: var(--shadow);
+}
+
+.hijri-symbol {
+  width: 43px;
+  height: 43px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background: rgba(201,164,93,.13);
+
+  color: var(--gold);
+}
+
+.hijri-symbol svg {
+  width: 24px;
+  height: 24px;
+
+  fill: currentColor;
+  stroke: none;
+}
+
+.hijri-card span {
+  display: block;
+
+  font-size: 9px;
+
+  color: var(--muted);
+}
+
+.hijri-card strong {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 14px;
+
+  color: var(--green-900);
+}
+
+
+/* ================= NEXT PRAYER ================= */
+
+.next-prayer {
+  position: relative;
+
+  overflow: hidden;
+
+  margin-top: 14px;
+
+  padding: 22px;
+
+  border-radius: var(--radius-lg);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--green-900),
+      var(--green-700)
+    );
+
+  color: white;
+
+  box-shadow:
+    0 20px 45px rgba(3, 59, 50, .19);
+}
+
+.next-prayer::before {
+  content: "";
+
+  position: absolute;
+
+  width: 190px;
+  height: 190px;
+
+  left: -100px;
+  top: -105px;
+
+  border: 1px solid rgba(229,205,146,.12);
+
+  border-radius: 50%;
+}
+
+.next-prayer-top {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.next-prayer-top span {
+  font-size: 10px;
+
+  color: rgba(255,255,255,.58);
+}
+
+.next-prayer-top h2 {
+  margin-top: 3px;
+
+  font-size: 22px;
+}
+
+.mosque-mark {
+  width: 51px;
+  height: 51px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 17px;
+
+  background: rgba(255,255,255,.07);
+
+  color: var(--gold-light);
+}
+
+.mosque-mark svg {
+  width: 31px;
+  height: 31px;
+}
+
+.next-time {
+  position: relative;
+
+  margin-top: 14px;
+
+  font-size: 43px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  color: var(--gold-light);
+}
+
+.countdown {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 9px;
+
+  font-size: 10px;
+
+  color: rgba(255,255,255,.52);
+}
+
+.countdown strong {
+  color: white;
+
+  font-size: 13px;
+}
+
+.location {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  margin-top: 17px;
+
+  font-size: 9px;
+
+  color: rgba(255,255,255,.52);
+}
+
+.location svg {
+  width: 14px;
+  height: 14px;
+}
+
+
+/* ================= SECTIONS ================= */
+
+.section {
+  margin-top: 27px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+
   margin-bottom: 12px;
+}
 
+.section-heading span {
+  display: block;
+
+  color: var(--gold);
+
+  font-size: 9px;
+}
+
+.section-heading h2 {
+  margin-top: 1px;
+
+  font-size: 18px;
+
+  color: var(--green-950);
+}
+
+.more-button {
+  background: transparent;
+
+  color: var(--green-700);
+
+  font-size: 10px;
 }
 
 
-.date-icon {
+/* ================= PRAYER GRID ================= */
 
-  font-size: 23px;
+.prayer-grid {
+  display: grid;
 
+  grid-template-columns: repeat(5, 1fr);
+
+  gap: 7px;
+}
+
+.prayer-card {
+  padding: 12px 4px;
+
+  text-align: center;
+
+  background: rgba(255,255,255,.86);
+
+  border: 1px solid var(--border);
+
+  border-radius: 19px;
+
+  box-shadow: 0 8px 20px rgba(3,42,36,.035);
+
+  transition: .2s;
+}
+
+.prayer-card.active {
+  transform: translateY(-3px);
+
+  background: var(--green-900);
+
+  color: white;
+
+  box-shadow:
+    0 12px 25px rgba(3,59,50,.18);
+}
+
+.prayer-icon {
+  width: 25px;
+  height: 25px;
+
+  margin: auto auto 5px;
+
+  color: var(--gold);
+}
+
+.prayer-card span {
+  display: block;
+
+  font-size: 8px;
+
+  color: var(--muted);
+}
+
+.prayer-card.active span {
+  color: rgba(255,255,255,.62);
+}
+
+.prayer-card strong {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 11px;
 }
 
 
-.section-label {
+/* ================= QUICK ACCESS ================= */
+
+.quick-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 9px;
+}
+
+.quick-card {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  width: 100%;
+
+  padding: 14px 11px;
+
+  text-align: right;
+
+  background: rgba(255,255,255,.86);
+
+  border: 1px solid var(--border);
+
+  border-radius: 21px;
+
+  color: var(--text);
+
+  box-shadow: 0 8px 22px rgba(3,42,36,.035);
+
+  transition: .2s;
+}
+
+.quick-card:active {
+  transform: scale(.975);
+}
+
+.quick-icon {
+  width: 41px;
+  height: 41px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background: rgba(6,59,50,.075);
+
+  color: var(--green-800);
+}
+
+.quick-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.quick-card strong {
+  display: block;
+
+  font-size: 12px;
+}
+
+.quick-card span {
+  display: block;
+
+  margin-top: 1px;
+
+  font-size: 8px;
+
+  color: var(--muted);
+}
+
+.quick-card .arrow {
+  width: 15px;
+  height: 15px;
+
+  margin-right: auto;
+
+  color: var(--gold);
+}
+
+
+/* ================= DHIKR ================= */
+
+.dhikr-card {
+  position: relative;
+
+  overflow: hidden;
+
+  margin-top: 26px;
+
+  padding: 22px 20px;
+
+  border-radius: 27px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fbf6e9,
+      #efe4ca
+    );
+
+  border: 1px solid rgba(201,164,93,.24);
+}
+
+.dhikr-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 150px;
+  height: 150px;
+
+  left: -100px;
+  top: -100px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(201,164,93,.2);
+}
+
+.dhikr-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dhikr-top > span {
+  font-size: 10px;
+
+  color: var(--gold);
+
+  font-weight: 700;
+}
+
+.ornament-line {
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+}
+
+.ornament-line i {
+  display: block;
+
+  width: 4px;
+  height: 4px;
+
+  transform: rotate(45deg);
+
+  background: var(--gold);
+}
+
+.dhikr-card p {
+  position: relative;
+
+  margin-top: 14px;
+
+  font-family: "Amiri", serif;
+
+  font-size: 22px;
+
+  line-height: 1.85;
+
+  color: var(--green-950);
+}
+
+.dhikr-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-top: 13px;
+}
+
+.dhikr-footer small {
+  font-size: 8px;
+
+  color: #8a806d;
+}
+
+.dhikr-footer button {
+  padding: 8px 13px;
+
+  border-radius: 12px;
+
+  background: var(--green-900);
+
+  color: white;
+
+  font-size: 9px;
+}
+
+
+/* ================= AYAH ================= */
+
+.ayah-card {
+  margin-top: 12px;
+
+  padding: 21px 17px;
+
+  text-align: center;
+
+  border-radius: 25px;
+
+  background: var(--green-950);
+
+  color: white;
+}
+
+.ayah-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  color: var(--gold-light);
+
+  font-size: 10px;
+}
+
+.ayah-heading span {
+  width: 18px;
+  height: 1px;
+
+  background: rgba(229,205,146,.35);
+}
+
+.ayah-card p {
+  margin-top: 13px;
+
+  font-family: "Amiri", serif;
+
+  font-size: 21px;
+
+  line-height: 1.8;
+}
+
+.ayah-card small {
+  display: block;
+
+  margin-top: 6px;
+
+  color: rgba(255,255,255,.42);
+
+  font-size: 8px;
+}
+
+
+/* ================= PAGE HEADER ================= */
+
+.page-header {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 12px 0 22px;
+}
+
+.page-header span {
+  display: block;
+
+  color: var(--gold);
+
+  font-size: 9px;
+}
+
+.page-header h2 {
+  margin-top: 2px;
+
+  font-size: 22px;
+
+  color: var(--green-950);
+}
+
+.back-button {
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  border-radius: 15px;
+
+  background: white;
+
+  color: var(--green-900);
+
+  box-shadow: var(--shadow);
+}
+
+.back-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* ================= FULL PRAYER ================= */
+
+.full-prayer-list {
+  display: grid;
+
+  gap: 9px;
+}
+
+.full-prayer {
+  display: flex;
+  align-items: center;
+
+  padding: 14px;
+
+  background: rgba(255,255,255,.88);
+
+  border: 1px solid var(--border);
+
+  border-radius: 21px;
+
+  box-shadow: 0 8px 20px rgba(3,42,36,.035);
+}
+
+.full-icon {
+  width: 45px;
+  height: 45px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  margin-left: 12px;
+
+  border-radius: 15px;
+
+  background: rgba(201,164,93,.12);
+
+  color: var(--gold);
+}
+
+.full-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.full-prayer > div:nth-child(2) {
+  flex: 1;
+}
+
+.full-prayer strong {
+  display: block;
+
+  font-size: 13px;
+}
+
+.full-prayer span {
+  display: block;
+
+  margin-top: 1px;
+
+  font-size: 8px;
+
+  color: var(--muted);
+}
+
+.full-prayer > b {
+  font-size: 16px;
+
+  color: var(--green-900);
+}
+
+
+/* ================= PLACEHOLDER ================= */
+
+.placeholder {
+  margin-top: 55px;
+
+  padding: 35px 20px;
+
+  text-align: center;
+
+  background: rgba(255,255,255,.72);
+
+  border: 1px solid var(--border);
+
+  border-radius: 28px;
+}
+
+.placeholder-mark {
+  width: 72px;
+  height: 72px;
+
+  display: grid;
+  place-items: center;
+
+  margin: auto;
+
+  border-radius: 24px;
+
+  background: var(--green-900);
+
+  color: var(--gold-light);
+}
+
+.placeholder-mark svg {
+  width: 35px;
+  height: 35px;
+}
+
+.placeholder h2 {
+  margin-top: 16px;
+
+  font-size: 20px;
+}
+
+.placeholder p {
+  margin-top: 7px;
 
   color: var(--muted);
 
   font-size: 11px;
+}
 
-  margin-bottom: 3px;
+.placeholder strong {
+  display: inline-block;
 
+  margin-top: 14px;
+
+  padding: 7px 14px;
+
+  border-radius: 11px;
+
+  background: rgba(201,164,93,.13);
+
+  color: var(--gold);
+
+  font-size: 10px;
 }
 
 
-#homeHijriDate {
+/* ================= DUA ================= */
 
-  font-size: 15px;
+.dua-card {
+  padding: 27px 21px;
 
-  font-weight: 800;
+  text-align: center;
 
-}
-
-
-/* =========================
-   الصلاة القادمة في الرئيسية
-========================= */
-
-.home-next {
+  border-radius: 27px;
 
   background:
     linear-gradient(
       145deg,
-      var(--primary),
-      var(--primary-dark)
+      #fbf6e9,
+      #eee3ca
     );
 
-  color: white;
-
-  border: 0;
-
-  margin-bottom: 12px;
-
+  border: 1px solid rgba(201,164,93,.22);
 }
 
+.dua-mark {
+  font-family: "Amiri", serif;
 
-.next-top {
+  color: var(--gold);
 
-  display: flex;
-
-  justify-content:
-    space-between;
-
-  align-items: center;
-
-  font-size: 12px;
-
-  opacity: .9;
-
+  font-size: 45px;
 }
 
+.dua-card p {
+  margin-top: 8px;
 
-.next-label {
-
-  opacity: .75;
-
-}
-
-
-.next-main {
-
-  display: flex;
-
-  justify-content:
-    space-between;
-
-  align-items: end;
-
-  gap: 10px;
-
-  margin-top: 12px;
-
-}
-
-
-.home-next-name {
+  font-family: "Amiri", serif;
 
   font-size: 23px;
 
-  font-weight: 800;
+  line-height: 1.9;
 
+  color: var(--green-950);
+}
+
+.dua-card small {
+  display: block;
+
+  margin-top: 10px;
+
+  color: var(--muted);
+
+  font-size: 9px;
 }
 
 
-.home-next-time {
+/* ================= QIBLA ================= */
 
-  font-size: 13px;
-
-  opacity: .85;
-
-  margin-top: 3px;
-
-}
-
-
-.home-countdown {
-
-  font-size: 19px;
-
-  font-weight: 800;
-
-  direction: ltr;
-
-  white-space: nowrap;
-
-}
-
-
-/* =========================
-   الاختصارات
-========================= */
-
-.quick-grid {
-
-  display: grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap: 10px;
-
-  margin-bottom: 12px;
-
-}
-
-
-.quick-card {
-
-  border:
-    1px solid var(--border);
-
-  background: var(--card);
-
-  color: var(--text);
-
-  border-radius: 18px;
-
-  padding: 16px 12px;
+.qibla-card {
+  padding: 30px 20px;
 
   text-align: center;
 
-  font-family: inherit;
+  border-radius: 28px;
 
-  cursor: pointer;
+  background: rgba(255,255,255,.8);
 
-  box-shadow:
-    0 5px 20px
-    rgba(0,0,0,.03);
+  border: 1px solid var(--border);
 
+  box-shadow: var(--shadow);
 }
 
+.compass {
+  position: relative;
 
-.quick-card:active {
+  width: 210px;
+  height: 210px;
 
-  transform:
-    scale(.97);
+  display: grid;
+  place-items: center;
 
+  margin: 10px auto 25px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(201,164,93,.08),
+      transparent 65%
+    );
+
+  border: 1px solid rgba(6,59,50,.1);
 }
 
+.compass-ring {
+  position: absolute;
 
-.quick-icon {
+  inset: 18px;
 
-  display: block;
+  border: 1px dashed rgba(6,59,50,.18);
 
-  font-size: 27px;
-
-  margin-bottom: 7px;
-
+  border-radius: 50%;
 }
 
+.kaaba {
+  width: 68px;
+  height: 68px;
 
-.quick-card > span:not(.quick-icon) {
+  display: grid;
+  place-items: center;
 
-  display: block;
-
-  font-weight: 800;
-
-  font-size: 14px;
-
+  color: var(--green-900);
 }
 
+.kaaba svg {
+  width: 55px;
+  height: 55px;
+}
 
-.quick-card small {
+.qibla-card h2 {
+  font-size: 20px;
+}
 
-  display: block;
+.qibla-card p {
+  margin-top: 6px;
 
   color: var(--muted);
 
   font-size: 10px;
-
-  margin-top: 4px;
-
 }
 
 
-/* =========================
-   ذكر اليوم وآية اليوم
-========================= */
+/* ================= SETTINGS ================= */
 
-.daily-card {
-
-  margin-bottom: 12px;
-
-  text-align: center;
-
-}
-
-
-.daily-title {
-
-  color: var(--primary);
-
-  font-size: 13px;
-
-  font-weight: 800;
-
-  margin-bottom: 10px;
-
-}
-
-
-.daily-card p {
-
-  font-size: 15px;
-
-  line-height: 2;
-
-}
-
-
-.daily-card small {
-
-  display: block;
-
-  color: var(--muted);
-
-  margin-top: 5px;
-
-}
-
-
-/* =========================
-   مواقيت الصلاة
-========================= */
-
-.prayer-header {
-
-  text-align: center;
-
-  margin-bottom: 16px;
-
-  background:
-    linear-gradient(
-      145deg,
-      var(--primary),
-      var(--primary-dark)
-    );
-
-  color: white;
-
-  border: none;
-
-}
-
-
-.location-title {
-
-  font-size: 12px;
-
-  opacity: .9;
-
-  margin-bottom: 18px;
-
-}
-
-
-.next-prayer-title {
-
-  font-size: 12px;
-
-  opacity: .8;
-
-}
-
-
-.next-prayer-name {
-
-  margin-top: 5px;
-
-  font-size: 22px;
-
-  font-weight: 800;
-
-}
-
-
-.prayer-countdown {
-
-  margin-top: 8px;
-
-  font-size: 30px;
-
-  font-weight: 800;
-
-  letter-spacing: 1px;
-
-}
-
-
-.prayer-times {
-
+.settings-list {
   display: grid;
 
-  grid-template-columns:
-    1fr 1fr;
+  gap: 8px;
+}
+
+.settings-title {
+  margin: 12px 4px 4px;
+
+  color: var(--gold);
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
 
   gap: 10px;
 
+  padding: 15px;
+
+  background: rgba(255,255,255,.86);
+
+  border: 1px solid var(--border);
+
+  border-radius: 19px;
 }
 
-
-.prayer-card {
-
-  background: var(--card);
-
-  border:
-    1px solid var(--border);
-
-  border-radius: 18px;
-
-  padding: 16px 10px;
-
-  text-align: center;
-
-  box-shadow:
-    0 5px 20px
-    rgba(0,0,0,.03);
-
-  transition:
-    transform .2s ease;
-
+.setting-item > div {
+  flex: 1;
 }
 
+.setting-item strong {
+  display: block;
 
-.prayer-card:active {
-
-  transform:
-    scale(.97);
-
+  font-size: 12px;
 }
 
+.setting-item span {
+  display: block;
 
-.prayer-icon {
+  margin-top: 2px;
 
-  font-size: 25px;
-
-  margin-bottom: 7px;
-
-}
-
-
-.prayer-name {
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  color: var(--text);
-
-}
-
-
-.prayer-time {
-
-  margin-top: 6px;
-
-  font-size: 18px;
-
-  font-weight: 800;
-
-  color: var(--primary);
-
-  direction: ltr;
-
-}
-
-
-/* =========================
-   الصفحات المؤقتة
-========================= */
-
-.empty-page {
-
-  text-align: center;
-
-  padding: 45px 20px;
-
-}
-
-
-.empty-page > div {
-
-  font-size: 42px;
-
-  margin-bottom: 10px;
-
-}
-
-
-.empty-page h2 {
-
-  color: var(--primary);
-
-  margin-bottom: 8px;
-
-}
-
-
-.empty-page p {
+  font-size: 8px;
 
   color: var(--muted);
-
-  font-size: 13px;
-
-  line-height: 1.8;
-
 }
 
 
-/* =========================
-   شاشات صغيرة
-========================= */
+/* ================= SWITCH ================= */
 
-@media (max-width: 380px) {
+.switch {
+  position: relative;
 
-  #mainContent {
+  width: 43px;
+  height: 24px;
 
-    padding: 12px;
+  flex-shrink: 0;
+}
 
-  }
+.switch input {
+  display: none;
+}
 
-  #appHeader h1 {
+.switch span {
+  position: absolute;
+  inset: 0;
 
-    font-size: 20px;
+  cursor: pointer;
 
-  }
+  border-radius: 30px;
 
+  background: #d7ddd9;
+
+  transition: .25s;
+}
+
+.switch span::before {
+  content: "";
+
+  position: absolute;
+
+  width: 18px;
+  height: 18px;
+
+  right: 3px;
+  top: 3px;
+
+  border-radius: 50%;
+
+  background: white;
+
+  transition: .25s;
+
+  box-shadow: 0 2px 5px rgba(0,0,0,.12);
+}
+
+.switch input:checked + span {
+  background: var(--green-800);
+}
+
+.switch input:checked + span::before {
+  transform: translateX(-19px);
 }
 
 
-@media (max-width: 360px) {
+/* ================= BOTTOM NAV ================= */
 
-  .home-next-name {
+.bottom-nav {
+  position: fixed;
 
+  z-index: 100;
+
+  bottom: 10px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: min(calc(100% - 20px), 585px);
+
+  display: grid;
+
+  grid-template-columns: repeat(5, 1fr);
+
+  padding: 8px 6px;
+
+  border-radius: 23px;
+
+  background: rgba(255,255,255,.94);
+
+  border: 1px solid rgba(6,59,50,.08);
+
+  box-shadow:
+    0 15px 40px rgba(3,42,36,.14);
+
+  backdrop-filter: blur(18px);
+}
+
+.nav-item {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3px;
+
+  min-height: 50px;
+
+  background: transparent;
+
+  color: #91a09b;
+
+  border-radius: 17px;
+
+  transition: .2s;
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-item small {
+  font-size: 7px;
+}
+
+.nav-item.active {
+  color: var(--green-900);
+
+  background: rgba(6,59,50,.07);
+}
+
+.nav-item.active::after {
+  content: "";
+
+  position: absolute;
+
+  bottom: 3px;
+
+  width: 4px;
+  height: 4px;
+
+  border-radius: 50%;
+
+  background: var(--gold);
+}
+
+
+/* ================= DARK MODE ================= */
+
+body.dark {
+  --cream: #071c18;
+  --cream-dark: #0c2822;
+
+  --text: #edf3ef;
+  --muted: #9baaa5;
+
+  --white: #102c26;
+
+  --border: rgba(255,255,255,.07);
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(201,164,93,.08),
+      transparent 30%
+    ),
+    #071c18;
+}
+
+body.dark .brand-text h1,
+body.dark .section-heading h2,
+body.dark .page-header h2 {
+  color: #edf3ef;
+}
+
+body.dark .theme-button,
+body.dark .hijri-card,
+body.dark .prayer-card,
+body.dark .quick-card,
+body.dark .full-prayer,
+body.dark .setting-item,
+body.dark .qibla-card,
+body.dark .placeholder,
+body.dark .back-button {
+  background: #102c26;
+  color: #edf3ef;
+}
+
+body.dark .prayer-card span,
+body.dark .quick-card span,
+body.dark .full-prayer span,
+body.dark .setting-item span {
+  color: #9baaa5;
+}
+
+body.dark .full-prayer > b {
+  color: var(--gold-light);
+}
+
+body.dark .bottom-nav {
+  background: rgba(10,38,32,.95);
+}
+
+body.dark .nav-item {
+  color: #70817b;
+}
+
+body.dark .nav-item.active {
+  color: var(--gold-light);
+
+  background: rgba(229,205,146,.07);
+}
+
+body.dark .hijri-card strong {
+  color: var(--gold-light);
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 390px) {
+
+  .hero {
+    min-height: 145px;
+
+    padding: 22px 19px;
+  }
+
+  .hero h2 {
     font-size: 20px;
-
   }
 
-  .home-countdown {
-
-    font-size: 16px;
-
+  .next-prayer {
+    padding: 19px;
   }
 
-  .quick-card {
-
-    padding: 13px 8px;
-
+  .next-time {
+    font-size: 38px;
   }
 
-  .prayer-times {
-
-    gap: 8px;
-
+  .prayer-grid {
+    gap: 5px;
   }
 
   .prayer-card {
-
-    padding: 13px 8px;
-
+    padding: 10px 3px;
   }
 
-  .prayer-icon {
-
-    font-size: 22px;
-
+  .quick-grid {
+    gap: 7px;
   }
 
-  .prayer-time {
-
-    font-size: 16px;
-
+  .quick-card {
+    padding: 12px 9px;
   }
 
-  .next-prayer-name {
+  .quick-icon {
+    width: 37px;
+    height: 37px;
+  }
 
+  .dhikr-card p {
     font-size: 20px;
-
   }
 
-  .prayer-countdown {
-
-    font-size: 26px;
-
-  }
-
-  }
+   }
