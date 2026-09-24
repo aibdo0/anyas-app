@@ -1,776 +1,827 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="theme-color" content="#073b32">
-  <meta name="description" content="أنياس - رفيقك في الصلاة والذكر">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
 
-  <title>أنياس | الصلاة والذكر</title>
+  <meta name="theme-color" content="#0d3b2e">
+
+  <title>أنياس</title>
 
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-  <div class="background-pattern"></div>
+  <div class="app-shell">
 
-  <div class="app">
+    <!-- الخلفية الزخرفية -->
+    <div class="islamic-pattern"></div>
 
-    <!-- HEADER -->
-    <header class="top-header">
+    <!-- ================= HEADER ================= -->
+    <header class="app-header">
 
-      <div class="brand">
-        <div class="brand-mark">
-          <svg viewBox="0 0 64 64" aria-hidden="true">
-            <path d="M38 10c-13 2-22 13-22 26 0 12 9 20 20 20 7 0 13-3 17-8-3 2-7 3-11 3-12 0-21-9-21-21 0-8 4-15 11-20 2-1 4-2 6-2z"/>
-          </svg>
+      <div class="header-top">
+
+        <div>
+          <div class="app-name">أنياس</div>
+          <div class="app-subtitle">رفيقك في يومك</div>
         </div>
 
-        <div class="brand-text">
-          <h1>أنياس</h1>
-          <span>رفيقك في الذكر والصلاة</span>
-        </div>
+        <button
+          class="icon-button"
+          id="themeButton"
+          type="button"
+          aria-label="تغيير المظهر"
+        >
+          <span class="theme-icon"></span>
+        </button>
+
       </div>
 
-      <button class="theme-button" id="themeButton" aria-label="تغيير المظهر">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
-        </svg>
-      </button>
+      <div class="hijri-card">
+
+        <div class="hijri-label">
+          التاريخ الهجري
+        </div>
+
+        <div
+          class="hijri-date"
+          id="hijriDate"
+        >
+          جاري الحساب...
+        </div>
+
+      </div>
 
     </header>
 
 
-    <!-- HOME -->
-    <main id="homePage" class="page active">
+    <!-- ================= MAIN ================= -->
+    <main class="app-main">
 
-      <!-- HERO -->
-      <section class="hero">
+      <!-- ===== HOME ===== -->
+      <section
+        class="page active"
+        id="homePage"
+      >
 
-        <div class="hero-pattern"></div>
+        <!-- الصلاة القادمة -->
+        <section class="next-prayer-card">
 
-        <div class="hero-content">
-          <span class="eyebrow">السلام عليكم ورحمة الله وبركاته</span>
+          <div class="next-prayer-top">
 
-          <h2>
-            أهلاً بك في
-            <strong>أنياس</strong>
-          </h2>
+            <div>
+              <div class="small-label">
+                الصلاة القادمة
+              </div>
+
+              <h1 id="nextPrayerName">
+                جاري الحساب
+              </h1>
+            </div>
+
+            <div class="next-prayer-time">
+              <span id="nextPrayerTime">--:--</span>
+            </div>
+
+          </div>
+
+          <div class="countdown-box">
+
+            <span class="countdown-label">
+              متبقي
+            </span>
+
+            <strong id="countdown">
+              --:--
+            </strong>
+
+          </div>
+
+          <div class="location-row">
+
+            <span class="location-pin"></span>
+
+            <span id="locationText">
+              جاري تحديد الموقع...
+            </span>
+
+          </div>
+
+        </section>
+
+
+        <!-- الصلوات المختصرة -->
+        <section class="section-block">
+
+          <div class="section-heading">
+
+            <div>
+              <span class="section-kicker">
+                اليوم
+              </span>
+
+              <h2>
+                مواقيت الصلاة
+              </h2>
+            </div>
+
+            <button
+              class="text-button"
+              data-page="prayerPage"
+              type="button"
+            >
+              عرض الكل
+            </button>
+
+          </div>
+
+
+          <div class="prayer-mini-grid">
+
+            <article
+              class="prayer-mini"
+              id="fajrCard"
+            >
+              <span class="prayer-name">الفجر</span>
+              <strong id="fajrTime">--:--</strong>
+            </article>
+
+            <article
+              class="prayer-mini"
+              id="dhuhrCard"
+            >
+              <span class="prayer-name">الظهر</span>
+              <strong id="dhuhrTime">--:--</strong>
+            </article>
+
+            <article
+              class="prayer-mini"
+              id="asrCard"
+            >
+              <span class="prayer-name">العصر</span>
+              <strong id="asrTime">--:--</strong>
+            </article>
+
+            <article
+              class="prayer-mini"
+              id="maghribCard"
+            >
+              <span class="prayer-name">المغرب</span>
+              <strong id="maghribTime">--:--</strong>
+            </article>
+
+            <article
+              class="prayer-mini"
+              id="ishaCard"
+            >
+              <span class="prayer-name">العشاء</span>
+              <strong id="ishaTime">--:--</strong>
+            </article>
+
+          </div>
+
+        </section>
+
+
+        <!-- الوصول السريع -->
+        <section class="section-block">
+
+          <div class="section-heading">
+
+            <div>
+              <span class="section-kicker">
+                اختصارات
+              </span>
+
+              <h2>
+                الوصول السريع
+              </h2>
+            </div>
+
+          </div>
+
+
+          <div class="quick-grid">
+
+            <button
+              class="quick-card"
+              data-page="adhkarPage"
+              type="button"
+            >
+              <span class="quick-icon adhkar-icon"></span>
+
+              <span>
+                <strong>الأذكار</strong>
+                <small>أذكار اليوم</small>
+              </span>
+
+              <span class="arrow">‹</span>
+            </button>
+
+
+            <button
+              class="quick-card"
+              data-page="duasPage"
+              type="button"
+            >
+              <span class="quick-icon dua-icon"></span>
+
+              <span>
+                <strong>الأدعية</strong>
+                <small>أدعية مختارة</small>
+              </span>
+
+              <span class="arrow">‹</span>
+            </button>
+
+
+            <button
+              class="quick-card"
+              type="button"
+            >
+              <span class="quick-icon qibla-icon"></span>
+
+              <span>
+                <strong>القبلة</strong>
+                <small>اتجاه القبلة</small>
+              </span>
+
+              <span class="arrow">‹</span>
+            </button>
+
+
+            <button
+              class="quick-card"
+              type="button"
+            >
+              <span class="quick-icon prayer-icon"></span>
+
+              <span>
+                <strong>الصلوات</strong>
+                <small>مواقيت اليوم</small>
+              </span>
+
+              <span class="arrow">‹</span>
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <!-- ذكر اليوم -->
+        <section class="dhikr-card">
+
+          <div class="dhikr-header">
+
+            <div>
+              <span class="section-kicker">
+                ذكر اليوم
+              </span>
+
+              <h2>
+                لا تنسَ ذكرك
+              </h2>
+            </div>
+
+            <span class="dhikr-mark"></span>
+
+          </div>
+
+          <p id="dailyDhikr">
+            سبحان الله وبحمده، سبحان الله العظيم
+          </p>
+
+          <button
+            id="newDhikrButton"
+            class="dhikr-button"
+            type="button"
+          >
+            ذكر آخر
+          </button>
+
+        </section>
+
+
+        <!-- آية اليوم -->
+        <section class="ayah-card">
+
+          <span class="section-kicker">
+            آية اليوم
+          </span>
 
           <p>
-            اجعل يومك عامرًا بالصلاة والذكر.
+            إِنَّ مَعَ الْعُسْرِ يُسْرًا
           </p>
-        </div>
 
-        <div class="hero-ornament">
-          <svg viewBox="0 0 160 160">
-            <circle cx="80" cy="80" r="58"></circle>
-            <circle cx="80" cy="80" r="45"></circle>
-            <path d="M80 17v126M17 80h126M35 35l90 90M125 35l-90 90"></path>
-          </svg>
-        </div>
+          <small>
+            سورة الشرح
+          </small>
+
+        </section>
 
       </section>
 
 
-      <!-- HIJRI DATE -->
-      <section class="hijri-card">
+      <!-- ===== PRAYER PAGE ===== -->
+      <section
+        class="page"
+        id="prayerPage"
+      >
 
-        <div class="hijri-symbol">
-          <svg viewBox="0 0 32 32">
-            <path d="M20 5c-7 1-12 7-12 14 0 6 5 10 10 10 4 0 7-2 9-5-2 1-4 2-6 2-6 0-11-5-11-11 0-4 2-8 6-10 1 0 2 0 4 0z"/>
-          </svg>
-        </div>
+        <div class="page-title">
 
-        <div>
-          <span>التاريخ الهجري</span>
-          <strong id="hijriDate">جارٍ الحساب...</strong>
-        </div>
-
-      </section>
-
-
-      <!-- NEXT PRAYER -->
-      <section class="next-prayer">
-
-        <div class="next-prayer-pattern"></div>
-
-        <div class="next-prayer-top">
-
-          <div>
-            <span>الصلاة القادمة</span>
-            <h2 id="nextPrayerName">جاري الحساب...</h2>
-          </div>
-
-          <div class="mosque-mark">
-            <svg viewBox="0 0 48 48">
-              <path d="M8 40h32M11 40V23l13-9 13 9v17M17 40V29h14v11M21 29v-8h6v8"/>
-              <path d="M24 14V7M21 9h6"/>
-            </svg>
-          </div>
-
-        </div>
-
-        <div class="next-time" id="nextPrayerTime">--:--</div>
-
-        <div class="countdown">
-          <span>متبقي</span>
-          <strong id="countdown">--:--:--</strong>
-        </div>
-
-        <div class="location">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/>
-            <circle cx="12" cy="9" r="2.5"/>
-          </svg>
-
-          <span id="locationText">جارٍ تحديد موقعك...</span>
-        </div>
-
-      </section>
-
-
-      <!-- PRAYER TIMES -->
-      <section class="section">
-
-        <div class="section-heading">
+          <span class="title-decoration"></span>
 
           <div>
             <span>اليوم</span>
-            <h2>مواقيت الصلاة</h2>
+            <h1>مواقيت الصلاة</h1>
           </div>
-
-          <button class="more-button" data-page="prayer">
-            عرض الكل
-          </button>
 
         </div>
 
-        <div class="prayer-grid">
 
-          <div class="prayer-card" data-prayer="Fajr">
-            <div class="prayer-icon">
-              <svg viewBox="0 0 32 32">
-                <path d="M6 24h20M9 24a7 7 0 0 1 14 0"/>
-                <path d="M16 5v4M7 9l3 3M25 9l-3 3"/>
-              </svg>
-            </div>
-            <span>الفجر</span>
-            <strong id="fajrTime">--:--</strong>
+        <div class="prayer-location-card">
+
+          <span class="location-pin"></span>
+
+          <div>
+            <small>الموقع الحالي</small>
+            <strong id="prayerLocation">
+              يتم تحديد الموقع...
+            </strong>
           </div>
 
-          <div class="prayer-card" data-prayer="Dhuhr">
-            <div class="prayer-icon">
-              <svg viewBox="0 0 32 32">
-                <circle cx="16" cy="16" r="5"/>
-                <path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/>
-              </svg>
-            </div>
-            <span>الظهر</span>
-            <strong id="dhuhrTime">--:--</strong>
-          </div>
+        </div>
 
-          <div class="prayer-card" data-prayer="Asr">
-            <div class="prayer-icon">
-              <svg viewBox="0 0 32 32">
-                <path d="M5 23h22"/>
-                <path d="M9 23a7 7 0 0 1 14 0"/>
-                <path d="M16 6v5"/>
-              </svg>
-            </div>
-            <span>العصر</span>
-            <strong id="asrTime">--:--</strong>
-          </div>
 
-          <div class="prayer-card" data-prayer="Maghrib">
-            <div class="prayer-icon">
-              <svg viewBox="0 0 32 32">
-                <path d="M6 24h20"/>
-                <path d="M9 24a7 7 0 0 1 14 0"/>
-                <path d="M7 8l3 3M25 8l-3 3M16 5v4"/>
-              </svg>
-            </div>
-            <span>المغرب</span>
-            <strong id="maghribTime">--:--</strong>
-          </div>
+        <div class="prayer-list">
 
-          <div class="prayer-card" data-prayer="Isha">
-            <div class="prayer-icon">
-              <svg viewBox="0 0 32 32">
-                <path d="M21 6c-6 1-10 6-10 12 0 5 4 9 9 9 3 0 6-1 8-4-1 1-3 2-5 2-5 0-9-4-9-9 0-4 2-8 7-10z"/>
-              </svg>
+          <article
+            class="prayer-row"
+            id="fullFajr"
+          >
+            <div class="prayer-row-name">
+              <span class="prayer-symbol"></span>
+              <span>الفجر</span>
             </div>
-            <span>العشاء</span>
-            <strong id="ishaTime">--:--</strong>
-          </div>
+
+            <strong id="fullFajrTime">--:--</strong>
+          </article>
+
+
+          <article class="prayer-row">
+
+            <div class="prayer-row-name">
+              <span class="prayer-symbol"></span>
+              <span>الشروق</span>
+            </div>
+
+            <strong id="sunriseTime">--:--</strong>
+
+          </article>
+
+
+          <article
+            class="prayer-row"
+            id="fullDhuhr"
+          >
+
+            <div class="prayer-row-name">
+              <span class="prayer-symbol"></span>
+              <span>الظهر</span>
+            </div>
+
+            <strong id="fullDhuhrTime">--:--</strong>
+
+          </article>
+
+
+          <article
+            class="prayer-row"
+            id="fullAsr"
+          >
+
+            <div class="prayer-row-name">
+              <span class="prayer-symbol"></span>
+              <span>العصر</span>
+            </div>
+
+            <strong id="fullAsrTime">--:--</strong>
+
+          </article>
+
+
+          <article
+            class="prayer-row"
+            id="fullMaghrib"
+          >
+
+            <div class="prayer-row-name">
+              <span class="prayer-symbol"></span>
+              <span>المغرب</span>
+            </div>
+
+            <strong id="fullMaghribTime">--:--</strong>
+
+          </article>
+
+
+          <article
+            class="prayer-row"
+            id="fullIsha"
+          >
+
+            <div class="prayer-row-name">
+              <span class="prayer-symbol"></span>
+              <span>العشاء</span>
+            </div>
+
+            <strong id="fullIshaTime">--:--</strong>
+
+          </article>
 
         </div>
 
       </section>
 
 
-      <!-- QUICK ACCESS -->
-      <section class="section">
+      <!-- ===== ADHKAR PAGE ===== -->
+      <section
+        class="page"
+        id="adhkarPage"
+      >
 
-        <div class="section-heading">
-          <div>
-            <span>الوصول السريع</span>
-            <h2>ماذا تريد أن تفعل؟</h2>
-          </div>
-        </div>
+        <div class="page-title">
 
-        <div class="quick-grid">
-
-          <button class="quick-card" data-page="azkar">
-            <div class="quick-icon">
-              <svg viewBox="0 0 32 32">
-                <circle cx="16" cy="16" r="10"/>
-                <circle cx="16" cy="16" r="3"/>
-                <path d="M16 3v3M16 26v3M3 16h3M26 16h3"/>
-              </svg>
-            </div>
-
-            <div>
-              <strong>الأذكار</strong>
-              <span>حصن المسلم</span>
-            </div>
-
-            <svg class="arrow" viewBox="0 0 24 24">
-              <path d="M9 5l7 7-7 7"/>
-            </svg>
-          </button>
-
-
-          <button class="quick-card" data-page="duas">
-            <div class="quick-icon">
-              <svg viewBox="0 0 32 32">
-                <path d="M16 27S5 21 5 12a6 6 0 0 1 11-3 6 6 0 0 1 11 3c0 9-11 15-11 15z"/>
-              </svg>
-            </div>
-
-            <div>
-              <strong>الأدعية</strong>
-              <span>أدعية مختارة</span>
-            </div>
-
-            <svg class="arrow" viewBox="0 0 24 24">
-              <path d="M9 5l7 7-7 7"/>
-            </svg>
-          </button>
-
-
-          <button class="quick-card" data-page="qibla">
-            <div class="quick-icon">
-              <svg viewBox="0 0 32 32">
-                <path d="M16 4l10 24-10-5-10 5z"/>
-                <path d="M16 4v19"/>
-              </svg>
-            </div>
-
-            <div>
-              <strong>القبلة</strong>
-              <span>اتجاه القبلة</span>
-            </div>
-
-            <svg class="arrow" viewBox="0 0 24 24">
-              <path d="M9 5l7 7-7 7"/>
-            </svg>
-          </button>
-
-
-          <button class="quick-card" data-page="settings">
-            <div class="quick-icon">
-              <svg viewBox="0 0 32 32">
-                <circle cx="16" cy="16" r="4"/>
-                <path d="M16 4v4M16 24v4M4 16h4M24 16h4M7.5 7.5l3 3M21.5 21.5l3 3M24.5 7.5l-3 3M10.5 21.5l-3 3"/>
-              </svg>
-            </div>
-
-            <div>
-              <strong>العبادات</strong>
-              <span>المواسم والتذكيرات</span>
-            </div>
-
-            <svg class="arrow" viewBox="0 0 24 24">
-              <path d="M9 5l7 7-7 7"/>
-            </svg>
-          </button>
-
-        </div>
-
-      </section>
-
-
-      <!-- DAILY DHIKR -->
-      <section class="dhikr-card">
-
-        <div class="dhikr-top">
-          <span>ذكر اليوم</span>
-
-          <div class="ornament-line">
-            <i></i>
-            <i></i>
-            <i></i>
-          </div>
-        </div>
-
-        <p id="dailyDhikr">
-          سُبْحَانَ اللهِ وَبِحَمْدِهِ،
-          سُبْحَانَ اللهِ الْعَظِيمِ
-        </p>
-
-        <div class="dhikr-footer">
-          <small>اجعل لسانك رطبًا بذكر الله</small>
-
-          <button id="newDhikrButton">
-            ذكر آخر
-          </button>
-        </div>
-
-      </section>
-
-
-      <!-- AYAH CURRENT FEATURE -->
-      <section class="ayah-card">
-
-        <div class="ayah-heading">
-          <span></span>
-          <strong>آية اليوم</strong>
-          <span></span>
-        </div>
-
-        <p>
-          ﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾
-        </p>
-
-        <small>سورة الرعد · 28</small>
-
-      </section>
-
-    </main>
-
-
-    <!-- PRAYER PAGE -->
-    <main id="prayerPage" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button" data-page="home">
-          <svg viewBox="0 0 24 24">
-            <path d="M15 5l-7 7 7 7"/>
-          </svg>
-        </button>
-
-        <div>
-          <span>اليوم</span>
-          <h2>مواقيت الصلاة</h2>
-        </div>
-
-      </div>
-
-      <div class="full-prayer-list">
-
-        <div class="full-prayer">
-          <div class="full-icon">
-            <svg viewBox="0 0 32 32">
-              <path d="M6 24h20M9 24a7 7 0 0 1 14 0M16 5v4"/>
-            </svg>
-          </div>
+          <span class="title-decoration"></span>
 
           <div>
-            <strong>الفجر</strong>
-            <span>صلاة الفجر</span>
+            <span>حصن المسلم</span>
+            <h1>الأذكار</h1>
           </div>
 
-          <b id="fullFajr">--:--</b>
         </div>
 
 
-        <div class="full-prayer">
-          <div class="full-icon">
-            <svg viewBox="0 0 32 32">
-              <circle cx="16" cy="16" r="5"/>
-              <path d="M16 3v4M16 25v4M3 16h4M25 16h4"/>
-            </svg>
-          </div>
+        <div class="intro-card">
+
+          <div class="intro-line"></div>
 
           <div>
-            <strong>الشروق</strong>
-            <span>وقت الشروق</span>
+            <h2>اذكر الله في كل وقت</h2>
+            <p>
+              مجموعة الأذكار اليومية مرتبة لتكون قريبة منك.
+            </p>
           </div>
 
-          <b id="sunriseTime">--:--</b>
         </div>
 
 
-        <div class="full-prayer">
-          <div class="full-icon">
-            <svg viewBox="0 0 32 32">
-              <circle cx="16" cy="16" r="5"/>
-              <path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M10 22l-3 3"/>
-            </svg>
-          </div>
+        <div class="topic-placeholder">
 
-          <div>
-            <strong>الظهر</strong>
-            <span>صلاة الظهر</span>
-          </div>
+          <div class="placeholder-circle"></div>
 
-          <b id="fullDhuhr">--:--</b>
-        </div>
-
-
-        <div class="full-prayer">
-          <div class="full-icon">
-            <svg viewBox="0 0 32 32">
-              <path d="M5 23h22M9 23a7 7 0 0 1 14 0M16 6v5"/>
-            </svg>
-          </div>
-
-          <div>
-            <strong>العصر</strong>
-            <span>صلاة العصر</span>
-          </div>
-
-          <b id="fullAsr">--:--</b>
-        </div>
-
-
-        <div class="full-prayer">
-          <div class="full-icon">
-            <svg viewBox="0 0 32 32">
-              <path d="M6 24h20M9 24a7 7 0 0 1 14 0M16 5v4"/>
-            </svg>
-          </div>
-
-          <div>
-            <strong>المغرب</strong>
-            <span>صلاة المغرب</span>
-          </div>
-
-          <b id="fullMaghrib">--:--</b>
-        </div>
-
-
-        <div class="full-prayer">
-          <div class="full-icon">
-            <svg viewBox="0 0 32 32">
-              <path d="M22 6c-6 1-10 6-10 12 0 5 4 9 9 9 3 0 6-1 8-4-1 1-3 2-5 2-5 0-9-4-9-9 0-4 2-8 7-10z"/>
-            </svg>
-          </div>
-
-          <div>
-            <strong>العشاء</strong>
-            <span>صلاة العشاء</span>
-          </div>
-
-          <b id="fullIsha">--:--</b>
-        </div>
-
-      </div>
-
-    </main>
-
-
-    <!-- AZKAR PAGE -->
-    <main id="azkarPage" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button" data-page="home">
-          <svg viewBox="0 0 24 24">
-            <path d="M15 5l-7 7 7 7"/>
-          </svg>
-        </button>
-
-        <div>
-          <span>حصن المسلم</span>
           <h2>الأذكار</h2>
+
+          <p>
+            سيتم عرض أبواب الأذكار هنا.
+          </p>
+
         </div>
 
-      </div>
+      </section>
 
-      <div class="placeholder">
 
-        <div class="placeholder-mark">
-          <svg viewBox="0 0 48 48">
-            <circle cx="24" cy="24" r="15"/>
-            <circle cx="24" cy="24" r="4"/>
-          </svg>
+      <!-- ===== DUAS PAGE ===== -->
+      <section
+        class="page"
+        id="duasPage"
+      >
+
+        <div class="page-title">
+
+          <span class="title-decoration"></span>
+
+          <div>
+            <span>الدعاء</span>
+            <h1>الأدعية</h1>
+          </div>
+
         </div>
 
-        <h2>الأذكار</h2>
 
-        <p>
-          هنا سيتم عرض أبواب الأذكار كاملة.
-        </p>
+        <div class="intro-card">
 
-        <strong>132 بابًا</strong>
+          <div class="intro-line"></div>
 
-      </div>
+          <div>
+            <h2>الدعاء عبادة</h2>
+            <p>
+              أدعية مختارة في أوقات وحاجات مختلفة.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="dua-preview">
+
+          <span class="dua-label">
+            دعاء
+          </span>
+
+          <p>
+            ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===== SETTINGS PAGE ===== -->
+      <section
+        class="page"
+        id="settingsPage"
+      >
+
+        <div class="page-title">
+
+          <span class="title-decoration"></span>
+
+          <div>
+            <span>التطبيق</span>
+            <h1>الإعدادات</h1>
+          </div>
+
+        </div>
+
+
+        <div class="settings-group">
+
+          <div class="settings-group-title">
+            المظهر
+          </div>
+
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <span class="setting-icon appearance-icon"></span>
+
+              <div>
+                <strong>الوضع الداكن</strong>
+                <small>تغيير مظهر التطبيق</small>
+              </div>
+            </div>
+
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="darkToggle"
+              >
+              <span></span>
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <div class="settings-group">
+
+          <div class="settings-group-title">
+            العبادات والمواسم
+          </div>
+
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <span class="setting-icon calendar-icon"></span>
+
+              <div>
+                <strong>رمضان</strong>
+                <small>تذكير واقتراب المواسم</small>
+              </div>
+            </div>
+
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="reminderRamadan"
+              >
+              <span></span>
+            </label>
+
+          </div>
+
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <span class="setting-icon fasting-icon"></span>
+
+              <div>
+                <strong>صيام الاثنين والخميس</strong>
+                <small>تذكير بالصيام</small>
+              </div>
+            </div>
+
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="reminderMondayThursday"
+              >
+              <span></span>
+            </label>
+
+          </div>
+
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <span class="setting-icon calendar-icon"></span>
+
+              <div>
+                <strong>الأيام البيض</strong>
+                <small>13 و14 و15 من الشهر الهجري</small>
+              </div>
+            </div>
+
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="reminderWhiteDays"
+              >
+              <span></span>
+            </label>
+
+          </div>
+
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <span class="setting-icon calendar-icon"></span>
+
+              <div>
+                <strong>عاشوراء</strong>
+                <small>تذكير بتاسوعاء وعاشوراء</small>
+              </div>
+            </div>
+
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="reminderAshura"
+              >
+              <span></span>
+            </label>
+
+          </div>
+
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <span class="setting-icon calendar-icon"></span>
+
+              <div>
+                <strong>يوم عرفة</strong>
+                <small>تذكير بصيام يوم عرفة</small>
+              </div>
+            </div>
+
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="reminderArafah"
+              >
+              <span></span>
+            </label>
+
+          </div>
+
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <span class="setting-icon calendar-icon"></span>
+
+              <div>
+                <strong>العشر الأوائل من ذي الحجة</strong>
+                <small>تذكير بالموسم</small>
+              </div>
+            </div>
+
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="reminderDhulHijjah"
+              >
+              <span></span>
+            </label>
+
+          </div>
+
+
+          <div class="setting-row">
+
+            <div class="setting-info">
+              <span class="setting-icon takbeer-icon"></span>
+
+              <div>
+                <strong>تكبيرات العيد</strong>
+                <small>تذكير بالتكبير</small>
+              </div>
+            </div>
+
+            <label class="switch">
+              <input
+                type="checkbox"
+                id="reminderEidTakbeer"
+              >
+              <span></span>
+            </label>
+
+          </div>
+
+        </div>
+
+      </section>
 
     </main>
 
 
-    <!-- DUAS PAGE -->
-    <main id="duasPage" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button" data-page="home">
-          <svg viewBox="0 0 24 24">
-            <path d="M15 5l-7 7 7 7"/>
-          </svg>
-        </button>
-
-        <div>
-          <span>من الدعاء</span>
-          <h2>الأدعية</h2>
-        </div>
-
-      </div>
-
-      <div class="dua-card">
-
-        <div class="dua-mark">﴾</div>
-
-        <p>
-          رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً
-          وَفِي الْآخِرَةِ حَسَنَةً
-          وَقِنَا عَذَابَ النَّارِ
-        </p>
-
-        <small>سورة البقرة</small>
-
-      </div>
-
-    </main>
-
-
-    <!-- QIBLA PAGE -->
-    <main id="qiblaPage" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button" data-page="home">
-          <svg viewBox="0 0 24 24">
-            <path d="M15 5l-7 7 7 7"/>
-          </svg>
-        </button>
-
-        <div>
-          <span>وجهتك</span>
-          <h2>القبلة</h2>
-        </div>
-
-      </div>
-
-      <div class="qibla-card">
-
-        <div class="compass">
-          <div class="compass-ring"></div>
-
-          <div class="kaaba">
-            <svg viewBox="0 0 50 50">
-              <path d="M8 17l17-8 17 8v21l-17 8-17-8z"/>
-              <path d="M8 17l17 8 17-8"/>
-              <path d="M25 25v21"/>
-              <path d="M15 20v19M35 20v19"/>
-            </svg>
-          </div>
-        </div>
-
-        <h2>اتجاه القبلة</h2>
-
-        <p>
-          سيتم تفعيل البوصلة هنا.
-        </p>
-
-      </div>
-
-    </main>
-
-
-    <!-- SETTINGS -->
-    <main id="settingsPage" class="page">
-
-      <div class="page-header">
-        <div>
-          <span>التطبيق</span>
-          <h2>الإعدادات</h2>
-        </div>
-      </div>
-
-      <div class="settings-list">
-
-        <div class="settings-title">
-          المظهر
-        </div>
-
-        <div class="setting-item">
-
-          <div>
-            <strong>الوضع الليلي</strong>
-            <span>تغيير مظهر التطبيق</span>
-          </div>
-
-          <label class="switch">
-            <input type="checkbox" id="darkToggle">
-            <span></span>
-          </label>
-
-        </div>
-
-
-        <div class="settings-title">
-          العبادات والمواسم
-        </div>
-
-
-        <div class="setting-item">
-
-          <div>
-            <strong>صيام الإثنين والخميس</strong>
-            <span>تذكير بأيام الصيام</span>
-          </div>
-
-          <label class="switch">
-            <input type="checkbox" id="reminderMondayThursday">
-            <span></span>
-          </label>
-
-        </div>
-
-
-        <div class="setting-item">
-
-          <div>
-            <strong>الأيام البيض</strong>
-            <span>13 و14 و15 من الشهر الهجري</span>
-          </div>
-
-          <label class="switch">
-            <input type="checkbox" id="reminderWhiteDays">
-            <span></span>
-          </label>
-
-        </div>
-
-
-        <div class="setting-item">
-
-          <div>
-            <strong>تاسوعاء وعاشوراء</strong>
-            <span>تذكير بصيامهما</span>
-          </div>
-
-          <label class="switch">
-            <input type="checkbox" id="reminderAshura">
-            <span></span>
-          </label>
-
-        </div>
-
-
-        <div class="setting-item">
-
-          <div>
-            <strong>يوم عرفة</strong>
-            <span>تذكير بصيام يوم عرفة</span>
-          </div>
-
-          <label class="switch">
-            <input type="checkbox" id="reminderArafah">
-            <span></span>
-          </label>
-
-        </div>
-
-
-        <div class="setting-item">
-
-          <div>
-            <strong>العشر الأوائل من ذي الحجة</strong>
-            <span>تذكيرات الموسم</span>
-          </div>
-
-          <label class="switch">
-            <input type="checkbox" id="reminderDhulHijjah">
-            <span></span>
-          </label>
-
-        </div>
-
-
-        <div class="setting-item">
-
-          <div>
-            <strong>تكبيرات العيد</strong>
-            <span>تذكير بالتكبير</span>
-          </div>
-
-          <label class="switch">
-            <input type="checkbox" id="reminderEidTakbeer">
-            <span></span>
-          </label>
-
-        </div>
-
-      </div>
-
-    </main>
-
-
-    <!-- BOTTOM NAV -->
+    <!-- ================= BOTTOM NAV ================= -->
     <nav class="bottom-nav">
 
-      <button class="nav-item active" data-page="home">
-        <svg viewBox="0 0 24 24">
-          <path d="M4 11l8-7 8 7v9H4z"/>
-          <path d="M9 20v-6h6v6"/>
-        </svg>
-        <small>الرئيسية</small>
+      <button
+        class="nav-item active"
+        data-page="homePage"
+        type="button"
+      >
+        <span class="nav-icon home-icon"></span>
+        <span>الرئيسية</span>
       </button>
 
-      <button class="nav-item" data-page="prayer">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="8"/>
-          <path d="M12 7v5l3 2"/>
-        </svg>
-        <small>الصلاة</small>
+
+      <button
+        class="nav-item"
+        data-page="prayerPage"
+        type="button"
+      >
+        <span class="nav-icon prayer-nav-icon"></span>
+        <span>الصلاة</span>
       </button>
 
-      <button class="nav-item" data-page="azkar">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="7"/>
-          <circle cx="12" cy="12" r="2"/>
-        </svg>
-        <small>الأذكار</small>
+
+      <button
+        class="nav-item"
+        data-page="adhkarPage"
+        type="button"
+      >
+        <span class="nav-icon adhkar-nav-icon"></span>
+        <span>الأذكار</span>
       </button>
 
-      <button class="nav-item" data-page="duas">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 20S4 15 4 9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 6-6 10-6 10z"/>
-        </svg>
-        <small>الأدعية</small>
+
+      <button
+        class="nav-item"
+        data-page="duasPage"
+        type="button"
+      >
+        <span class="nav-icon dua-nav-icon"></span>
+        <span>الأدعية</span>
       </button>
 
-      <button class="nav-item" data-page="settings">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/>
-        </svg>
-        <small>الإعدادات</small>
+
+      <button
+        class="nav-item"
+        data-page="settingsPage"
+        type="button"
+      >
+        <span class="nav-icon settings-icon"></span>
+        <span>الإعدادات</span>
       </button>
 
     </nav>
 
   </div>
 
+
   <script src="js/script-new.js"></script>
 
 </body>
-</html>
+
+                                              </html>
