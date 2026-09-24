@@ -1,1501 +1,1418 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<meta name="theme-color" content="#f5f5f7">
-<title>أنياس</title>
-
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-
-:root{
---primary:#0f6f5c;
---primary-dark:#0b5548;
---accent:#c9a227;
---bg:#f5f5f7;
---card:#fff;
---text:#1c1c1e;
---muted:#8e8e93;
---border:#f0f0f2;
-}
-
-body{
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;
-background:var(--bg);
-color:var(--text);
-min-height:100vh;
-transition:.25s;
-}
-
-body.dark-mode{
---bg:#111513;
---card:#1b211f;
---text:#f5f5f7;
---muted:#a8aaa8;
---border:#303634;
-}
-
-.app{
-width:100%;
-max-width:520px;
-min-height:100vh;
-margin:auto;
-padding-bottom:100px;
-}
-
-.page{display:none}
-.page.active{display:block}
-
-header{
-padding:26px 20px 18px;
-background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-border-radius:0 0 28px 28px;
-color:#fff;
-position:relative;
-overflow:hidden;
-}
-
-header::after{
-content:"";
-position:absolute;
-inset:0;
-background:radial-gradient(circle at 88% 12%,rgba(255,255,255,.08),transparent 42%);
-pointer-events:none;
-}
-
-.brand{
-font-size:26px;
-font-weight:700;
-position:relative;
-z-index:1;
-}
-
-.date{
-margin-top:5px;
-font-size:13px;
-color:rgba(255,255,255,.75);
-position:relative;
-z-index:1;
-}
-
-.plain-header{
-padding:24px 20px 10px;
-background:transparent;
-border-radius:0;
-color:var(--text);
-}
-
-.plain-header::after{display:none}
-.plain-header .brand{color:var(--text)}
-.plain-header .date{color:var(--muted)}
-
-.next-prayer{
-margin:-30px 16px 18px;
-padding:24px 22px;
-background:var(--card);
-border-radius:26px;
-box-shadow:0 12px 30px rgba(15,111,92,.1);
-position:relative;
-z-index:2;
-}
-
-.next-label{
-font-size:13px;
-color:var(--muted);
-margin-bottom:8px
-}
-
-.prayer-name{
-font-size:28px;
-font-weight:700;
-margin-bottom:4px
-}
-
-.prayer-time{
-font-size:19px;
-color:var(--muted)
-}
-
-.countdown{
-margin-top:14px;
-font-size:15px;
-font-weight:700;
-color:var(--primary)
-}
-
-.section{
-padding:0 16px
-}
-
-.section-title{
-font-size:18px;
-font-weight:700;
-margin:22px 4px 12px
-}
-
-.prayer-list{
-background:var(--card);
-border-radius:22px;
-overflow:hidden;
-}
-
-.prayer-row{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:15px 18px;
-border-bottom:1px solid var(--border);
-}
-
-.prayer-row:last-child{
-border-bottom:none
-}
-
-.prayer-title{
-font-size:15px;
-font-weight:500
-}
-
-.prayer-value{
-font-size:15px;
-font-weight:600;
-color:var(--muted)
-}
-
-.card{
-margin-top:18px;
-padding:20px;
-background:var(--card);
-border-radius:22px;
-box-shadow:0 5px 20px rgba(0,0,0,.03);
-}
-
-.card-title{
-font-size:14px;
-color:var(--muted);
-margin-bottom:12px;
-font-weight:600;
-}
-
-.ayah{
-font-size:20px;
-line-height:1.9;
-font-weight:500;
-}
-
-.reference{
-margin-top:12px;
-font-size:13px;
-color:var(--muted);
-}
-
-.dhikr{
-font-size:19px;
-line-height:1.9
-}
-
-.adhan-button{
-margin-top:16px;
-width:100%;
-border:none;
-border-radius:16px;
-padding:14px;
-font-size:15px;
-font-weight:600;
-background:var(--primary);
-color:#fff;
-cursor:pointer;
-transition:.2s;
-}
-
-.adhan-button:active{
-transform:scale(.97)
-}
-
-.setting-row{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:14px 0;
-border-bottom:1px solid var(--border);
-gap:15px;
-}
-
-.setting-row:last-child{
-border-bottom:none
-}
-
-.setting-info{
-flex:1
-}
-
-.setting-title{
-font-size:15px;
-font-weight:600;
-}
-
-.setting-description{
-margin-top:4px;
-font-size:12px;
-color:var(--muted);
-line-height:1.6;
-}
-
-.switch{
-position:relative;
-width:50px;
-height:30px;
-flex-shrink:0;
-}
-
-.switch input{
-display:none
-}
-
-.switch-track{
-position:absolute;
-inset:0;
-background:#d1d1d6;
-border-radius:20px;
-transition:.2s;
-}
-
-.switch-knob{
-position:absolute;
-width:26px;
-height:26px;
-top:2px;
-right:22px;
-background:#fff;
-border-radius:50%;
-box-shadow:0 2px 5px rgba(0,0,0,.2);
-transition:.2s;
-}
-
-.switch input:checked+.switch-track{
-background:var(--primary)
-}
-
-.switch input:checked+.switch-track+.switch-knob{
-right:2px
-}
-
-.settings-section-title{
-font-size:17px;
-font-weight:700;
-margin:24px 4px 10px;
-}
-
-.settings-card{
-background:var(--card);
-border-radius:18px;
-overflow:hidden;
-box-shadow:0 5px 20px rgba(0,0,0,.03);
-padding:0 16px;
-}
-
-.select-control{
-width:100%;
-border:1px solid var(--border);
-background:var(--bg);
-color:var(--text);
-border-radius:12px;
-padding:11px 12px;
-font-size:14px;
-outline:none;
-}
-
-.volume-container{
-padding:16px 0
-}
-
-.volume-header{
-display:flex;
-justify-content:space-between;
-margin-bottom:10px;
-}
-
-.volume-title{
-font-size:15px;
-font-weight:600
-}
-
-.volume-value{
-font-size:13px;
-color:var(--muted)
-}
-
-#adhanVolume{
-width:100%;
-accent-color:var(--primary);
-}
-
-.audio-picker{
-display:none;
-padding:0 0 12px;
-}
-
-.audio-picker.open{
-display:block
-}
-
-.muezzin-row{
-display:flex;
-align-items:center;
-gap:10px;
-padding:12px 0;
-border-top:1px solid var(--border);
-}
-
-.muezzin-select{
-display:flex;
-align-items:center;
-gap:10px;
-flex:1;
-cursor:pointer;
-}
-
-.muezzin-select input{
-accent-color:var(--primary)
-}
-
-.muezzin-name{
-font-size:14px;
-font-weight:500;
-}
-
-.preview-button{
-width:38px;
-height:38px;
-border:none;
-border-radius:12px;
-background:rgba(15,111,92,.1);
-color:var(--primary);
-font-size:15px;
-cursor:pointer;
-}
-
-.preview-button:active{
-transform:scale(.9)
-}
-
-.settings-arrow{
-font-size:18px;
-color:var(--muted);
-transition:.2s;
-}
-
-.setting-row.open .settings-arrow{
-transform:rotate(180deg);
-}
-
-.settings-note{
-padding:12px 0 16px;
-font-size:12px;
-line-height:1.7;
-color:var(--muted);
-}
-
-.category-grid{
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-.category-card{
-background:var(--card);
-border:none;
-border-radius:16px;
-padding:14px 16px;
-text-align:right;
-cursor:pointer;
-box-shadow:0 3px 14px rgba(0,0,0,.03);
-transition:.15s;
-display:flex;
-align-items:center;
-gap:14px;
-width:100%;
-color:var(--text);
-}
-
-.category-card:active{
-transform:scale(.98);
-}
-
-.category-icon{
-flex-shrink:0;
-width:34px;
-height:34px;
-border-radius:10px;
-background:rgba(15,111,92,.08);
-color:var(--primary);
-font-size:12px;
-font-weight:700;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-.category-name{
-flex:1;
-font-size:15px;
-font-weight:600;
-line-height:1.5;
-}
-
-.category-count{
-flex-shrink:0;
-font-size:12px;
-color:var(--muted);
-background:var(--bg);
-padding:4px 10px;
-border-radius:10px;
-}
-
-.category-detail-header{
-padding:20px 16px 12px;
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-.back-button{
-border:none;
-background:var(--card);
-color:var(--text);
-width:38px;
-height:38px;
-border-radius:12px;
-font-size:17px;
-cursor:pointer;
-box-shadow:0 4px 14px rgba(0,0,0,.05);
-flex-shrink:0;
-}
-
-.category-detail-title{
-font-size:19px;
-font-weight:700;
-line-height:1.5;
-}
-
-.azkar-item{
-background:var(--card);
-padding:18px 4px;
-border-bottom:1px solid var(--border);
-transition:.2s;
-}
-
-.azkar-item:first-child{
-border-radius:18px 18px 0 0;
-padding-top:20px;
-}
-
-.azkar-item:last-child{
-border-bottom:none;
-border-radius:0 0 18px 18px;
-padding-bottom:20px;
-}
-
-#azkarList{
-background:var(--card);
-border-radius:18px;
-padding:0 16px;
-box-shadow:0 5px 20px rgba(0,0,0,.03);
-}
-
-.azkar-item.done{
-opacity:.5
-}
-
-.azkar-text{
-font-size:17px;
-line-height:1.9;
-margin-bottom:12px
-}
-
-.azkar-counter-row{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-}
-
-.azkar-remaining{
-font-size:13px;
-color:var(--muted);
-font-weight:600;
-}
-
-.azkar-count-button{
-border:none;
-border-radius:12px;
-padding:9px 20px;
-background:var(--primary);
-color:#fff;
-font-size:14px;
-font-weight:700;
-cursor:pointer;
-}
-
-.azkar-item.done .azkar-count-button{
-background:#34c759
-}
-
-#azkarTopicNavigation{
-padding-bottom:20px;
-padding-top:6px;
-}
-
-.dua-item{
-background:var(--card);
-padding:18px;
-border-bottom:1px solid var(--border);
-}
-
-.dua-item:first-child{
-border-radius:18px 18px 0 0;
-padding-top:20px;
-}
-
-.dua-item:last-child{
-border-bottom:none;
-border-radius:0 0 18px 18px;
-padding-bottom:20px;
-}
-
-#duasList{
-background:var(--card);
-border-radius:18px;
-box-shadow:0 5px 20px rgba(0,0,0,.03);
-}
-
-.dua-title{
-font-size:13px;
-color:var(--primary);
-font-weight:700;
-margin-bottom:8px;
-}
-
-.dua-text{
-font-size:17px;
-line-height:1.9;
-}
-
-.bottom-nav{
-position:fixed;
-bottom:12px;
-left:50%;
-transform:translateX(-50%);
-width:calc(100% - 24px);
-max-width:496px;
-height:66px;
-background:rgba(255,255,255,.94);
-backdrop-filter:blur(20px);
--webkit-backdrop-filter:blur(20px);
-border-radius:22px;
-display:flex;
-align-items:center;
-justify-content:space-around;
-box-shadow:0 8px 30px rgba(0,0,0,.12);
-z-index:100;
-}
-
-body.dark-mode .bottom-nav{
-background:rgba(27,33,31,.94);
-}
-
-.nav-item{
-border:none;
-background:transparent;
-color:var(--muted);
-font-size:11px;
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:4px;
-cursor:pointer;
-padding:6px 8px;
-transition:.2s;
-}
-
-.nav-icon{
-font-size:19px
-}
-
-.nav-item.active{
-color:var(--primary);
-font-weight:700
-}
-
-.nav-item:active{
-transform:scale(.92)
-}
-
-/* العبادات والمواسم */
-
-.worship-card{
-background:var(--card);
-border-radius:18px;
-padding:16px;
-box-shadow:0 5px 20px rgba(0,0,0,.03);
-}
-
-.hijri-date{
-text-align:center;
-background:var(--primary);
-color:#fff;
-border-radius:16px;
-padding:16px;
-margin-bottom:16px;
-}
-
-.hijri-title{
-font-size:12px;
-opacity:.8;
-}
-
-.hijri-value{
-margin-top:5px;
-font-size:19px;
-font-weight:700;
-}
-
-.worship-countdowns{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-bottom:16px;
-}
-
-.worship-countdown{
-background:var(--bg);
-border-radius:16px;
-padding:14px 10px;
-text-align:center;
-}
-
-.worship-icon{
-font-size:24px;
-margin-bottom:6px;
-}
-
-.worship-name{
-font-size:13px;
-font-weight:700;
-}
-
-.worship-days{
-margin-top:5px;
-color:var(--primary);
-font-size:13px;
-font-weight:700;
-}
-
-.worship-setting{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:12px;
-padding:14px 0;
-border-bottom:1px solid var(--border);
-}
-
-.worship-setting:last-child{
-border-bottom:none;
-}
-
-.worship-setting-info{
-flex:1;
-}
-
-.worship-setting-title{
-font-size:14px;
-font-weight:600;
-}
-
-.worship-setting-description{
-margin-top:4px;
-color:var(--muted);
-font-size:11px;
-line-height:1.5;
-}
-
-.worship-note{
-margin-top:12px;
-padding:10px;
-border-radius:12px;
-background:var(--bg);
-color:var(--muted);
-font-size:11px;
-line-height:1.6;
-text-align:center;
-}
-
-@media(max-width:380px){
-.brand{font-size:24px}
-.prayer-name{font-size:25px}
-.ayah,.dhikr,.azkar-text,.dua-text{font-size:17px}
-.prayer-row{padding:13px 15px}
-.nav-item{font-size:10px}
-}
-</style>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <meta name="theme-color" content="#0f6f5c">
+
+    <meta
+        name="description"
+        content="أنياس - تطبيق إسلامي لمواقيت الصلاة والأذكار والأدعية والقبلة"
+    >
+
+    <title>أنياس</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/prayer.css">
+    <link rel="stylesheet" href="css/azkar.css">
+    <link rel="stylesheet" href="css/duas.css">
+    <link rel="stylesheet" href="css/settings.css">
 </head>
 
 <body>
 
 <div class="app">
 
-<!-- الرئيسية -->
-<div class="page active" id="page-home">
-
-<header>
-<div class="brand">أنياس</div>
-<div class="date" id="todayDate">اليوم</div>
-<div class="date" id="locationName">📍 جاري تحديد الموقع...</div>
-</header>
-
-<section class="next-prayer">
-<div class="next-label">الصلاة القادمة</div>
-<div class="prayer-name" id="nextPrayerName">الفجر</div>
-<div class="prayer-time" id="nextPrayerTime">--</div>
-<div class="countdown" id="countdown">جاري حساب الوقت...</div>
-</section>
-
-<section class="section">
-<div class="section-title">مواقيت الصلاة</div>
-
-<div class="prayer-list">
-<div class="prayer-row"><span class="prayer-title">الفجر</span><span class="prayer-value" id="fajrTime">--</span></div>
-<div class="prayer-row"><span class="prayer-title">الشروق</span><span class="prayer-value" id="sunriseTime">--</span></div>
-<div class="prayer-row"><span class="prayer-title">الظهر</span><span class="prayer-value" id="dhuhrTime">--</span></div>
-<div class="prayer-row"><span class="prayer-title">العصر</span><span class="prayer-value" id="asrTime">--</span></div>
-<div class="prayer-row"><span class="prayer-title">المغرب</span><span class="prayer-value" id="maghribTime">--</span></div>
-<div class="prayer-row"><span class="prayer-title">العشاء</span><span class="prayer-value" id="ishaTime">--</span></div>
-</div>
-</section>
-
-<section class="section">
-<div class="card">
-<div class="card-title">آية اليوم</div>
-<div class="ayah">﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾</div>
-<div class="reference">سورة الرعد — 28</div>
-</div>
-</section>
-
-<section class="section">
-<div class="card">
-<div class="card-title">ذكر اليوم</div>
-<div class="dhikr">سبحان الله وبحمده، سبحان الله العظيم</div>
-</div>
-</section>
+    <!-- =========================
+         الرئيسية
+    ========================== -->
+    <main class="page active" id="page-home">
 
-<section class="section">
-<div class="card">
-<div class="card-title">الأذان</div>
-<div class="ayah">استمع إلى الأذان</div>
+        <header class="main-header">
+
+            <div class="brand">أنياس</div>
 
-<button id="adhanButton" class="adhan-button" type="button">
-▶ تشغيل الأذان
-</button>
+            <div class="date" id="todayDate">
+                اليوم
+            </div>
+
+            <div class="date" id="locationName">
+                جاري تحديد الموقع...
+            </div>
 
-<audio id="adhanAudio" preload="auto">
-<source src="audio/adhan.mp3" type="audio/mpeg">
-</audio>
+        </header>
+
+
+        <!-- الصلاة القادمة -->
+        <section class="next-prayer">
+
+            <div class="next-label">
+                الصلاة القادمة
+            </div>
+
+            <div
+                class="prayer-name"
+                id="nextPrayerName"
+            >
+                الفجر
+            </div>
+
+            <div
+                class="prayer-time"
+                id="nextPrayerTime"
+            >
+                --
+            </div>
+
+            <div
+                class="countdown"
+                id="countdown"
+            >
+                جاري حساب الوقت...
+            </div>
+
+        </section>
+
+
+        <!-- مواقيت الصلاة -->
+        <section class="section">
 
-<audio id="fajrAudio" preload="auto">
-<source src="audio/fajr.mp3" type="audio/mpeg">
-</audio>
+            <div class="section-title">
+                مواقيت الصلاة
+            </div>
 
-</div>
-</section>
+            <div class="prayer-list">
 
-</div>
+                <div class="prayer-row">
+                    <span class="prayer-title">
+                        الفجر
+                    </span>
 
-<!-- الأدعية -->
-<div class="page" id="page-duas">
+                    <span
+                        class="prayer-value"
+                        id="fajrTime"
+                    >
+                        --
+                    </span>
+                </div>
 
-<header class="plain-header">
-<div class="brand">الأدعية</div>
-<div class="date">أدعية مهمة تحتاجها كل يوم</div>
-</header>
 
-<section class="section">
-<div id="duasList">
+                <div class="prayer-row">
+                    <span class="prayer-title">
+                        الشروق
+                    </span>
 
-<div class="dua-item">
-<div class="dua-title">دعاء طلب العلم</div>
-<div class="dua-text">رَبِّ زِدْنِي عِلْمًا</div>
-</div>
+                    <span
+                        class="prayer-value"
+                        id="sunriseTime"
+                    >
+                        --
+                    </span>
+                </div>
 
-<div class="dua-item">
-<div class="dua-title">سيد الاستغفار</div>
-<div class="dua-text">اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ</div>
-</div>
 
-<div class="dua-item">
-<div class="dua-title">دعاء الكرب والهم</div>
-<div class="dua-text">لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ</div>
-</div>
+                <div class="prayer-row">
+                    <span class="prayer-title">
+                        الظهر
+                    </span>
 
-<div class="dua-item">
-<div class="dua-title">دعاء الرزق وقضاء الدين</div>
-<div class="dua-text">اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ</div>
-</div>
+                    <span
+                        class="prayer-value"
+                        id="dhuhrTime"
+                    >
+                        --
+                    </span>
+                </div>
 
-<div class="dua-item">
-<div class="dua-title">دعاء طلب العافية</div>
-<div class="dua-text">اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ</div>
-</div>
 
-<div class="dua-item">
-<div class="dua-title">دعاء ثبات القلب</div>
-<div class="dua-text">يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ</div>
-</div>
+                <div class="prayer-row">
+                    <span class="prayer-title">
+                        العصر
+                    </span>
 
-<div class="dua-item">
-<div class="dua-title">دعاء الوالدين</div>
-<div class="dua-text">رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا</div>
-</div>
+                    <span
+                        class="prayer-value"
+                        id="asrTime"
+                    >
+                        --
+                    </span>
+                </div>
 
-<div class="dua-item">
-<div class="dua-title">جوامع الدعاء</div>
-<div class="dua-text">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</div>
-</div>
 
-</div>
-</section>
-</div>
+                <div class="prayer-row">
+                    <span class="prayer-title">
+                        المغرب
+                    </span>
 
-<!-- الأذكار -->
-<div class="page" id="page-azkar">
-
-<header class="plain-header">
-<div class="brand">الأذكار</div>
-<div class="azkar-count" id="azkarTopicsCount">132 بابًا</div>
-<div class="date">اختر الباب اللي عايزه</div>
-</header>
-
-<section class="section">
-<div class="category-grid" id="categoryGrid"></div>
-</section>
-</div>
+                    <span
+                        class="prayer-value"
+                        id="maghribTime"
+                    >
+                        --
+                    </span>
+                </div>
 
-<!-- تفاصيل الأذكار -->
-<div class="page" id="page-azkar-detail">
 
-<div class="category-detail-header">
-<button class="back-button" id="azkarBackButton" type="button">→</button>
-<div class="category-detail-title" id="categoryDetailTitle">القسم</div>
-</div>
+                <div class="prayer-row">
+                    <span class="prayer-title">
+                        العشاء
+                    </span>
 
-<section class="section">
-<div id="azkarList"></div>
-<div id="azkarTopicNavigation"></div>
-</section>
-</div>
+                    <span
+                        class="prayer-value"
+                        id="ishaTime"
+                    >
+                        --
+                    </span>
+                </div>
 
-<!-- القبلة -->
-<div class="page" id="page-qibla">
-
-<header class="plain-header">
-<div class="brand">القبلة</div>
-<div class="date">اتجاه القبلة</div>
-</header>
-
-<section class="section">
-<div class="card">
-<div class="ayah" style="text-align:center">🕋</div>
-<div class="reference" style="text-align:center">
-سيتم إضافة تحديد اتجاه القبلة هنا
-</div>
-</div>
-</section>
-</div>
+            </div>
 
-<!-- الإعدادات -->
-<div class="page" id="page-settings">
+        </section>
 
-<header class="plain-header">
-<div class="brand">الإعدادات</div>
-<div class="date">تحكم في تجربة أنياس</div>
-</header>
 
-<section class="section">
+        <!-- آية اليوم -->
+        <section class="section">
 
-<div class="settings-section-title">عام</div>
+            <div class="card">
 
-<div class="settings-card">
+                <div class="card-title">
+                    آية اليوم
+                </div>
 
-<div class="setting-row">
-<div class="setting-info">
-<div class="setting-title">الوضع الليلي</div>
-<div class="setting-description">تفعيل المظهر الداكن للتطبيق</div>
-</div>
+                <div class="ayah">
+                    ﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾
+                </div>
 
-<label class="switch">
-<input id="darkModeToggle" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+                <div class="reference">
+                    سورة الرعد — 28
+                </div>
 
-<div class="setting-row">
-<div class="setting-info">
-<div class="setting-title">اللغة</div>
-<div class="setting-description">لغة واجهة التطبيق</div>
-</div>
+            </div>
 
-<select id="languageSelect" class="select-control" style="max-width:125px">
-<option value="ar">العربية</option>
-<option value="en">English</option>
-</select>
-</div>
+        </section>
 
-<div class="setting-row">
-<div class="setting-info">
-<div class="setting-title">الاهتزاز</div>
-<div class="setting-description">اهتزاز الهاتف عند التفاعل مع الأزرار</div>
-</div>
 
-<label class="switch">
-<input id="vibrationToggle" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+        <!-- ذكر اليوم -->
+        <section class="section">
 
-</div>
+            <div class="card">
 
-<div class="settings-section-title">الإشعارات</div>
+                <div class="card-title">
+                    ذكر اليوم
+                </div>
 
-<div class="settings-card">
+                <div class="dhikr">
+                    سبحان الله وبحمده، سبحان الله العظيم
+                </div>
 
-<div class="setting-row">
-<div class="setting-info">
-<div class="setting-title">اقتراب الصلاة</div>
-<div class="setting-description">تنبيه قبل دخول وقت الصلاة</div>
-</div>
+            </div>
 
-<label class="switch">
-<input id="notifyPrayerSoon" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+        </section>
 
-<div class="setting-row">
-<div class="setting-info">
-<div class="setting-title">الشروق</div>
-<div class="setting-description">تنبيه عند اقتراب الشروق</div>
-</div>
 
-<label class="switch">
-<input id="notifySunrise" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+        <!-- الأذان -->
+        <section class="section">
 
-<div class="setting-row">
-<div class="setting-info">
-<div class="setting-title">الثلث الأول من الليل</div>
-</div>
+            <div class="card">
 
-<label class="switch">
-<input id="notifyFirstThird" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+                <div class="card-title">
+                    الأذان
+                </div>
 
-<div class="setting-row">
-<div class="setting-info">
-<div class="setting-title">الثلث الثاني من الليل</div>
-</div>
+                <div class="ayah">
+                    استمع إلى الأذان
+                </div>
 
-<label class="switch">
-<input id="notifySecondThird" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+                <button
+                    id="adhanButton"
+                    class="adhan-button"
+                    type="button"
+                >
+                    تشغيل الأذان
+                </button>
 
-<div class="setting-row">
-<div class="setting-info">
-<div class="setting-title">الثلث الأخير من الليل</div>
-</div>
 
-<label class="switch">
-<input id="notifyLastThird" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+                <audio
+                    id="adhanAudio"
+                    preload="auto"
+                >
+                    <source
+                        src="audio/adhan.mp3"
+                        type="audio/mpeg"
+                    >
+                </audio>
 
-<div class="setting-row">
-<div class="setting-info">
-<div class="setting-title">آية الكرسي</div>
-<div class="setting-description">تنبيه خاص بآية الكرسي</div>
-</div>
 
-<label class="switch">
-<input id="notifyAyatKursi" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+                <audio
+                    id="fajrAudio"
+                    preload="auto"
+                >
+                    <source
+                        src="audio/fajr.mp3"
+                        type="audio/mpeg"
+                    >
+                </audio>
 
-<div class="setting-row">
-<div class="setting-info">
-<div class="setting-title">صوت الإشعارات</div>
-</div>
+            </div>
 
-<label class="switch">
-<input id="notificationSound" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+        </section>
 
-</div>
+    </main>
 
-<!-- العبادات والمواسم -->
-<div class="settings-section-title">🌙 العبادات والمواسم</div>
 
-<div class="worship-card">
+    <!-- =========================
+         الأدعية
+    ========================== -->
+    <main class="page" id="page-duas">
 
-<div class="hijri-date">
-<div class="hijri-title">التاريخ الهجري</div>
-<div class="hijri-value" id="hijriDate">جاري الحساب...</div>
-</div>
+        <header class="plain-header">
 
-<div class="worship-countdowns">
+            <div class="brand">
+                الأدعية
+            </div>
 
-<div class="worship-countdown">
-<div class="worship-icon">🌙</div>
-<div class="worship-name">رمضان</div>
-<div class="worship-days" id="ramadanCountdown">جاري الحساب...</div>
-</div>
+            <div class="date">
+                أدعية مهمة تحتاجها كل يوم
+            </div>
 
-<div class="worship-countdown">
-<div class="worship-icon">🎉</div>
-<div class="worship-name">عيد الفطر</div>
-<div class="worship-days" id="fitrCountdown">جاري الحساب...</div>
-</div>
+        </header>
 
-<div class="worship-countdown">
-<div class="worship-icon">🕋</div>
-<div class="worship-name">الحج</div>
-<div class="worship-days" id="hajjCountdown">جاري الحساب...</div>
-</div>
 
-<div class="worship-countdown">
-<div class="worship-icon">🐑</div>
-<div class="worship-name">عيد الأضحى</div>
-<div class="worship-days" id="adhaCountdown">جاري الحساب...</div>
-</div>
+        <section class="section">
 
-</div>
+            <div id="duasList">
 
-<div class="worship-setting">
-<div class="worship-setting-info">
-<div class="worship-setting-title">صيام الاثنين والخميس</div>
-<div class="worship-setting-description">
-تذكير بأيام صيام الاثنين والخميس
-</div>
-</div>
+                <div class="dua-item">
 
-<label class="switch">
-<input id="reminderMondayThursday" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+                    <div class="dua-title">
+                        دعاء طلب العلم
+                    </div>
 
-<div class="worship-setting">
-<div class="worship-setting-info">
-<div class="worship-setting-title">الأيام البيض</div>
-<div class="worship-setting-description">
-تذكير بأيام 13 و14 و15 من الشهر الهجري
-</div>
-</div>
+                    <div class="dua-text">
+                        رَبِّ زِدْنِي عِلْمًا
+                    </div>
 
-<label class="switch">
-<input id="reminderWhiteDays" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+                </div>
 
-<div class="worship-setting">
-<div class="worship-setting-info">
-<div class="worship-setting-title">تاسوعاء وعاشوراء</div>
-<div class="worship-setting-description">
-تذكير بصيام تاسوعاء وعاشوراء
-</div>
-</div>
 
-<label class="switch">
-<input id="reminderAshura" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+                <div class="dua-item">
 
-<div class="worship-setting">
-<div class="worship-setting-info">
-<div class="worship-setting-title">يوم عرفة</div>
-<div class="worship-setting-description">
-تذكير بيوم عرفة
-</div>
-</div>
+                    <div class="dua-title">
+                        سيد الاستغفار
+                    </div>
 
-<label class="switch">
-<input id="reminderArafah" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+                    <div class="dua-text">
+                        اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ
+                    </div>
 
-<div class="worship-setting">
-<div class="worship-setting-info">
-<div class="worship-setting-title">العشر من ذي الحجة</div>
-<div class="worship-setting-description">
-تذكير بالعشر الأوائل من ذي الحجة
-</div>
-</div>
+                </div>
 
-<label class="switch">
-<input id="reminderDhulHijjah" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
 
-<div class="worship-setting">
-<div class="worship-setting-info">
-<div class="worship-setting-title">تكبيرات العيد</div>
-<div class="worship-setting-description">
-تفعيل تذكير تكبيرات العيد
-</div>
-</div>
+                <div class="dua-item">
 
-<label class="switch">
-<input id="reminderEidTakbeer" type="checkbox">
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-</label>
-</div>
+                    <div class="dua-title">
+                        دعاء الكرب والهم
+                    </div>
 
-<div class="worship-note">
-المواعيد الهجرية تقديرية وقد تختلف حسب ثبوت رؤية الهلال.
-</div>
+                    <div class="dua-text">
+                        لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ
+                    </div>
 
-</div>
+                </div>
 
-<!-- الأذان -->
-<div class="settings-section-title">الأذان</div>
 
-<div class="settings-card">
+                <div class="dua-item">
 
-<div class="setting-row" id="normalMuezzinRow" style="cursor:pointer">
+                    <div class="dua-title">
+                        دعاء الرزق وقضاء الدين
+                    </div>
 
-<div class="setting-info">
-<div class="setting-title">مؤذن الصلوات العادية</div>
-<div class="setting-description" id="normalMuezzinSelected">
-المؤذن الحالي
-</div>
-</div>
+                    <div class="dua-text">
+                        اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ
+                    </div>
 
-<div class="settings-arrow">⌄</div>
+                </div>
 
-</div>
+
+                <div class="dua-item">
+
+                    <div class="dua-title">
+                        دعاء طلب العافية
+                    </div>
+
+                    <div class="dua-text">
+                        اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ
+                    </div>
+
+                </div>
+
+
+                <div class="dua-item">
+
+                    <div class="dua-title">
+                        دعاء ثبات القلب
+                    </div>
+
+                    <div class="dua-text">
+                        يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ
+                    </div>
+
+                </div>
+
+
+                <div class="dua-item">
+
+                    <div class="dua-title">
+                        دعاء الوالدين
+                    </div>
+
+                    <div class="dua-text">
+                        رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا
+                    </div>
+
+                </div>
+
+
+                <div class="dua-item">
+
+                    <div class="dua-title">
+                        جوامع الدعاء
+                    </div>
+
+                    <div class="dua-text">
+                        رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         الأذكار
+    ========================== -->
+    <main class="page" id="page-azkar">
+
+        <header class="plain-header">
+
+            <div class="brand">
+                الأذكار
+            </div>
+
+            <div
+                class="azkar-count"
+                id="azkarTopicsCount"
+            >
+                132 بابًا
+            </div>
+
+            <div class="date">
+                اختر الباب الذي تريده
+            </div>
+
+        </header>
+
+
+        <section class="section">
+
+            <div
+                class="category-grid"
+                id="categoryGrid"
+            ></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         تفاصيل الأذكار
+    ========================== -->
+    <main
+        class="page"
+        id="page-azkar-detail"
+    >
+
+        <div class="category-detail-header">
+
+            <button
+                class="back-button"
+                id="azkarBackButton"
+                type="button"
+                aria-label="العودة"
+            >
+                رجوع
+            </button>
+
+            <div
+                class="category-detail-title"
+                id="categoryDetailTitle"
+            >
+                القسم
+            </div>
+
+        </div>
+
+
+        <section class="section">
+
+            <div id="azkarList"></div>
+
+            <div id="azkarTopicNavigation"></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         القبلة
+    ========================== -->
+    <main class="page" id="page-qibla">
+
+        <header class="plain-header">
+
+            <div class="brand">
+                القبلة
+            </div>
+
+            <div class="date">
+                اتجاه القبلة
+            </div>
+
+        </header>
+
+
+        <section class="section">
+
+            <div class="card qibla-card">
+
+                <div class="qibla-placeholder">
+                    تحديد اتجاه القبلة
+                </div>
+
+                <div class="reference">
+                    سيتم إضافة تحديد اتجاه القبلة هنا
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         الإعدادات
+    ========================== -->
+    <main class="page" id="page-settings">
+
+        <header class="plain-header">
+
+            <div class="brand">
+                الإعدادات
+            </div>
+
+            <div class="date">
+                تحكم في تجربة أنياس
+            </div>
+
+        </header>
+
+
+        <section class="section">
+
+
+            <!-- العام -->
+            <div class="settings-section-title">
+                عام
+            </div>
+
+            <div class="settings-card">
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            الوضع الليلي
+                        </div>
+
+                        <div class="setting-description">
+                            تفعيل المظهر الداكن للتطبيق
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            id="darkModeToggle"
+                            type="checkbox"
+                        >
+
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            اللغة
+                        </div>
+
+                        <div class="setting-description">
+                            لغة واجهة التطبيق
+                        </div>
+
+                    </div>
+
+                    <select
+                        id="languageSelect"
+                        class="select-control"
+                    >
+
+                        <option value="ar">
+                            العربية
+                        </option>
+
+                        <option value="en">
+                            English
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            الاهتزاز
+                        </div>
+
+                        <div class="setting-description">
+                            اهتزاز الهاتف عند التفاعل مع الأزرار
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            id="vibrationToggle"
+                            type="checkbox"
+                        >
+
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- الإشعارات -->
+            <div class="settings-section-title">
+                الإشعارات
+            </div>
+
+            <div class="settings-card">
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            اقتراب الصلاة
+                        </div>
+
+                        <div class="setting-description">
+                            تنبيه قبل دخول وقت الصلاة
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+                        <input id="notifyPrayerSoon" type="checkbox">
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            الشروق
+                        </div>
+
+                        <div class="setting-description">
+                            تنبيه عند اقتراب الشروق
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+                        <input id="notifySunrise" type="checkbox">
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+                        <div class="setting-title">
+                            الثلث الأول من الليل
+                        </div>
+                    </div>
+
+                    <label class="switch">
+                        <input id="notifyFirstThird" type="checkbox">
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
 
-<div class="audio-picker" id="normalMuezzinOptions">
+                    <div class="setting-info">
+                        <div class="setting-title">
+                            الثلث الثاني من الليل
+                        </div>
+                    </div>
 
-<div class="muezzin-row">
+                    <label class="switch">
+                        <input id="notifySecondThird" type="checkbox">
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+                        <div class="setting-title">
+                            الثلث الأخير من الليل
+                        </div>
+                    </div>
+
+                    <label class="switch">
+                        <input id="notifyLastThird" type="checkbox">
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            آية الكرسي
+                        </div>
+
+                        <div class="setting-description">
+                            تنبيه خاص بآية الكرسي
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+                        <input id="notifyAyatKursi" type="checkbox">
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+                        <div class="setting-title">
+                            صوت الإشعارات
+                        </div>
+                    </div>
+
+                    <label class="switch">
+                        <input id="notificationSound" type="checkbox">
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- العبادات والمواسم -->
+            <div class="settings-section-title">
+                العبادات والمواسم
+            </div>
+
+            <div class="worship-card">
+
+
+                <div class="hijri-date">
+
+                    <div class="hijri-title">
+                        التاريخ الهجري
+                    </div>
+
+                    <div
+                        class="hijri-value"
+                        id="hijriDate"
+                    >
+                        جاري الحساب...
+                    </div>
+
+                </div>
+
+
+                <div class="worship-countdowns">
+
+
+                    <div class="worship-countdown">
+
+                        <div class="worship-name">
+                            رمضان
+                        </div>
+
+                        <div
+                            class="worship-days"
+                            id="ramadanCountdown"
+                        >
+                            جاري الحساب...
+                        </div>
+
+                    </div>
+
+
+                    <div class="worship-countdown">
+
+                        <div class="worship-name">
+                            عيد الفطر
+                        </div>
+
+                        <div
+                            class="worship-days"
+                            id="fitrCountdown"
+                        >
+                            جاري الحساب...
+                        </div>
+
+                    </div>
+
+
+                    <div class="worship-countdown">
+
+                        <div class="worship-name">
+                            الحج
+                        </div>
+
+                        <div
+                            class="worship-days"
+                            id="hajjCountdown"
+                        >
+                            جاري الحساب...
+                        </div>
+
+                    </div>
+
+
+                    <div class="worship-countdown">
+
+                        <div class="worship-name">
+                            عيد الأضحى
+                        </div>
+
+                        <div
+                            class="worship-days"
+                            id="adhaCountdown"
+                        >
+                            جاري الحساب...
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- الاثنين والخميس -->
+                <div class="worship-setting">
+
+                    <div class="worship-setting-info">
+
+                        <div class="worship-setting-title">
+                            صيام الاثنين والخميس
+                        </div>
+
+                        <div class="worship-setting-description">
+                            تذكير بأيام صيام الاثنين والخميس
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+                        <input
+                            id="reminderMondayThursday"
+                            type="checkbox"
+                        >
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <!-- الأيام البيض -->
+                <div class="worship-setting">
+
+                    <div class="worship-setting-info">
+
+                        <div class="worship-setting-title">
+                            الأيام البيض
+                        </div>
+
+                        <div class="worship-setting-description">
+                            تذكير بأيام 13 و14 و15 من الشهر الهجري
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+                        <input
+                            id="reminderWhiteDays"
+                            type="checkbox"
+                        >
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <!-- تاسوعاء وعاشوراء -->
+                <div class="worship-setting">
+
+                    <div class="worship-setting-info">
+
+                        <div class="worship-setting-title">
+                            تاسوعاء وعاشوراء
+                        </div>
+
+                        <div class="worship-setting-description">
+                            تذكير بصيام تاسوعاء وعاشوراء
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+                        <input
+                            id="reminderAshura"
+                            type="checkbox"
+                        >
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <!-- عرفة -->
+                <div class="worship-setting">
+
+                    <div class="worship-setting-info">
+
+                        <div class="worship-setting-title">
+                            يوم عرفة
+                        </div>
+
+                        <div class="worship-setting-description">
+                            تذكير بيوم عرفة
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+                        <input
+                            id="reminderArafah"
+                            type="checkbox"
+                        >
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <!-- ذو الحجة -->
+                <div class="worship-setting">
+
+                    <div class="worship-setting-info">
+
+                        <div class="worship-setting-title">
+                            العشر من ذي الحجة
+                        </div>
+
+                        <div class="worship-setting-description">
+                            تذكير بالعشر الأوائل من ذي الحجة
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+                        <input
+                            id="reminderDhulHijjah"
+                            type="checkbox"
+                        >
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <!-- تكبيرات العيد -->
+                <div class="worship-setting">
+
+                    <div class="worship-setting-info">
+
+                        <div class="worship-setting-title">
+                            تكبيرات العيد
+                        </div>
+
+                        <div class="worship-setting-description">
+                            تفعيل تذكير تكبيرات العيد
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+                        <input
+                            id="reminderEidTakbeer"
+                            type="checkbox"
+                        >
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+                    </label>
+
+                </div>
+
+
+                <div class="worship-note">
+                    المواعيد الهجرية تقديرية وقد تختلف حسب ثبوت رؤية الهلال.
+                </div>
+
+            </div>
+
+
+            <!-- الأذان -->
+            <div class="settings-section-title">
+                الأذان
+            </div>
+
+            <div class="settings-card">
+
+
+                <div
+                    class="setting-row expandable-row"
+                    id="normalMuezzinRow"
+                    role="button"
+                    tabindex="0"
+                >
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            مؤذن الصلوات العادية
+                        </div>
+
+                        <div
+                            class="setting-description"
+                            id="normalMuezzinSelected"
+                        >
+                            المؤذن الحالي
+                        </div>
+
+                    </div>
+
+                    <div class="settings-arrow">
+                        فتح
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="audio-picker"
+                    id="normalMuezzinOptions"
+                >
+
+                    <div class="muezzin-row">
+
+                        <label class="muezzin-select">
+
+                            <input
+                                type="radio"
+                                name="normalMuezzin"
+                                value="current"
+                                checked
+                            >
+
+                            <span class="muezzin-name">
+                                المؤذن الحالي
+                            </span>
+
+                        </label>
+
+                        <button
+                            class="preview-button"
+                            type="button"
+                            data-audio="adhanAudio"
+                        >
+                            تشغيل
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="setting-row expandable-row"
+                    id="fajrMuezzinRow"
+                    role="button"
+                    tabindex="0"
+                >
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            مؤذن الفجر
+                        </div>
+
+                        <div
+                            class="setting-description"
+                            id="fajrMuezzinSelected"
+                        >
+                            مؤذن الفجر الحالي
+                        </div>
+
+                    </div>
+
+                    <div class="settings-arrow">
+                        فتح
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="audio-picker"
+                    id="fajrMuezzinOptions"
+                >
+
+                    <div class="muezzin-row">
+
+                        <label class="muezzin-select">
+
+                            <input
+                                type="radio"
+                                name="fajrMuezzin"
+                                value="current"
+                                checked
+                            >
+
+                            <span class="muezzin-name">
+                                مؤذن الفجر الحالي
+                            </span>
+
+                        </label>
+
+                        <button
+                            class="preview-button"
+                            type="button"
+                            data-audio="fajrAudio"
+                        >
+                            تشغيل
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            الأذان التلقائي
+                        </div>
+
+                        <div class="setting-description">
+                            تشغيل الأذان عند دخول وقت الصلاة
+                        </div>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            id="autoAdhan"
+                            type="checkbox"
+                        >
+
+                        <span class="switch-track"></span>
+                        <span class="switch-knob"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="volume-container">
+
+                    <div class="volume-header">
+
+                        <span class="volume-title">
+                            مستوى صوت الأذان
+                        </span>
+
+                        <span
+                            class="volume-value"
+                            id="volumeValue"
+                        >
+                            100%
+                        </span>
+
+                    </div>
+
+                    <input
+                        id="adhanVolume"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="100"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- الصوت -->
+            <div class="settings-section-title">
+                الصوت
+            </div>
+
+            <div class="settings-card">
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            الأذان
+                        </div>
+
+                        <div class="setting-description">
+                            الصوت المستخدم للأذان
+                        </div>
+
+                    </div>
+
+                    <span class="setting-status">
+                        مفعل
+                    </span>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            آية الكرسي
+                        </div>
+
+                        <div class="setting-description">
+                            سيتم إضافة اختيار الصوت لاحقًا
+                        </div>
+
+                    </div>
+
+                    <span class="setting-arrow">
+                        فتح
+                    </span>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            الأذكار
+                        </div>
+
+                        <div class="setting-description">
+                            سيتم إضافة أصوات الأذكار لاحقًا
+                        </div>
+
+                    </div>
+
+                    <span class="setting-arrow">
+                        فتح
+                    </span>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <div class="setting-title">
+                            القرآن والأدعية
+                        </div>
+
+                        <div class="setting-description">
+                            سيتم إضافة الأصوات لاحقًا
+                        </div>
+
+                    </div>
+
+                    <span class="setting-arrow">
+                        فتح
+                    </span>
+
+                </div>
+
+
+                <button
+                    id="testAdhanButton"
+                    class="adhan-button"
+                    type="button"
+                >
+                    تجربة الأذان
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
 
-<label class="muezzin-select">
 
-<input
-type="radio"
-name="normalMuezzin"
-value="current"
-checked
+<!-- =========================
+     القائمة السفلية
+========================== -->
+<nav
+    class="bottom-nav"
+    aria-label="التنقل الرئيسي"
 >
 
-<span class="muezzin-name">
-المؤذن الحالي
-</span>
-
-</label>
-
-<button
-class="preview-button"
-type="button"
-data-audio="adhanAudio"
->
-▶
-</button>
-
-</div>
-
-</div>
-
-<div class="setting-row" id="fajrMuezzinRow" style="cursor:pointer">
-
-<div class="setting-info">
-
-<div class="setting-title">
-مؤذن الفجر
-</div>
-
-<div class="setting-description" id="fajrMuezzinSelected">
-مؤذن الفجر الحالي
-</div>
-
-</div>
-
-<div class="settings-arrow">⌄</div>
-
-</div>
-
-<div class="audio-picker" id="fajrMuezzinOptions">
-
-<div class="muezzin-row">
-
-<label class="muezzin-select">
-
-<input
-type="radio"
-name="fajrMuezzin"
-value="current"
-checked
->
-
-<span class="muezzin-name">
-مؤذن الفجر الحالي
-</span>
-
-</label>
-
-<button
-class="preview-button"
-type="button"
-data-audio="fajrAudio"
->
-▶
-</button>
-
-</div>
-
-</div>
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-الأذان التلقائي
-</div>
-
-<div class="setting-description">
-تشغيل الأذان عند دخول وقت الصلاة
-</div>
-
-</div>
-
-<label class="switch">
-
-<input id="autoAdhan" type="checkbox">
-
-<span class="switch-track"></span>
-
-<span class="switch-knob"></span>
-
-</label>
-
-</div>
-
-<div class="volume-container">
-
-<div class="volume-header">
-
-<span class="volume-title">
-مستوى صوت الأذان
-</span>
-
-<span class="volume-value" id="volumeValue">
-100%
-</span>
-
-</div>
-
-<input
-id="adhanVolume"
-type="range"
-min="0"
-max="100"
-value="100"
->
-
-</div>
-
-</div>
-
-<!-- الصوت -->
-<div class="settings-section-title">الصوت</div>
-
-<div class="settings-card">
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-الأذان
-</div>
-
-<div class="setting-description">
-الصوت المستخدم للأذان
-</div>
-
-</div>
-
-<span style="color:var(--primary)">
-✓
-</span>
-
-</div>
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-آية الكرسي
-</div>
-
-<div class="setting-description">
-سيتم إضافة اختيار الصوت لاحقًا
-</div>
-
-</div>
-
-<span style="color:var(--muted)">
-›
-</span>
-
-</div>
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-الأذكار
-</div>
-
-<div class="setting-description">
-سيتم إضافة أصوات الأذكار لاحقًا
-</div>
-
-</div>
-
-<span style="color:var(--muted)">
-›
-</span>
-
-</div>
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-القرآن والأدعية
-</div>
-
-<div class="setting-description">
-سيتم إضافة الأصوات لاحقًا
-</div>
-
-</div>
-
-<span style="color:var(--muted)">
-›
-</span>
-
-</div>
-
-<button
-id="testAdhanButton"
-class="adhan-button"
-type="button"
->
-▶ تجربة الأذان
-</button>
-
-</div>
-
-</section>
-</div>
-
-</div>
-
-<!-- القائمة السفلية -->
-<nav class="bottom-nav">
-
-<button
-class="nav-item active"
-data-page="home"
-type="button"
->
-<span class="nav-icon">⌂</span>
-<span>الرئيسية</span>
-</button>
-
-<button
-class="nav-item"
-data-page="duas"
-type="button"
->
-<span class="nav-icon">♡</span>
-<span>الأدعية</span>
-</button>
-
-<button
-class="nav-item"
-data-page="azkar"
-type="button"
->
-<span class="nav-icon">◉</span>
-<span>الأذكار</span>
-</button>
-
-<button
-class="nav-item"
-data-page="qibla"
-type="button"
->
-<span class="nav-icon">◎</span>
-<span>القبلة</span>
-</button>
-
-<button
-class="nav-item"
-data-page="settings"
-type="button"
->
-<span class="nav-icon">⚙</span>
-<span>الإعدادات</span>
-</button>
+    <button
+        class="nav-item active"
+        data-page="home"
+        type="button"
+    >
+        <span class="nav-icon">الرئيسية</span>
+    </button>
+
+
+    <button
+        class="nav-item"
+        data-page="duas"
+        type="button"
+    >
+        <span class="nav-icon">الأدعية</span>
+    </button>
+
+
+    <button
+        class="nav-item"
+        data-page="azkar"
+        type="button"
+    >
+        <span class="nav-icon">الأذكار</span>
+    </button>
+
+
+    <button
+        class="nav-item"
+        data-page="qibla"
+        type="button"
+    >
+        <span class="nav-icon">القبلة</span>
+    </button>
+
+
+    <button
+        class="nav-item"
+        data-page="settings"
+        type="button"
+    >
+        <span class="nav-icon">الإعدادات</span>
+    </button>
 
 </nav>
 
-<script src="azkar-topics.js"></script>
-<!-- <script src="js/script-new.js"></script> -->
+
+<!-- البيانات -->
+<script src="data/azkar-topics.js"></script>
+
+<!-- JavaScript -->
+<script src="js/prayer.js"></script>
+<script src="js/azkar.js"></script>
+<script src="js/duas.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/app.js"></script>
 
 </body>
   </html>
