@@ -1,1 +1,87 @@
+.main-header {
+    position: relative;
 
+    padding: 28px 20px 58px;
+
+    background:
+        radial-gradient(
+            circle at 88% 10%,
+            rgba(255, 255, 255, 0.10),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-dark)
+        );
+
+    color: #ffffff;
+
+    border-radius: 0 0 30px 30px;
+
+    overflow: hidden;
+}
+
+.main-header .brand {
+    position: relative;
+    z-index: 1;
+
+    color: #ffffff;
+}
+
+.main-header .date {
+    position: relative;
+    z-index: 1;
+
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.next-prayer {
+    position: relative;
+    z-index: 5;
+
+    margin: -32px 16px 18px;
+    padding: 24px 22px;
+
+    background: var(--card);
+
+    border-radius: 26px;
+
+    box-shadow:
+        0 12px 32px rgba(15, 111, 92, 0.11);
+}
+
+.next-label {
+    margin-bottom: 8px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.prayer-name {
+    margin-bottom: 4px;
+
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.prayer-time {
+    color: var(--muted);
+
+    font-size: 19px;
+}
+
+.countdown {
+    margin-top: 14px;
+
+    color: var(--primary);
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.home-status {
+    color: var(--muted);
+    font-size: 13px;
+}
