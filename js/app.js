@@ -23,11 +23,25 @@ document.addEventListener("DOMContentLoaded", () => {
   setupDailyDua();
   setupUpcomingOccasion();
 
+  setupDailyHadith();
+  setupPrayerTracking();
+  setupPrayerReport();
+  setupNearbyMosque();
+  setupTravelerPrayer();
+  setupQibla();
+  setupUpdateBanner();
+  setupExtraSettings();
+
   detectLocationAndLoadTimes();
 
   setInterval(updateDate, 60 * 1000);
   setInterval(updateCountdown, 1000);
   setInterval(checkAutoAdhan, 1000 * 20);
+
+  setInterval(() => {
+    updatePrayerTrackingUI();
+    applyManualPrayerOffsets();
+  }, 60 * 1000);
 
 });
 
@@ -38,13 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function updateDate() {
 
-  const today =
-    new Date();
+  const today = new Date();
 
   const dateElement =
-    document.getElementById(
-      "todayDate"
-    );
+    document.getElementById("todayDate");
 
   if (dateElement) {
 
@@ -61,14 +72,11 @@ function updateDate() {
   }
 
   const hijriElement =
-    document.getElementById(
-      "todayHijri"
-    );
+    document.getElementById("todayHijri");
 
   if (
     hijriElement &&
-    typeof getHijriParts ===
-    "function"
+    typeof getHijriParts === "function"
   ) {
 
     const hijri =
@@ -76,8 +84,21 @@ function updateDate() {
 
     if (hijri) {
 
+      const adjustment =
+        parseInt(
+          localStorage.getItem("anyas_hijri_adjustment") || "0",
+          10
+        );
+
+      let day =
+        parseInt(hijri.day, 10) + adjustment;
+
+      if (day < 1) {
+        day = 1;
+      }
+
       hijriElement.textContent =
-        `${hijri.day} ${hijri.month} ${hijri.year} هـ`;
+        `${day} ${hijri.month} ${hijri.year} هـ`;
 
     }
 
@@ -93,31 +114,22 @@ function updateDate() {
 function setupNavigation() {
 
   const navItems =
-    document.querySelectorAll(
-      ".nav-item"
-    );
+    document.querySelectorAll(".nav-item");
 
   navItems.forEach(item => {
 
-    item.addEventListener(
-      "click",
-      () => {
+    item.addEventListener("click", () => {
 
-        const targetPage =
-          item.getAttribute(
-            "data-page"
-          );
+      const targetPage =
+        item.getAttribute("data-page");
 
-        if (!targetPage) {
-          return;
-        }
-
-        goToPage(
-          targetPage
-        );
-
+      if (!targetPage) {
+        return;
       }
-    );
+
+      goToPage(targetPage);
+
+    });
 
   });
 
@@ -134,37 +146,25 @@ function goToPage(pageId) {
     .querySelectorAll(".page")
     .forEach(page => {
 
-      page.classList.remove(
-        "active"
-      );
+      page.classList.remove("active");
 
     });
 
   const page =
-    document.getElementById(
-      `page-${pageId}`
-    );
+    document.getElementById(`page-${pageId}`);
 
   if (page) {
 
-    page.classList.add(
-      "active"
-    );
+    page.classList.add("active");
 
   }
-
-  /*
-   * تحديث حالة شريط التنقل السفلي
-   */
 
   document
     .querySelectorAll(".nav-item")
     .forEach(nav => {
 
       const target =
-        nav.getAttribute(
-          "data-page"
-        );
+        nav.getAttribute("data-page");
 
       nav.classList.toggle(
         "active",
@@ -188,100 +188,63 @@ function goToPage(pageId) {
 function setupQuickActions() {
 
   const quickAzkar =
-    document.getElementById(
-      "quickAzkar"
-    );
+    document.getElementById("quickAzkar");
 
   const quickDuas =
-    document.getElementById(
-      "quickDuas"
-    );
+    document.getElementById("quickDuas");
 
   const quickTasbeeh =
-    document.getElementById(
-      "quickTasbeeh"
-    );
+    document.getElementById("quickTasbeeh");
 
   const quickSettings =
-    document.getElementById(
-      "quickSettings"
-    );
+    document.getElementById("quickSettings");
 
 
   if (quickAzkar) {
 
-    quickAzkar.addEventListener(
-      "click",
-      () => {
-
-        goToPage("azkar");
-
-      }
-    );
+    quickAzkar.addEventListener("click", () => {
+      goToPage("azkar");
+    });
 
   }
 
 
   if (quickDuas) {
 
-    quickDuas.addEventListener(
-      "click",
-      () => {
-
-        goToPage("duas");
-
-      }
-    );
+    quickDuas.addEventListener("click", () => {
+      goToPage("duas");
+    });
 
   }
 
 
   if (quickSettings) {
 
-    quickSettings.addEventListener(
-      "click",
-      () => {
-
-        goToPage("settings");
-
-      }
-    );
+    quickSettings.addEventListener("click", () => {
+      goToPage("settings");
+    });
 
   }
 
 
-  /*
-   * التسبيح
-   *
-   * لو عندك صفحة تسبيح موجودة بالفعل
-   * يتم فتحها.
-   *
-   * ولو غير موجودة لا يحدث أي خطأ.
-   */
-
   if (quickTasbeeh) {
 
-    quickTasbeeh.addEventListener(
-      "click",
-      () => {
+    quickTasbeeh.addEventListener("click", () => {
 
-        const tasbeehPage =
-          document.getElementById(
-            "page-tasbeeh"
-          );
+      const tasbeehPage =
+        document.getElementById("page-tasbeeh");
 
-        if (tasbeehPage) {
+      if (tasbeehPage) {
 
-          goToPage("tasbeeh");
+        goToPage("tasbeeh");
 
-        } else {
+      } else {
 
-          openTasbeehFallback();
-
-        }
+        openTasbeehFallback();
 
       }
-    );
+
+    });
 
   }
 
@@ -289,30 +252,23 @@ function setupQuickActions() {
 
 
 // =====================================================
-// التسبيح - واجهة احتياطية بسيطة
+// التسبيح - واجهة احتياطية
 // =====================================================
 
 function openTasbeehFallback() {
 
   let modal =
-    document.getElementById(
-      "tasbeehFallback"
-    );
+    document.getElementById("tasbeehFallback");
 
   if (modal) {
 
-    modal.classList.add(
-      "show"
-    );
-
+    modal.classList.add("show");
     return;
 
   }
 
   modal =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
   modal.id =
     "tasbeehFallback";
@@ -358,91 +314,61 @@ function openTasbeehFallback() {
     </div>
   `;
 
-  document.body.appendChild(
-    modal
-  );
+  document.body.appendChild(modal);
 
   let count = 0;
 
   const countElement =
-    document.getElementById(
-      "tasbeehFallbackCount"
-    );
+    document.getElementById("tasbeehFallbackCount");
 
   const button =
-    document.getElementById(
-      "tasbeehFallbackButton"
-    );
+    document.getElementById("tasbeehFallbackButton");
 
   const reset =
-    document.getElementById(
-      "tasbeehFallbackReset"
-    );
+    document.getElementById("tasbeehFallbackReset");
 
   const close =
-    modal.querySelector(
-      ".tasbeeh-close"
-    );
+    modal.querySelector(".tasbeeh-close");
 
 
-  button.addEventListener(
-    "click",
-    () => {
+  button.addEventListener("click", () => {
 
-      count++;
+    count++;
 
-      countElement.textContent =
-        count;
+    countElement.textContent =
+      count;
 
-    }
-  );
+  });
 
 
-  reset.addEventListener(
-    "click",
-    () => {
+  reset.addEventListener("click", () => {
 
-      count = 0;
+    count = 0;
 
-      countElement.textContent =
-        "0";
+    countElement.textContent =
+      "0";
 
-    }
-  );
+  });
 
 
-  close.addEventListener(
-    "click",
-    () => {
+  close.addEventListener("click", () => {
 
-      modal.classList.remove(
-        "show"
-      );
+    modal.classList.remove("show");
+
+  });
+
+
+  modal.addEventListener("click", event => {
+
+    if (event.target === modal) {
+
+      modal.classList.remove("show");
 
     }
-  );
 
+  });
 
-  modal.addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target === modal
-      ) {
-
-        modal.classList.remove(
-          "show"
-        );
-
-      }
-
-    }
-  );
-
-  modal.classList.add(
-    "show"
-  );
+  modal.classList.add("show");
 
 }
 
@@ -454,65 +380,44 @@ function openTasbeehFallback() {
 function setupDailyTasks() {
 
   const morning =
-    document.getElementById(
-      "morningAzkarTask"
-    );
+    document.getElementById("morningAzkarTask");
 
   const evening =
-    document.getElementById(
-      "eveningAzkarTask"
-    );
+    document.getElementById("eveningAzkarTask");
 
   const dailyWird =
-    document.getElementById(
-      "dailyWirdTask"
-    );
+    document.getElementById("dailyWirdTask");
 
 
   if (morning) {
 
-    morning.addEventListener(
-      "click",
-      () => {
+    morning.addEventListener("click", () => {
 
-        openAzkarTopic(
-          1
-        );
+      openAzkarTopic(1);
 
-      }
-    );
+    });
 
   }
 
 
   if (evening) {
 
-    evening.addEventListener(
-      "click",
-      () => {
+    evening.addEventListener("click", () => {
 
-        openAzkarTopic(
-          2
-        );
+      openAzkarTopic(2);
 
-      }
-    );
+    });
 
   }
 
 
   if (dailyWird) {
 
-    dailyWird.addEventListener(
-      "click",
-      () => {
+    dailyWird.addEventListener("click", () => {
 
-        goToPage(
-          "azkar"
-        );
+      goToPage("azkar");
 
-      }
-    );
+    });
 
   }
 
@@ -525,47 +430,27 @@ function setupDailyTasks() {
 
 function openAzkarTopic(topicId) {
 
-  goToPage(
-    "azkar"
-  );
+  goToPage("azkar");
 
   setTimeout(() => {
 
-    /*
-     * نحاول استخدام الدالة الموجودة
-     * في azkar.js إن كانت متاحة.
-     */
-
     if (
-      typeof openAzkarDetail ===
-      "function"
+      typeof openAzkarDetail === "function"
     ) {
 
-      openAzkarDetail(
-        topicId
-      );
-
+      openAzkarDetail(topicId);
       return;
 
     }
 
     if (
-      typeof showAzkarTopic ===
-      "function"
+      typeof showAzkarTopic === "function"
     ) {
 
-      showAzkarTopic(
-        topicId
-      );
-
+      showAzkarTopic(topicId);
       return;
 
     }
-
-    /*
-     * إذا لم توجد دالة،
-     * نبحث عن العنصر الخاص بالباب.
-     */
 
     const topic =
       document.querySelector(
@@ -607,22 +492,19 @@ const DAILY_DUAS = [
 
 ];
 
+
 function setupDailyDua() {
 
   const duaElement =
-    document.getElementById(
-      "dailyDuaText"
-    );
+    document.getElementById("dailyDuaText");
 
   const moreButton =
-    document.getElementById(
-      "moreDuasButton"
-    );
+    document.getElementById("moreDuasButton");
+
 
   if (duaElement) {
 
-    const today =
-      new Date();
+    const today = new Date();
 
     const dayNumber =
       Math.floor(
@@ -630,14 +512,11 @@ function setupDailyDua() {
           today.getFullYear(),
           today.getMonth(),
           today.getDate()
-        ).getTime() /
-        86400000
+        ).getTime() / 86400000
       );
 
     const index =
-      Math.abs(
-        dayNumber
-      ) %
+      Math.abs(dayNumber) %
       DAILY_DUAS.length;
 
     duaElement.textContent =
@@ -648,16 +527,113 @@ function setupDailyDua() {
 
   if (moreButton) {
 
-    moreButton.addEventListener(
-      "click",
-      () => {
+    moreButton.addEventListener("click", () => {
 
-        goToPage(
-          "duas"
-        );
+      goToPage("duas");
 
-      }
+    });
+
+  }
+
+}
+
+
+// =====================================================
+// حديث اليوم
+// =====================================================
+
+const DAILY_HADITH = [
+
+  {
+    text: "إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى.",
+    reference: "رواه البخاري ومسلم"
+  },
+
+  {
+    text: "من كان يؤمن بالله واليوم الآخر فليقل خيرًا أو ليصمت.",
+    reference: "رواه البخاري ومسلم"
+  },
+
+  {
+    text: "المسلم من سلم المسلمون من لسانه ويده.",
+    reference: "رواه البخاري ومسلم"
+  },
+
+  {
+    text: "لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه.",
+    reference: "رواه البخاري ومسلم"
+  },
+
+  {
+    text: "من لا يرحم لا يرحم.",
+    reference: "رواه البخاري ومسلم"
+  },
+
+  {
+    text: "يسروا ولا تعسروا، وبشروا ولا تنفروا.",
+    reference: "رواه البخاري ومسلم"
+  },
+
+  {
+    text: "خيركم من تعلم القرآن وعلمه.",
+    reference: "رواه البخاري"
+  },
+
+  {
+    text: "الكلمة الطيبة صدقة.",
+    reference: "رواه البخاري ومسلم"
+  },
+
+  {
+    text: "اتق الله حيثما كنت، وأتبع السيئة الحسنة تمحها، وخالق الناس بخلق حسن.",
+    reference: "رواه الترمذي"
+  },
+
+  {
+    text: "من كان يؤمن بالله واليوم الآخر فليكرم ضيفه.",
+    reference: "رواه البخاري ومسلم"
+  }
+
+];
+
+
+function setupDailyHadith() {
+
+  const textElement =
+    document.getElementById("dailyHadithText");
+
+  const referenceElement =
+    document.getElementById("dailyHadithReference");
+
+  if (!textElement) {
+    return;
+  }
+
+  const today = new Date();
+
+  const dayNumber =
+    Math.floor(
+      new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      ).getTime() / 86400000
     );
+
+  const index =
+    Math.abs(dayNumber) %
+    DAILY_HADITH.length;
+
+  const hadith =
+    DAILY_HADITH[index];
+
+  textElement.textContent =
+    hadith.text;
+
+  if (referenceElement) {
+
+    referenceElement.textContent =
+      hadith.reference;
 
   }
 
@@ -672,10 +648,6 @@ function setupUpcomingOccasion() {
 
   updateUpcomingOccasion();
 
-  /*
-   * يتم تحديثها كل ساعة
-   */
-
   setInterval(
     updateUpcomingOccasion,
     60 * 60 * 1000
@@ -687,17 +659,14 @@ function setupUpcomingOccasion() {
 function updateUpcomingOccasion() {
 
   const element =
-    document.getElementById(
-      "upcomingOccasion"
-    );
+    document.getElementById("upcomingOccasion");
 
   if (!element) {
     return;
   }
 
   if (
-    typeof daysUntilHijri !==
-    "function"
+    typeof daysUntilHijri !== "function"
   ) {
 
     element.textContent =
@@ -743,39 +712,37 @@ function updateUpcomingOccasion() {
   ];
 
 
-  let nearest =
-    null;
+  let nearest = null;
 
-  occasions.forEach(
-    occasion => {
 
-      const days =
-        daysUntilHijri(
-          occasion.month,
-          occasion.day
-        );
+  occasions.forEach(occasion => {
 
-      if (
-        days === null ||
-        days === undefined
-      ) {
-        return;
-      }
+    const days =
+      daysUntilHijri(
+        occasion.month,
+        occasion.day
+      );
 
-      if (
-        !nearest ||
-        days < nearest.days
-      ) {
+    if (
+      days === null ||
+      days === undefined
+    ) {
+      return;
+    }
 
-        nearest = {
-          ...occasion,
-          days
-        };
+    if (
+      !nearest ||
+      days < nearest.days
+    ) {
 
-      }
+      nearest = {
+        ...occasion,
+        days
+      };
 
     }
-  );
+
+  });
 
 
   if (!nearest) {
@@ -815,14 +782,1329 @@ function updateUpcomingOccasion() {
 
 
 // =====================================================
-// تنسيق الأرقام
+// تتبع الصلوات
+// =====================================================
+
+const PRAYER_TRACKING_KEY =
+  "anyas_prayer_tracking";
+
+
+function getTodayKey() {
+
+  const today =
+    new Date();
+
+  return [
+    today.getFullYear(),
+    formatNumber(today.getMonth() + 1),
+    formatNumber(today.getDate())
+  ].join("-");
+
+}
+
+
+function getPrayerTrackingData() {
+
+  try {
+
+    const data =
+      JSON.parse(
+        localStorage.getItem(
+          PRAYER_TRACKING_KEY
+        ) || "{}"
+      );
+
+    return data || {};
+
+  } catch (error) {
+
+    return {};
+
+  }
+
+}
+
+
+function savePrayerTrackingData(data) {
+
+  localStorage.setItem(
+    PRAYER_TRACKING_KEY,
+    JSON.stringify(data)
+  );
+
+}
+
+
+function setupPrayerTracking() {
+
+  const buttons =
+    document.querySelectorAll(
+      "[data-track-prayer]"
+    );
+
+  buttons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      const prayer =
+        button.getAttribute(
+          "data-track-prayer"
+        );
+
+      if (!prayer) {
+        return;
+      }
+
+      togglePrayerTracking(prayer);
+
+    });
+
+  });
+
+
+  const reportButton =
+    document.getElementById(
+      "openPrayerReportButton"
+    );
+
+  if (reportButton) {
+
+    reportButton.addEventListener(
+      "click",
+      () => {
+
+        goToPage("prayer-report");
+
+        updatePrayerReport();
+
+      }
+    );
+
+  }
+
+
+  updatePrayerTrackingUI();
+
+}
+
+
+function togglePrayerTracking(prayer) {
+
+  const data =
+    getPrayerTrackingData();
+
+  const today =
+    getTodayKey();
+
+  if (!data[today]) {
+
+    data[today] = {};
+
+  }
+
+  data[today][prayer] =
+    !Boolean(
+      data[today][prayer]
+    );
+
+  savePrayerTrackingData(data);
+
+  updatePrayerTrackingUI();
+  updatePrayerReport();
+
+}
+
+
+function updatePrayerTrackingUI() {
+
+  const data =
+    getPrayerTrackingData();
+
+  const today =
+    getTodayKey();
+
+  const todayData =
+    data[today] || {};
+
+  document
+    .querySelectorAll("[data-track-prayer]")
+    .forEach(button => {
+
+      const prayer =
+        button.getAttribute(
+          "data-track-prayer"
+        );
+
+      const completed =
+        Boolean(
+          todayData[prayer]
+        );
+
+      button.classList.toggle(
+        "completed",
+        completed
+      );
+
+      button.setAttribute(
+        "aria-pressed",
+        completed ? "true" : "false"
+      );
+
+    });
+
+}
+
+
+function getPrayerTrackingForDate(date) {
+
+  const data =
+    getPrayerTrackingData();
+
+  const key =
+    [
+      date.getFullYear(),
+      formatNumber(date.getMonth() + 1),
+      formatNumber(date.getDate())
+    ].join("-");
+
+  return data[key] || {};
+
+}
+
+
+// =====================================================
+// التقرير الأسبوعي
+// =====================================================
+
+function setupPrayerReport() {
+
+  const openButton =
+    document.getElementById(
+      "openPrayerReportFromSettings"
+    );
+
+  if (openButton) {
+
+    openButton.addEventListener(
+      "click",
+      () => {
+
+        goToPage("prayer-report");
+
+        updatePrayerReport();
+
+      }
+    );
+
+  }
+
+
+  const reportPage =
+    document.getElementById(
+      "page-prayer-report"
+    );
+
+  if (reportPage) {
+
+    updatePrayerReport();
+
+  }
+
+}
+
+
+function updatePrayerReport() {
+
+  const reportPage =
+    document.getElementById(
+      "page-prayer-report"
+    );
+
+  if (!reportPage) {
+    return;
+  }
+
+  const data =
+    getPrayerTrackingData();
+
+  const prayers = [
+    "Fajr",
+    "Dhuhr",
+    "Asr",
+    "Maghrib",
+    "Isha"
+  ];
+
+  let completed = 0;
+  let total = 0;
+
+  const today =
+    new Date();
+
+  for (let i = 6; i >= 0; i--) {
+
+    const date =
+      new Date(today);
+
+    date.setDate(
+      today.getDate() - i
+    );
+
+    const tracking =
+      getPrayerTrackingForDate(date);
+
+    prayers.forEach(prayer => {
+
+      total++;
+
+      if (tracking[prayer]) {
+
+        completed++;
+
+      }
+
+    });
+
+  }
+
+
+  const percentage =
+    total > 0
+      ? Math.round(
+          (completed / total) * 100
+        )
+      : 0;
+
+
+  const possibleElements = [
+
+    document.getElementById(
+      "weeklyPrayerPercentage"
+    ),
+
+    document.getElementById(
+      "prayerReportPercentage"
+    )
+
+  ];
+
+
+  possibleElements.forEach(element => {
+
+    if (element) {
+
+      element.textContent =
+        `${percentage}%`;
+
+    }
+
+  });
+
+
+  const completedElements = [
+
+    document.getElementById(
+      "weeklyPrayerCompleted"
+    ),
+
+    document.getElementById(
+      "prayerReportCompleted"
+    )
+
+  ];
+
+
+  completedElements.forEach(element => {
+
+    if (element) {
+
+      element.textContent =
+        completed;
+
+    }
+
+  });
+
+
+  const totalElements = [
+
+    document.getElementById(
+      "weeklyPrayerTotal"
+    ),
+
+    document.getElementById(
+      "prayerReportTotal"
+    )
+
+  ];
+
+
+  totalElements.forEach(element => {
+
+    if (element) {
+
+      element.textContent =
+        total;
+
+    }
+
+  });
+
+}
+
+
+// =====================================================
+// أقرب مسجد
+// =====================================================
+
+function setupNearbyMosque() {
+
+  const button =
+    document.getElementById(
+      "nearbyMosqueButton"
+    );
+
+  if (!button) {
+    return;
+  }
+
+  button.addEventListener(
+    "click",
+    openNearbyMosque
+  );
+
+}
+
+
+function openNearbyMosque() {
+
+  let latitude =
+    window.currentLatitude ||
+    window.userLatitude;
+
+  let longitude =
+    window.currentLongitude ||
+    window.userLongitude;
+
+
+  if (
+    latitude &&
+    longitude
+  ) {
+
+    const url =
+      `https://www.google.com/maps/search/?api=1&query=mosque+near+${latitude},${longitude}`;
+
+    window.open(
+      url,
+      "_blank"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    navigator.geolocation
+  ) {
+
+    navigator.geolocation.getCurrentPosition(
+      position => {
+
+        const lat =
+          position.coords.latitude;
+
+        const lon =
+          position.coords.longitude;
+
+        const url =
+          `https://www.google.com/maps/search/?api=1&query=mosque+near+${lat},${lon}`;
+
+        window.open(
+          url,
+          "_blank"
+        );
+
+      },
+      () => {
+
+        const url =
+          "https://www.google.com/maps/search/?api=1&query=mosque+near+me";
+
+        window.open(
+          url,
+          "_blank"
+        );
+
+      }
+    );
+
+    return;
+
+  }
+
+
+  window.open(
+    "https://www.google.com/maps/search/?api=1&query=mosque+near+me",
+    "_blank"
+  );
+
+}
+
+
+// =====================================================
+// صلاة المسافر
+// =====================================================
+
+function setupTravelerPrayer() {
+
+  const button =
+    document.getElementById(
+      "openTravelerPrayerButton"
+    );
+
+  if (button) {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        goToPage(
+          "traveler-prayer"
+        );
+
+      }
+    );
+
+  }
+
+
+  const backButton =
+    document.getElementById(
+      "travelerPrayerBackButton"
+    );
+
+  if (backButton) {
+
+    backButton.addEventListener(
+      "click",
+      () => {
+
+        goToPage("settings");
+
+      }
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// القبلة
+// =====================================================
+
+function setupQibla() {
+
+  const button =
+    document.getElementById(
+      "openQiblaButton"
+    );
+
+  if (button) {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        goToPage("qibla");
+
+      }
+    );
+
+  }
+
+
+  const backButton =
+    document.getElementById(
+      "qiblaBackButton"
+    );
+
+  if (backButton) {
+
+    backButton.addEventListener(
+      "click",
+      () => {
+
+        goToPage("settings");
+
+      }
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// إشعار تحديث التطبيق
+// =====================================================
+
+function setupUpdateBanner() {
+
+  const banner =
+    document.getElementById(
+      "updateBanner"
+    );
+
+  const updateButton =
+    document.getElementById(
+      "updateButton"
+    );
+
+  const dismissButton =
+    document.getElementById(
+      "dismissUpdateButton"
+    );
+
+
+  if (!banner) {
+    return;
+  }
+
+
+  const dismissedVersion =
+    localStorage.getItem(
+      "anyas_update_banner_dismissed"
+    );
+
+
+  const currentVersion =
+    "2.0";
+
+
+  if (
+    dismissedVersion !==
+    currentVersion
+  ) {
+
+    banner.hidden = false;
+
+  } else {
+
+    banner.hidden = true;
+
+  }
+
+
+  if (updateButton) {
+
+    updateButton.addEventListener(
+      "click",
+      () => {
+
+        localStorage.removeItem(
+          "anyas_update_banner_dismissed"
+        );
+
+        window.location.reload();
+
+      }
+    );
+
+  }
+
+
+  if (dismissButton) {
+
+    dismissButton.addEventListener(
+      "click",
+      () => {
+
+        localStorage.setItem(
+          "anyas_update_banner_dismissed",
+          currentVersion
+        );
+
+        banner.hidden = true;
+
+      }
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// إعدادات إضافية
+// =====================================================
+
+function setupExtraSettings() {
+
+  setupCalculationMethod();
+  setupPrayerTrackingToggle();
+  setupHijriAdjustment();
+  setupManualPrayerSettings();
+
+}
+
+
+// =====================================================
+// طريقة حساب مواقيت الصلاة
+// =====================================================
+
+function setupCalculationMethod() {
+
+  const select =
+    document.getElementById(
+      "calculationMethodSelect"
+    );
+
+  if (!select) {
+    return;
+  }
+
+
+  const saved =
+    localStorage.getItem(
+      "anyas_calculation_method"
+    );
+
+
+  if (saved) {
+
+    select.value =
+      saved;
+
+  }
+
+
+  select.addEventListener(
+    "change",
+    () => {
+
+      localStorage.setItem(
+        "anyas_calculation_method",
+        select.value
+      );
+
+      /*
+       * إعادة تحميل التطبيق حتى تستخدم
+       * إعدادات المواقيت الجديدة عند
+       * إعادة تحميل بيانات الصلاة.
+       */
+
+      window.location.reload();
+
+    }
+  );
+
+}
+
+
+// =====================================================
+// تشغيل / إيقاف تتبع الصلاة
+// =====================================================
+
+function setupPrayerTrackingToggle() {
+
+  const toggle =
+    document.getElementById(
+      "prayerTrackingToggle"
+    );
+
+  if (!toggle) {
+    return;
+  }
+
+
+  const saved =
+    localStorage.getItem(
+      "anyas_prayer_tracking_enabled"
+    );
+
+
+  toggle.checked =
+    saved !== "false";
+
+
+  toggle.addEventListener(
+    "change",
+    () => {
+
+      localStorage.setItem(
+        "anyas_prayer_tracking_enabled",
+        toggle.checked
+          ? "true"
+          : "false"
+      );
+
+      const tracker =
+        document.getElementById(
+          "todayPrayerTracker"
+        );
+
+      if (tracker) {
+
+        tracker.hidden =
+          !toggle.checked;
+
+      }
+
+    }
+  );
+
+
+  const tracker =
+    document.getElementById(
+      "todayPrayerTracker"
+    );
+
+  if (tracker) {
+
+    tracker.hidden =
+      saved === "false";
+
+  }
+
+}
+
+
+// =====================================================
+// تعديل التاريخ الهجري
+// =====================================================
+
+function setupHijriAdjustment() {
+
+  const input =
+    document.getElementById(
+      "hijriDateAdjustment"
+    );
+
+  if (!input) {
+    return;
+  }
+
+
+  const saved =
+    localStorage.getItem(
+      "anyas_hijri_adjustment"
+    ) || "0";
+
+
+  input.value =
+    saved;
+
+
+  input.addEventListener(
+    "change",
+    () => {
+
+      let value =
+        parseInt(
+          input.value,
+          10
+        );
+
+      if (isNaN(value)) {
+        value = 0;
+      }
+
+      if (value > 3) {
+        value = 3;
+      }
+
+      if (value < -3) {
+        value = -3;
+      }
+
+      input.value =
+        value;
+
+      localStorage.setItem(
+        "anyas_hijri_adjustment",
+        String(value)
+      );
+
+      updateDate();
+
+    }
+  );
+
+}
+
+
+// =====================================================
+// إعدادات المواقيت اليدوية
+// =====================================================
+
+function setupManualPrayerSettings() {
+
+  const button =
+    document.getElementById(
+      "openManualPrayerSettings"
+    );
+
+  if (!button) {
+    return;
+  }
+
+
+  button.addEventListener(
+    "click",
+    () => {
+
+      openManualPrayerModal();
+
+    }
+  );
+
+}
+
+
+function openManualPrayerModal() {
+
+  let modal =
+    document.getElementById(
+      "manualPrayerModal"
+    );
+
+
+  if (!modal) {
+
+    modal =
+      document.createElement("div");
+
+    modal.id =
+      "manualPrayerModal";
+
+    modal.innerHTML = `
+      <div class="manual-prayer-card">
+
+        <button
+          type="button"
+          id="manualPrayerClose"
+        >
+          إغلاق
+        </button>
+
+        <h3>
+          تعديل مواقيت الصلاة
+        </h3>
+
+        <p>
+          يمكنك إضافة أو خصم دقائق من مواقيت الصلاة.
+        </p>
+
+        <label>
+          الفجر
+          <input
+            type="number"
+            id="offsetFajr"
+            value="0"
+          >
+        </label>
+
+        <label>
+          الظهر
+          <input
+            type="number"
+            id="offsetDhuhr"
+            value="0"
+          >
+        </label>
+
+        <label>
+          العصر
+          <input
+            type="number"
+            id="offsetAsr"
+            value="0"
+          >
+        </label>
+
+        <label>
+          المغرب
+          <input
+            type="number"
+            id="offsetMaghrib"
+            value="0"
+          >
+        </label>
+
+        <label>
+          العشاء
+          <input
+            type="number"
+            id="offsetIsha"
+            value="0"
+          >
+        </label>
+
+        <button
+          type="button"
+          id="saveManualPrayerSettings"
+        >
+          حفظ
+        </button>
+
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+
+    const close =
+      document.getElementById(
+        "manualPrayerClose"
+      );
+
+    if (close) {
+
+      close.addEventListener(
+        "click",
+        () => {
+
+          modal.remove();
+
+        }
+      );
+
+    }
+
+
+    const save =
+      document.getElementById(
+        "saveManualPrayerSettings"
+      );
+
+    if (save) {
+
+      save.addEventListener(
+        "click",
+        () => {
+
+          const offsets = {
+
+            Fajr:
+              getInputNumber(
+                "offsetFajr"
+              ),
+
+            Dhuhr:
+              getInputNumber(
+                "offsetDhuhr"
+              ),
+
+            Asr:
+              getInputNumber(
+                "offsetAsr"
+              ),
+
+            Maghrib:
+              getInputNumber(
+                "offsetMaghrib"
+              ),
+
+            Isha:
+              getInputNumber(
+                "offsetIsha"
+              )
+
+          };
+
+
+          localStorage.setItem(
+            "anyas_prayer_offsets",
+            JSON.stringify(offsets)
+          );
+
+
+          applyManualPrayerOffsets();
+
+          modal.remove();
+
+        }
+      );
+
+    }
+
+  }
+
+
+  const offsets =
+    getPrayerOffsets();
+
+
+  setInputValue(
+    "offsetFajr",
+    offsets.Fajr
+  );
+
+  setInputValue(
+    "offsetDhuhr",
+    offsets.Dhuhr
+  );
+
+  setInputValue(
+    "offsetAsr",
+    offsets.Asr
+  );
+
+  setInputValue(
+    "offsetMaghrib",
+    offsets.Maghrib
+  );
+
+  setInputValue(
+    "offsetIsha",
+    offsets.Isha
+  );
+
+
+  modal.style.display =
+    "flex";
+
+}
+
+
+function getInputNumber(id) {
+
+  const element =
+    document.getElementById(id);
+
+  if (!element) {
+    return 0;
+  }
+
+  const value =
+    parseInt(
+      element.value,
+      10
+    );
+
+  return isNaN(value)
+    ? 0
+    : value;
+
+}
+
+
+function setInputValue(id, value) {
+
+  const element =
+    document.getElementById(id);
+
+  if (element) {
+
+    element.value =
+      value || 0;
+
+  }
+
+}
+
+
+function getPrayerOffsets() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        "anyas_prayer_offsets"
+      ) || "{}"
+    );
+
+  } catch (error) {
+
+    return {};
+
+  }
+
+}
+
+
+// =====================================================
+// تطبيق تعديل المواقيت
+// =====================================================
+
+function applyManualPrayerOffsets() {
+
+  const offsets =
+    getPrayerOffsets();
+
+
+  const mapping = {
+
+    Fajr: "fajrTime",
+
+    Dhuhr: "dhuhrTime",
+
+    Asr: "asrTime",
+
+    Maghrib: "maghribTime",
+
+    Isha: "ishaTime"
+
+  };
+
+
+  Object.keys(mapping).forEach(
+    prayer => {
+
+      const element =
+        document.getElementById(
+          mapping[prayer]
+        );
+
+      if (!element) {
+        return;
+      }
+
+      const original =
+        element.getAttribute(
+          "data-original-time"
+        );
+
+
+      if (!original) {
+
+        const current =
+          element.textContent.trim();
+
+        if (
+          current &&
+          current !== "--:--" &&
+          current !== "--"
+        ) {
+
+          element.setAttribute(
+            "data-original-time",
+            current
+          );
+
+        }
+
+      }
+
+
+      const base =
+        element.getAttribute(
+          "data-original-time"
+        );
+
+
+      if (!base) {
+        return;
+      }
+
+
+      const minutes =
+        parseInt(
+          offsets[prayer] || 0,
+          10
+        );
+
+
+      if (!minutes) {
+
+        element.textContent =
+          base;
+
+        return;
+
+      }
+
+
+      const adjusted =
+        addMinutesToTime(
+          base,
+          minutes
+        );
+
+
+      if (adjusted) {
+
+        element.textContent =
+          adjusted;
+
+      }
+
+    }
+  );
+
+}
+
+
+function addMinutesToTime(
+  timeString,
+  minutes
+) {
+
+  const match =
+    timeString.match(
+      /(\d{1,2}):(\d{2})/
+    );
+
+  if (!match) {
+    return timeString;
+  }
+
+
+  let hours =
+    parseInt(
+      match[1],
+      10
+    );
+
+  let mins =
+    parseInt(
+      match[2],
+      10
+    );
+
+
+  mins += minutes;
+
+
+  while (mins >= 60) {
+
+    mins -= 60;
+    hours++;
+
+  }
+
+
+  while (mins < 0) {
+
+    mins += 60;
+    hours--;
+
+  }
+
+
+  hours =
+    (hours + 24) % 24;
+
+
+  return (
+    formatNumber(hours) +
+    ":" +
+    formatNumber(mins)
+  );
+
+}
+
+
+// =====================================================
+// أدوات مساعدة
 // =====================================================
 
 function formatNumber(number) {
 
-  return String(
-    number
-  ).padStart(
+  return String(number).padStart(
     2,
     "0"
   );
