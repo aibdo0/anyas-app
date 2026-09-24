@@ -1,1 +1,55 @@
+.prayer-list {
+    overflow: hidden;
 
+    background: var(--card);
+
+    border-radius: 22px;
+
+    box-shadow: var(--shadow-sm);
+}
+
+.prayer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 16px 18px;
+
+    border-bottom: 1px solid var(--border);
+
+    transition: background 0.2s ease;
+}
+
+.prayer-row:last-child {
+    border-bottom: none;
+}
+
+.prayer-row.active {
+    background: rgba(15, 111, 92, 0.07);
+}
+
+.prayer-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.prayer-value {
+    color: var(--muted);
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.prayer-row.active .prayer-title,
+.prayer-row.active .prayer-value {
+    color: var(--primary);
+}
+
+.prayer-error {
+    padding: 15px;
+
+    color: var(--muted);
+
+    text-align: center;
+    font-size: 13px;
+}
