@@ -1,87 +1,415 @@
-.main-header {
-    position: relative;
+/* ================================
+   أنياس — الصفحة الرئيسية
+   تصميم إسلامي حديث للموبايل
+   ================================ */
 
-    padding: 28px 20px 58px;
-
-    background:
-        radial-gradient(
-            circle at 88% 10%,
-            rgba(255, 255, 255, 0.10),
-            transparent 35%
-        ),
-        linear-gradient(
-            135deg,
-            var(--primary),
-            var(--primary-dark)
-        );
-
-    color: #ffffff;
-
-    border-radius: 0 0 30px 30px;
-
-    overflow: hidden;
+#page-home {
+  padding: 18px 16px 100px;
 }
 
-.main-header .brand {
-    position: relative;
-    z-index: 1;
-
-    color: #ffffff;
+/* رأس الصفحة */
+.home-header {
+  text-align: center;
+  margin-bottom: 18px;
 }
 
-.main-header .date {
-    position: relative;
-    z-index: 1;
-
-    color: rgba(255, 255, 255, 0.75);
+.home-header h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #0b5548;
+  letter-spacing: -0.5px;
 }
 
-.next-prayer {
-    position: relative;
-    z-index: 5;
-
-    margin: -32px 16px 18px;
-    padding: 24px 22px;
-
-    background: var(--card);
-
-    border-radius: 26px;
-
-    box-shadow:
-        0 12px 32px rgba(15, 111, 92, 0.11);
+.home-header .subtitle {
+  margin-top: 5px;
+  color: #8e8e93;
+  font-size: 13px;
 }
 
-.next-label {
-    margin-bottom: 8px;
-
-    color: var(--muted);
-
-    font-size: 13px;
+/* التاريخ والموقع */
+.home-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
-.prayer-name {
-    margin-bottom: 4px;
-
-    font-size: 28px;
-    font-weight: 800;
+.home-info-card {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #f0f0f2;
+  border-radius: 18px;
+  padding: 12px 10px;
+  text-align: center;
+  box-shadow: 0 5px 18px rgba(15, 111, 92, 0.05);
 }
 
-.prayer-time {
-    color: var(--muted);
-
-    font-size: 19px;
+.home-info-card span {
+  display: block;
 }
 
-.countdown {
-    margin-top: 14px;
-
-    color: var(--primary);
-
-    font-size: 15px;
-    font-weight: 700;
+.home-info-label {
+  font-size: 11px;
+  color: #8e8e93;
+  margin-bottom: 5px;
 }
 
-.home-status {
-    color: var(--muted);
-    font-size: 13px;
+.home-info-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1c1c1e;
+}
+
+/* بطاقة الصلاة القادمة */
+.next-prayer-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      145deg,
+      #0b5548 0%,
+      #0f6f5c 55%,
+      #147b67 100%
+    );
+  color: #ffffff;
+  border-radius: 28px;
+  padding: 25px 20px;
+  margin-bottom: 18px;
+  text-align: center;
+  box-shadow: 0 14px 30px rgba(11, 85, 72, 0.22);
+}
+
+/* زخرفة إسلامية خفيفة */
+.next-prayer-card::before,
+.next-prayer-card::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(201, 162, 39, 0.28);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.next-prayer-card::before {
+  width: 110px;
+  height: 110px;
+  top: -65px;
+  right: -50px;
+}
+
+.next-prayer-card::after {
+  width: 80px;
+  height: 80px;
+  bottom: -45px;
+  left: -35px;
+}
+
+.next-prayer-label {
+  position: relative;
+  z-index: 1;
+  font-size: 13px;
+  opacity: 0.85;
+  margin-bottom: 8px;
+}
+
+#nextPrayerName {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+#nextPrayerTime {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-top: 5px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+#countdown {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 18px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  direction: ltr;
+}
+
+/* عنوان مواقيت الصلاة */
+.home-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 3px 10px;
+}
+
+.home-section-title h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #1c1c1e;
+  font-weight: 800;
+}
+
+.home-section-title span {
+  font-size: 11px;
+  color: #8e8e93;
+}
+
+/* مواقيت الصلاة */
+.prayer-times {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+
+.prayer-time-card {
+  background: #ffffff;
+  border: 1px solid #f0f0f2;
+  border-radius: 18px;
+  padding: 13px 6px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.035);
+}
+
+.prayer-time-card .prayer-name {
+  display: block;
+  font-size: 12px;
+  color: #8e8e93;
+  margin-bottom: 6px;
+}
+
+.prayer-time-card .prayer-time {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0b5548;
+  direction: ltr;
+}
+
+/* الصلاة الحالية */
+.prayer-time-card.active {
+  background: #f7f2df;
+  border-color: rgba(201, 162, 39, 0.35);
+}
+
+.prayer-time-card.active .prayer-name {
+  color: #806a1b;
+}
+
+.prayer-time-card.active .prayer-time {
+  color: #806a1b;
+}
+
+/* الاختصارات */
+.home-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
+  margin-top: 14px;
+}
+
+.home-shortcut {
+  position: relative;
+  min-height: 88px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #f0f0f2;
+  border-radius: 21px;
+  text-align: right;
+  box-shadow: 0 5px 18px rgba(15, 111, 92, 0.05);
+  overflow: hidden;
+}
+
+.home-shortcut::after {
+  content: "";
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  border: 1px solid rgba(201, 162, 39, 0.18);
+  transform: rotate(45deg);
+  left: -25px;
+  bottom: -25px;
+}
+
+.home-shortcut-title {
+  display: block;
+  position: relative;
+  z-index: 1;
+  color: #0b5548;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.home-shortcut-description {
+  display: block;
+  position: relative;
+  z-index: 1;
+  margin-top: 5px;
+  color: #8e8e93;
+  font-size: 11px;
+}
+
+/* زر القبلة */
+.qibla-shortcut {
+  grid-column: 1 / -1;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qibla-shortcut .home-shortcut-title {
+  font-size: 17px;
+}
+
+.qibla-arrow {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 162, 39, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c9a227;
+  font-size: 20px;
+}
+
+/* آية اليوم */
+.daily-ayah {
+  position: relative;
+  margin-top: 16px;
+  padding: 20px 17px;
+  background: #f7f2df;
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  border-radius: 22px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.daily-ayah::before {
+  content: "﴾";
+  position: absolute;
+  top: 2px;
+  right: 12px;
+  color: rgba(201, 162, 39, 0.25);
+  font-size: 42px;
+}
+
+.daily-ayah::after {
+  content: "﴿";
+  position: absolute;
+  bottom: -7px;
+  left: 12px;
+  color: rgba(201, 162, 39, 0.25);
+  font-size: 42px;
+}
+
+.daily-ayah-title {
+  color: #806a1b;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 9px;
+}
+
+.daily-ayah-text {
+  color: #4f4a38;
+  font-size: 15px;
+  line-height: 2;
+  font-weight: 600;
+}
+
+/* الوضع الداكن */
+body.dark-mode #page-home {
+  background: #111111;
+}
+
+body.dark-mode .home-header h1 {
+  color: #d7bd61;
+}
+
+body.dark-mode .home-info-card,
+body.dark-mode .prayer-time-card,
+body.dark-mode .home-shortcut {
+  background: #1c1c1e;
+  border-color: #2c2c2e;
+  box-shadow: none;
+}
+
+body.dark-mode .home-info-value,
+body.dark-mode .home-section-title h2 {
+  color: #f5f5f7;
+}
+
+body.dark-mode .prayer-time-card .prayer-time,
+body.dark-mode .home-shortcut-title {
+  color: #7cc8b5;
+}
+
+body.dark-mode .prayer-time-card.active {
+  background: #292517;
+  border-color: rgba(201, 162, 39, 0.35);
+}
+
+body.dark-mode .daily-ayah {
+  background: #292517;
+  border-color: rgba(201, 162, 39, 0.25);
+}
+
+body.dark-mode .daily-ayah-text {
+  color: #e6dfc7;
+}
+
+/* الشاشات الصغيرة جدًا */
+@media (max-width: 360px) {
+  #page-home {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .next-prayer-card {
+    padding: 22px 15px;
+    border-radius: 24px;
+  }
+
+  #nextPrayerName {
+    font-size: 25px;
+  }
+
+  .prayer-times {
+    gap: 6px;
+  }
+
+  .prayer-time-card {
+    padding: 11px 4px;
+  }
+
+  .prayer-time-card .prayer-time {
+    font-size: 12px;
+  }
+}
+
+/* شاشات أكبر */
+@media (min-width: 600px) {
+  #page-home {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .home-shortcuts {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .qibla-shortcut {
+    grid-column: auto;
+  }
 }
