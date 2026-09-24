@@ -13,15 +13,10 @@
 
   <title>أنياس</title>
 
-  <!-- التصميم -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-
-  <!-- =========================
-       التطبيق
-  ========================== -->
 
   <div id="app">
 
@@ -31,135 +26,528 @@
     </header>
 
 
-    <!-- =========================
-         الصفحات الرئيسية
-    ========================== -->
-
     <main id="mainContent">
 
-      <!-- الرئيسية -->
+      <!-- =========================
+           الرئيسية
+      ========================== -->
+
       <section id="homePage" class="page active">
-        الرئيسية
+
+        <div class="home-welcome">
+
+          <div class="welcome-icon">
+            ☪
+          </div>
+
+          <div>
+            <div class="welcome-small">
+              مرحبًا بك في
+            </div>
+
+            <h2>
+              أنياس
+            </h2>
+
+            <p>
+              رفيقك اليومي للعبادة والذكر
+            </p>
+          </div>
+
+        </div>
+
+
+        <!-- التاريخ الهجري -->
+
+        <div class="home-date card">
+
+          <div class="date-icon">
+            🗓️
+          </div>
+
+          <div>
+
+            <div class="section-label">
+              التاريخ الهجري
+            </div>
+
+            <div id="homeHijriDate">
+              جاري الحساب...
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- الصلاة القادمة -->
+
+        <div class="home-next card">
+
+          <div class="next-top">
+
+            <span>
+              الصلاة القادمة
+            </span>
+
+            <span class="next-label">
+              مواقيت الصلاة
+            </span>
+
+          </div>
+
+
+          <div class="next-main">
+
+            <div>
+
+              <div
+                id="homeNextPrayerName"
+                class="home-next-name"
+              >
+                جاري الحساب...
+              </div>
+
+              <div
+                id="homeNextPrayerTime"
+                class="home-next-time"
+              >
+                --:--
+              </div>
+
+            </div>
+
+
+            <div
+              id="homeCountdown"
+              class="home-countdown"
+            >
+              --:--:--
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- الاختصارات -->
+
+        <div class="quick-grid">
+
+          <button
+            class="quick-card"
+            data-page="azkarPage"
+          >
+
+            <span class="quick-icon">
+              📿
+            </span>
+
+            <span>
+              الأذكار
+            </span>
+
+            <small>
+              أذكار الصباح والمساء
+            </small>
+
+          </button>
+
+
+          <button
+            class="quick-card"
+            data-page="duasPage"
+          >
+
+            <span class="quick-icon">
+              🤲
+            </span>
+
+            <span>
+              الأدعية
+            </span>
+
+            <small>
+              أدعية مختارة
+            </small>
+
+          </button>
+
+        </div>
+
+
+        <!-- ذكر اليوم -->
+
+        <div class="daily-card card">
+
+          <div class="daily-title">
+            ✨ ذكر اليوم
+          </div>
+
+          <p id="dailyDhikr">
+            جاري التحميل...
+          </p>
+
+        </div>
+
+
+        <!-- آية اليوم -->
+
+        <div class="daily-card card">
+
+          <div class="daily-title">
+            📖 آية اليوم
+          </div>
+
+          <p>
+            ﴿أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ﴾
+          </p>
+
+          <small>
+            الرعد: 28
+          </small>
+
+        </div>
+
       </section>
 
 
-      <!-- الصلاة -->
+      <!-- =========================
+           الصلاة
+      ========================== -->
+
       <section id="prayerPage" class="page">
 
-  <div class="card prayer-header">
+        <div class="card prayer-header">
 
-    <div class="location-title">
-      📍 <span id="locationName">جاري تحديد موقعك...</span>
-    </div>
+          <div class="location-title">
 
-    <div class="next-prayer-title">
-      الصلاة القادمة
-    </div>
+            📍
 
-    <div id="nextPrayerName" class="next-prayer-name">
-      جاري الحساب...
-    </div>
+            <span id="locationName">
+              جاري تحديد موقعك...
+            </span>
 
-    <div id="countdown" class="prayer-countdown">
-      --:--
-    </div>
+          </div>
 
-  </div>
+          <div class="next-prayer-title">
+            الصلاة القادمة
+          </div>
+
+          <div
+            id="nextPrayerName"
+            class="next-prayer-name"
+          >
+            جاري الحساب...
+          </div>
+
+          <div
+            id="countdown"
+            class="prayer-countdown"
+          >
+            --:--:--
+          </div>
+
+        </div>
 
 
-  <div class="prayer-times">
+        <div class="prayer-times">
 
-    <div class="prayer-card">
-      <div class="prayer-icon">🌅</div>
-      <div class="prayer-name">الفجر</div>
-      <div id="fajrTime" class="prayer-time">--:--</div>
-    </div>
+          <div class="prayer-card">
 
-    <div class="prayer-card">
-      <div class="prayer-icon">☀️</div>
-      <div class="prayer-name">الشروق</div>
-      <div id="sunriseTime" class="prayer-time">--:--</div>
-    </div>
+            <div class="prayer-icon">
+              🌅
+            </div>
 
-    <div class="prayer-card">
-      <div class="prayer-icon">☀️</div>
-      <div class="prayer-name">الظهر</div>
-      <div id="dhuhrTime" class="prayer-time">--:--</div>
-    </div>
+            <div class="prayer-name">
+              الفجر
+            </div>
 
-    <div class="prayer-card">
-      <div class="prayer-icon">🌤️</div>
-      <div class="prayer-name">العصر</div>
-      <div id="asrTime" class="prayer-time">--:--</div>
-    </div>
+            <div
+              id="fajrTime"
+              class="prayer-time"
+            >
+              --:--
+            </div>
 
-    <div class="prayer-card">
-      <div class="prayer-icon">🌇</div>
-      <div class="prayer-name">المغرب</div>
-      <div id="maghribTime" class="prayer-time">--:--</div>
-    </div>
+          </div>
 
-    <div class="prayer-card">
-      <div class="prayer-icon">🌙</div>
-      <div class="prayer-name">العشاء</div>
-      <div id="ishaTime" class="prayer-time">--:--</div>
-    </div>
 
-  </div>
+          <div class="prayer-card">
+
+            <div class="prayer-icon">
+              ☀️
+            </div>
+
+            <div class="prayer-name">
+              الشروق
+            </div>
+
+            <div
+              id="sunriseTime"
+              class="prayer-time"
+            >
+              --:--
+            </div>
+
+          </div>
+
+
+          <div class="prayer-card">
+
+            <div class="prayer-icon">
+              ☀️
+            </div>
+
+            <div class="prayer-name">
+              الظهر
+            </div>
+
+            <div
+              id="dhuhrTime"
+              class="prayer-time"
+            >
+              --:--
+            </div>
+
+          </div>
+
+
+          <div class="prayer-card">
+
+            <div class="prayer-icon">
+              🌤️
+            </div>
+
+            <div class="prayer-name">
+              العصر
+            </div>
+
+            <div
+              id="asrTime"
+              class="prayer-time"
+            >
+              --:--
+            </div>
+
+          </div>
+
+
+          <div class="prayer-card">
+
+            <div class="prayer-icon">
+              🌇
+            </div>
+
+            <div class="prayer-name">
+              المغرب
+            </div>
+
+            <div
+              id="maghribTime"
+              class="prayer-time"
+            >
+              --:--
+            </div>
+
+          </div>
+
+
+          <div class="prayer-card">
+
+            <div class="prayer-icon">
+              🌙
+            </div>
+
+            <div class="prayer-name">
+              العشاء
+            </div>
+
+            <div
+              id="ishaTime"
+              class="prayer-time"
+            >
+              --:--
+            </div>
+
+          </div>
+
+        </div>
 
       </section>
 
 
-      <!-- الأذكار -->
+      <!-- =========================
+           الأذكار
+      ========================== -->
+
       <section id="azkarPage" class="page">
-        الأذكار
+
+        <div class="empty-page card">
+
+          <div>
+            📿
+          </div>
+
+          <h2>
+            الأذكار
+          </h2>
+
+          <p>
+            سنضع هنا أبواب الأذكار كاملة في الخطوة القادمة.
+          </p>
+
+        </div>
+
       </section>
 
 
-      <!-- الأدعية -->
+      <!-- =========================
+           الأدعية
+      ========================== -->
+
       <section id="duasPage" class="page">
-        الأدعية
+
+        <div class="empty-page card">
+
+          <div>
+            🤲
+          </div>
+
+          <h2>
+            الأدعية
+          </h2>
+
+          <p>
+            سنضع هنا الأدعية في الخطوة القادمة.
+          </p>
+
+        </div>
+
       </section>
 
 
-      <!-- القبلة -->
+      <!-- =========================
+           القبلة
+      ========================== -->
+
       <section id="qiblaPage" class="page">
-        القبلة
+
+        <div class="empty-page card">
+
+          <div>
+            🧭
+          </div>
+
+          <h2>
+            القبلة
+          </h2>
+
+          <p>
+            سنضيف اتجاه القبلة لاحقًا.
+          </p>
+
+        </div>
+
       </section>
 
 
-      <!-- الإعدادات -->
+      <!-- =========================
+           الإعدادات
+      ========================== -->
+
       <section id="settingsPage" class="page">
-        الإعدادات
+
+        <div class="empty-page card">
+
+          <div>
+            ⚙️
+          </div>
+
+          <h2>
+            الإعدادات
+          </h2>
+
+          <p>
+            سننقل الإعدادات كاملة بعد الانتهاء من الصفحات الأساسية.
+          </p>
+
+        </div>
+
       </section>
 
     </main>
 
 
     <!-- =========================
-         شريط التنقل السفلي
+         التنقل السفلي
     ========================== -->
 
     <nav id="bottomNavigation">
 
-      <button data-page="homePage">
+      <button
+        data-page="homePage"
+        class="active"
+      >
+
+        <span>
+          ⌂
+        </span>
+
         الرئيسية
+
       </button>
 
-      <button data-page="prayerPage">
+
+      <button
+        data-page="prayerPage"
+      >
+
+        <span>
+          🕌
+        </span>
+
         الصلاة
+
       </button>
 
-      <button data-page="azkarPage">
+
+      <button
+        data-page="azkarPage"
+      >
+
+        <span>
+          📿
+        </span>
+
         الأذكار
+
       </button>
 
-      <button data-page="duasPage">
+
+      <button
+        data-page="duasPage"
+      >
+
+        <span>
+          🤲
+        </span>
+
         الأدعية
+
       </button>
 
-      <button data-page="settingsPage">
+
+      <button
+        data-page="settingsPage"
+      >
+
+        <span>
+          ⚙️
+        </span>
+
         الإعدادات
+
       </button>
 
     </nav>
@@ -167,13 +555,10 @@
   </div>
 
 
-  <!-- =========================
-       JavaScript
-  ========================== -->
+  <!-- JavaScript -->
 
-<script src="azkar-topics.js"></script>
+  <script src="js/script-new.js"></script>
 
-<script src="js/script-new.js"></script>
 </body>
 
 </html>
