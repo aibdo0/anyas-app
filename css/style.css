@@ -254,3 +254,146 @@ body.dark #bottomNavigation {
   }
 
 }
+/* =========================
+   مواقيت الصلاة
+========================= */
+
+.prayer-header {
+  text-align: center;
+  margin-bottom: 16px;
+  background: linear-gradient(
+    145deg,
+    var(--primary),
+    var(--primary-dark)
+  );
+  color: #ffffff;
+  border: none;
+}
+
+.location-title {
+  font-size: 12px;
+  opacity: 0.9;
+  margin-bottom: 18px;
+}
+
+.next-prayer-title {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.next-prayer-name {
+  margin-top: 5px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.prayer-countdown {
+  margin-top: 8px;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+
+/* =========================
+   شبكة مواقيت الصلاة
+========================= */
+
+.prayer-times {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+
+/* =========================
+   بطاقة الصلاة
+========================= */
+
+.prayer-card {
+  background: var(--card);
+
+  border: 1px solid var(--border);
+
+  border-radius: 18px;
+
+  padding: 16px 10px;
+
+  text-align: center;
+
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.03);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.prayer-card:active {
+  transform: scale(0.97);
+}
+
+.prayer-icon {
+  font-size: 25px;
+  margin-bottom: 7px;
+}
+
+.prayer-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.prayer-time {
+  margin-top: 6px;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  color: var(--primary);
+
+  direction: ltr;
+}
+
+
+/* =========================
+   الوضع الليلي
+========================= */
+
+body.dark .prayer-card {
+  box-shadow:
+    0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================
+   الشاشات الصغيرة
+========================= */
+
+@media (max-width: 360px) {
+
+  .prayer-times {
+    gap: 8px;
+  }
+
+  .prayer-card {
+    padding: 13px 8px;
+  }
+
+  .prayer-icon {
+    font-size: 22px;
+  }
+
+  .prayer-time {
+    font-size: 16px;
+  }
+
+  .next-prayer-name {
+    font-size: 20px;
+  }
+
+  .prayer-countdown {
+    font-size: 26px;
+  }
+
+}
