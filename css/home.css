@@ -767,3 +767,28 @@ body.dark-mode .upcoming-card {
     }
 
 }
+[hidden] { display: none !important; }
+
+#page-home .daily-content .hadith-text {
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.9;
+}
+
+.task-item.done .task-check {
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: inset 0 0 0 4px var(--card);
+}
+.task-item.done .task-text { color: var(--muted); }
+
+#page-home .prayer-row.past { opacity: 0.62; }
+
+#page-home .daily-content .reference,
+.more-button { font-size: 12px; }
+
+#page-home button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
