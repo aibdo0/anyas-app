@@ -1,0 +1,1247 @@
+/* =========================================
+   ANYAS - HOME
+   home.css
+   ========================================= */
+
+#page-home {
+    padding: 14px;
+    padding-bottom: 90px;
+}
+
+/* =========================================
+   UPDATE BANNER
+   ========================================= */
+
+.update-banner {
+    position: fixed;
+    top: calc(12px + env(safe-area-inset-top, 0px));
+    left: 12px;
+    right: 12px;
+    z-index: 1000;
+
+    max-width: 680px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 10px 12px;
+
+    border: 1px solid rgba(15, 111, 92, 0.25);
+    border-radius: 15px;
+
+    background: var(--card);
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+}
+
+.update-banner-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.update-banner-title {
+    margin: 0 0 3px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.update-banner-text {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+.update-banner button {
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 10px;
+    padding: 8px 10px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.update-banner .dismiss-update {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+    color: var(--muted);
+    font-size: 18px;
+}
+
+/* =========================================
+   HOME HEADER
+   ========================================= */
+
+.home-header {
+    margin-bottom: 14px;
+}
+
+.home-header h1 {
+    margin: 0;
+    font-size: 23px;
+    font-weight: 900;
+    color: var(--text);
+}
+
+.home-header p {
+    margin: 5px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* =========================================
+   DATE / LOCATION
+   ========================================= */
+
+.date-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    margin-bottom: 14px;
+    padding: 12px 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 17px;
+
+    background: var(--card);
+}
+
+.date-info {
+    min-width: 0;
+}
+
+.hijri-date {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.gregorian-date {
+    margin: 4px 0 0;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.location-info {
+    flex-shrink: 0;
+    text-align: left;
+}
+
+.location-info span {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.location-info strong {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--text);
+}
+
+/* =========================================
+   NEXT PRAYER
+   ========================================= */
+
+.next-prayer-card {
+    position: relative;
+    overflow: hidden;
+
+    margin-bottom: 14px;
+    padding: 18px;
+
+    border-radius: 22px;
+
+    background: var(--primary);
+    color: #fff;
+
+    box-shadow: 0 12px 30px rgba(15, 111, 92, 0.18);
+}
+
+.next-prayer-card::after {
+    content: "";
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    left: -50px;
+    bottom: -70px;
+
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.next-prayer-label {
+    position: relative;
+    z-index: 1;
+
+    font-size: 11px;
+    opacity: 0.85;
+}
+
+.next-prayer-name {
+    position: relative;
+    z-index: 1;
+
+    margin-top: 4px;
+
+    font-size: 24px;
+    font-weight: 900;
+}
+
+.next-prayer-time {
+    position: relative;
+    z-index: 1;
+
+    margin-top: 2px;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.countdown {
+    position: relative;
+    z-index: 1;
+
+    margin-top: 8px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    opacity: 0.9;
+}
+
+.prayer-progress {
+    position: relative;
+    z-index: 1;
+
+    height: 5px;
+    margin-top: 12px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.20);
+}
+
+.prayer-progress-bar {
+    width: 0;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #fff;
+
+    transition: width 0.5s ease;
+}
+
+/* =========================================
+   PRAYER LIST
+   ========================================= */
+
+.prayer-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+
+    margin-bottom: 14px;
+}
+
+.prayer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+
+    min-height: 68px;
+    padding: 11px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background: var(--card);
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.prayer-row:active {
+    transform: scale(0.98);
+}
+
+.prayer-row.next {
+    border-color: rgba(15, 111, 92, 0.45);
+    background: rgba(15, 111, 92, 0.06);
+}
+
+.prayer-info {
+    min-width: 0;
+}
+
+.prayer-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.prayer-label {
+    margin-top: 3px;
+    font-size: 9px;
+    color: var(--muted);
+}
+
+.prayer-time {
+    flex-shrink: 0;
+
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+/* =========================================
+   PRAYER TRACKER
+   ========================================= */
+
+.prayer-tracker-card {
+    margin-bottom: 14px;
+    padding: 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 19px;
+
+    background: var(--card);
+}
+
+.section-title {
+    margin: 0 0 10px;
+
+    font-size: 15px;
+    font-weight: 900;
+
+    color: var(--text);
+}
+
+.section-subtitle {
+    margin: -5px 0 12px;
+
+    font-size: 10px;
+    line-height: 1.5;
+
+    color: var(--muted);
+}
+
+.prayer-tracker {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.prayer-track-item {
+    min-width: 0;
+
+    padding: 10px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    background: var(--bg);
+
+    text-align: center;
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.prayer-track-item:active {
+    transform: scale(0.98);
+}
+
+.prayer-track-name {
+    margin-bottom: 7px;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    color: var(--text);
+}
+
+.prayer-track-button {
+    width: 100%;
+
+    min-height: 34px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: var(--card);
+    color: var(--muted);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+.prayer-track-item.done {
+    border-color: rgba(15, 111, 92, 0.35);
+    background: rgba(15, 111, 92, 0.05);
+}
+
+.prayer-track-item.done .prayer-track-button {
+    background: var(--primary);
+    color: #fff;
+}
+
+/* آخر صلاة بعرض كامل على الموبايل فقط */
+@media (max-width: 599px) {
+    .prayer-track-item:last-child {
+        grid-column: 1 / -1;
+    }
+}
+
+/* =========================================
+   WEEKLY REPORT BUTTON
+   ========================================= */
+
+.report-button {
+    width: 100%;
+
+    margin-top: 10px;
+    padding: 11px 14px;
+
+    border: 1px solid rgba(15, 111, 92, 0.22);
+    border-radius: 13px;
+
+    background: rgba(15, 111, 92, 0.06);
+    color: var(--primary);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+/* =========================================
+   NEARBY MOSQUE
+   ========================================= */
+
+.nearby-mosque-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-height: 82px;
+
+    margin-bottom: 14px;
+    padding: 13px 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    background: var(--card);
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.nearby-mosque-card:active {
+    transform: scale(0.985);
+}
+
+.mosque-icon {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: rgba(15, 111, 92, 0.09);
+    color: var(--primary);
+
+    font-size: 20px;
+}
+
+.mosque-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.mosque-title {
+    margin: 0;
+
+    font-size: 13px;
+    font-weight: 900;
+
+    color: var(--text);
+}
+
+.mosque-description {
+    margin: 4px 0 0;
+
+    font-size: 10px;
+    line-height: 1.5;
+
+    color: var(--muted);
+}
+
+.mosque-arrow {
+    flex-shrink: 0;
+
+    color: var(--muted);
+    font-size: 16px;
+}
+
+/* =========================================
+   DAILY TASKS
+   ========================================= */
+
+.daily-tasks-card {
+    margin-bottom: 14px;
+    padding: 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 19px;
+
+    background: var(--card);
+}
+
+.daily-tasks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    min-height: 48px;
+    padding: 9px 10px;
+
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    background: var(--bg);
+
+    transition: border-color 0.2s ease;
+}
+
+.task-check {
+    width: 28px;
+    height: 28px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: var(--card);
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.task-item.done {
+    border-color: rgba(15, 111, 92, 0.30);
+}
+
+.task-item.done .task-check {
+    background: var(--primary);
+    color: #fff;
+}
+
+.task-text {
+    min-width: 0;
+
+    font-size: 10px;
+    line-height: 1.45;
+
+    color: var(--text);
+}
+
+/* =========================================
+   QUICK ACTIONS
+   ========================================= */
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+
+    margin-bottom: 14px;
+}
+
+.quick-action {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    min-height: 58px;
+    padding: 10px 11px;
+
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    background: var(--card);
+
+    cursor: pointer;
+
+    transition: border-color 0.2s ease;
+}
+
+.quick-action-icon {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: rgba(15, 111, 92, 0.08);
+    color: var(--primary);
+
+    font-size: 15px;
+}
+
+.quick-action-text {
+    min-width: 0;
+}
+
+.quick-action-title {
+    margin: 0;
+
+    font-size: 11px;
+    font-weight: 900;
+
+    color: var(--text);
+}
+
+.quick-action-description {
+    margin: 3px 0 0;
+
+    font-size: 9px;
+    line-height: 1.4;
+
+    color: var(--muted);
+}
+
+/* =========================================
+   DAILY CONTENT
+   ========================================= */
+
+.daily-content-card {
+    margin-bottom: 14px;
+    padding: 15px;
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    background: var(--card);
+}
+
+.content-block {
+    padding: 11px 0;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.content-block:first-child {
+    padding-top: 0;
+}
+
+.content-block:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.content-label {
+    margin-bottom: 6px;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    color: var(--primary);
+}
+
+.content-text {
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.9;
+
+    color: var(--text);
+}
+
+.content-reference {
+    margin-top: 5px;
+
+    font-size: 9px;
+    color: var(--muted);
+}
+
+/* =========================================
+   DAILY HADITH
+   ========================================= */
+
+.daily-hadith {
+    padding-top: 11px;
+}
+
+.daily-hadith-text {
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.9;
+
+    color: var(--text);
+}
+
+.daily-hadith-reference {
+    margin-top: 5px;
+
+    font-size: 9px;
+    color: var(--muted);
+}
+
+/* =========================================
+   DAILY DUA
+   ========================================= */
+
+.daily-dua-card {
+    margin-bottom: 14px;
+    padding: 15px;
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    background: var(--card);
+}
+
+.daily-dua-text {
+    margin: 0;
+
+    font-size: 13px;
+    line-height: 1.9;
+
+    color: var(--text);
+}
+
+.daily-dua-reference {
+    margin-top: 6px;
+
+    font-size: 9px;
+    color: var(--muted);
+}
+
+/* =========================================
+   UPCOMING OCCASION
+   ========================================= */
+
+.upcoming-occasion {
+    margin-bottom: 14px;
+    padding: 14px;
+
+    border: 1px solid rgba(15, 111, 92, 0.20);
+    border-radius: 18px;
+
+    background: rgba(15, 111, 92, 0.05);
+}
+
+.upcoming-occasion-title {
+    margin: 0;
+
+    font-size: 13px;
+    font-weight: 900;
+
+    color: var(--text);
+}
+
+.upcoming-occasion-text {
+    margin: 5px 0 0;
+
+    font-size: 10px;
+    line-height: 1.6;
+
+    color: var(--muted);
+}
+
+/* =========================================
+   WEEKLY PRAYER REPORT
+   ========================================= */
+
+.weekly-report-card {
+    margin-bottom: 14px;
+    padding: 15px;
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    background: var(--card);
+}
+
+.weekly-report-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+
+    margin-bottom: 12px;
+}
+
+.report-stat {
+    padding: 11px 8px;
+
+    border-radius: 13px;
+
+    background: var(--bg);
+
+    text-align: center;
+}
+
+.report-stat-number {
+    font-size: 18px;
+    font-weight: 900;
+
+    color: var(--primary);
+}
+
+.report-stat-label {
+    margin-top: 3px;
+
+    font-size: 9px;
+    color: var(--muted);
+}
+
+.weekly-prayer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.weekly-prayer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 10px 11px;
+
+    border: 1px solid var(--border);
+    border-radius: 13px;
+
+    background: var(--bg);
+}
+
+.weekly-prayer-name {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.weekly-prayer-value {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.weekly-prayer-row.empty .weekly-prayer-value {
+    color: var(--muted);
+}
+
+.report-range-tabs {
+    display: flex;
+    gap: 8px;
+
+    margin-bottom: 14px;
+}
+
+.report-range-tab {
+    flex: 1;
+    padding: 9px 6px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--card);
+    color: var(--muted);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+.report-range-tab.active {
+    border-color: var(--primary);
+    background: var(--primary);
+
+    color: #ffffff;
+}
+
+.streak-inline {
+    margin-inline-start: 6px;
+
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+/* =========================================
+   TRAVELER PRAYER
+   ========================================= */
+
+.traveler-prayer-card {
+    margin-bottom: 14px;
+    padding: 16px;
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    background: var(--card);
+}
+
+.traveler-prayer-title {
+    margin: 0 0 8px;
+
+    font-size: 18px;
+    font-weight: 900;
+
+    color: var(--text);
+}
+
+.traveler-prayer-text {
+    margin: 0;
+
+    font-size: 12px;
+    line-height: 1.9;
+
+    color: var(--text);
+}
+
+.traveler-prayer-section {
+    margin-top: 14px;
+    padding-top: 13px;
+
+    border-top: 1px solid var(--border);
+}
+
+.traveler-prayer-section h3 {
+    margin: 0 0 6px;
+
+    font-size: 13px;
+    font-weight: 900;
+
+    color: var(--primary);
+}
+
+.traveler-prayer-section p {
+    margin: 0;
+
+    font-size: 11px;
+    line-height: 1.8;
+
+    color: var(--text);
+}
+
+.traveler-back-button {
+    width: 100%;
+
+    margin-top: 12px;
+    padding: 11px;
+
+    border: 0;
+    border-radius: 13px;
+
+    background: var(--primary);
+    color: #fff;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* =========================================
+   QIBLA PAGE
+   ========================================= */
+
+.qibla-card {
+    margin-bottom: 14px;
+    padding: 18px;
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+
+    background: var(--card);
+
+    text-align: center;
+}
+
+.qibla-title {
+    margin: 0;
+
+    font-size: 18px;
+    font-weight: 900;
+
+    color: var(--text);
+}
+
+.qibla-description {
+    margin: 7px 0 0;
+
+    font-size: 10px;
+    line-height: 1.6;
+
+    color: var(--muted);
+}
+
+.qibla-compass {
+    width: 190px;
+    height: 190px;
+
+    margin: 20px auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid rgba(15, 111, 92, 0.20);
+    border-radius: 50%;
+
+    background: var(--bg);
+
+    position: relative;
+}
+
+.qibla-compass-arrow {
+    font-size: 45px;
+    color: var(--primary);
+
+    transition: transform 0.4s ease;
+}
+
+.qibla-degree {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--text);
+}
+
+.qibla-back-button {
+    width: 100%;
+
+    padding: 11px;
+
+    border: 0;
+    border-radius: 13px;
+
+    background: var(--primary);
+    color: #fff;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* =========================================
+   GENERAL BUTTONS
+   ========================================= */
+
+.home-button {
+    border: 0;
+    border-radius: 13px;
+
+    padding: 10px 13px;
+
+    background: var(--primary);
+    color: #fff;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+.home-button.secondary {
+    background: rgba(15, 111, 92, 0.08);
+    color: var(--primary);
+}
+
+/* =========================================
+   HIDDEN
+   ========================================= */
+
+[hidden] {
+    display: none !important;
+}
+
+/* =========================================
+   DARK MODE
+   ========================================= */
+
+body.dark .update-banner {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.30);
+}
+
+body.dark .next-prayer-card {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+body.dark .nearby-mosque-card,
+body.dark .prayer-row,
+body.dark .prayer-tracker-card,
+body.dark .daily-tasks-card,
+body.dark .daily-content-card,
+body.dark .daily-dua-card,
+body.dark .weekly-report-card,
+body.dark .traveler-prayer-card,
+body.dark .qibla-card,
+body.dark .date-card {
+    box-shadow: none;
+}
+
+/* =========================================
+   TABLET / DESKTOP
+   ========================================= */
+
+@media (min-width: 600px) {
+
+    #page-home {
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    #page-home .prayer-list {
+        grid-template-columns:
+            repeat(6, minmax(0, 1fr));
+    }
+
+    #page-home .prayer-row {
+        min-height: 78px;
+    }
+
+    .prayer-tracker {
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+    }
+
+    .daily-tasks {
+        gap: 10px;
+    }
+
+    .nearby-mosque-card {
+        min-height: 82px;
+    }
+
+    .weekly-prayer-list {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* =========================================
+   HOVER
+   ========================================= */
+
+@media (hover: hover) {
+
+    #page-home .prayer-row:hover {
+        border-color: rgba(15, 111, 92, 0.35);
+    }
+
+    .task-item:hover {
+        border-color: rgba(15, 111, 92, 0.30);
+    }
+
+    .quick-action:hover {
+        border-color: rgba(15, 111, 92, 0.30);
+    }
+
+    .prayer-track-item:hover {
+        border-color: rgba(15, 111, 92, 0.30);
+    }
+
+    .nearby-mosque-card:hover {
+        border-color: rgba(15, 111, 92, 0.30);
+    }
+
+    .report-button:hover {
+        background: rgba(15, 111, 92, 0.10);
+    }
+}
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 380px) {
+
+    #page-home {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .prayer-list {
+        gap: 6px;
+    }
+
+    .prayer-row {
+        padding: 9px;
+    }
+
+    .prayer-name {
+        font-size: 12px;
+    }
+
+    .prayer-time {
+        font-size: 12px;
+    }
+
+    .next-prayer-card {
+        padding: 16px;
+    }
+
+    .next-prayer-name {
+        font-size: 22px;
+    }
+
+    .daily-tasks {
+        gap: 6px;
+    }
+
+    .quick-actions {
+        gap: 6px;
+    }
+}

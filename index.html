@@ -50,7 +50,7 @@
 </section>
 
 <section class="section">
-<div class="section-heading"><div class="section-title">متابعة صلوات اليوم</div><button class="more-button" id="openPrayerReportButton" type="button">التقرير</button></div>
+<div class="section-heading"><div class="section-title">متابعة صلوات اليوم<span class="streak-inline" id="homeStreakBadge"></span></div><button class="more-button" id="openPrayerReportButton" type="button">التقرير</button></div>
 <div class="prayer-tracker" id="todayPrayerTracker">
 <button class="prayer-track-item" data-track-prayer="Fajr" type="button"><span>الفجر</span><span class="track-status">لم تُسجل</span></button>
 <button class="prayer-track-item" data-track-prayer="Dhuhr" type="button"><span>الظهر</span><span class="track-status">لم تُسجل</span></button>
@@ -161,16 +161,32 @@
 <main class="page" id="page-prayer-report">
 <header class="plain-header">
 <button class="back-button" id="prayerReportBackButton" type="button">رجوع</button>
-<div class="brand">التقرير الأسبوعي</div>
-<div class="date">ملخص متابعة الصلوات</div>
+<div class="brand">تقرير الصلاة</div>
+<div class="date">متابعة التزامك بالصلاة</div>
 </header>
 <section class="section">
-<div class="weekly-report-card card" id="weeklyReportCard">
-<div class="weekly-report-period">آخر ٧ أيام</div>
-<div class="weekly-report-main" id="weeklyReportMain">جاري حساب التقرير...</div>
-<div class="weekly-report-details" id="weeklyReportDetails">ستظهر هنا خلاصة متابعة صلواتك.</div>
+
+<div class="report-range-tabs" role="tablist">
+<button class="report-range-tab active" type="button" data-range="week" role="tab" aria-selected="true">آخر ٧ أيام</button>
+<button class="report-range-tab" type="button" data-range="month" role="tab" aria-selected="false">آخر ٣٠ يومًا</button>
 </div>
-<div class="card"><div class="card-title">متابعة الأسبوع</div><div id="weeklyPrayerList" class="weekly-prayer-list"></div></div>
+
+<div class="weekly-report-card card" id="weeklyReportCard">
+<div class="weekly-report-period" id="weeklyReportPeriod">آخر ٧ أيام</div>
+<div class="weekly-report-summary">
+<div class="report-stat"><div class="report-stat-number" id="prayerReportPercentage">0%</div><div class="report-stat-label">نسبة الالتزام</div></div>
+<div class="report-stat"><div class="report-stat-number" id="prayerReportCompleted">0</div><div class="report-stat-label">أُدّيت</div></div>
+<div class="report-stat"><div class="report-stat-number" id="prayerReportMissed">0</div><div class="report-stat-label">فاتت</div></div>
+</div>
+<div class="weekly-report-summary">
+<div class="report-stat"><div class="report-stat-number" id="prayerReportStreak">0</div><div class="report-stat-label">أيام متتالية الآن</div></div>
+<div class="report-stat"><div class="report-stat-number" id="prayerReportBestStreak">0</div><div class="report-stat-label">أطول تتابع</div></div>
+<div class="report-stat"><div class="report-stat-number" id="prayerReportTotal">0</div><div class="report-stat-label">إجمالي الصلوات</div></div>
+</div>
+</div>
+
+<div class="card weekly-report-card"><div class="card-title">التفاصيل اليومية</div><div id="weeklyPrayerList" class="weekly-prayer-list"></div></div>
+
 </section>
 </main>
 
