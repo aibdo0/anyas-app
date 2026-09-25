@@ -3,8 +3,8 @@
 ========================================= */
 
 :root {
-    --primary: #0f6f5c;
-    --primary-dark: #0b5548;
+    --primary: #9b7740;
+    --primary-dark: #765b32;
     --accent: #c9a227;
 
     --background: #f6f6f4;
@@ -118,12 +118,12 @@ body {
 
     background: rgba(255, 255, 255, 0.94);
 
-    border: 1px solid rgba(15, 111, 92, 0.10);
+    border: 1px solid rgba(161, 130, 71, 0.10);
     border-radius: 25px;
 
     box-shadow:
         0 10px 35px rgba(0, 0, 0, 0.10),
-        0 2px 8px rgba(15, 111, 92, 0.05);
+        0 2px 8px rgba(161, 130, 71, 0.05);
 
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
@@ -310,12 +310,31 @@ body {
     content: "الرئيسية";
 }
 
+.nav-item[data-page="tasks"] .nav-icon::before,
+.nav-item[data-page="more"] .nav-icon::before {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.8px solid currentColor;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.nav-item[data-page="tasks"] .nav-icon::before { content: "م"; }
+.nav-item[data-page="more"] .nav-icon::before { content: "+"; }
+
+.nav-item[data-page="tasks"]::after { content: "مهام اليوم"; }
+.nav-item[data-page="more"]::after { content: "المزيد"; }
+
 .nav-item[data-page="duas"]::after {
     content: "الأدعية";
 }
 
 .nav-item[data-page="azkar"]::after {
-    content: "الأذكار";
+    content: "حصن المسلم";
 }
 
 .nav-item[data-page="qibla"]::after {
@@ -332,7 +351,7 @@ body {
 
 .nav-item.active {
     color: var(--primary);
-    background: rgba(15, 111, 92, 0.08);
+    background: rgba(161, 130, 71, 0.08);
 }
 
 .nav-item.active::before {
@@ -379,8 +398,8 @@ body.dark-mode .bottom-nav {
 }
 
 body.dark-mode .nav-item.active {
-    color: #7cc8b5;
-    background: rgba(124, 200, 181, 0.08);
+    color: #d8bf8d;
+    background: rgba(216, 191, 141, 0.08);
 }
 
 body.dark-mode .nav-item.active::before {

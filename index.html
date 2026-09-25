@@ -4,14 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#fbfaf7">
-<meta name="description" content="أنياس - تطبيق إسلامي لمواقيت الصلاة والأذكار والأدعية">
+<meta name="description" content="أنياس - رفيق يومي لمواقيت الصلاة والقرآن والأذكار">
 <title>أنياس</title>
 
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/home.css">
 <link rel="stylesheet" href="css/prayer.css">
 <link rel="stylesheet" href="css/azkar.css">
-<link rel="stylesheet" href="css/duas.css">
 <link rel="stylesheet" href="css/settings.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -154,11 +153,11 @@
 آية اليوم
 </div>
 
-<div class="ayah">
+<div class="ayah" id="dailyAyahText">
 ﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾
 </div>
 
-<div class="reference">
+<div class="reference" id="dailyAyahReference">
 سورة الرعد — 28
 </div>
 
@@ -194,9 +193,10 @@
 ذكر اليوم
 </div>
 
-<div class="dhikr">
+<div class="dhikr" id="dailyDhikrText">
 سبحان الله وبحمده، سبحان الله العظيم
 </div>
+<div class="reference" id="dailyDhikrReference">من حصن المسلم</div>
 
 </div>
 
@@ -214,7 +214,7 @@
 دعاء اليوم
 </div>
 
-<button class="more-button" id="moreDuasButton" type="button">
+<button class="more-button" id="openWirdButton" type="button">
 المزيد
 </button>
 
@@ -223,78 +223,6 @@
 <div class="daily-dua-text" id="dailyDuaText">
 رَبِّ زِدْنِي عِلْمًا
 </div>
-
-</div>
-
-</section>
-
-<section class="section">
-
-<div class="section-heading">
-
-<div class="section-title">
-وصول سريع
-</div>
-
-</div>
-
-
-<div class="quick-actions">
-
-<button class="quick-action" id="quickAzkar" type="button">
-<span class="quick-icon">ذ</span>
-<span>الأذكار</span>
-</button>
-
-<button class="quick-action" id="quickDuas" type="button">
-<span class="quick-icon">د</span>
-<span>الأدعية</span>
-</button>
-
-<button class="quick-action" id="quickTasbeeh" type="button">
-<span class="quick-icon">ت</span>
-<span>التسبيح</span>
-</button>
-
-<button class="quick-action" id="quickSettings" type="button">
-<span class="quick-icon">ض</span>
-<span>الإعدادات</span>
-</button>
-
-</div>
-
-</section>
-
-<section class="section">
-
-<div class="section-heading">
-
-<div class="section-title">
-مهام اليوم
-</div>
-
-</div>
-
-
-<div class="daily-tasks">
-
-<button class="task-item" id="morningAzkarTask" data-task="morning" type="button">
-<span class="task-check"></span>
-<span class="task-text">أذكار الصباح</span>
-<span class="task-arrow">‹</span>
-</button>
-
-<button class="task-item" id="eveningAzkarTask" data-task="evening" type="button">
-<span class="task-check"></span>
-<span class="task-text">أذكار المساء</span>
-<span class="task-arrow">‹</span>
-</button>
-
-<button class="task-item" id="dailyWirdTask" data-task="wird" type="button">
-<span class="task-check"></span>
-<span class="task-text">الورد اليومي</span>
-<span class="task-arrow">‹</span>
-</button>
 
 </div>
 
@@ -316,6 +244,12 @@
 </div>
 
 
+<div class="prayer-day-summary">
+  <span id="todayPrayerProgressText">0 من 5 صلوات مسجّلة اليوم</span>
+  <div class="prayer-progress-track">
+    <div id="todayPrayerProgressBar" role="progressbar" aria-label="متابعة الصلوات اليوم" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"></div>
+  </div>
+</div>
 <div class="prayer-tracker" id="todayPrayerTracker">
 
 <button class="prayer-track-item" data-track-prayer="Fajr" type="button">
@@ -350,26 +284,7 @@
 <section class="section">
 
 <button class="nearby-mosque-card" id="nearbyMosqueButton" type="button">
-
-<span class="nearby-mosque-icon">
-مسجد
-</span>
-
-<span class="nearby-mosque-info">
-
-<span class="nearby-mosque-title">
-أقرب مسجد
-</span>
-
-<span class="nearby-mosque-description">
-افتح خرائط Google للبحث عن المساجد القريبة منك
-</span>
-
-</span>
-
-<span class="nearby-mosque-arrow">
-‹
-</span>
+<span class="nearby-mosque-title">أقرب مسجد</span>
 
 </button>
 
@@ -416,72 +331,48 @@
 
 
 <!-- =====================================================
-     الأدعية
+     الورد اليومي
 ===================================================== -->
 
-<main class="page" id="page-duas">
-
+<main class="page" id="page-tasks">
 <header class="plain-header">
-
-<div class="brand">
-الأدعية
-</div>
-
-<div class="date">
-أدعية مهمة تحتاجها كل يوم
-</div>
-
+  <div class="brand">مهام اليوم</div>
+  <div class="date">أذكار الصباح والمساء وبعد الصلاة والنوم</div>
 </header>
 
-
-<section class="section">
-
-<div id="duasList">
-
-<div class="dua-item">
-<div class="dua-title">دعاء طلب العلم</div>
-<div class="dua-text">رَبِّ زِدْنِي عِلْمًا</div>
-</div>
-
-<div class="dua-item">
-<div class="dua-title">سيد الاستغفار</div>
-<div class="dua-text">اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ</div>
-</div>
-
-<div class="dua-item">
-<div class="dua-title">دعاء الكرب والهم</div>
-<div class="dua-text">لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ</div>
-</div>
-
-<div class="dua-item">
-<div class="dua-title">دعاء الرزق وقضاء الدين</div>
-<div class="dua-text">اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ</div>
-</div>
-
-<div class="dua-item">
-<div class="dua-title">دعاء طلب العافية</div>
-<div class="dua-text">اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ</div>
-</div>
-
-<div class="dua-item">
-<div class="dua-title">دعاء ثبات القلب</div>
-<div class="dua-text">يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ</div>
-</div>
-
-<div class="dua-item">
-<div class="dua-title">دعاء الوالدين</div>
-<div class="dua-text">رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا</div>
-</div>
-
-<div class="dua-item">
-<div class="dua-title">جوامع الدعاء</div>
-<div class="dua-text">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</div>
-</div>
-
-</div>
-
+<section class="wird-summary-card" aria-live="polite">
+  <div class="wird-summary-heading">متابعتك اليوم</div>
+  <div id="wirdProgressText">0 من 0 ذكرًا مكتملًا اليوم</div>
+  <div class="wird-progress-track"><div id="wirdProgressBar" role="progressbar" aria-label="إنجاز الورد اليومي" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
 </section>
 
+<section class="wird-section" id="wird-section-morning">
+  <button class="wird-section-toggle" type="button" data-wird-toggle="morning" aria-expanded="true">
+    <span>أذكار الصباح</span><span class="wird-section-meta" data-wird-count="morning"></span><span aria-hidden="true">−</span>
+  </button>
+  <div class="wird-items" id="wird-items-morning"></div>
+</section>
+
+<section class="wird-section" id="wird-section-evening">
+  <button class="wird-section-toggle" type="button" data-wird-toggle="evening" aria-expanded="true">
+    <span>أذكار المساء</span><span class="wird-section-meta" data-wird-count="evening"></span><span aria-hidden="true">−</span>
+  </button>
+  <div class="wird-items" id="wird-items-evening"></div>
+</section>
+
+<section class="wird-section" id="wird-section-afterPrayer">
+  <button class="wird-section-toggle" type="button" data-wird-toggle="afterPrayer" aria-expanded="false">
+    <span>أذكار بعد الصلاة</span><span class="wird-section-meta" data-wird-count="afterPrayer"></span><span aria-hidden="true">+</span>
+  </button>
+  <div class="wird-items" id="wird-items-afterPrayer" hidden></div>
+</section>
+
+<section class="wird-section" id="wird-section-beforeSleep">
+  <button class="wird-section-toggle" type="button" data-wird-toggle="beforeSleep" aria-expanded="false">
+    <span>أذكار النوم</span><span class="wird-section-meta" data-wird-count="beforeSleep"></span><span aria-hidden="true">+</span>
+  </button>
+  <div class="wird-items" id="wird-items-beforeSleep" hidden></div>
+</section>
 </main>
 
 
@@ -506,6 +397,24 @@
 </div>
 
 </header>
+
+<section class="azkar-priority-section" aria-label="المفضلة وأذكار اليوم">
+  <div class="azkar-priority-heading">
+    <h2>مفضلتي</h2>
+    <span id="favoritesCount">0</span>
+  </div>
+  <div id="azkarFavorites" class="azkar-favorites" aria-live="polite"></div>
+  <div class="azkar-period-shortcuts">
+    <button type="button" class="azkar-period-card" data-open-wird="morning">
+      <span class="azkar-period-label">أذكار الصباح</span>
+      <span class="azkar-period-time">ابدأ ورد الصباح</span>
+    </button>
+    <button type="button" class="azkar-period-card" data-open-wird="evening">
+      <span class="azkar-period-label">أذكار المساء</span>
+      <span class="azkar-period-time">ابدأ ورد المساء</span>
+    </button>
+  </div>
+</section>
 
 <div class="azkar-search" role="search">
 <input
@@ -973,56 +882,6 @@ English
 </label>
 
 </div>
-
-
-<button
-class="setting-row setting-row-button"
-id="openQiblaButton"
-type="button"
->
-
-<span class="setting-info">
-
-<span class="setting-title">
-القبلة
-</span>
-
-<span class="setting-description">
-فتح صفحة تحديد اتجاه القبلة
-</span>
-
-</span>
-
-<span class="settings-arrow">
-فتح
-</span>
-
-</button>
-
-
-<button
-class="setting-row setting-row-button"
-id="openTravelerPrayerButton"
-type="button"
->
-
-<span class="setting-info">
-
-<span class="setting-title">
-صلاة المسافر
-</span>
-
-<span class="setting-description">
-القصر والجمع وأحكام السفر باختصار
-</span>
-
-</span>
-
-<span class="settings-arrow">
-فتح
-</span>
-
-</button>
 
 
 </div>
@@ -1769,118 +1628,27 @@ value="100"
 </div>
 
 
-<button
-id="testAdhanButton"
-class="adhan-button"
-type="button"
->
-تجربة الأذان
-</button>
-
 </div>
 
-
-<div class="settings-section-title">
-عن التطبيق
-</div>
-
-
-<div class="settings-card">
-
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-أنياس
-</div>
-
-<div class="setting-description">
-تطبيق إسلامي بسيط لمساعدتك في عبادتك اليومية
-</div>
-
-</div>
-
-<span class="setting-status" id="appVersion">
-v1.0.0
-</span>
-
-</div>
-
-
-<button
-class="setting-row setting-row-button"
-id="shareAppButton"
-type="button"
->
-
-<span class="setting-info">
-
-<span class="setting-title">
-مشاركة التطبيق
-</span>
-
-<span class="setting-description">
-مشاركة أنياس مع الآخرين
-</span>
-
-</span>
-
-<span class="settings-arrow">
-مشاركة
-</span>
-
-</button>
-
-
-<button
-class="setting-row setting-row-button"
-id="openFeedbackButton"
-type="button"
->
-
-<span class="setting-info">
-
-<span class="setting-title">
-إرسال ملاحظات
-</span>
-
-<span class="setting-description">
-ساعدنا في تحسين التطبيق
-</span>
-
-</span>
-
-<span class="settings-arrow">
-فتح
-</span>
-
-</button>
-
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-الخصوصية
-</div>
-
-<div class="setting-description">
-بيانات الموقع والإعدادات تُستخدم على الجهاز لتشغيل الميزات المطلوبة.
-</div>
-
-</div>
-
-</div>
-
-</div>
 
 </section>
 
 </main>
 
+<main class="page" id="page-more">
+<header class="plain-header">
+  <div class="brand">المزيد</div>
+  <div class="date">أدوات وخدمات أنياس</div>
+</header>
+<section class="more-menu" aria-label="أدوات التطبيق">
+  <button type="button" class="more-menu-item" data-more-go="settings"><span>الإعدادات</span><span>إدارة التنبيهات وطريقة الحساب</span></button>
+  <button type="button" class="more-menu-item" data-more-go="qibla"><span>القبلة</span><span>اعرف اتجاه القبلة</span></button>
+  <button type="button" class="more-menu-item" data-more-go="traveler-prayer"><span>صلاة المسافر</span><span>القصر والجمع وأحكام السفر</span></button>
+  <button type="button" class="more-menu-item" data-more-go="prayer-report"><span>متابعة الصلاة</span><span>راجع سجلك الأسبوعي</span></button>
+  <button type="button" class="more-menu-item" data-more-go="nearby-mosque"><span>أقرب مسجد</span><span>اعثر على مسجد قريب</span></button>
+  <button type="button" class="more-menu-item" data-more-go="tasbeeh"><span>التسبيح</span><span>افتح عدّاد التسبيح</span></button>
+</section>
+</main>
 
 <!-- =====================================================
      التنقل السفلي
@@ -1904,11 +1672,11 @@ type="button"
 
 <button
 class="nav-item"
-data-page="duas"
+data-page="tasks"
 type="button"
 >
 <span class="nav-icon">
-الأدعية
+مهام اليوم
 </span>
 </button>
 
@@ -1919,18 +1687,18 @@ data-page="azkar"
 type="button"
 >
 <span class="nav-icon">
-          حصن المسلم
-        </span>
+حصن المسلم
+</span>
 </button>
 
 
 <button
 class="nav-item"
-data-page="settings"
+data-page="more"
 type="button"
 >
 <span class="nav-icon">
-الإعدادات
+المزيد
 </span>
 </button>
 
@@ -1942,10 +1710,13 @@ type="button"
 ===================================================== -->
 
 <script src="data/azkar-topics.js"></script>
+<script src="data/daily-quran.js"></script>
+<script src="data/daily-hadith-ids.js"></script>
 <script src="js/prayer.js"></script>
 <script src="js/daily-adhkar.js"></script>
+<script src="js/favorites.js"></script>
 <script src="js/azkar.js"></script>
-<script src="js/duas.js"></script>
+<script src="js/wird.js"></script>
 <script src="js/settings.js"></script>
 <script src="js/qibla.js"></script>
 <script src="js/app.js"></script>

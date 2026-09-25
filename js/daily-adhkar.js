@@ -61,15 +61,14 @@
   }
 
   openButton.addEventListener("click", () => {
-    if (typeof window.openAzkarTopic === "function") {
-      window.openAzkarTopic(27);
+    const category = title.textContent.includes("المساء") ? "evening" : "morning";
+    if (typeof window.openWirdCategory === "function") {
+      window.openWirdCategory(category);
       return;
     }
 
-    const quickAzkar = byId("quickAzkar");
-    const azkarTab = document.querySelector('.nav-item[data-page="azkar"]');
-    if (quickAzkar) quickAzkar.click();
-    else if (azkarTab) azkarTab.click();
+    const tasksTab = document.querySelector('.nav-item[data-page="tasks"]');
+    if (tasksTab) tasksTab.click();
   });
 
   showPeriod();

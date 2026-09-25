@@ -28,7 +28,7 @@
 
     padding: 10px 12px;
 
-    border: 1px solid rgba(15, 111, 92, 0.25);
+    border: 1px solid rgba(161, 130, 71, 0.25);
     border-radius: 15px;
 
     background: var(--card);
@@ -172,7 +172,7 @@
     background: var(--primary);
     color: #fff;
 
-    box-shadow: 0 12px 30px rgba(15, 111, 92, 0.18);
+    box-shadow: 0 12px 30px rgba(161, 130, 71, 0.18);
 }
 
 .next-prayer-card::after {
@@ -288,8 +288,8 @@
 }
 
 .prayer-row.next {
-    border-color: rgba(15, 111, 92, 0.45);
-    background: rgba(15, 111, 92, 0.06);
+    border-color: rgba(161, 130, 71, 0.45);
+    background: rgba(161, 130, 71, 0.06);
 }
 
 .prayer-info {
@@ -402,8 +402,8 @@
 }
 
 .prayer-track-item.done {
-    border-color: rgba(15, 111, 92, 0.35);
-    background: rgba(15, 111, 92, 0.05);
+    border-color: rgba(161, 130, 71, 0.35);
+    background: rgba(161, 130, 71, 0.05);
 }
 
 .prayer-track-item.done .prayer-track-button {
@@ -428,10 +428,10 @@
     margin-top: 10px;
     padding: 11px 14px;
 
-    border: 1px solid rgba(15, 111, 92, 0.22);
+    border: 1px solid rgba(161, 130, 71, 0.22);
     border-radius: 13px;
 
-    background: rgba(15, 111, 92, 0.06);
+    background: rgba(161, 130, 71, 0.06);
     color: var(--primary);
 
     font-size: 11px;
@@ -482,7 +482,7 @@
 
     border-radius: 13px;
 
-    background: rgba(15, 111, 92, 0.09);
+    background: rgba(161, 130, 71, 0.09);
     color: var(--primary);
 
     font-size: 20px;
@@ -574,7 +574,7 @@
 }
 
 .task-item.done {
-    border-color: rgba(15, 111, 92, 0.30);
+    border-color: rgba(161, 130, 71, 0.30);
 }
 
 .task-item.done .task-check {
@@ -633,7 +633,7 @@
 
     border-radius: 10px;
 
-    background: rgba(15, 111, 92, 0.08);
+    background: rgba(161, 130, 71, 0.08);
     color: var(--primary);
 
     font-size: 15px;
@@ -777,10 +777,10 @@
     margin-bottom: 14px;
     padding: 14px;
 
-    border: 1px solid rgba(15, 111, 92, 0.20);
+    border: 1px solid rgba(161, 130, 71, 0.20);
     border-radius: 18px;
 
-    background: rgba(15, 111, 92, 0.05);
+    background: rgba(161, 130, 71, 0.05);
 }
 
 .upcoming-occasion-title {
@@ -1038,7 +1038,7 @@
     align-items: center;
     justify-content: center;
 
-    border: 2px solid rgba(15, 111, 92, 0.20);
+    border: 2px solid rgba(161, 130, 71, 0.20);
     border-radius: 50%;
 
     background: var(--bg);
@@ -1094,7 +1094,7 @@
 }
 
 .home-button.secondary {
-    background: rgba(15, 111, 92, 0.08);
+    background: rgba(161, 130, 71, 0.08);
     color: var(--primary);
 }
 
@@ -1178,27 +1178,27 @@ body.dark .date-card {
 @media (hover: hover) {
 
     #page-home .prayer-row:hover {
-        border-color: rgba(15, 111, 92, 0.35);
+        border-color: rgba(161, 130, 71, 0.35);
     }
 
     .task-item:hover {
-        border-color: rgba(15, 111, 92, 0.30);
+        border-color: rgba(161, 130, 71, 0.30);
     }
 
     .quick-action:hover {
-        border-color: rgba(15, 111, 92, 0.30);
+        border-color: rgba(161, 130, 71, 0.30);
     }
 
     .prayer-track-item:hover {
-        border-color: rgba(15, 111, 92, 0.30);
+        border-color: rgba(161, 130, 71, 0.30);
     }
 
     .nearby-mosque-card:hover {
-        border-color: rgba(15, 111, 92, 0.30);
+        border-color: rgba(161, 130, 71, 0.30);
     }
 
     .report-button:hover {
-        background: rgba(15, 111, 92, 0.10);
+        background: rgba(161, 130, 71, 0.10);
     }
 }
 

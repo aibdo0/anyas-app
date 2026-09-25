@@ -810,6 +810,8 @@ function setupWorshipSettings() {
 // التاريخ الهجري
 // =====================================================
 
+const hijriFormatterCache = new Map();
+
 function getHijriParts(date = new Date()) {
 
   const months = [
@@ -845,12 +847,16 @@ function getHijriParts(date = new Date()) {
 
   for (const locale of locales) {
     try {
-      const formatter = new Intl.DateTimeFormat(locale, {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric",
-        numberingSystem: "latn"
-      });
+      let formatter = hijriFormatterCache.get(locale);
+      if (!formatter) {
+        formatter = new Intl.DateTimeFormat(locale, {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+          numberingSystem: "latn"
+        });
+        hijriFormatterCache.set(locale, formatter);
+      }
 
       // Some browsers silently fall back to Gregorian when a calendar is unsupported.
       if (!formatter.resolvedOptions().calendar.startsWith("islamic")) {
@@ -887,6 +893,17 @@ function getHijriParts(date = new Date()) {
 }
 
 
+function getDisplayedHijriParts(date = new Date()) {
+  const adjustment = Number.parseInt(
+    localStorage.getItem("anyas_hijri_adjustment") || "0",
+    10
+  );
+  const adjustedDate = new Date(date);
+  if (Number.isInteger(adjustment)) adjustedDate.setDate(adjustedDate.getDate() + adjustment);
+  return getHijriParts(adjustedDate);
+}
+
+
 function updateHijriDate() {
 
   const element =
@@ -897,7 +914,7 @@ function updateHijriDate() {
   if (!element) return;
 
   const hijri =
-    getHijriParts();
+    getDisplayedHijriParts();
 
   if (!hijri) {
 
