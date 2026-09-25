@@ -221,14 +221,3 @@ const azkarTopics = [
 // =====================================================
 
 window.azkarTopics = azkarTopics;
-
-
-// =====================================================
-// دعم الاستيراد إذا كان المشروع يستخدم ES Modules
-// =====================================================
-
-if (typeof window !== "undefined") {
-  window.azkarTopics = azkarTopics;
-}
-
-export default azkarTopics;
