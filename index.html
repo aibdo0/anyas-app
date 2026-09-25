@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#0f6f5c">
 <meta name="description" content="أنياس - تطبيق إسلامي لمواقيت الصلاة والأذكار والأدعية">
 <title>أنياس</title>
+
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/home.css">
 <link rel="stylesheet" href="css/prayer.css">
@@ -13,7 +14,9 @@
 <link rel="stylesheet" href="css/duas.css">
 <link rel="stylesheet" href="css/settings.css">
 </head>
+
 <body>
+
 <div class="app">
 
 <div id="updateBanner" class="update-banner" hidden role="status">
@@ -22,276 +25,1888 @@
 <button id="dismissUpdateButton" type="button" aria-label="إغلاق">إغلاق</button>
 </div>
 
+
+<!-- =====================================================
+     الصفحة الرئيسية
+===================================================== -->
+
 <main class="page active" id="page-home">
+
 <header class="main-header">
+
 <div class="home-brand">أنياس</div>
-<div class="date-line"><span id="todayHijri">--</span><span class="date-separator">•</span><span id="todayDate">اليوم</span></div>
-<div class="location-line" id="locationName">موقعك</div>
+
+<div class="date-line">
+<span id="todayHijri">--</span>
+<span class="date-separator">•</span>
+<span id="todayDate">اليوم</span>
+</div>
+
+<div class="location-line" id="locationName">
+موقعك
+</div>
+
 </header>
+
 
 <section class="next-prayer" aria-label="الصلاة القادمة">
-<div class="next-label">الصلاة القادمة</div>
-<div class="prayer-name" id="nextPrayerName">الفجر</div>
-<div class="prayer-time" id="nextPrayerTime">--</div>
-<div class="countdown" id="countdown">--:--:--</div>
-<div class="prayer-progress" aria-hidden="true"><div class="prayer-progress-bar" id="prayerProgressBar"></div></div>
+
+<div class="next-label">
+الصلاة القادمة
+</div>
+
+<div class="prayer-name" id="nextPrayerName">
+الفجر
+</div>
+
+<div class="prayer-time" id="nextPrayerTime">
+--
+</div>
+
+<div class="countdown" id="countdown">
+--:--:--
+</div>
+
+<div class="prayer-progress" aria-hidden="true">
+<div class="prayer-progress-bar" id="prayerProgressBar"></div>
+</div>
+
 </section>
+
 
 <section class="section prayer-section">
-<div class="section-heading"><div class="section-title">مواقيت اليوم</div></div>
+
+<div class="section-heading">
+<div class="section-title">
+مواقيت اليوم
+</div>
+</div>
+
 <div class="prayer-list" id="prayerList">
-<button class="prayer-row" data-prayer="Fajr" type="button"><span class="prayer-title">الفجر</span><span class="prayer-value" id="fajrTime">--</span></button>
-<div class="prayer-row sunrise-row"><span class="prayer-title">الشروق</span><span class="prayer-value" id="sunriseTime">--</span></div>
-<button class="prayer-row" data-prayer="Dhuhr" type="button"><span class="prayer-title">الظهر</span><span class="prayer-value" id="dhuhrTime">--</span></button>
-<button class="prayer-row" data-prayer="Asr" type="button"><span class="prayer-title">العصر</span><span class="prayer-value" id="asrTime">--</span></button>
-<button class="prayer-row" data-prayer="Maghrib" type="button"><span class="prayer-title">المغرب</span><span class="prayer-value" id="maghribTime">--</span></button>
-<button class="prayer-row" data-prayer="Isha" type="button"><span class="prayer-title">العشاء</span><span class="prayer-value" id="ishaTime">--</span></button>
-</div>
-</section>
 
-<section class="section">
-<div class="section-heading"><div class="section-title">متابعة صلوات اليوم<span class="streak-inline" id="homeStreakBadge"></span></div><button class="more-button" id="openPrayerReportButton" type="button">التقرير</button></div>
-<div class="prayer-tracker" id="todayPrayerTracker">
-<button class="prayer-track-item" data-track-prayer="Fajr" type="button"><span>الفجر</span><span class="track-status">لم تُسجل</span></button>
-<button class="prayer-track-item" data-track-prayer="Dhuhr" type="button"><span>الظهر</span><span class="track-status">لم تُسجل</span></button>
-<button class="prayer-track-item" data-track-prayer="Asr" type="button"><span>العصر</span><span class="track-status">لم تُسجل</span></button>
-<button class="prayer-track-item" data-track-prayer="Maghrib" type="button"><span>المغرب</span><span class="track-status">لم تُسجل</span></button>
-<button class="prayer-track-item" data-track-prayer="Isha" type="button"><span>العشاء</span><span class="track-status">لم تُسجل</span></button>
-</div>
-</section>
-
-<section class="section">
-<button class="nearby-mosque-card" id="nearbyMosqueButton" type="button">
-<span class="nearby-mosque-icon">مسجد</span>
-<span class="nearby-mosque-info"><span class="nearby-mosque-title">أقرب مسجد</span><span class="nearby-mosque-description">افتح خرائط Google للبحث عن المساجد القريبة منك</span></span>
-<span class="nearby-mosque-arrow">‹</span>
+<button class="prayer-row" data-prayer="Fajr" type="button">
+<span class="prayer-title">الفجر</span>
+<span class="prayer-value" id="fajrTime">--</span>
 </button>
+
+<div class="prayer-row sunrise-row">
+<span class="prayer-title">الشروق</span>
+<span class="prayer-value" id="sunriseTime">--</span>
+</div>
+
+<button class="prayer-row" data-prayer="Dhuhr" type="button">
+<span class="prayer-title">الظهر</span>
+<span class="prayer-value" id="dhuhrTime">--</span>
+</button>
+
+<button class="prayer-row" data-prayer="Asr" type="button">
+<span class="prayer-title">العصر</span>
+<span class="prayer-value" id="asrTime">--</span>
+</button>
+
+<button class="prayer-row" data-prayer="Maghrib" type="button">
+<span class="prayer-title">المغرب</span>
+<span class="prayer-value" id="maghribTime">--</span>
+</button>
+
+<button class="prayer-row" data-prayer="Isha" type="button">
+<span class="prayer-title">العشاء</span>
+<span class="prayer-value" id="ishaTime">--</span>
+</button>
+
+</div>
 </section>
 
+
 <section class="section">
-<div class="section-heading"><div class="section-title">مهام اليوم</div></div>
+
+<div class="section-heading">
+
+<div class="section-title">
+متابعة صلوات اليوم
+<span class="streak-inline" id="homeStreakBadge"></span>
+</div>
+
+<button class="more-button" id="openPrayerReportButton" type="button">
+التقرير
+</button>
+
+</div>
+
+
+<div class="prayer-tracker" id="todayPrayerTracker">
+
+<button class="prayer-track-item" data-track-prayer="Fajr" type="button">
+<span>الفجر</span>
+<span class="track-status">لم تُسجل</span>
+</button>
+
+<button class="prayer-track-item" data-track-prayer="Dhuhr" type="button">
+<span>الظهر</span>
+<span class="track-status">لم تُسجل</span>
+</button>
+
+<button class="prayer-track-item" data-track-prayer="Asr" type="button">
+<span>العصر</span>
+<span class="track-status">لم تُسجل</span>
+</button>
+
+<button class="prayer-track-item" data-track-prayer="Maghrib" type="button">
+<span>المغرب</span>
+<span class="track-status">لم تُسجل</span>
+</button>
+
+<button class="prayer-track-item" data-track-prayer="Isha" type="button">
+<span>العشاء</span>
+<span class="track-status">لم تُسجل</span>
+</button>
+
+</div>
+
+</section>
+
+
+<section class="section">
+
+<button class="nearby-mosque-card" id="nearbyMosqueButton" type="button">
+
+<span class="nearby-mosque-icon">
+مسجد
+</span>
+
+<span class="nearby-mosque-info">
+
+<span class="nearby-mosque-title">
+أقرب مسجد
+</span>
+
+<span class="nearby-mosque-description">
+افتح خرائط Google للبحث عن المساجد القريبة منك
+</span>
+
+</span>
+
+<span class="nearby-mosque-arrow">
+‹
+</span>
+
+</button>
+
+</section>
+
+
+<section class="section">
+
+<div class="section-heading">
+
+<div class="section-title">
+مهام اليوم
+</div>
+
+</div>
+
+
 <div class="daily-tasks">
-<button class="task-item" id="morningAzkarTask" data-task="morning" type="button"><span class="task-check"></span><span class="task-text">أذكار الصباح</span><span class="task-arrow">‹</span></button>
-<button class="task-item" id="eveningAzkarTask" data-task="evening" type="button"><span class="task-check"></span><span class="task-text">أذكار المساء</span><span class="task-arrow">‹</span></button>
-<button class="task-item" id="dailyWirdTask" data-task="wird" type="button"><span class="task-check"></span><span class="task-text">الورد اليومي</span><span class="task-arrow">‹</span></button>
+
+<button class="task-item" id="morningAzkarTask" data-task="morning" type="button">
+<span class="task-check"></span>
+<span class="task-text">أذكار الصباح</span>
+<span class="task-arrow">‹</span>
+</button>
+
+<button class="task-item" id="eveningAzkarTask" data-task="evening" type="button">
+<span class="task-check"></span>
+<span class="task-text">أذكار المساء</span>
+<span class="task-arrow">‹</span>
+</button>
+
+<button class="task-item" id="dailyWirdTask" data-task="wird" type="button">
+<span class="task-check"></span>
+<span class="task-text">الورد اليومي</span>
+<span class="task-arrow">‹</span>
+</button>
+
 </div>
+
 </section>
 
+
 <section class="section">
-<div class="section-heading"><div class="section-title">وصول سريع</div></div>
+
+<div class="section-heading">
+
+<div class="section-title">
+وصول سريع
+</div>
+
+</div>
+
+
 <div class="quick-actions">
-<button class="quick-action" id="quickAzkar" type="button"><span class="quick-icon">ذ</span><span>الأذكار</span></button>
-<button class="quick-action" id="quickDuas" type="button"><span class="quick-icon">د</span><span>الأدعية</span></button>
-<button class="quick-action" id="quickTasbeeh" type="button"><span class="quick-icon">ت</span><span>التسبيح</span></button>
-<button class="quick-action" id="quickSettings" type="button"><span class="quick-icon">ض</span><span>الإعدادات</span></button>
+
+<button class="quick-action" id="quickAzkar" type="button">
+<span class="quick-icon">ذ</span>
+<span>الأذكار</span>
+</button>
+
+<button class="quick-action" id="quickDuas" type="button">
+<span class="quick-icon">د</span>
+<span>الأدعية</span>
+</button>
+
+<button class="quick-action" id="quickTasbeeh" type="button">
+<span class="quick-icon">ت</span>
+<span>التسبيح</span>
+</button>
+
+<button class="quick-action" id="quickSettings" type="button">
+<span class="quick-icon">ض</span>
+<span>الإعدادات</span>
+</button>
+
 </div>
+
 </section>
 
+
 <section class="section">
+
 <div class="daily-content card" id="dailyContentCard">
-<div class="content-block"><div class="card-title">آية اليوم</div><div class="ayah">﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾</div><div class="reference">سورة الرعد — 28</div></div>
-<div class="content-divider"></div>
-<div class="content-block" id="dailyHadithBlock"><div class="card-title">حديث اليوم</div><div class="hadith-text" id="dailyHadithText">إنما الأعمال بالنيات</div><div class="reference" id="dailyHadithReference">متفق عليه</div></div>
-<div class="content-divider"></div>
-<div class="content-block"><div class="card-title">ذكر اليوم</div><div class="dhikr">سبحان الله وبحمده، سبحان الله العظيم</div></div>
+
+<div class="content-block">
+
+<div class="card-title">
+آية اليوم
 </div>
+
+<div class="ayah">
+﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾
+</div>
+
+<div class="reference">
+سورة الرعد — 28
+</div>
+
+</div>
+
+
+<div class="content-divider"></div>
+
+
+<div class="content-block" id="dailyHadithBlock">
+
+<div class="card-title">
+حديث اليوم
+</div>
+
+<div class="hadith-text" id="dailyHadithText">
+إنما الأعمال بالنيات
+</div>
+
+<div class="reference" id="dailyHadithReference">
+متفق عليه
+</div>
+
+</div>
+
+
+<div class="content-divider"></div>
+
+
+<div class="content-block">
+
+<div class="card-title">
+ذكر اليوم
+</div>
+
+<div class="dhikr">
+سبحان الله وبحمده، سبحان الله العظيم
+</div>
+
+</div>
+
+</div>
+
 </section>
 
+
 <section class="section">
+
 <div class="daily-dua card">
-<div class="card-title-row"><div class="card-title">دعاء اليوم</div><button class="more-button" id="moreDuasButton" type="button">المزيد</button></div>
-<div class="daily-dua-text" id="dailyDuaText">رَبِّ زِدْنِي عِلْمًا</div>
+
+<div class="card-title-row">
+
+<div class="card-title">
+دعاء اليوم
 </div>
+
+<button class="more-button" id="moreDuasButton" type="button">
+المزيد
+</button>
+
+</div>
+
+<div class="daily-dua-text" id="dailyDuaText">
+رَبِّ زِدْنِي عِلْمًا
+</div>
+
+</div>
+
 </section>
 
+
 <section class="section">
-<div class="upcoming-card"><div class="upcoming-label">القادم</div><div class="upcoming-text" id="upcomingOccasion">جاري حساب الموعد القادم...</div></div>
+
+<div class="upcoming-card">
+
+<div class="upcoming-label">
+القادم
+</div>
+
+<div class="upcoming-text" id="upcomingOccasion">
+جاري حساب الموعد القادم...
+</div>
+
+</div>
+
 </section>
+
 </main>
+
+
+<!-- =====================================================
+     الصوت
+===================================================== -->
 
 <div class="global-audio" aria-hidden="true" hidden>
-<button id="adhanButton" type="button">تشغيل الأذان</button>
-<audio id="adhanAudio" preload="auto"><source src="audio/adhan.mp3" type="audio/mpeg"></audio>
-<audio id="fajrAudio" preload="auto"><source src="audio/fajr.mp3" type="audio/mpeg"></audio>
+
+<button id="adhanButton" type="button">
+تشغيل الأذان
+</button>
+
+<audio id="adhanAudio" preload="auto">
+<source src="audio/adhan.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="fajrAudio" preload="auto">
+<source src="audio/fajr.mp3" type="audio/mpeg">
+</audio>
+
 </div>
+
+
+<!-- =====================================================
+     الأدعية
+===================================================== -->
 
 <main class="page" id="page-duas">
-<header class="plain-header"><div class="brand">الأدعية</div><div class="date">أدعية مهمة تحتاجها كل يوم</div></header>
-<section class="section">
-<div id="duasList">
-<div class="dua-item"><div class="dua-title">دعاء طلب العلم</div><div class="dua-text">رَبِّ زِدْنِي عِلْمًا</div></div>
-<div class="dua-item"><div class="dua-title">سيد الاستغفار</div><div class="dua-text">اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ</div></div>
-<div class="dua-item"><div class="dua-title">دعاء الكرب والهم</div><div class="dua-text">لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ</div></div>
-<div class="dua-item"><div class="dua-title">دعاء الرزق وقضاء الدين</div><div class="dua-text">اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ</div></div>
-<div class="dua-item"><div class="dua-title">دعاء طلب العافية</div><div class="dua-text">اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ</div></div>
-<div class="dua-item"><div class="dua-title">دعاء ثبات القلب</div><div class="dua-text">يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ</div></div>
-<div class="dua-item"><div class="dua-title">دعاء الوالدين</div><div class="dua-text">رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا</div></div>
-<div class="dua-item"><div class="dua-title">جوامع الدعاء</div><div class="dua-text">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</div></div>
+
+<header class="plain-header">
+
+<div class="brand">
+الأدعية
 </div>
+
+<div class="date">
+أدعية مهمة تحتاجها كل يوم
+</div>
+
+</header>
+
+
+<section class="section">
+
+<div id="duasList">
+
+<div class="dua-item">
+<div class="dua-title">دعاء طلب العلم</div>
+<div class="dua-text">رَبِّ زِدْنِي عِلْمًا</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">سيد الاستغفار</div>
+<div class="dua-text">اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">دعاء الكرب والهم</div>
+<div class="dua-text">لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">دعاء الرزق وقضاء الدين</div>
+<div class="dua-text">اللَّهُمَّ اكْفِنِي بِحَلَالِكَ عَنْ حَرَامِكَ، وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">دعاء طلب العافية</div>
+<div class="dua-text">اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">دعاء ثبات القلب</div>
+<div class="dua-text">يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">دعاء الوالدين</div>
+<div class="dua-text">رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا</div>
+</div>
+
+<div class="dua-item">
+<div class="dua-title">جوامع الدعاء</div>
+<div class="dua-text">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</div>
+</div>
+
+</div>
+
 </section>
+
 </main>
+
+
+<!-- =====================================================
+     الأذكار
+===================================================== -->
 
 <main class="page" id="page-azkar">
-<header class="plain-header"><div class="brand">الأذكار</div><div class="azkar-count" id="azkarTopicsCount">جاري التحميل...</div><div class="date">اختر الباب الذي تريده</div></header>
-<section class="section"><div class="category-grid" id="categoryGrid"></div></section>
+
+<header class="plain-header">
+
+<div class="brand">
+الأذكار
+</div>
+
+<div class="azkar-count" id="azkarTopicsCount">
+جاري التحميل...
+</div>
+
+<div class="date">
+اختر الباب الذي تريده
+</div>
+
+</header>
+
+<section class="section">
+
+<div class="category-grid" id="categoryGrid"></div>
+
+</section>
+
 </main>
+
+
+<!-- =====================================================
+     تفاصيل الأذكار
+===================================================== -->
 
 <main class="page" id="page-azkar-detail">
+
 <div class="category-detail-header">
-<button class="back-button" id="azkarBackButton" type="button" aria-label="العودة">رجوع</button>
-<div class="category-detail-title" id="categoryDetailTitle">القسم</div>
+
+<button class="back-button" id="azkarBackButton" type="button" aria-label="العودة">
+رجوع
+</button>
+
+<div class="category-detail-title" id="categoryDetailTitle">
+القسم
 </div>
-<section class="section"><div id="azkarList"></div><div id="azkarTopicNavigation"></div></section>
+
+</div>
+
+
+<section class="section">
+
+<div id="azkarList"></div>
+
+<div id="azkarTopicNavigation"></div>
+
+</section>
+
 </main>
+
+
+<!-- =====================================================
+     القبلة
+===================================================== -->
 
 <main class="page" id="page-qibla">
+
 <header class="plain-header">
-<button class="back-button" type="button" onclick="document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});document.getElementById('page-settings').classList.add('active')">رجوع</button>
-<div class="brand">القبلة</div>
-<div class="date">اتجاه القبلة</div>
-</header>
-<section class="section">
-<div class="card qibla-card">
-<div class="qibla-placeholder">تحديد اتجاه القبلة</div>
-<div class="reference">سيتم إضافة تحديد اتجاه القبلة هنا</div>
+
+<button
+class="back-button"
+type="button"
+onclick="
+document.querySelectorAll('.page').forEach(function(p){
+p.classList.remove('active');
+});
+document.getElementById('page-settings').classList.add('active');
+"
+>
+رجوع
+</button>
+
+<div class="brand">
+القبلة
 </div>
+
+<div class="date">
+اتجاه القبلة
+</div>
+
+</header>
+
+
+<section class="section">
+
+<div class="qibla-card card">
+
+<div class="qibla-status" id="qiblaStatus">
+جاري تجهيز البوصلة...
+</div>
+
+
+<div class="qibla-compass">
+
+<div class="compass-ring">
+
+<div class="compass-mark north">
+N
+</div>
+
+<div class="compass-mark east">
+E
+</div>
+
+<div class="compass-mark south">
+S
+</div>
+
+<div class="compass-mark west">
+W
+</div>
+
+<div
+class="qibla-arrow"
+id="qiblaArrow"
+aria-label="اتجاه القبلة"
+>
+↑
+</div>
+
+<div class="compass-center">
+الكعبة
+</div>
+
+</div>
+
+</div>
+
+
+<div class="qibla-degree" id="qiblaDegree">
+--°
+</div>
+
+
+<div class="qibla-direction" id="qiblaDirection">
+اتجاه القبلة
+</div>
+
+
+<button
+class="qibla-start-button"
+id="startQiblaButton"
+type="button"
+>
+تحديد اتجاه القبلة
+</button>
+
+
+<div
+class="qibla-message"
+id="qiblaMessage"
+>
+اسمح للتطبيق باستخدام موقعك واتجاه الجهاز لتحديد القبلة.
+</div>
+
+</div>
+
 </section>
+
 </main>
 
+
+<!-- =====================================================
+     تقرير الصلاة
+===================================================== -->
+
 <main class="page" id="page-prayer-report">
+
 <header class="plain-header">
-<button class="back-button" id="prayerReportBackButton" type="button">رجوع</button>
-<div class="brand">تقرير الصلاة</div>
-<div class="date">متابعة التزامك بالصلاة</div>
+
+<button class="back-button" id="prayerReportBackButton" type="button">
+رجوع
+</button>
+
+<div class="brand">
+تقرير الصلاة
+</div>
+
+<div class="date">
+متابعة التزامك بالصلاة
+</div>
+
 </header>
+
+
 <section class="section">
 
 <div class="report-range-tabs" role="tablist">
-<button class="report-range-tab active" type="button" data-range="week" role="tab" aria-selected="true">آخر ٧ أيام</button>
-<button class="report-range-tab" type="button" data-range="month" role="tab" aria-selected="false">آخر ٣٠ يومًا</button>
+
+<button
+class="report-range-tab active"
+type="button"
+data-range="week"
+role="tab"
+aria-selected="true"
+>
+آخر ٧ أيام
+</button>
+
+<button
+class="report-range-tab"
+type="button"
+data-range="month"
+role="tab"
+aria-selected="false"
+>
+آخر ٣٠ يومًا
+</button>
+
 </div>
+
 
 <div class="weekly-report-card card" id="weeklyReportCard">
-<div class="weekly-report-period" id="weeklyReportPeriod">آخر ٧ أيام</div>
-<div class="weekly-report-summary">
-<div class="report-stat"><div class="report-stat-number" id="prayerReportPercentage">0%</div><div class="report-stat-label">نسبة الالتزام</div></div>
-<div class="report-stat"><div class="report-stat-number" id="prayerReportCompleted">0</div><div class="report-stat-label">أُدّيت</div></div>
-<div class="report-stat"><div class="report-stat-number" id="prayerReportMissed">0</div><div class="report-stat-label">فاتت</div></div>
-</div>
-<div class="weekly-report-summary">
-<div class="report-stat"><div class="report-stat-number" id="prayerReportStreak">0</div><div class="report-stat-label">أيام متتالية الآن</div></div>
-<div class="report-stat"><div class="report-stat-number" id="prayerReportBestStreak">0</div><div class="report-stat-label">أطول تتابع</div></div>
-<div class="report-stat"><div class="report-stat-number" id="prayerReportTotal">0</div><div class="report-stat-label">إجمالي الصلوات</div></div>
-</div>
+
+<div class="weekly-report-period" id="weeklyReportPeriod">
+آخر ٧ أيام
 </div>
 
-<div class="card weekly-report-card"><div class="card-title">التفاصيل اليومية</div><div id="weeklyPrayerList" class="weekly-prayer-list"></div></div>
+
+<div class="weekly-report-summary">
+
+<div class="report-stat">
+<div class="report-stat-number" id="prayerReportPercentage">0%</div>
+<div class="report-stat-label">نسبة الالتزام</div>
+</div>
+
+<div class="report-stat">
+<div class="report-stat-number" id="prayerReportCompleted">0</div>
+<div class="report-stat-label">أُدّيت</div>
+</div>
+
+<div class="report-stat">
+<div class="report-stat-number" id="prayerReportMissed">0</div>
+<div class="report-stat-label">فاتت</div>
+</div>
+
+</div>
+
+
+<div class="weekly-report-summary">
+
+<div class="report-stat">
+<div class="report-stat-number" id="prayerReportStreak">0</div>
+<div class="report-stat-label">أيام متتالية الآن</div>
+</div>
+
+<div class="report-stat">
+<div class="report-stat-number" id="prayerReportBestStreak">0</div>
+<div class="report-stat-label">أطول تتابع</div>
+</div>
+
+<div class="report-stat">
+<div class="report-stat-number" id="prayerReportTotal">0</div>
+<div class="report-stat-label">إجمالي الصلوات</div>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card weekly-report-card">
+
+<div class="card-title">
+التفاصيل اليومية
+</div>
+
+<div id="weeklyPrayerList" class="weekly-prayer-list"></div>
+
+</div>
 
 </section>
+
 </main>
+
+
+<!-- =====================================================
+     صلاة المسافر
+===================================================== -->
 
 <main class="page" id="page-traveler-prayer">
+
 <header class="plain-header">
-<button class="back-button" id="travelerPrayerBackButton" type="button">رجوع</button>
-<div class="brand">صلاة المسافر</div>
-<div class="date">أحكام مختصرة للمسافر</div>
+
+<button class="back-button" id="travelerPrayerBackButton" type="button">
+رجوع
+</button>
+
+<div class="brand">
+صلاة المسافر
+</div>
+
+<div class="date">
+أحكام مختصرة للمسافر
+</div>
+
 </header>
+
+
 <section class="section">
-<div class="traveler-card card"><div class="card-title">قصر الصلاة</div><div class="traveler-text">للمسافر قصر الصلوات الرباعية إلى ركعتين، وهي الظهر والعصر والعشاء.</div></div>
-<div class="traveler-card card"><div class="card-title">الجمع</div><div class="traveler-text">يجوز للمسافر الجمع بين الظهر والعصر، وبين المغرب والعشاء، وفق أحكام السفر.</div></div>
-<div class="traveler-card card"><div class="card-title">الفجر والمغرب</div><div class="traveler-text">صلاة الفجر لا تُقصر، وصلاة المغرب لا تُقصر.</div></div>
-<div class="traveler-card card"><div class="card-title">تنبيه</div><div class="traveler-text">هذه الصفحة مختصرة للتذكير، وقد تختلف بعض التفاصيل الفقهية بحسب المذهب والحالة.</div></div>
+
+<div class="traveler-card card">
+
+<div class="card-title">
+قصر الصلاة
+</div>
+
+<div class="traveler-text">
+للمسافر قصر الصلوات الرباعية إلى ركعتين، وهي الظهر والعصر والعشاء.
+</div>
+
+</div>
+
+
+<div class="traveler-card card">
+
+<div class="card-title">
+الجمع
+</div>
+
+<div class="traveler-text">
+يجوز للمسافر الجمع بين الظهر والعصر، وبين المغرب والعشاء، وفق أحكام السفر.
+</div>
+
+</div>
+
+
+<div class="traveler-card card">
+
+<div class="card-title">
+الفجر والمغرب
+</div>
+
+<div class="traveler-text">
+صلاة الفجر لا تُقصر، وصلاة المغرب لا تُقصر.
+</div>
+
+</div>
+
+
+<div class="traveler-card card">
+
+<div class="card-title">
+تنبيه
+</div>
+
+<div class="traveler-text">
+هذه الصفحة مختصرة للتذكير، وقد تختلف بعض التفاصيل الفقهية بحسب المذهب والحالة.
+</div>
+
+</div>
+
 </section>
+
 </main>
+
+
+<!-- =====================================================
+     الإعدادات
+===================================================== -->
 
 <main class="page" id="page-settings">
-<header class="plain-header"><div class="brand">الإعدادات</div><div class="date">تحكم في تجربة أنياس</div></header>
+
+<header class="plain-header">
+
+<div class="brand">
+الإعدادات
+</div>
+
+<div class="date">
+تحكم في تجربة أنياس
+</div>
+
+</header>
+
+
 <section class="section">
 
-<div class="settings-section-title">عام</div>
-<div class="settings-card">
-<div class="setting-row"><div class="setting-info"><div class="setting-title">الوضع الليلي</div><div class="setting-description">تفعيل المظهر الداكن للتطبيق</div></div>
-<label class="switch"><input id="darkModeToggle" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row" style="display:none"><div class="setting-info"><div class="setting-title">اللغة</div><div class="setting-description">لغة واجهة التطبيق</div></div>
-<select id="languageSelect" class="select-control"><option value="ar">العربية</option><option value="en">English</option></select></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">الاهتزاز</div><div class="setting-description">اهتزاز الهاتف عند التفاعل مع الأزرار</div></div>
-<label class="switch"><input id="vibrationToggle" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<button class="setting-row setting-row-button" id="openQiblaButton" type="button"><span class="setting-info"><span class="setting-title">القبلة</span><span class="setting-description">فتح صفحة تحديد اتجاه القبلة</span></span><span class="settings-arrow">فتح</span></button>
-<button class="setting-row setting-row-button" id="openTravelerPrayerButton" type="button"><span class="setting-info"><span class="setting-title">صلاة المسافر</span><span class="setting-description">القصر والجمع وأحكام السفر باختصار</span></span><span class="settings-arrow">فتح</span></button>
+
+<div class="settings-section-title">
+عام
 </div>
 
-<div class="settings-section-title">الصلاة والمتابعة</div>
 <div class="settings-card">
-<div class="setting-row"><div class="setting-info"><div class="setting-title">طريقة حساب المواقيت</div><div class="setting-description">الهيئة المصرية العامة للمساحة</div></div>
-<select id="calculationMethodSelect" class="select-control"><option value="5">الهيئة المصرية العامة للمساحة</option><option value="3">رابطة العالم الإسلامي</option></select></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">متابعة الصلوات</div><div class="setting-description">تسجيل الصلوات وعرض التقرير الأسبوعي</div></div>
-<label class="switch"><input id="prayerTrackingToggle" type="checkbox" checked><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<button class="setting-row setting-row-button" id="openPrayerReportFromSettings" type="button"><span class="setting-info"><span class="setting-title">التقرير الأسبوعي</span><span class="setting-description">عرض ملخص الصلوات خلال آخر ٧ أيام</span></span><span class="settings-arrow">فتح</span></button>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">التعديل اليدوي للمواقيت</div><div class="setting-description">إضافة أو خصم دقائق من كل صلاة</div></div>
-<button id="openManualPrayerSettings" class="small-action-button" type="button">تعديل</button></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">تعديل التاريخ الهجري</div><div class="setting-description">تقديم أو تأخير التاريخ يومًا</div></div>
-<select id="hijriDateAdjustment" class="select-control"><option value="0">بدون تعديل</option><option value="-1">يوم سابق</option><option value="1">يوم لاحق</option></select></div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+الوضع الليلي
 </div>
 
-<div class="settings-section-title">الإشعارات</div>
-<div class="settings-card">
-<div class="setting-row"><div class="setting-info"><div class="setting-title">اقتراب الصلاة</div><div class="setting-description">تنبيه قبل دخول وقت الصلاة</div></div><label class="switch"><input id="notifyPrayerSoon" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">الشروق</div><div class="setting-description">تنبيه عند اقتراب الشروق</div></div><label class="switch"><input id="notifySunrise" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">الثلث الأول من الليل</div></div><label class="switch"><input id="notifyFirstThird" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">الثلث الثاني من الليل</div></div><label class="switch"><input id="notifySecondThird" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">الثلث الأخير من الليل</div></div><label class="switch"><input id="notifyLastThird" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">آية الكرسي</div><div class="setting-description">تنبيه خاص بآية الكرسي</div></div><label class="switch"><input id="notifyAyatKursi" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">صوت الإشعارات</div></div><label class="switch"><input id="notificationSound" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-description">
+تفعيل المظهر الداكن للتطبيق
 </div>
 
-<div class="settings-section-title">العبادات والمواسم</div>
+</div>
+
+<label class="switch">
+
+<input id="darkModeToggle" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="setting-row" style="display:none">
+
+<div class="setting-info">
+
+<div class="setting-title">
+اللغة
+</div>
+
+<div class="setting-description">
+لغة واجهة التطبيق
+</div>
+
+</div>
+
+<select id="languageSelect" class="select-control">
+
+<option value="ar">
+العربية
+</option>
+
+<option value="en">
+English
+</option>
+
+</select>
+
+</div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+الاهتزاز
+</div>
+
+<div class="setting-description">
+اهتزاز الهاتف عند التفاعل مع الأزرار
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="vibrationToggle" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<button
+class="setting-row setting-row-button"
+id="openQiblaButton"
+type="button"
+>
+
+<span class="setting-info">
+
+<span class="setting-title">
+القبلة
+</span>
+
+<span class="setting-description">
+فتح صفحة تحديد اتجاه القبلة
+</span>
+
+</span>
+
+<span class="settings-arrow">
+فتح
+</span>
+
+</button>
+
+
+<button
+class="setting-row setting-row-button"
+id="openTravelerPrayerButton"
+type="button"
+>
+
+<span class="setting-info">
+
+<span class="setting-title">
+صلاة المسافر
+</span>
+
+<span class="setting-description">
+القصر والجمع وأحكام السفر باختصار
+</span>
+
+</span>
+
+<span class="settings-arrow">
+فتح
+</span>
+
+</button>
+
+
+</div>
+
+
+<div class="settings-section-title">
+الصلاة والمتابعة
+</div>
+
+
+<div class="settings-card">
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+طريقة حساب المواقيت
+</div>
+
+<div class="setting-description">
+الهيئة المصرية العامة للمساحة
+</div>
+
+</div>
+
+<select id="calculationMethodSelect" class="select-control">
+
+<option value="5">
+الهيئة المصرية العامة للمساحة
+</option>
+
+<option value="3">
+رابطة العالم الإسلامي
+</option>
+
+</select>
+
+</div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+متابعة الصلوات
+</div>
+
+<div class="setting-description">
+تسجيل الصلوات وعرض التقرير الأسبوعي
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="prayerTrackingToggle" type="checkbox" checked>
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<button
+class="setting-row setting-row-button"
+id="openPrayerReportFromSettings"
+type="button"
+>
+
+<span class="setting-info">
+
+<span class="setting-title">
+التقرير الأسبوعي
+</span>
+
+<span class="setting-description">
+عرض ملخص الصلوات خلال آخر ٧ أيام
+</span>
+
+</span>
+
+<span class="settings-arrow">
+فتح
+</span>
+
+</button>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+التعديل اليدوي للمواقيت
+</div>
+
+<div class="setting-description">
+إضافة أو خصم دقائق من كل صلاة
+</div>
+
+</div>
+
+<button
+id="openManualPrayerSettings"
+class="small-action-button"
+type="button"
+>
+تعديل
+</button>
+
+</div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+تعديل التاريخ الهجري
+</div>
+
+<div class="setting-description">
+تقديم أو تأخير التاريخ يومًا
+</div>
+
+</div>
+
+<select id="hijriDateAdjustment" class="select-control">
+
+<option value="0">
+بدون تعديل
+</option>
+
+<option value="-1">
+يوم سابق
+</option>
+
+<option value="1">
+يوم لاحق
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="settings-section-title">
+الإشعارات
+</div>
+
+
+<div class="settings-card">
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+اقتراب الصلاة
+</div>
+
+<div class="setting-description">
+تنبيه قبل دخول وقت الصلاة
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="notifyPrayerSoon" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+الشروق
+</div>
+
+<div class="setting-description">
+تنبيه عند اقتراب الشروق
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="notifySunrise" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+الثلث الأول من الليل
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="notifyFirstThird" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+الثلث الثاني من الليل
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="notifySecondThird" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+الثلث الأخير من الليل
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="notifyLastThird" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+آية الكرسي
+</div>
+
+<div class="setting-description">
+تنبيه خاص بآية الكرسي
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="notifyAyatKursi" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+صوت الإشعارات
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="notificationSound" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+</div>
+
+
+<div class="settings-section-title">
+العبادات والمواسم
+</div>
+
+
 <div class="worship-card">
-<div class="hijri-date"><div class="hijri-title">التاريخ الهجري</div><div class="hijri-value" id="hijriDate">جاري الحساب...</div></div>
+
+
+<div class="hijri-date">
+
+<div class="hijri-title">
+التاريخ الهجري
+</div>
+
+<div class="hijri-value" id="hijriDate">
+جاري الحساب...
+</div>
+
+</div>
+
+
 <div class="worship-countdowns">
-<div class="worship-countdown"><div class="worship-name">رمضان</div><div class="worship-days" id="ramadanCountdown">جاري الحساب...</div></div>
-<div class="worship-countdown"><div class="worship-name">عيد الفطر</div><div class="worship-days" id="fitrCountdown">جاري الحساب...</div></div>
-<div class="worship-countdown"><div class="worship-name">الحج</div><div class="worship-days" id="hajjCountdown">جاري الحساب...</div></div>
-<div class="worship-countdown"><div class="worship-name">عيد الأضحى</div><div class="worship-days" id="adhaCountdown">جاري الحساب...</div></div>
-</div>
-<div class="worship-setting"><div class="worship-setting-info"><div class="worship-setting-title">صيام الاثنين والخميس</div><div class="worship-setting-description">تذكير بأيام صيام الاثنين والخميس</div></div><label class="switch"><input id="reminderMondayThursday" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="worship-setting"><div class="worship-setting-info"><div class="worship-setting-title">الأيام البيض</div><div class="worship-setting-description">تذكير بأيام 13 و14 و15 من الشهر الهجري</div></div><label class="switch"><input id="reminderWhiteDays" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="worship-setting"><div class="worship-setting-info"><div class="worship-setting-title">تاسوعاء وعاشوراء</div><div class="worship-setting-description">تذكير بصيام تاسوعاء وعاشوراء</div></div><label class="switch"><input id="reminderAshura" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="worship-setting"><div class="worship-setting-info"><div class="worship-setting-title">يوم عرفة</div><div class="worship-setting-description">تذكير بيوم عرفة</div></div><label class="switch"><input id="reminderArafah" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="worship-setting"><div class="worship-setting-info"><div class="worship-setting-title">العشر من ذي الحجة</div><div class="worship-setting-description">تذكير بالعشر الأوائل من ذي الحجة</div></div><label class="switch"><input id="reminderDhulHijjah" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="worship-setting"><div class="worship-setting-info"><div class="worship-setting-title">تكبيرات العيد</div><div class="worship-setting-description">تفعيل تذكير تكبيرات العيد</div></div><label class="switch"><input id="reminderEidTakbeer" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="worship-note">المواعيد الهجرية تقديرية وقد تختلف حسب ثبوت رؤية الهلال.</div>
+
+
+<div class="worship-countdown">
+
+<div class="worship-name">
+رمضان
 </div>
 
-<div class="settings-section-title">الأذان</div>
-<div class="settings-card">
-<div class="setting-row expandable-row" id="normalMuezzinRow" role="button" tabindex="0"><div class="setting-info"><div class="setting-title">مؤذن الصلوات العادية</div><div class="setting-description" id="normalMuezzinSelected">المؤذن الحالي</div></div><div class="settings-arrow">فتح</div></div>
-<div class="audio-picker" id="normalMuezzinOptions"><div class="muezzin-row"><label class="muezzin-select"><input type="radio" name="normalMuezzin" value="current" checked><span class="muezzin-name">المؤذن الحالي</span></label><button class="preview-button" type="button" data-audio="adhanAudio">تشغيل</button></div></div>
-<div class="setting-row expandable-row" id="fajrMuezzinRow" role="button" tabindex="0"><div class="setting-info"><div class="setting-title">مؤذن الفجر</div><div class="setting-description" id="fajrMuezzinSelected">مؤذن الفجر الحالي</div></div><div class="settings-arrow">فتح</div></div>
-<div class="audio-picker" id="fajrMuezzinOptions"><div class="muezzin-row"><label class="muezzin-select"><input type="radio" name="fajrMuezzin" value="current" checked><span class="muezzin-name">مؤذن الفجر الحالي</span></label><button class="preview-button" type="button" data-audio="fajrAudio">تشغيل</button></div></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">الأذان التلقائي</div><div class="setting-description">تشغيل الأذان عند دخول وقت الصلاة</div></div><label class="switch"><input id="autoAdhan" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="volume-container"><div class="volume-header"><span class="volume-title">مستوى صوت الأذان</span><span class="volume-value" id="volumeValue">100%</span></div><input id="adhanVolume" type="range" min="0" max="100" value="100"></div>
-<button id="testAdhanButton" class="adhan-button" type="button">تجربة الأذان</button>
+<div class="worship-days" id="ramadanCountdown">
+جاري الحساب...
 </div>
 
-<div class="settings-section-title">عن التطبيق</div>
+</div>
+
+
+<div class="worship-countdown">
+
+<div class="worship-name">
+عيد الفطر
+</div>
+
+<div class="worship-days" id="fitrCountdown">
+جاري الحساب...
+</div>
+
+</div>
+
+
+<div class="worship-countdown">
+
+<div class="worship-name">
+الحج
+</div>
+
+<div class="worship-days" id="hajjCountdown">
+جاري الحساب...
+</div>
+
+</div>
+
+
+<div class="worship-countdown">
+
+<div class="worship-name">
+عيد الأضحى
+</div>
+
+<div class="worship-days" id="adhaCountdown">
+جاري الحساب...
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="worship-setting">
+
+<div class="worship-setting-info">
+
+<div class="worship-setting-title">
+صيام الاثنين والخميس
+</div>
+
+<div class="worship-setting-description">
+تذكير بأيام صيام الاثنين والخميس
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="reminderMondayThursday" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="worship-setting">
+
+<div class="worship-setting-info">
+
+<div class="worship-setting-title">
+الأيام البيض
+</div>
+
+<div class="worship-setting-description">
+تذكير بأيام 13 و14 و15 من الشهر الهجري
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="reminderWhiteDays" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="worship-setting">
+
+<div class="worship-setting-info">
+
+<div class="worship-setting-title">
+تاسوعاء وعاشوراء
+</div>
+
+<div class="worship-setting-description">
+تذكير بصيام تاسوعاء وعاشوراء
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="reminderAshura" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="worship-setting">
+
+<div class="worship-setting-info">
+
+<div class="worship-setting-title">
+يوم عرفة
+</div>
+
+<div class="worship-setting-description">
+تذكير بيوم عرفة
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="reminderArafah" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="worship-setting">
+
+<div class="worship-setting-info">
+
+<div class="worship-setting-title">
+العشر من ذي الحجة
+</div>
+
+<div class="worship-setting-description">
+تذكير بالعشر الأوائل من ذي الحجة
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="reminderDhulHijjah" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="worship-setting">
+
+<div class="worship-setting-info">
+
+<div class="worship-setting-title">
+تكبيرات العيد
+</div>
+
+<div class="worship-setting-description">
+تفعيل تذكير تكبيرات العيد
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="reminderEidTakbeer" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="worship-note">
+المواعيد الهجرية تقديرية وقد تختلف حسب ثبوت رؤية الهلال.
+</div>
+
+</div>
+
+
+<div class="settings-section-title">
+الأذان
+</div>
+
+
 <div class="settings-card">
-<div class="setting-row"><div class="setting-info"><div class="setting-title">أنياس</div><div class="setting-description">تطبيق إسلامي بسيط لمساعدتك في عبادتك اليومية</div></div><span class="setting-status" id="appVersion">v1.0.0</span></div>
-<button class="setting-row setting-row-button" id="shareAppButton" type="button"><span class="setting-info"><span class="setting-title">مشاركة التطبيق</span><span class="setting-description">مشاركة أنياس مع الآخرين</span></span><span class="settings-arrow">مشاركة</span></button>
-<button class="setting-row setting-row-button" id="openFeedbackButton" type="button"><span class="setting-info"><span class="setting-title">إرسال ملاحظات</span><span class="setting-description">ساعدنا في تحسين التطبيق</span></span><span class="settings-arrow">فتح</span></button>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">الخصوصية</div><div class="setting-description">بيانات الموقع والإعدادات تُستخدم على الجهاز لتشغيل الميزات المطلوبة.</div></div></div>
+
+
+<div
+class="setting-row expandable-row"
+id="normalMuezzinRow"
+role="button"
+tabindex="0"
+>
+
+<div class="setting-info">
+
+<div class="setting-title">
+مؤذن الصلوات العادية
+</div>
+
+<div class="setting-description" id="normalMuezzinSelected">
+المؤذن الحالي
+</div>
+
+</div>
+
+<div class="settings-arrow">
+فتح
+</div>
+
+</div>
+
+
+<div class="audio-picker" id="normalMuezzinOptions">
+
+<div class="muezzin-row">
+
+<label class="muezzin-select">
+
+<input
+type="radio"
+name="normalMuezzin"
+value="current"
+checked
+>
+
+<span class="muezzin-name">
+المؤذن الحالي
+</span>
+
+</label>
+
+<button
+class="preview-button"
+type="button"
+data-audio="adhanAudio"
+>
+تشغيل
+</button>
+
+</div>
+
+</div>
+
+
+<div
+class="setting-row expandable-row"
+id="fajrMuezzinRow"
+role="button"
+tabindex="0"
+>
+
+<div class="setting-info">
+
+<div class="setting-title">
+مؤذن الفجر
+</div>
+
+<div class="setting-description" id="fajrMuezzinSelected">
+مؤذن الفجر الحالي
+</div>
+
+</div>
+
+<div class="settings-arrow">
+فتح
+</div>
+
+</div>
+
+
+<div class="audio-picker" id="fajrMuezzinOptions">
+
+<div class="muezzin-row">
+
+<label class="muezzin-select">
+
+<input
+type="radio"
+name="fajrMuezzin"
+value="current"
+checked
+>
+
+<span class="muezzin-name">
+مؤذن الفجر الحالي
+</span>
+
+</label>
+
+<button
+class="preview-button"
+type="button"
+data-audio="fajrAudio"
+>
+تشغيل
+</button>
+
+</div>
+
+</div>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+الأذان التلقائي
+</div>
+
+<div class="setting-description">
+تشغيل الأذان عند دخول وقت الصلاة
+</div>
+
+</div>
+
+<label class="switch">
+
+<input id="autoAdhan" type="checkbox">
+
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+
+</label>
+
+</div>
+
+
+<div class="volume-container">
+
+<div class="volume-header">
+
+<span class="volume-title">
+مستوى صوت الأذان
+</span>
+
+<span class="volume-value" id="volumeValue">
+100%
+</span>
+
+</div>
+
+<input
+id="adhanVolume"
+type="range"
+min="0"
+max="100"
+value="100"
+>
+
+</div>
+
+
+<button
+id="testAdhanButton"
+class="adhan-button"
+type="button"
+>
+تجربة الأذان
+</button>
+
+</div>
+
+
+<div class="settings-section-title">
+عن التطبيق
+</div>
+
+
+<div class="settings-card">
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+أنياس
+</div>
+
+<div class="setting-description">
+تطبيق إسلامي بسيط لمساعدتك في عبادتك اليومية
+</div>
+
+</div>
+
+<span class="setting-status" id="appVersion">
+v1.0.0
+</span>
+
+</div>
+
+
+<button
+class="setting-row setting-row-button"
+id="shareAppButton"
+type="button"
+>
+
+<span class="setting-info">
+
+<span class="setting-title">
+مشاركة التطبيق
+</span>
+
+<span class="setting-description">
+مشاركة أنياس مع الآخرين
+</span>
+
+</span>
+
+<span class="settings-arrow">
+مشاركة
+</span>
+
+</button>
+
+
+<button
+class="setting-row setting-row-button"
+id="openFeedbackButton"
+type="button"
+>
+
+<span class="setting-info">
+
+<span class="setting-title">
+إرسال ملاحظات
+</span>
+
+<span class="setting-description">
+ساعدنا في تحسين التطبيق
+</span>
+
+</span>
+
+<span class="settings-arrow">
+فتح
+</span>
+
+</button>
+
+
+<div class="setting-row">
+
+<div class="setting-info">
+
+<div class="setting-title">
+الخصوصية
+</div>
+
+<div class="setting-description">
+بيانات الموقع والإعدادات تُستخدم على الجهاز لتشغيل الميزات المطلوبة.
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </section>
+
 </main>
+
+
+<!-- =====================================================
+     التنقل السفلي
+===================================================== -->
 
 </div>
 
+
 <nav class="bottom-nav" aria-label="التنقل الرئيسي">
-<button class="nav-item active" data-page="home" type="button"><span class="nav-icon">الرئيسية</span></button>
-<button class="nav-item" data-page="duas" type="button"><span class="nav-icon">الأدعية</span></button>
-<button class="nav-item" data-page="azkar" type="button"><span class="nav-icon">الأذكار</span></button>
-<button class="nav-item" data-page="settings" type="button"><span class="nav-icon">الإعدادات</span></button>
+
+<button
+class="nav-item active"
+data-page="home"
+type="button"
+>
+<span class="nav-icon">
+الرئيسية
+</span>
+</button>
+
+
+<button
+class="nav-item"
+data-page="duas"
+type="button"
+>
+<span class="nav-icon">
+الأدعية
+</span>
+</button>
+
+
+<button
+class="nav-item"
+data-page="azkar"
+type="button"
+>
+<span class="nav-icon">
+الأذكار
+</span>
+</button>
+
+
+<button
+class="nav-item"
+data-page="settings"
+type="button"
+>
+<span class="nav-icon">
+الإعدادات
+</span>
+</button>
+
 </nav>
+
+
+<!-- =====================================================
+     ملفات JavaScript
+===================================================== -->
 
 <script src="data/azkar-topics.js"></script>
 <script src="js/prayer.js"></script>
@@ -299,5 +1914,6 @@
 <script src="js/duas.js"></script>
 <script src="js/settings.js"></script>
 <script src="js/app.js"></script>
+
 </body>
-</html>
+  </html>
