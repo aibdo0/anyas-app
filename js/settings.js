@@ -810,59 +810,80 @@ function setupWorshipSettings() {
 // التاريخ الهجري
 // =====================================================
 
-function getHijriParts(
-  date = new Date()
-) {
+function getHijriParts(date = new Date()) {
 
-  try {
+  const months = [
+    "",
+    "المحرّم",
+    "صفر",
+    "ربيع الأول",
+    "ربيع الآخر",
+    "جمادى الأولى",
+    "جمادى الآخرة",
+    "رجب",
+    "شعبان",
+    "رمضان",
+    "شوّال",
+    "ذو القعدة",
+    "ذو الحجة"
+  ];
 
-    const formatter =
-      new Intl.DateTimeFormat(
-        "ar-SA-u-ca-islamic-umalqura",
-        {
-          day: "numeric",
-          month: "numeric",
-          year: "numeric"
+  const locales = [
+    "ar-SA-u-ca-islamic-umalqura-nu-latn",
+    "en-u-ca-islamic-umalqura-nu-latn",
+    "en-u-ca-islamic-civil-nu-latn",
+    "en-u-ca-islamic-nu-latn"
+  ];
+
+  const parseLocalizedNumber = value => {
+    const normalized = String(value)
+      .replace(/[٠-٩]/g, digit => String.fromCharCode(digit.charCodeAt(0) - 0x0660 + 48))
+      .replace(/[۰-۹]/g, digit => String.fromCharCode(digit.charCodeAt(0) - 0x06f0 + 48));
+    const number = Number(normalized);
+    return Number.isFinite(number) ? number : null;
+  };
+
+  for (const locale of locales) {
+    try {
+      const formatter = new Intl.DateTimeFormat(locale, {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        numberingSystem: "latn"
+      });
+
+      // Some browsers silently fall back to Gregorian when a calendar is unsupported.
+      if (!formatter.resolvedOptions().calendar.startsWith("islamic")) {
+        continue;
+      }
+
+      const result = {};
+
+      formatter.formatToParts(date).forEach(part => {
+        if (["day", "month", "year"].includes(part.type)) {
+          result[part.type] = parseLocalizedNumber(part.value);
         }
-      );
+      });
 
-    const parts =
-      formatter.formatToParts(date);
-
-    const result = {};
-
-    parts.forEach(part => {
-
-      if (part.type === "day") {
-        result.day =
-          Number(part.value);
+      if (
+        Number.isInteger(result.day) && result.day >= 1 && result.day <= 30 &&
+        Number.isInteger(result.month) && result.month >= 1 && result.month <= 12 &&
+        Number.isInteger(result.year) && result.year > 1000
+      ) {
+        return {
+          day: result.day,
+          month: result.month,
+          monthName: months[result.month],
+          year: result.year
+        };
       }
-
-      if (part.type === "month") {
-        result.month =
-          Number(part.value);
-      }
-
-      if (part.type === "year") {
-        result.year =
-          Number(part.value);
-      }
-
-    });
-
-    return result;
-
-  } catch (error) {
-
-    console.error(
-      "تعذر حساب التاريخ الهجري:",
-      error
-    );
-
-    return null;
-
+    } catch (error) {
+      // Try the next supported Islamic calendar/locale.
+    }
   }
 
+  console.error("تعذر حساب التاريخ الهجري: لا يتوفر تقويم إسلامي مدعوم في هذا المتصفح.");
+  return null;
 }
 
 
