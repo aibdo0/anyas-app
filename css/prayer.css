@@ -73,7 +73,7 @@
 .prayer-row.current {
     border-color: var(--primary);
 
-    background: rgba(15, 111, 92, 0.08);
+    background: rgba(161, 130, 71, 0.08);
 }
 
 .prayer-row.active .prayer-title,
@@ -86,9 +86,9 @@
 /* الصلاة القادمة */
 
 .prayer-row.next {
-    border-color: rgba(15, 111, 92, 0.35);
+    border-color: rgba(161, 130, 71, 0.35);
 
-    background: rgba(15, 111, 92, 0.05);
+    background: rgba(161, 130, 71, 0.05);
 }
 
 /* الصلوات التي انتهت */

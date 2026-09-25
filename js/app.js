@@ -23,7 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setupDailyDua();
   setupUpcomingOccasion();
 
+  setupDailyQuran();
   setupDailyHadith();
+  setupDailyDhikr();
   setupPrayerTracking();
   setupPrayerReport();
   setupNearbyMosque();
@@ -80,26 +82,15 @@ function updateDate() {
   ) {
 
     const hijri =
-      getHijriParts(today);
+      typeof getDisplayedHijriParts === "function"
+        ? getDisplayedHijriParts(today)
+        : getHijriParts(today);
 
     if (hijri) {
 
-      const adjustment =
-        parseInt(
-          localStorage.getItem("anyas_hijri_adjustment") || "0",
-          10
-        );
-
-      let day =
-        parseInt(hijri.day, 10) + adjustment;
-
-      if (day < 1) {
-        day = 1;
-      }
-
       const monthName = hijri.monthName || String(hijri.month);
       hijriElement.textContent =
-        day + " " + monthName + " " + hijri.year + " هـ";
+        hijri.day + " " + monthName + " " + hijri.year + " هـ";
 
     }
 
@@ -160,6 +151,14 @@ function goToPage(pageId) {
 
   }
 
+  const navPage = [
+    "settings",
+    "qibla",
+    "prayer-report",
+    "tasbeeh",
+    "traveler-prayer"
+  ].includes(pageId) ? "more" : pageId;
+
   document
     .querySelectorAll(".nav-item")
     .forEach(nav => {
@@ -169,7 +168,7 @@ function goToPage(pageId) {
 
       nav.classList.toggle(
         "active",
-        target === pageId
+        target === navPage
       );
 
     });
@@ -187,68 +186,24 @@ function goToPage(pageId) {
 // =====================================================
 
 function setupQuickActions() {
+  document.querySelectorAll("[data-more-go]").forEach(button => {
+    button.addEventListener("click", () => {
+      const destination = button.dataset.moreGo;
 
-  const quickAzkar =
-    document.getElementById("quickAzkar");
-
-  const quickDuas =
-    document.getElementById("quickDuas");
-
-  const quickTasbeeh =
-    document.getElementById("quickTasbeeh");
-
-  const quickSettings =
-    document.getElementById("quickSettings");
-
-
-  if (quickAzkar) {
-
-    quickAzkar.addEventListener("click", () => {
-      goToPage("azkar");
-    });
-
-  }
-
-
-  if (quickDuas) {
-
-    quickDuas.addEventListener("click", () => {
-      goToPage("duas");
-    });
-
-  }
-
-
-  if (quickSettings) {
-
-    quickSettings.addEventListener("click", () => {
-      goToPage("settings");
-    });
-
-  }
-
-
-  if (quickTasbeeh) {
-
-    quickTasbeeh.addEventListener("click", () => {
-
-      const tasbeehPage =
-        document.getElementById("page-tasbeeh");
-
-      if (tasbeehPage) {
-
-        goToPage("tasbeeh");
-
+      if (destination === "nearby-mosque") {
+        openNearbyMosque();
+      } else if (destination === "tasbeeh") {
+        const tasbeehPage = document.getElementById("page-tasbeeh");
+        if (tasbeehPage) goToPage("tasbeeh");
+        else openTasbeehFallback();
+      } else if (destination === "prayer-report") {
+        goToPage("prayer-report");
+        updatePrayerReport("week");
       } else {
-
-        openTasbeehFallback();
-
+        goToPage(destination);
       }
-
     });
-
-  }
-
+  });
 }
 
 
@@ -264,6 +219,7 @@ function openTasbeehFallback() {
   if (modal) {
 
     modal.classList.add("show");
+    modal.querySelector(".tasbeeh-button")?.focus();
     return;
 
   }
@@ -273,6 +229,9 @@ function openTasbeehFallback() {
 
   modal.id =
     "tasbeehFallback";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+  modal.setAttribute("aria-labelledby", "tasbeehFallbackTitle");
 
   modal.innerHTML = `
     <div class="tasbeeh-fallback-card">
@@ -285,7 +244,7 @@ function openTasbeehFallback() {
         ×
       </button>
 
-      <div class="tasbeeh-fallback-title">
+      <div class="tasbeeh-fallback-title" id="tasbeehFallbackTitle">
         التسبيح
       </div>
 
@@ -318,6 +277,12 @@ function openTasbeehFallback() {
   document.body.appendChild(modal);
 
   let count = 0;
+  const storageKey = `anyas_tasbeeh_${new Date().toDateString()}`;
+  try {
+    count = Math.max(0, Number(localStorage.getItem(storageKey)) || 0);
+  } catch (error) {
+    // Keep the counter usable when browser storage is unavailable.
+  }
 
   const countElement =
     document.getElementById("tasbeehFallbackCount");
@@ -327,6 +292,8 @@ function openTasbeehFallback() {
 
   const reset =
     document.getElementById("tasbeehFallbackReset");
+
+  countElement.textContent = String(count);
 
   const close =
     modal.querySelector(".tasbeeh-close");
@@ -338,6 +305,7 @@ function openTasbeehFallback() {
 
     countElement.textContent =
       count;
+    try { localStorage.setItem(storageKey, String(count)); } catch (error) { /* storage optional */ }
 
   });
 
@@ -348,6 +316,7 @@ function openTasbeehFallback() {
 
     countElement.textContent =
       "0";
+    try { localStorage.removeItem(storageKey); } catch (error) { /* storage optional */ }
 
   });
 
@@ -370,6 +339,12 @@ function openTasbeehFallback() {
   });
 
   modal.classList.add("show");
+  button.focus();
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && modal.classList.contains("show")) {
+      modal.classList.remove("show");
+    }
+  });
 
 }
 
@@ -456,7 +431,7 @@ function setupDailyDua() {
     document.getElementById("dailyDuaText");
 
   const moreButton =
-    document.getElementById("moreDuasButton");
+    document.getElementById("openWirdButton");
 
 
   if (duaElement) {
@@ -486,7 +461,7 @@ function setupDailyDua() {
 
     moreButton.addEventListener("click", () => {
 
-      goToPage("duas");
+      goToPage("tasks");
 
     });
 
@@ -496,104 +471,102 @@ function setupDailyDua() {
 
 
 // =====================================================
-// حديث اليوم
+// محتوى اليوم حسب اليوم الهجري الظاهر في التطبيق
 // =====================================================
 
-const DAILY_HADITH = [
+let cachedHijriYearDay = null;
 
-  {
-    text: "إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى.",
-    reference: "رواه البخاري ومسلم"
-  },
+function getHijriDayOfYear(date = new Date()) {
+  if (typeof getDisplayedHijriParts !== "function") return 1;
+  const adjustment = localStorage.getItem("anyas_hijri_adjustment") || "0";
+  const cacheKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}-${adjustment}`;
+  if (cachedHijriYearDay?.key === cacheKey) return cachedHijriYearDay.day;
 
-  {
-    text: "من كان يؤمن بالله واليوم الآخر فليقل خيرًا أو ليصمت.",
-    reference: "رواه البخاري ومسلم"
-  },
+  const current = getDisplayedHijriParts(date);
+  if (!current) return 1;
 
-  {
-    text: "المسلم من سلم المسلمون من لسانه ويده.",
-    reference: "رواه البخاري ومسلم"
-  },
-
-  {
-    text: "لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه.",
-    reference: "رواه البخاري ومسلم"
-  },
-
-  {
-    text: "من لا يرحم لا يرحم.",
-    reference: "رواه البخاري ومسلم"
-  },
-
-  {
-    text: "يسروا ولا تعسروا، وبشروا ولا تنفروا.",
-    reference: "رواه البخاري ومسلم"
-  },
-
-  {
-    text: "خيركم من تعلم القرآن وعلمه.",
-    reference: "رواه البخاري"
-  },
-
-  {
-    text: "الكلمة الطيبة صدقة.",
-    reference: "رواه البخاري ومسلم"
-  },
-
-  {
-    text: "اتق الله حيثما كنت، وأتبع السيئة الحسنة تمحها، وخالق الناس بخلق حسن.",
-    reference: "رواه الترمذي"
-  },
-
-  {
-    text: "من كان يؤمن بالله واليوم الآخر فليكرم ضيفه.",
-    reference: "رواه البخاري ومسلم"
+  const cursor = new Date(date);
+  cursor.setHours(12, 0, 0, 0);
+  for (let offset = 0; offset < 360; offset += 1) {
+    const candidate = new Date(cursor);
+    candidate.setDate(candidate.getDate() - offset);
+    const parts = getDisplayedHijriParts(candidate);
+    if (!parts || parts.year !== current.year) break;
+    if (parts.month === 1 && parts.day === 1) {
+      cachedHijriYearDay = { key: cacheKey, day: offset + 1 };
+      return offset + 1;
+    }
   }
+  const fallback = Math.max(1, Math.min(355, (current.month - 1) * 30 + current.day));
+  cachedHijriYearDay = { key: cacheKey, day: fallback };
+  return fallback;
+}
 
-];
 
+function setupDailyQuran() {
+  const textElement = document.getElementById("dailyAyahText");
+  const referenceElement = document.getElementById("dailyAyahReference");
+  const verses = window.dailyQuranSelection || [];
+  if (!textElement || verses.length < 354) return;
 
-function setupDailyHadith() {
-
-  const textElement =
-    document.getElementById("dailyHadithText");
-
-  const referenceElement =
-    document.getElementById("dailyHadithReference");
-
-  if (!textElement) {
-    return;
-  }
-
-  const today = new Date();
-
-  const dayNumber =
-    Math.floor(
-      new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate()
-      ).getTime() / 86400000
-    );
-
-  const index =
-    Math.abs(dayNumber) %
-    DAILY_HADITH.length;
-
-  const hadith =
-    DAILY_HADITH[index];
-
-  textElement.textContent =
-    hadith.text;
-
+  const day = getHijriDayOfYear();
+  const verse = verses[day - 1];
+  if (!verse) return;
+  textElement.textContent = verse.text;
   if (referenceElement) {
-
-    referenceElement.textContent =
-      hadith.reference;
-
+    referenceElement.textContent = `سورة ${verse.surahName} — آية ${verse.ayah} · اليوم ${day} هجريًا`;
   }
+}
 
+
+async function setupDailyHadith() {
+  const textElement = document.getElementById("dailyHadithText");
+  const referenceElement = document.getElementById("dailyHadithReference");
+  const ids = window.dailyHadithSelection || [];
+  if (!textElement || ids.length < 354) return;
+
+  const day = getHijriDayOfYear();
+  const id = ids[day - 1];
+  if (!id) return;
+  textElement.textContent = "جارٍ تحميل حديث اليوم...";
+  if (referenceElement) referenceElement.textContent = `اليوم ${day} هجريًا · HadeethEnc`;
+
+  try {
+    const url = new URL("https://hadeethenc.com/api/v1/hadeeths/one/");
+    url.searchParams.set("id", id);
+    url.searchParams.set("language", "ar");
+    const response = await fetch(url.toString(), { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error(`HadeethEnc HTTP ${response.status}`);
+    const hadith = await response.json();
+    if (!hadith || !hadith.hadeeth) throw new Error("HadeethEnc returned no Arabic text");
+    textElement.textContent = hadith.hadeeth;
+    if (referenceElement) {
+      referenceElement.textContent = [hadith.grade, hadith.attribution].filter(Boolean).join(" · ") || "حديث اليوم";
+    }
+  } catch (error) {
+    console.error("تعذر تحميل حديث اليوم من HadeethEnc:", error);
+    textElement.textContent = "تعذر تحميل الحديث الآن. تحقق من اتصال الإنترنت وأعد المحاولة.";
+    if (referenceElement) referenceElement.textContent = `اليوم ${day} هجريًا · المصدر: HadeethEnc`;
+  }
+}
+
+
+function setupDailyDhikr() {
+  const textElement = document.getElementById("dailyDhikrText");
+  const referenceElement = document.getElementById("dailyDhikrReference");
+  if (!textElement) return;
+
+  const entries = (window.azkarTopics || []).flatMap(topic =>
+    (topic.items || []).map((item, itemIndex) => ({ topic, item, itemIndex }))
+  ).filter(entry => entry.item && entry.item.text);
+  if (!entries.length) return;
+
+  const day = getHijriDayOfYear();
+  const entry = entries[(day - 1) % entries.length];
+  textElement.textContent = entry.item.text;
+  if (referenceElement) {
+    referenceElement.textContent = `${entry.topic.title} · ذكر ${((day - 1) % entries.length) + 1} من ${entries.length}`;
+  }
 }
 
 
@@ -900,6 +873,11 @@ function updatePrayerTrackingUI() {
           todayData[prayer]
         );
 
+      const status = button.querySelector(".track-status");
+      if (status) {
+        status.textContent = completed ? "تمّت ✓" : "لم تُسجّل";
+      }
+
       button.classList.toggle(
         "completed",
         completed
@@ -911,6 +889,19 @@ function updatePrayerTrackingUI() {
       );
 
     });
+
+  const completedCount = TRACKED_PRAYER_KEYS
+    .filter(prayer => Boolean(todayData[prayer])).length;
+  const progressText = document.getElementById("todayPrayerProgressText");
+  const progressBar = document.getElementById("todayPrayerProgressBar");
+  if (progressText) {
+    progressText.textContent = `${completedCount} من ${TRACKED_PRAYER_KEYS.length} صلوات مسجّلة اليوم`;
+  }
+  if (progressBar) {
+    const percent = Math.round(completedCount / TRACKED_PRAYER_KEYS.length * 100);
+    progressBar.style.width = `${percent}%`;
+    progressBar.setAttribute("aria-valuenow", String(completedCount));
+  }
 
   const streakBadge =
     document.getElementById(

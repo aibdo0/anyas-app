@@ -48,6 +48,7 @@ function setupAzkarTopics() {
 
   });
 
+  window.azkarFavorites?.render();
   setupAzkarSearch(topics, grid, countElement);
 
 }
@@ -358,6 +359,13 @@ function renderAzkarTopic(number) {
 
       <div class="zikr-footer">
 
+        <button
+          type="button"
+          class="zikr-favorite-button"
+          aria-pressed="false"
+          aria-label="أضف إلى المفضلة"
+        >☆</button>
+
         <span class="zikr-count">
           ${
             remaining > 0
@@ -375,6 +383,12 @@ function renderAzkarTopic(number) {
 
       </div>
     `;
+
+    window.azkarFavorites?.bindButton(
+      card.querySelector(".zikr-favorite-button"),
+      Number(number),
+      index
+    );
 
     const button =
       card.querySelector(".zikr-button");
