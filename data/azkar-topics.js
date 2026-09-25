@@ -1,216 +1,234 @@
-// data/azkar-topics.js
+// =====================================================
+// أنياس
+// أبواب الأذكار
+// =====================================================
 
-export const azkarTopics = [
+const azkarTopics = [
   {
-    id: 1,
+    number: 1,
     title: "أذكار الصباح",
-    icon: "sunrise",
-    description: "أذكار تقال من بعد الفجر إلى طلوع الشمس",
-    category: "morning",
+    description: "أذكار الصباح والتحصين",
+    items: []
   },
+
   {
-    id: 2,
+    number: 2,
     title: "أذكار المساء",
-    icon: "sunset",
-    description: "أذكار تقال من بعد العصر إلى الليل",
-    category: "evening",
+    description: "أذكار المساء والتحصين",
+    items: []
   },
+
   {
-    id: 3,
+    number: 3,
     title: "أذكار النوم",
-    icon: "moon",
-    description: "أذكار وآيات تقال قبل النوم",
-    category: "sleep",
+    description: "ما يقال قبل النوم",
+    items: []
   },
+
   {
-    id: 4,
+    number: 4,
     title: "أذكار الاستيقاظ",
-    icon: "sun",
     description: "ما يقال عند الاستيقاظ من النوم",
-    category: "waking",
+    items: []
   },
+
   {
-    id: 5,
+    number: 5,
     title: "أذكار بعد الصلاة",
-    icon: "mosque",
-    description: "الأذكار التي تقال بعد الصلوات المفروضة",
-    category: "prayer",
+    description: "الأذكار التي تقال بعد الصلوات",
+    items: []
   },
+
   {
-    id: 6,
+    number: 6,
     title: "أذكار الصلاة",
-    icon: "hands",
     description: "أذكار وأدعية الصلاة",
-    category: "salah",
+    items: []
   },
+
   {
-    id: 7,
+    number: 7,
     title: "أذكار الوضوء",
-    icon: "water",
-    description: "ما يقال أثناء الوضوء وبعده",
-    category: "wudu",
+    description: "الأذكار المتعلقة بالوضوء",
+    items: []
   },
+
   {
-    id: 8,
+    number: 8,
     title: "أذكار المسجد",
-    icon: "mosque",
     description: "أذكار دخول المسجد والخروج منه",
-    category: "mosque",
+    items: []
   },
+
   {
-    id: 9,
+    number: 9,
     title: "أذكار المنزل",
-    icon: "home",
     description: "أذكار دخول المنزل والخروج منه",
-    category: "home",
+    items: []
   },
+
   {
-    id: 10,
+    number: 10,
     title: "أذكار الطعام والشراب",
-    icon: "utensils",
     description: "الأذكار المتعلقة بالطعام والشراب",
-    category: "food",
+    items: []
   },
+
   {
-    id: 11,
+    number: 11,
     title: "أذكار السفر",
-    icon: "plane",
     description: "أدعية وأذكار السفر والركوب",
-    category: "travel",
+    items: []
   },
+
   {
-    id: 12,
+    number: 12,
     title: "أذكار المطر",
-    icon: "cloud-rain",
-    description: "الأذكار والأدعية عند نزول المطر",
-    category: "rain",
+    description: "الأذكار التي تقال عند نزول المطر",
+    items: []
   },
+
   {
-    id: 13,
+    number: 13,
     title: "أذكار الرياح",
-    icon: "wind",
     description: "ما يقال عند هبوب الرياح",
-    category: "wind",
+    items: []
   },
+
   {
-    id: 14,
+    number: 14,
     title: "أذكار الخوف",
-    icon: "shield",
     description: "أدعية وأذكار عند الخوف والفزع",
-    category: "fear",
+    items: []
   },
+
   {
-    id: 15,
+    number: 15,
     title: "أذكار الهم والحزن",
-    icon: "heart",
     description: "أدعية تفريج الهم والحزن",
-    category: "sadness",
+    items: []
   },
+
   {
-    id: 16,
+    number: 16,
     title: "أذكار المرض",
-    icon: "heart-pulse",
-    description: "أدعية زيارة المريض وأذكار المرض",
-    category: "illness",
+    description: "أدعية المريض وزيارته",
+    items: []
   },
+
   {
-    id: 17,
-    title: "أذكار الرقية",
-    icon: "shield-check",
+    number: 17,
+    title: "أذكار الرقية الشرعية",
     description: "آيات وأدعية الرقية الشرعية",
-    category: "ruqyah",
+    items: []
   },
+
   {
-    id: 18,
+    number: 18,
     title: "أذكار الاستغفار والتوبة",
-    icon: "heart-handshake",
-    description: "أدعية الاستغفار والتوبة إلى الله",
-    category: "repentance",
+    description: "أدعية الاستغفار والتوبة",
+    items: []
   },
+
   {
-    id: 19,
-    title: "أذكار التهليل والتسبيح",
-    icon: "sparkles",
+    number: 19,
+    title: "أذكار التسبيح والتهليل",
     description: "التسبيح والتحميد والتهليل والتكبير",
-    category: "tasbeeh",
+    items: []
   },
+
   {
-    id: 20,
-    title: "أدعية القرآن",
-    icon: "book-open",
-    description: "مجموعة من الأدعية الواردة في القرآن الكريم",
-    category: "quran-dua",
+    number: 20,
+    title: "أدعية القرآن الكريم",
+    description: "الأدعية الواردة في القرآن الكريم",
+    items: []
   },
+
   {
-    id: 21,
+    number: 21,
     title: "أدعية النبي ﷺ",
-    icon: "book-heart",
     description: "أدعية مأثورة عن النبي ﷺ",
-    category: "prophetic-dua",
+    items: []
   },
+
   {
-    id: 22,
+    number: 22,
     title: "أذكار الكرب",
-    icon: "circle-alert",
     description: "ما يقال عند الشدة والكرب",
-    category: "distress",
+    items: []
   },
+
   {
-    id: 23,
+    number: 23,
     title: "أذكار قضاء الدين",
-    icon: "wallet",
-    description: "أدعية قضاء الدين وتيسير الرزق",
-    category: "debt",
+    description: "أدعية قضاء الدين",
+    items: []
   },
+
   {
-    id: 24,
-    title: "أذكار الرزق",
-    icon: "coins",
-    description: "أدعية طلب الرزق والبركة",
-    category: "rizq",
+    number: 24,
+    title: "أذكار الرزق والبركة",
+    description: "أدعية الرزق والبركة",
+    items: []
   },
+
   {
-    id: 25,
-    title: "أذكار الزواج",
-    icon: "heart",
+    number: 25,
+    title: "أذكار الزواج والذرية",
     description: "أدعية الزواج والذرية الصالحة",
-    category: "marriage",
+    items: []
   },
+
   {
-    id: 26,
-    title: "أذكار الاستخارة",
-    icon: "compass",
+    number: 26,
+    title: "دعاء الاستخارة",
     description: "دعاء صلاة الاستخارة",
-    category: "istikhara",
+    items: []
   },
+
   {
-    id: 27,
-    title: "أذكار الجنازة والموت",
-    icon: "flower",
-    description: "أدعية وأذكار متعلقة بالموت والجنازة",
-    category: "death",
+    number: 27,
+    title: "أذكار الموت والجنازة",
+    description: "أدعية وأذكار الموت والجنازة",
+    items: []
   },
+
   {
-    id: 28,
+    number: 28,
     title: "أذكار المناسبات",
-    icon: "calendar-heart",
-    description: "أدعية وأذكار لمواقف ومناسبات مختلفة",
-    category: "occasions",
+    description: "أدعية وأذكار لمواقف مختلفة",
+    items: []
   },
+
   {
-    id: 29,
+    number: 29,
     title: "أذكار عامة",
-    icon: "book-marked",
-    description: "مجموعة مختارة من الأذكار والأدعية",
-    category: "general",
+    description: "مجموعة من الأذكار والأدعية العامة",
+    items: []
   },
+
   {
-    id: 30,
+    number: 30,
     title: "جوامع الدعاء",
-    icon: "heart",
     description: "أدعية جامعة لخيري الدنيا والآخرة",
-    category: "comprehensive",
-  },
+    items: []
+  }
 ];
+
+
+// =====================================================
+// إتاحة البيانات للموقع
+// =====================================================
+
+window.azkarTopics = azkarTopics;
+
+
+// =====================================================
+// دعم الاستيراد إذا كان المشروع يستخدم ES Modules
+// =====================================================
+
+if (typeof window !== "undefined") {
+  window.azkarTopics = azkarTopics;
+}
 
 export default azkarTopics;
