@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f6f5c">
+<meta name="theme-color" content="#fbfaf7">
 <meta name="description" content="أنياس - تطبيق إسلامي لمواقيت الصلاة والأذكار والأدعية">
 <title>أنياس</title>
 
@@ -13,6 +13,15 @@
 <link rel="stylesheet" href="css/azkar.css">
 <link rel="stylesheet" href="css/duas.css">
 <link rel="stylesheet" href="css/settings.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+
+
+<link rel="stylesheet" href="css/theme-white-gold.css">
 </head>
 
 <body>
@@ -74,6 +83,24 @@
 </section>
 
 
+<section class="section daily-adhkar-section" id="dailyAdhkarSection" aria-labelledby="dailyAdhkarHeading">
+  <div class="daily-adhkar-card" aria-live="polite">
+    <div class="daily-adhkar-heading-row">
+      <div class="daily-adhkar-mark" aria-hidden="true">ذ</div>
+      <div class="daily-adhkar-heading-copy">
+        <div class="daily-adhkar-eyebrow">ورد يناسب وقتك</div>
+        <h2 class="daily-adhkar-title" id="dailyAdhkarHeading">أذكار الصباح</h2>
+      </div>
+      <span class="daily-adhkar-badge" id="dailyAdhkarBadge">الصباح</span>
+    </div>
+    <p class="daily-adhkar-text" id="dailyAdhkarText">ابدأ أذكار الصباح من قسم الأذكار، وسيبقى هذا التذكير ظاهرًا حتى دخول وقت الظهر.</p>
+    <div class="daily-adhkar-footer">
+      <span class="daily-adhkar-hint" id="dailyAdhkarHint">حتى دخول وقت الظهر</span>
+      <button class="daily-adhkar-button" id="openDailyAdhkarButton" type="button">افتح الأذكار</button>
+    </div>
+  </div>
+</section>
+
 <section class="section prayer-section">
 
 <div class="section-heading">
@@ -116,158 +143,6 @@
 
 </div>
 </section>
-
-
-<section class="section">
-
-<div class="section-heading">
-
-<div class="section-title">
-متابعة صلوات اليوم
-<span class="streak-inline" id="homeStreakBadge"></span>
-</div>
-
-<button class="more-button" id="openPrayerReportButton" type="button">
-التقرير
-</button>
-
-</div>
-
-
-<div class="prayer-tracker" id="todayPrayerTracker">
-
-<button class="prayer-track-item" data-track-prayer="Fajr" type="button">
-<span>الفجر</span>
-<span class="track-status">لم تُسجل</span>
-</button>
-
-<button class="prayer-track-item" data-track-prayer="Dhuhr" type="button">
-<span>الظهر</span>
-<span class="track-status">لم تُسجل</span>
-</button>
-
-<button class="prayer-track-item" data-track-prayer="Asr" type="button">
-<span>العصر</span>
-<span class="track-status">لم تُسجل</span>
-</button>
-
-<button class="prayer-track-item" data-track-prayer="Maghrib" type="button">
-<span>المغرب</span>
-<span class="track-status">لم تُسجل</span>
-</button>
-
-<button class="prayer-track-item" data-track-prayer="Isha" type="button">
-<span>العشاء</span>
-<span class="track-status">لم تُسجل</span>
-</button>
-
-</div>
-
-</section>
-
-
-<section class="section">
-
-<button class="nearby-mosque-card" id="nearbyMosqueButton" type="button">
-
-<span class="nearby-mosque-icon">
-مسجد
-</span>
-
-<span class="nearby-mosque-info">
-
-<span class="nearby-mosque-title">
-أقرب مسجد
-</span>
-
-<span class="nearby-mosque-description">
-افتح خرائط Google للبحث عن المساجد القريبة منك
-</span>
-
-</span>
-
-<span class="nearby-mosque-arrow">
-‹
-</span>
-
-</button>
-
-</section>
-
-
-<section class="section">
-
-<div class="section-heading">
-
-<div class="section-title">
-مهام اليوم
-</div>
-
-</div>
-
-
-<div class="daily-tasks">
-
-<button class="task-item" id="morningAzkarTask" data-task="morning" type="button">
-<span class="task-check"></span>
-<span class="task-text">أذكار الصباح</span>
-<span class="task-arrow">‹</span>
-</button>
-
-<button class="task-item" id="eveningAzkarTask" data-task="evening" type="button">
-<span class="task-check"></span>
-<span class="task-text">أذكار المساء</span>
-<span class="task-arrow">‹</span>
-</button>
-
-<button class="task-item" id="dailyWirdTask" data-task="wird" type="button">
-<span class="task-check"></span>
-<span class="task-text">الورد اليومي</span>
-<span class="task-arrow">‹</span>
-</button>
-
-</div>
-
-</section>
-
-
-<section class="section">
-
-<div class="section-heading">
-
-<div class="section-title">
-وصول سريع
-</div>
-
-</div>
-
-
-<div class="quick-actions">
-
-<button class="quick-action" id="quickAzkar" type="button">
-<span class="quick-icon">ذ</span>
-<span>الأذكار</span>
-</button>
-
-<button class="quick-action" id="quickDuas" type="button">
-<span class="quick-icon">د</span>
-<span>الأدعية</span>
-</button>
-
-<button class="quick-action" id="quickTasbeeh" type="button">
-<span class="quick-icon">ت</span>
-<span>التسبيح</span>
-</button>
-
-<button class="quick-action" id="quickSettings" type="button">
-<span class="quick-icon">ض</span>
-<span>الإعدادات</span>
-</button>
-
-</div>
-
-</section>
-
 
 <section class="section">
 
@@ -329,7 +204,6 @@
 
 </section>
 
-
 <section class="section">
 
 <div class="daily-dua card">
@@ -354,6 +228,152 @@
 
 </section>
 
+<section class="section">
+
+<div class="section-heading">
+
+<div class="section-title">
+وصول سريع
+</div>
+
+</div>
+
+
+<div class="quick-actions">
+
+<button class="quick-action" id="quickAzkar" type="button">
+<span class="quick-icon">ذ</span>
+<span>الأذكار</span>
+</button>
+
+<button class="quick-action" id="quickDuas" type="button">
+<span class="quick-icon">د</span>
+<span>الأدعية</span>
+</button>
+
+<button class="quick-action" id="quickTasbeeh" type="button">
+<span class="quick-icon">ت</span>
+<span>التسبيح</span>
+</button>
+
+<button class="quick-action" id="quickSettings" type="button">
+<span class="quick-icon">ض</span>
+<span>الإعدادات</span>
+</button>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="section-heading">
+
+<div class="section-title">
+مهام اليوم
+</div>
+
+</div>
+
+
+<div class="daily-tasks">
+
+<button class="task-item" id="morningAzkarTask" data-task="morning" type="button">
+<span class="task-check"></span>
+<span class="task-text">أذكار الصباح</span>
+<span class="task-arrow">‹</span>
+</button>
+
+<button class="task-item" id="eveningAzkarTask" data-task="evening" type="button">
+<span class="task-check"></span>
+<span class="task-text">أذكار المساء</span>
+<span class="task-arrow">‹</span>
+</button>
+
+<button class="task-item" id="dailyWirdTask" data-task="wird" type="button">
+<span class="task-check"></span>
+<span class="task-text">الورد اليومي</span>
+<span class="task-arrow">‹</span>
+</button>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="section-heading">
+
+<div class="section-title">
+متابعة صلوات اليوم
+<span class="streak-inline" id="homeStreakBadge"></span>
+</div>
+
+<button class="more-button" id="openPrayerReportButton" type="button">
+التقرير
+</button>
+
+</div>
+
+
+<div class="prayer-tracker" id="todayPrayerTracker">
+
+<button class="prayer-track-item" data-track-prayer="Fajr" type="button">
+<span>الفجر</span>
+<span class="track-status">لم تُسجل</span>
+</button>
+
+<button class="prayer-track-item" data-track-prayer="Dhuhr" type="button">
+<span>الظهر</span>
+<span class="track-status">لم تُسجل</span>
+</button>
+
+<button class="prayer-track-item" data-track-prayer="Asr" type="button">
+<span>العصر</span>
+<span class="track-status">لم تُسجل</span>
+</button>
+
+<button class="prayer-track-item" data-track-prayer="Maghrib" type="button">
+<span>المغرب</span>
+<span class="track-status">لم تُسجل</span>
+</button>
+
+<button class="prayer-track-item" data-track-prayer="Isha" type="button">
+<span>العشاء</span>
+<span class="track-status">لم تُسجل</span>
+</button>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<button class="nearby-mosque-card" id="nearbyMosqueButton" type="button">
+
+<span class="nearby-mosque-icon">
+مسجد
+</span>
+
+<span class="nearby-mosque-info">
+
+<span class="nearby-mosque-title">
+أقرب مسجد
+</span>
+
+<span class="nearby-mosque-description">
+افتح خرائط Google للبحث عن المساجد القريبة منك
+</span>
+
+</span>
+
+<span class="nearby-mosque-arrow">
+‹
+</span>
+
+</button>
+
+</section>
 
 <section class="section">
 
@@ -1910,6 +1930,7 @@ type="button"
 
 <script src="data/azkar-topics.js"></script>
 <script src="js/prayer.js"></script>
+<script src="js/daily-adhkar.js"></script>
 <script src="js/azkar.js"></script>
 <script src="js/duas.js"></script>
 <script src="js/settings.js"></script>
