@@ -788,6 +788,9 @@ function updateUpcomingOccasion() {
 const PRAYER_TRACKING_KEY =
   "anyas_prayer_tracking";
 
+const TRACKED_PRAYER_KEYS =
+  ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+
 
 function getTodayKey() {
 
@@ -875,7 +878,7 @@ function setupPrayerTracking() {
 
         goToPage("prayer-report");
 
-        updatePrayerReport();
+        updatePrayerReport("week");
 
       }
     );
@@ -910,7 +913,7 @@ function togglePrayerTracking(prayer) {
   savePrayerTrackingData(data);
 
   updatePrayerTrackingUI();
-  updatePrayerReport();
+  updatePrayerReport(window.currentPrayerReportRange);
 
 }
 
@@ -952,6 +955,23 @@ function updatePrayerTrackingUI() {
 
     });
 
+  const streakBadge =
+    document.getElementById(
+      "homeStreakBadge"
+    );
+
+  if (streakBadge) {
+
+    const streaks =
+      computePrayerStreaks();
+
+    streakBadge.textContent =
+      streaks.current > 0
+        ? `(${streaks.current} يوم متتالي)`
+        : "";
+
+  }
+
 }
 
 
@@ -991,12 +1011,32 @@ function setupPrayerReport() {
 
         goToPage("prayer-report");
 
-        updatePrayerReport();
+        updatePrayerReport("week");
 
       }
     );
 
   }
+
+
+  document
+    .querySelectorAll(
+      ".report-range-tab"
+    )
+    .forEach(tab => {
+
+      tab.addEventListener(
+        "click",
+        () => {
+
+          updatePrayerReport(
+            tab.dataset.range
+          );
+
+        }
+      );
+
+    });
 
 
   const reportPage =
@@ -1006,42 +1046,28 @@ function setupPrayerReport() {
 
   if (reportPage) {
 
-    updatePrayerReport();
+    updatePrayerReport("week");
 
   }
 
 }
 
 
-function updatePrayerReport() {
-
-  const reportPage =
-    document.getElementById(
-      "page-prayer-report"
-    );
-
-  if (!reportPage) {
-    return;
-  }
-
-  const data =
-    getPrayerTrackingData();
-
-  const prayers = [
-    "Fajr",
-    "Dhuhr",
-    "Asr",
-    "Maghrib",
-    "Isha"
-  ];
-
-  let completed = 0;
-  let total = 0;
+function computePrayerRangeStats(
+  days
+) {
 
   const today =
     new Date();
 
-  for (let i = 6; i >= 0; i--) {
+  let completed = 0;
+
+  let total = 0;
+
+  const dayRows = [];
+
+
+  for (let i = 0; i < days; i++) {
 
     const date =
       new Date(today);
@@ -1053,20 +1079,28 @@ function updatePrayerReport() {
     const tracking =
       getPrayerTrackingForDate(date);
 
-    prayers.forEach(prayer => {
+    const dayCompleted =
+      TRACKED_PRAYER_KEYS.filter(
+        prayer => tracking[prayer]
+      ).length;
 
-      total++;
+    completed +=
+      dayCompleted;
 
-      if (tracking[prayer]) {
+    total +=
+      TRACKED_PRAYER_KEYS.length;
 
-        completed++;
-
-      }
-
+    dayRows.push({
+      date,
+      completed: dayCompleted,
+      total: TRACKED_PRAYER_KEYS.length
     });
 
   }
 
+
+  const missed =
+    total - completed;
 
   const percentage =
     total > 0
@@ -1076,79 +1110,409 @@ function updatePrayerReport() {
       : 0;
 
 
-  const possibleElements = [
+  return {
+    completed,
+    missed,
+    total,
+    percentage,
+    dayRows
+  };
 
-    document.getElementById(
-      "weeklyPrayerPercentage"
-    ),
-
-    document.getElementById(
-      "prayerReportPercentage"
-    )
-
-  ];
+}
 
 
-  possibleElements.forEach(element => {
+function computePrayerStreaks() {
 
-    if (element) {
+  const data =
+    getPrayerTrackingData();
 
-      element.textContent =
-        `${percentage}%`;
+  function isDayComplete(key) {
+
+    const day =
+      data[key] || {};
+
+    return TRACKED_PRAYER_KEYS.every(
+      prayer => Boolean(day[prayer])
+    );
+
+  }
+
+
+  /*
+   * الأيام المتتالية الحالية:
+   * نعد للخلف من اليوم، ولا نكسر
+   * التتابع إذا كان يوم النهاردة
+   * لسه ما خلصش (الصلوات الباقية
+   * لسه ماجاش وقتها).
+   */
+
+  let current = 0;
+
+  const cursor =
+    new Date();
+
+  let isFirstDay = true;
+
+
+  while (true) {
+
+    const key =
+      [
+        cursor.getFullYear(),
+        formatNumber(cursor.getMonth() + 1),
+        formatNumber(cursor.getDate())
+      ].join("-");
+
+    const complete =
+      isDayComplete(key);
+
+
+    if (isFirstDay) {
+
+      isFirstDay = false;
+
+
+      if (!complete) {
+
+        cursor.setDate(
+          cursor.getDate() - 1
+        );
+
+        continue;
+
+      }
+
+    }
+
+
+    if (complete) {
+
+      current++;
+
+      cursor.setDate(
+        cursor.getDate() - 1
+      );
+
+    } else {
+
+      break;
+
+    }
+
+  }
+
+
+  /*
+   * أطول تتابع مسجل على الإطلاق
+   */
+
+  const dateKeys =
+    Object.keys(data).sort();
+
+  let longest = 0;
+
+  let run = 0;
+
+  let previousDate = null;
+
+
+  dateKeys.forEach(key => {
+
+    const complete =
+      isDayComplete(key);
+
+    const parts =
+      key.split("-").map(Number);
+
+    const dateObj =
+      new Date(
+        parts[0],
+        parts[1] - 1,
+        parts[2]
+      );
+
+
+    if (complete) {
+
+      if (previousDate) {
+
+        const dayDiff =
+          Math.round(
+            (dateObj - previousDate) /
+            86400000
+          );
+
+        run =
+          dayDiff === 1
+            ? run + 1
+            : 1;
+
+      } else {
+
+        run = 1;
+
+      }
+
+      longest =
+        Math.max(
+          longest,
+          run
+        );
+
+      previousDate =
+        dateObj;
+
+    } else {
+
+      run = 0;
+
+      previousDate = null;
 
     }
 
   });
 
 
-  const completedElements = [
+  longest =
+    Math.max(
+      longest,
+      current
+    );
 
+
+  return {
+    current,
+    longest
+  };
+
+}
+
+
+function formatReportDayLabel(
+  date,
+  index
+) {
+
+  if (index === 0) {
+    return "اليوم";
+  }
+
+  if (index === 1) {
+    return "أمس";
+  }
+
+
+  try {
+
+    return new Intl.DateTimeFormat(
+      "ar-EG",
+      {
+        weekday: "long",
+        day: "numeric",
+        month: "numeric"
+      }
+    ).format(date);
+
+  } catch (error) {
+
+    return `${date.getDate()}/${date.getMonth() + 1}`;
+
+  }
+
+}
+
+
+function renderPrayerReportList(
+  dayRows
+) {
+
+  const list =
     document.getElementById(
-      "weeklyPrayerCompleted"
-    ),
+      "weeklyPrayerList"
+    );
 
-    document.getElementById(
-      "prayerReportCompleted"
-    )
-
-  ];
+  if (!list) {
+    return;
+  }
 
 
-  completedElements.forEach(element => {
+  list.innerHTML = "";
 
-    if (element) {
 
-      element.textContent =
-        completed;
+  dayRows.forEach((row, index) => {
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "weekly-prayer-row";
+
+
+    if (row.completed === 0) {
+
+      item.classList.add("empty");
 
     }
 
+
+    const label =
+      document.createElement("span");
+
+    label.className =
+      "weekly-prayer-name";
+
+    label.textContent =
+      formatReportDayLabel(
+        row.date,
+        index
+      );
+
+
+    const value =
+      document.createElement("span");
+
+    value.className =
+      "weekly-prayer-value";
+
+    value.textContent =
+      `${row.completed}/${row.total}`;
+
+
+    item.appendChild(label);
+
+    item.appendChild(value);
+
+    list.appendChild(item);
+
   });
 
+}
 
-  const totalElements = [
 
+function setReportStatValue(
+  id,
+  value
+) {
+
+  const element =
+    document.getElementById(id);
+
+  if (element) {
+
+    element.textContent =
+      value;
+
+  }
+
+}
+
+
+function updatePrayerReport(
+  range
+) {
+
+  const reportPage =
     document.getElementById(
-      "weeklyPrayerTotal"
-    ),
+      "page-prayer-report"
+    );
 
-    document.getElementById(
-      "prayerReportTotal"
+  if (!reportPage) {
+    return;
+  }
+
+
+  const activeRange =
+    range ||
+    window.currentPrayerReportRange ||
+    "week";
+
+  window.currentPrayerReportRange =
+    activeRange;
+
+  const days =
+    activeRange === "month"
+      ? 30
+      : 7;
+
+
+  document
+    .querySelectorAll(
+      ".report-range-tab"
     )
+    .forEach(tab => {
 
-  ];
+      const isActive =
+        tab.dataset.range === activeRange;
+
+      tab.classList.toggle(
+        "active",
+        isActive
+      );
+
+      tab.setAttribute(
+        "aria-selected",
+        isActive ? "true" : "false"
+      );
+
+    });
 
 
-  totalElements.forEach(element => {
+  const periodElement =
+    document.getElementById(
+      "weeklyReportPeriod"
+    );
 
-    if (element) {
+  if (periodElement) {
 
-      element.textContent =
-        total;
+    periodElement.textContent =
+      activeRange === "month"
+        ? "آخر ٣٠ يومًا"
+        : "آخر ٧ أيام";
 
-    }
+  }
 
-  });
+
+  const stats =
+    computePrayerRangeStats(days);
+
+  const streaks =
+    computePrayerStreaks();
+
+
+  setReportStatValue(
+    "prayerReportPercentage",
+    `${stats.percentage}%`
+  );
+
+  setReportStatValue(
+    "prayerReportCompleted",
+    stats.completed
+  );
+
+  setReportStatValue(
+    "prayerReportMissed",
+    stats.missed
+  );
+
+  setReportStatValue(
+    "prayerReportTotal",
+    stats.total
+  );
+
+  setReportStatValue(
+    "prayerReportStreak",
+    streaks.current
+  );
+
+  setReportStatValue(
+    "prayerReportBestStreak",
+    streaks.longest
+  );
+
+
+  renderPrayerReportList(
+    stats.dayRows
+  );
 
 }
 
