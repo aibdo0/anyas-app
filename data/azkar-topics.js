@@ -1,7 +1,7 @@
 // حصن المسلم — 132 بابًا من المصدر: https://www.imadislam.com/hisnulmuslim/
 // أُبقيت نصوص الأذكار كما وردت في المصدر، مع حفظ عدد التكرار الظاهر داخل النص عند توفره.
 
-const azkarTopics = [
+window.azkarTopics = [
   {
     "description": "من كتاب حصن المسلم — أذكار الاستيقاظ من النوم",
     "items": [
