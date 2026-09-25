@@ -126,7 +126,26 @@ button.prayer-row:hover { border-color: #b6cfbc; background: #f7faf6; transform:
 .dua-item { padding: 16px 17px; border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: 0 7px 20px rgba(26,54,42,.045); }
 .dua-title { margin-bottom: 7px; color: var(--green); font-size: 15px; font-weight: 800; }
 .dua-text { color: var(--ink); font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: 21px; line-height: 2; }
-.category-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 11px; }
+#categoryGrid { display: grid; grid-template-columns: minmax(0,1fr); gap: 11px; }
+.category-card {
+  display: flex; min-height: 68px; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 13px 15px; border: 1px solid var(--line); border-radius: 16px;
+  color: var(--ink); background: var(--surface); text-align: right; cursor: pointer;
+  box-shadow: 0 6px 18px rgba(62,52,34,.045); transition: transform .16s ease, border-color .16s ease;
+}
+.category-card:hover { border-color: #d7c9aa; transform: translateY(-1px); }
+.category-card-title { flex: 1; font-weight: 700; line-height: 1.55; }
+.category-card-count { flex: 0 0 auto; color: var(--muted); font-size: 12px; white-space: nowrap; }
+#azkarList { overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); }
+.zikr-card { padding: 20px 18px; border-bottom: 1px solid var(--line); }
+.zikr-card:last-child { border-bottom: 0; }
+.zikr-text { color: var(--ink); font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: clamp(20px, 5vw, 24px); font-weight: 700; line-height: 2; overflow-wrap: anywhere; }
+.zikr-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
+.zikr-count { color: var(--muted); font-size: 13px; font-weight: 700; }
+.zikr-button { min-width: 100px; padding: 10px 16px; border: 0; border-radius: 12px; color: #fff; background: var(--green); font-weight: 800; cursor: pointer; }
+.zikr-button:disabled { color: var(--green); background: var(--green-pale); cursor: default; }
+#azkarTopicNavigation button { min-height: 44px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; color: var(--green); background: var(--surface); font-weight: 800; cursor: pointer; }
+.category-detail-header + .section { padding-inline: 0; }
 .category-grid > *, #azkarList > *, #azkarTopicNavigation > * { min-width: 0; border-radius: 17px; }
 .category-detail-header { display: flex; align-items: center; gap: 12px; padding: 8px 18px; }
 .category-detail-title { color: var(--green); font-size: 20px; font-weight: 800; }

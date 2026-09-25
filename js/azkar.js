@@ -67,6 +67,8 @@ function openAzkarTopic(number) {
 
   if (!topic) return;
 
+  goToPage("azkar");
+
   const topicsPage =
     document.getElementById("page-azkar");
 
