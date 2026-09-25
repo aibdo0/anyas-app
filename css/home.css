@@ -879,6 +879,48 @@
     color: var(--primary);
 }
 
+.weekly-prayer-row.empty .weekly-prayer-value {
+    color: var(--muted);
+}
+
+.report-range-tabs {
+    display: flex;
+    gap: 8px;
+
+    margin-bottom: 14px;
+}
+
+.report-range-tab {
+    flex: 1;
+    padding: 9px 6px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--card);
+    color: var(--muted);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+.report-range-tab.active {
+    border-color: var(--primary);
+    background: var(--primary);
+
+    color: #ffffff;
+}
+
+.streak-inline {
+    margin-inline-start: 6px;
+
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+}
+
 /* =========================================
    TRAVELER PRAYER
    ========================================= */
