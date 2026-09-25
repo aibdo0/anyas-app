@@ -97,8 +97,9 @@ function updateDate() {
         day = 1;
       }
 
+      const monthName = hijri.monthName || String(hijri.month);
       hijriElement.textContent =
-        `${day} ${hijri.month} ${hijri.year} هـ`;
+        day + " " + monthName + " " + hijri.year + " هـ";
 
     }
 
