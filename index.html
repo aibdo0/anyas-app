@@ -507,6 +507,19 @@
 
 </header>
 
+<div class="azkar-search" role="search">
+<input
+  id="azkarSearchInput"
+  type="search"
+  placeholder="ابحث في الأذكار أو عناوين الأبواب"
+  aria-label="ابحث في الأذكار أو عناوين الأبواب"
+  autocomplete="off"
+>
+<button id="azkarSearchClear" type="button" aria-label="مسح البحث" hidden>مسح</button>
+</div>
+<div id="azkarSearchStatus" class="visually-hidden" aria-live="polite"></div>
+<div id="azkarSearchResults" class="azkar-search-results" hidden></div>
+
 <section class="section">
 
 <div class="category-grid" id="categoryGrid"></div>

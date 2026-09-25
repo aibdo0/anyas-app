@@ -136,10 +136,22 @@ button.prayer-row:hover { border-color: #b6cfbc; background: #f7faf6; transform:
 .category-card:hover { border-color: #d7c9aa; transform: translateY(-1px); }
 .category-card-title { flex: 1; font-weight: 700; line-height: 1.55; }
 .category-card-count { flex: 0 0 auto; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.azkar-search { display: flex; align-items: center; gap: 9px; margin: 0 0 13px; }
+.azkar-search input { width: 100%; min-height: 48px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); background: var(--surface); box-shadow: 0 5px 15px rgba(62,52,34,.04); }
+.azkar-search input:focus { border-color: var(--gold); outline: 3px solid rgba(184,154,92,.16); }
+#azkarSearchClear { flex: 0 0 auto; min-height: 42px; padding: 8px 13px; border: 1px solid var(--line); border-radius: 12px; color: var(--green); background: var(--surface); cursor: pointer; }
+#azkarSearchResults { display: grid; gap: 9px; margin-bottom: 12px; }
+#categoryGrid[hidden], #azkarSearchResults[hidden], #azkarSearchClear[hidden] { display: none; }
+.azkar-search-result { display: grid; width: 100%; gap: 7px; padding: 14px 15px; border: 1px solid var(--line); border-radius: 16px; color: var(--ink); background: var(--surface); text-align: right; cursor: pointer; box-shadow: 0 6px 18px rgba(62,52,34,.045); }
+.azkar-search-result-title { color: var(--green); font-weight: 800; }
+.azkar-search-result-excerpt { font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: 18px; line-height: 1.8; }
+.azkar-search-result-action { color: var(--muted); font-size: 12px; font-weight: 700; }
+.azkar-search-empty { margin: 0; padding: 15px; border: 1px solid var(--line); border-radius: 14px; color: var(--muted); background: var(--surface); text-align: center; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 #azkarList { overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); }
 .zikr-card { padding: 20px 18px; border-bottom: 1px solid var(--line); }
 .zikr-card:last-child { border-bottom: 0; }
-.zikr-text { color: var(--ink); font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: clamp(20px, 5vw, 24px); font-weight: 700; line-height: 2; overflow-wrap: anywhere; }
+.zikr-text { scroll-margin-top: 16px; color: var(--ink); font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: clamp(20px, 5vw, 24px); font-weight: 700; line-height: 2; overflow-wrap: anywhere; }
 .zikr-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
 .zikr-count { color: var(--muted); font-size: 13px; font-weight: 700; }
 .zikr-button { min-width: 100px; padding: 10px 16px; border: 0; border-radius: 12px; color: #fff; background: var(--green); font-weight: 800; cursor: pointer; }
