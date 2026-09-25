@@ -61,6 +61,11 @@
   }
 
   openButton.addEventListener("click", () => {
+    if (typeof window.openAzkarTopic === "function") {
+      window.openAzkarTopic(27);
+      return;
+    }
+
     const quickAzkar = byId("quickAzkar");
     const azkarTab = document.querySelector('.nav-item[data-page="azkar"]');
     if (quickAzkar) quickAzkar.click();

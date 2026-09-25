@@ -394,7 +394,7 @@ function setupDailyTasks() {
 
     morning.addEventListener("click", () => {
 
-      openAzkarTopic(1);
+      openAzkarTopic(27);
 
     });
 
@@ -405,7 +405,7 @@ function setupDailyTasks() {
 
     evening.addEventListener("click", () => {
 
-      openAzkarTopic(2);
+      openAzkarTopic(27);
 
     });
 
@@ -421,50 +421,6 @@ function setupDailyTasks() {
     });
 
   }
-
-}
-
-
-// =====================================================
-// فتح باب أذكار
-// =====================================================
-
-function openAzkarTopic(topicId) {
-
-  goToPage("azkar");
-
-  setTimeout(() => {
-
-    if (
-      typeof openAzkarDetail === "function"
-    ) {
-
-      openAzkarDetail(topicId);
-      return;
-
-    }
-
-    if (
-      typeof showAzkarTopic === "function"
-    ) {
-
-      showAzkarTopic(topicId);
-      return;
-
-    }
-
-    const topic =
-      document.querySelector(
-        `[data-topic-id="${topicId}"]`
-      );
-
-    if (topic) {
-
-      topic.click();
-
-    }
-
-  }, 100);
 
 }
 
@@ -2272,25 +2228,6 @@ function setInputValue(id, value) {
 }
 
 
-function getPrayerOffsets() {
-
-  try {
-
-    return JSON.parse(
-      localStorage.getItem(
-        "anyas_prayer_offsets"
-      ) || "{}"
-    );
-
-  } catch (error) {
-
-    return {};
-
-  }
-
-}
-
-
 // =====================================================
 // تطبيق تعديل المواقيت
 // =====================================================
@@ -2458,20 +2395,6 @@ function addMinutesToTime(
     formatNumber(hours) +
     ":" +
     formatNumber(mins)
-  );
-
-}
-
-
-// =====================================================
-// أدوات مساعدة
-// =====================================================
-
-function formatNumber(number) {
-
-  return String(number).padStart(
-    2,
-    "0"
   );
 
 }

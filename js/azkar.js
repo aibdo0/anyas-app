@@ -48,6 +48,128 @@ function setupAzkarTopics() {
 
   });
 
+  setupAzkarSearch(topics, grid, countElement);
+
+}
+
+
+function normalizeAzkarSearchText(value) {
+
+  return String(value || "")
+    .normalize("NFKD")
+    .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
+    .replace(/[أإآٱ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+
+}
+
+
+function setupAzkarSearch(topics, grid, countElement) {
+
+  const input = document.getElementById("azkarSearchInput");
+  const clearButton = document.getElementById("azkarSearchClear");
+  const results = document.getElementById("azkarSearchResults");
+  const status = document.getElementById("azkarSearchStatus");
+
+  if (!input || !clearButton || !results) return;
+
+  const renderResults = () => {
+    const query = normalizeAzkarSearchText(input.value);
+    const terms = query.split(" ").filter(Boolean);
+
+    clearButton.hidden = !query;
+    grid.hidden = Boolean(query);
+    results.hidden = !query;
+    results.innerHTML = "";
+
+    if (!query) {
+      if (countElement) countElement.textContent = `${topics.length} بابًا`;
+      if (status) status.textContent = "";
+      return;
+    }
+
+    const matches = [];
+
+    topics.forEach(topic => {
+      const title = normalizeAzkarSearchText(topic.title);
+
+      if (terms.every(term => title.includes(term))) {
+        matches.push({ topic, index: null, text: `يحتوي هذا الباب على ${topic.items.length} ذكرًا.` });
+        return;
+      }
+
+      (Array.isArray(topic.items) ? topic.items : []).forEach((zikr, index) => {
+        const text = String(zikr.text || "");
+        const searchable = normalizeAzkarSearchText(`${topic.title} ${text}`);
+        if (terms.every(term => searchable.includes(term))) {
+          matches.push({ topic, index, text });
+        }
+      });
+    });
+
+    if (countElement) {
+      countElement.textContent = `${matches.length} نتيجة`;
+    }
+
+    if (status) {
+      status.textContent = matches.length
+        ? `عدد النتائج: ${matches.length}`
+        : "لا توجد نتائج مطابقة";
+    }
+
+    if (!matches.length) {
+      const empty = document.createElement("p");
+      empty.className = "azkar-search-empty";
+      empty.textContent = "لا توجد نتائج مطابقة. جرّب كلمات أخرى.";
+      results.appendChild(empty);
+      return;
+    }
+
+    matches.slice(0, 80).forEach(match => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "azkar-search-result";
+
+      const heading = document.createElement("span");
+      heading.className = "azkar-search-result-title";
+      heading.textContent = `${match.topic.number}. ${match.topic.title}`;
+
+      const excerpt = document.createElement("span");
+      excerpt.className = "azkar-search-result-excerpt";
+      const plainText = match.text.replace(/\s+/g, " ").trim();
+      excerpt.textContent = plainText.length > 190
+        ? `${plainText.slice(0, 190)}…`
+        : plainText;
+
+      const action = document.createElement("span");
+      action.className = "azkar-search-result-action";
+      action.textContent = match.index === null ? "افتح الباب" : "افتح الذكر";
+
+      button.append(heading, excerpt, action);
+      button.addEventListener("click", () => {
+        openAzkarTopic(match.topic.number, match.index);
+      });
+      results.appendChild(button);
+    });
+
+    if (matches.length > 80) {
+      const more = document.createElement("p");
+      more.className = "azkar-search-empty";
+      more.textContent = `يتم عرض أول 80 نتيجة من أصل ${matches.length}. أضف كلمات للبحث لتضييق النتائج.`;
+      results.appendChild(more);
+    }
+  };
+
+  input.addEventListener("input", renderResults);
+  clearButton.addEventListener("click", () => {
+    input.value = "";
+    renderResults();
+    input.focus();
+  });
+
 }
 
 
@@ -55,7 +177,7 @@ function setupAzkarTopics() {
 // فتح باب الأذكار
 // =====================================================
 
-function openAzkarTopic(number) {
+function openAzkarTopic(number, focusIndex = null) {
 
   const topics =
     window.azkarTopics || [];
@@ -66,6 +188,8 @@ function openAzkarTopic(number) {
     );
 
   if (!topic) return;
+
+  goToPage("azkar");
 
   const topicsPage =
     document.getElementById("page-azkar");
@@ -90,6 +214,13 @@ function openAzkarTopic(number) {
   }
 
   renderAzkarTopic(topic.number);
+
+  if (Number.isInteger(focusIndex)) {
+    requestAnimationFrame(() => {
+      document.querySelector(`[data-zikr-index="${focusIndex}"]`)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 
 }
 
@@ -218,6 +349,7 @@ function renderAzkarTopic(number) {
 
     card.className =
       "zikr-card";
+    card.dataset.zikrIndex = String(index);
 
     card.innerHTML = `
       <div class="zikr-text">

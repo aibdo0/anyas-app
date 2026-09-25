@@ -268,7 +268,7 @@ function startQibla() {
 }
 
 // تجهيز صفحة القبلة
-function setupQibla() {
+function setupQiblaCompassButton() {
   const button =
     document.getElementById("startQiblaButton");
 
@@ -283,5 +283,5 @@ function setupQibla() {
 // تشغيل بعد تحميل الصفحة
 document.addEventListener(
   "DOMContentLoaded",
-  setupQibla
+  setupQiblaCompassButton
 );
