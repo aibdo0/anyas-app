@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupPrayerTracking();
   setupPrayerReport();
   setupNearbyMosque();
-  setupTravelerPrayer();
   setupQibla();
   setupUpdateBanner();
   setupExtraSettings();
@@ -155,8 +154,7 @@ function goToPage(pageId) {
     "settings",
     "qibla",
     "prayer-report",
-    "tasbeeh",
-    "traveler-prayer"
+    "tasbeeh"
   ].includes(pageId) ? "more" : pageId;
 
   document
@@ -529,7 +527,7 @@ async function setupDailyHadith() {
   const id = ids[day - 1];
   if (!id) return;
   textElement.textContent = "جارٍ تحميل حديث اليوم...";
-  if (referenceElement) referenceElement.textContent = `اليوم ${day} هجريًا · HadeethEnc`;
+    if (referenceElement) referenceElement.textContent = `اليوم ${day} هجريًا`;
 
   try {
     const url = new URL("https://hadeethenc.com/api/v1/hadeeths/one/");
@@ -541,12 +539,12 @@ async function setupDailyHadith() {
     if (!hadith || !hadith.hadeeth) throw new Error("HadeethEnc returned no Arabic text");
     textElement.textContent = hadith.hadeeth;
     if (referenceElement) {
-      referenceElement.textContent = [hadith.grade, hadith.attribution].filter(Boolean).join(" · ") || "حديث اليوم";
+      referenceElement.textContent = hadith.grade || "";
     }
   } catch (error) {
     console.error("تعذر تحميل حديث اليوم من HadeethEnc:", error);
     textElement.textContent = "تعذر تحميل الحديث الآن. تحقق من اتصال الإنترنت وأعد المحاولة.";
-    if (referenceElement) referenceElement.textContent = `اليوم ${day} هجريًا · المصدر: HadeethEnc`;
+    if (referenceElement) referenceElement.textContent = `اليوم ${day} هجريًا`;
   }
 }
 
@@ -1561,54 +1559,6 @@ function openNearbyMosque() {
     "https://www.google.com/maps/search/?api=1&query=mosque+near+me",
     "_blank"
   );
-
-}
-
-
-// =====================================================
-// صلاة المسافر
-// =====================================================
-
-function setupTravelerPrayer() {
-
-  const button =
-    document.getElementById(
-      "openTravelerPrayerButton"
-    );
-
-  if (button) {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        goToPage(
-          "traveler-prayer"
-        );
-
-      }
-    );
-
-  }
-
-
-  const backButton =
-    document.getElementById(
-      "travelerPrayerBackButton"
-    );
-
-  if (backButton) {
-
-    backButton.addEventListener(
-      "click",
-      () => {
-
-        goToPage("settings");
-
-      }
-    );
-
-  }
 
 }
 

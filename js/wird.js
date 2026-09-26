@@ -142,6 +142,8 @@
     if (!container || !button) return;
     container.hidden = !open;
     button.setAttribute("aria-expanded", String(open));
+    const indicator = button.lastElementChild;
+    if (indicator) indicator.textContent = open ? "−" : "+";
   }
 
   function openWirdCategory(id) {
@@ -159,6 +161,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     Object.keys(sections).forEach(id => {
       renderSection(id);
+      setSectionOpen(id, false);
       const toggle = document.querySelector(`[data-wird-toggle="${id}"]`);
       if (toggle) {
         toggle.addEventListener("click", () => {

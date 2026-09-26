@@ -3,9 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#fbfaf7">
+<meta id="themeColorMeta" name="theme-color" content="#101114">
 <meta name="description" content="أنياس - رفيق يومي لمواقيت الصلاة والقرآن والأذكار">
 <title>أنياس</title>
+
+<script>
+  (function () {
+    var mode = "dark";
+    try {
+      mode = localStorage.getItem("anyas_themeMode") || "";
+      if (!["system", "light", "dark"].includes(mode)) {
+        var legacy = localStorage.getItem("anyas_darkMode");
+        mode = legacy === "false" ? "light" : legacy === "true" ? "dark" : "dark";
+      }
+    } catch (error) {}
+    var dark = mode === "dark" || (mode === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.dataset.themeMode = mode;
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    document.documentElement.style.colorScheme = dark ? "dark" : "light";
+  })();
+</script>
 
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/home.css">
@@ -230,59 +247,6 @@
 
 <section class="section">
 
-<div class="section-heading">
-
-<div class="section-title">
-متابعة صلوات اليوم
-<span class="streak-inline" id="homeStreakBadge"></span>
-</div>
-
-<button class="more-button" id="openPrayerReportButton" type="button">
-التقرير
-</button>
-
-</div>
-
-
-<div class="prayer-day-summary">
-  <span id="todayPrayerProgressText">0 من 5 صلوات مسجّلة اليوم</span>
-  <div class="prayer-progress-track">
-    <div id="todayPrayerProgressBar" role="progressbar" aria-label="متابعة الصلوات اليوم" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"></div>
-  </div>
-</div>
-<div class="prayer-tracker" id="todayPrayerTracker">
-
-<button class="prayer-track-item" data-track-prayer="Fajr" type="button">
-<span>الفجر</span>
-<span class="track-status">لم تُسجل</span>
-</button>
-
-<button class="prayer-track-item" data-track-prayer="Dhuhr" type="button">
-<span>الظهر</span>
-<span class="track-status">لم تُسجل</span>
-</button>
-
-<button class="prayer-track-item" data-track-prayer="Asr" type="button">
-<span>العصر</span>
-<span class="track-status">لم تُسجل</span>
-</button>
-
-<button class="prayer-track-item" data-track-prayer="Maghrib" type="button">
-<span>المغرب</span>
-<span class="track-status">لم تُسجل</span>
-</button>
-
-<button class="prayer-track-item" data-track-prayer="Isha" type="button">
-<span>العشاء</span>
-<span class="track-status">لم تُسجل</span>
-</button>
-
-</div>
-
-</section>
-
-<section class="section">
-
 <button class="nearby-mosque-card" id="nearbyMosqueButton" type="button">
 <span class="nearby-mosque-title">أقرب مسجد</span>
 
@@ -337,8 +301,31 @@
 <main class="page" id="page-tasks">
 <header class="plain-header">
   <div class="brand">مهام اليوم</div>
-  <div class="date">أذكار الصباح والمساء وبعد الصلاة والنوم</div>
+  <div class="date">عبادتك اليومية ومتابعتك بخطوات واضحة</div>
 </header>
+
+<section class="daily-prayer-card" aria-labelledby="dailyPrayerHeading">
+  <div class="daily-prayer-heading">
+    <div>
+      <h2 id="dailyPrayerHeading">متابعة صلوات اليوم</h2>
+      <span class="streak-inline" id="homeStreakBadge"></span>
+    </div>
+    <button class="more-button" id="openPrayerReportButton" type="button">التقرير</button>
+  </div>
+  <div class="prayer-day-summary">
+    <span id="todayPrayerProgressText">0 من 5 صلوات مسجّلة اليوم</span>
+    <div class="prayer-progress-track">
+      <div id="todayPrayerProgressBar" role="progressbar" aria-label="متابعة الصلوات اليوم" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"></div>
+    </div>
+  </div>
+  <div class="prayer-tracker" id="todayPrayerTracker">
+    <button class="prayer-track-item" data-track-prayer="Fajr" type="button"><span>الفجر</span><span class="track-status">لم تُسجل</span></button>
+    <button class="prayer-track-item" data-track-prayer="Dhuhr" type="button"><span>الظهر</span><span class="track-status">لم تُسجل</span></button>
+    <button class="prayer-track-item" data-track-prayer="Asr" type="button"><span>العصر</span><span class="track-status">لم تُسجل</span></button>
+    <button class="prayer-track-item" data-track-prayer="Maghrib" type="button"><span>المغرب</span><span class="track-status">لم تُسجل</span></button>
+    <button class="prayer-track-item" data-track-prayer="Isha" type="button"><span>العشاء</span><span class="track-status">لم تُسجل</span></button>
+  </div>
+</section>
 
 <section class="wird-summary-card" aria-live="polite">
   <div class="wird-summary-heading">متابعتك اليوم</div>
@@ -347,17 +334,17 @@
 </section>
 
 <section class="wird-section" id="wird-section-morning">
-  <button class="wird-section-toggle" type="button" data-wird-toggle="morning" aria-expanded="true">
-    <span>أذكار الصباح</span><span class="wird-section-meta" data-wird-count="morning"></span><span aria-hidden="true">−</span>
+  <button class="wird-section-toggle" type="button" data-wird-toggle="morning" aria-expanded="false">
+    <span>أذكار الصباح</span><span class="wird-section-meta" data-wird-count="morning"></span><span aria-hidden="true">+</span>
   </button>
-  <div class="wird-items" id="wird-items-morning"></div>
+  <div class="wird-items" id="wird-items-morning" hidden></div>
 </section>
 
 <section class="wird-section" id="wird-section-evening">
-  <button class="wird-section-toggle" type="button" data-wird-toggle="evening" aria-expanded="true">
-    <span>أذكار المساء</span><span class="wird-section-meta" data-wird-count="evening"></span><span aria-hidden="true">−</span>
+  <button class="wird-section-toggle" type="button" data-wird-toggle="evening" aria-expanded="false">
+    <span>أذكار المساء</span><span class="wird-section-meta" data-wird-count="evening"></span><span aria-hidden="true">+</span>
   </button>
-  <div class="wird-items" id="wird-items-evening"></div>
+  <div class="wird-items" id="wird-items-evening" hidden></div>
 </section>
 
 <section class="wird-section" id="wird-section-afterPrayer">
@@ -388,12 +375,8 @@
 حصن المسلم
 </div>
 
-<div class="azkar-count" id="azkarTopicsCount">
-جاري التحميل...
-</div>
-
 <div class="date">
-اختر الباب الذي تريده
+ابحث عن الذكر الذي تريده
 </div>
 
 </header>
@@ -694,87 +677,6 @@ aria-selected="false"
 
 
 <!-- =====================================================
-     صلاة المسافر
-===================================================== -->
-
-<main class="page" id="page-traveler-prayer">
-
-<header class="plain-header">
-
-<button class="back-button" id="travelerPrayerBackButton" type="button">
-رجوع
-</button>
-
-<div class="brand">
-صلاة المسافر
-</div>
-
-<div class="date">
-أحكام مختصرة للمسافر
-</div>
-
-</header>
-
-
-<section class="section">
-
-<div class="traveler-card card">
-
-<div class="card-title">
-قصر الصلاة
-</div>
-
-<div class="traveler-text">
-للمسافر قصر الصلوات الرباعية إلى ركعتين، وهي الظهر والعصر والعشاء.
-</div>
-
-</div>
-
-
-<div class="traveler-card card">
-
-<div class="card-title">
-الجمع
-</div>
-
-<div class="traveler-text">
-يجوز للمسافر الجمع بين الظهر والعصر، وبين المغرب والعشاء، وفق أحكام السفر.
-</div>
-
-</div>
-
-
-<div class="traveler-card card">
-
-<div class="card-title">
-الفجر والمغرب
-</div>
-
-<div class="traveler-text">
-صلاة الفجر لا تُقصر، وصلاة المغرب لا تُقصر.
-</div>
-
-</div>
-
-
-<div class="traveler-card card">
-
-<div class="card-title">
-تنبيه
-</div>
-
-<div class="traveler-text">
-هذه الصفحة مختصرة للتذكير، وقد تختلف بعض التفاصيل الفقهية بحسب المذهب والحالة.
-</div>
-
-</div>
-
-</section>
-
-</main>
-
-
-<!-- =====================================================
      الإعدادات
 ===================================================== -->
 
@@ -803,29 +705,16 @@ aria-selected="false"
 <div class="settings-card">
 
 
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-الوضع الليلي
-</div>
-
-<div class="setting-description">
-تفعيل المظهر الداكن للتطبيق
-</div>
-
-</div>
-
-<label class="switch">
-
-<input id="darkModeToggle" type="checkbox">
-
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-
-</label>
-
+<div class="appearance-setting">
+  <div class="setting-info">
+    <div class="setting-title">مظهر التطبيق</div>
+    <div class="setting-description" id="themeModeDescription">الوضع الداكن مفعّل افتراضيًا</div>
+  </div>
+  <div class="theme-mode-picker" role="radiogroup" aria-label="اختيار مظهر التطبيق">
+    <label class="theme-mode-option"><input type="radio" name="themeMode" value="system"><span>النظام</span></label>
+    <label class="theme-mode-option"><input type="radio" name="themeMode" value="light"><span>فاتح</span></label>
+    <label class="theme-mode-option"><input type="radio" name="themeMode" value="dark"><span>داكن</span></label>
+  </div>
 </div>
 
 
@@ -1635,18 +1524,48 @@ value="100"
 
 </main>
 
+<main class="page" id="page-learning">
+  <header class="plain-header">
+    <div class="brand">علم ينتفع به</div>
+    <div class="date">تعلم أساسيات دينك على مهل وبخطوات واضحة</div>
+  </header>
+  <section class="learning-intro" aria-labelledby="learningIntroHeading">
+    <div class="learning-intro-icon" aria-hidden="true">ع</div>
+    <div class="learning-intro-copy">
+      <h2 id="learningIntroHeading">رحلتك في التعلّم</h2>
+      <p>دروس قصيرة، مرتبة، ويمكنك الرجوع إليها متى شئت.</p>
+    </div>
+    <div class="learning-progress-badge" id="learningProgressBadge">٠ / ٥</div>
+  </section>
+  <section class="learning-list" id="learningList" aria-label="الدروس التعليمية"></section>
+  <p class="learning-note">المسائل الفقهية التي تتنوع فيها أقوال أهل العلم موضّحة في الدرس. اسأل عالمًا موثوقًا عن حالتك الخاصة.</p>
+</main>
+
 <main class="page" id="page-more">
 <header class="plain-header">
   <div class="brand">المزيد</div>
-  <div class="date">أدوات وخدمات أنياس</div>
+  <div class="date">كل ما تحتاجه في مكان واحد</div>
 </header>
-<section class="more-menu" aria-label="أدوات التطبيق">
-  <button type="button" class="more-menu-item" data-more-go="settings"><span>الإعدادات</span><span>إدارة التنبيهات وطريقة الحساب</span></button>
-  <button type="button" class="more-menu-item" data-more-go="qibla"><span>القبلة</span><span>اعرف اتجاه القبلة</span></button>
-  <button type="button" class="more-menu-item" data-more-go="traveler-prayer"><span>صلاة المسافر</span><span>القصر والجمع وأحكام السفر</span></button>
-  <button type="button" class="more-menu-item" data-more-go="prayer-report"><span>متابعة الصلاة</span><span>راجع سجلك الأسبوعي</span></button>
-  <button type="button" class="more-menu-item" data-more-go="nearby-mosque"><span>أقرب مسجد</span><span>اعثر على مسجد قريب</span></button>
-  <button type="button" class="more-menu-item" data-more-go="tasbeeh"><span>التسبيح</span><span>افتح عدّاد التسبيح</span></button>
+<section class="more-group" aria-labelledby="moreLearningHeading">
+  <h2 id="moreLearningHeading">تعلم وارتقِ</h2>
+  <div class="more-menu">
+    <button type="button" class="more-menu-item" data-more-go="learning"><span class="more-menu-icon" aria-hidden="true">ع</span><span class="more-menu-copy"><strong>علم ينتفع به</strong><small>تعلّم العبادات والعقيدة خطوة بخطوة</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="tasks"><span class="more-menu-icon" aria-hidden="true">✓</span><span class="more-menu-copy"><strong>مهام اليوم</strong><small>صلواتك وأورادك ومتابعة إنجازك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+  </div>
+</section>
+<section class="more-group" aria-labelledby="moreToolsHeading">
+  <h2 id="moreToolsHeading">أدوات المسلم</h2>
+  <div class="more-menu">
+    <button type="button" class="more-menu-item" data-more-go="qibla"><span class="more-menu-icon" aria-hidden="true">⌖</span><span class="more-menu-copy"><strong>اتجاه القبلة</strong><small>حدّد اتجاه القبلة من موقعك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="nearby-mosque"><span class="more-menu-icon" aria-hidden="true">م</span><span class="more-menu-copy"><strong>أقرب مسجد</strong><small>اعثر على مسجد قريب منك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="tasbeeh"><span class="more-menu-icon" aria-hidden="true">ت</span><span class="more-menu-copy"><strong>المسبحة</strong><small>سبّح وتابع عدّك اليومي</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+  </div>
+</section>
+<section class="more-group" aria-labelledby="moreSettingsHeading">
+  <h2 id="moreSettingsHeading">التطبيق</h2>
+  <div class="more-menu">
+    <button type="button" class="more-menu-item" data-more-go="settings"><span class="more-menu-icon" aria-hidden="true">⚙</span><span class="more-menu-copy"><strong>الإعدادات</strong><small>المظهر، التنبيهات، والمواقيت</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+  </div>
 </section>
 </main>
 
@@ -1683,6 +1602,17 @@ type="button"
 
 <button
 class="nav-item"
+data-page="learning"
+type="button"
+>
+<span class="nav-icon">
+علم ينتفع به
+</span>
+</button>
+
+
+<button
+class="nav-item"
 data-page="azkar"
 type="button"
 >
@@ -1712,6 +1642,7 @@ type="button"
 <script src="data/azkar-topics.js"></script>
 <script src="data/daily-quran.js"></script>
 <script src="data/daily-hadith-ids.js"></script>
+<script src="data/learning-lessons.js"></script>
 <script src="js/prayer.js"></script>
 <script src="js/daily-adhkar.js"></script>
 <script src="js/favorites.js"></script>
@@ -1719,6 +1650,7 @@ type="button"
 <script src="js/wird.js"></script>
 <script src="js/settings.js"></script>
 <script src="js/qibla.js"></script>
+<script src="js/learning.js"></script>
 <script src="js/app.js"></script>
 
 </body>

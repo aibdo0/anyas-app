@@ -516,43 +516,83 @@ function playAdhanFor(prayerKey) {
 
 function setupThemeAndLanguage() {
 
-  const darkToggle =
-    document.getElementById("darkModeToggle");
+  const root = document.documentElement;
+  const themeChoices = document.querySelectorAll('input[name="themeMode"]');
+  const themeDescription = document.getElementById("themeModeDescription");
+  const themeColorMeta = document.getElementById("themeColorMeta");
 
   const language =
     document.getElementById("languageSelect");
 
-  const savedDark =
-    localStorage.getItem("anyas_darkMode");
-
-  if (savedDark === "true") {
-
-    document.body.classList.add(
-      "dark-mode"
-    );
-
-    if (darkToggle) {
-      darkToggle.checked = true;
-    }
-
+  let initialMode = "dark";
+  try {
+    const savedMode = localStorage.getItem("anyas_themeMode");
+    const legacyMode = localStorage.getItem("anyas_darkMode");
+    initialMode = ["system", "light", "dark"].includes(savedMode)
+      ? savedMode
+      : legacyMode === "false"
+        ? "light"
+        : legacyMode === "true"
+          ? "dark"
+          : "dark";
+  } catch (error) {
+    initialMode = "dark";
   }
 
-  if (darkToggle) {
+  function applyTheme(mode, persist = true) {
+    const safeMode = ["system", "light", "dark"].includes(mode) ? mode : "dark";
+    const systemDark = Boolean(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const isDark = safeMode === "dark" || (safeMode === "system" && systemDark);
 
-    darkToggle.addEventListener("change", () => {
+    root.dataset.themeMode = safeMode;
+    root.dataset.theme = isDark ? "dark" : "light";
+    root.style.colorScheme = isDark ? "dark" : "light";
+    document.body.classList.toggle("dark-mode", isDark);
 
-      document.body.classList.toggle(
-        "dark-mode",
-        darkToggle.checked
-      );
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute("content", isDark ? "#111216" : "#fbfaf7");
+    }
 
-      localStorage.setItem(
-        "anyas_darkMode",
-        darkToggle.checked
-      );
-
+    themeChoices.forEach(choice => {
+      choice.checked = choice.value === safeMode;
     });
 
+    if (themeDescription) {
+      themeDescription.textContent = safeMode === "system"
+        ? "يتبع إعداد المظهر في جهازك"
+        : safeMode === "light"
+          ? "المظهر الفاتح مفعّل"
+          : "المظهر الداكن مفعّل";
+    }
+
+    if (persist) {
+      try {
+        localStorage.setItem("anyas_themeMode", safeMode);
+        localStorage.removeItem("anyas_darkMode");
+      } catch (error) {
+        console.warn("تعذر حفظ اختيار المظهر:", error);
+      }
+    }
+  }
+
+  applyTheme(initialMode, false);
+
+  themeChoices.forEach(choice => {
+    choice.addEventListener("change", () => {
+      if (choice.checked) applyTheme(choice.value);
+    });
+  });
+
+  if (window.matchMedia) {
+    const systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
+    const updateSystemTheme = () => {
+      if (root.dataset.themeMode === "system") applyTheme("system", false);
+    };
+    if (systemPreference.addEventListener) {
+      systemPreference.addEventListener("change", updateSystemTheme);
+    } else if (systemPreference.addListener) {
+      systemPreference.addListener(updateSystemTheme);
+    }
   }
 
   const savedLanguage =
