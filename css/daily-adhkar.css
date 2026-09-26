@@ -1,0 +1,97 @@
+/* الواجهة الديناميكية للورد اليومي */
+.daily-adhkar-card {
+  overflow: hidden;
+  position: relative;
+  transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease, color 0.45s ease;
+}
+
+.daily-adhkar-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  transition: opacity 0.45s ease, background 0.45s ease;
+}
+
+.daily-adhkar-card > * { position: relative; z-index: 1; }
+
+.daily-adhkar-card[data-adhkar-period="awakening"] {
+  border-color: #c7ddea;
+  background: linear-gradient(135deg, #f5fbff, #e8f3fa 80%);
+  box-shadow: 0 12px 28px rgba(87, 137, 167, 0.12);
+}
+.daily-adhkar-card[data-adhkar-period="awakening"]::after {
+  background: radial-gradient(circle at 12% 10%, #fff 0 7%, transparent 30%);
+}
+
+.daily-adhkar-card[data-adhkar-period="morning"] {
+  border-color: #ead7a5;
+  background: linear-gradient(135deg, #fffdf4, #fff3c9 88%);
+  box-shadow: 0 12px 28px rgba(196, 145, 45, 0.13);
+}
+.daily-adhkar-card[data-adhkar-period="morning"]::after {
+  background: radial-gradient(circle at 14% 8%, #fff 0 6%, transparent 28%);
+}
+
+.daily-adhkar-card[data-adhkar-period="day"] {
+  border-color: #d9ddd5;
+  background: linear-gradient(135deg, #fbfcfa, #eef2ed 88%);
+  box-shadow: 0 10px 24px rgba(75, 96, 80, 0.08);
+}
+
+.daily-adhkar-card[data-adhkar-period="evening"] {
+  border-color: #e5c5a5;
+  background: linear-gradient(135deg, #fff8f0, #f9dfc3 88%);
+  box-shadow: 0 12px 28px rgba(191, 108, 47, 0.13);
+}
+.daily-adhkar-card[data-adhkar-period="evening"]::after {
+  background: radial-gradient(circle at 15% 18%, #fff 0 5%, transparent 28%);
+}
+
+.daily-adhkar-card[data-adhkar-period="sleep"] {
+  border-color: #3e4a69;
+  color: #eef3ff;
+  background: linear-gradient(135deg, #1e2943, #101827 88%);
+  box-shadow: 0 14px 32px rgba(20, 30, 58, 0.25);
+}
+.daily-adhkar-card[data-adhkar-period="sleep"]::after {
+  opacity: 0.32;
+  background: radial-gradient(circle at 82% 18%, #cad8ff 0 1px, transparent 2px), radial-gradient(circle at 64% 32%, #fff 0 1px, transparent 2px), radial-gradient(circle at 28% 20%, #a9baf0 0 1px, transparent 2px);
+  background-size: 73px 61px, 97px 83px, 131px 107px;
+}
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-title,
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-text { color: #eef3ff; }
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-eyebrow,
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-hint { color: #b8c5e2; }
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-mark,
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-badge { color: #d9e3ff; border-color: #526185; background: rgba(71, 88, 133, 0.45); }
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-footer { border-color: rgba(200, 214, 255, 0.18); }
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-button { color: #172039; border-color: #d2ddff; background: #dce6ff; }
+
+.daily-adhkar-card[data-adhkar-period="sahar"] {
+  border-color: #394b75;
+  color: #eff4ff;
+  background: linear-gradient(145deg, #182544, #080f21 88%);
+  box-shadow: 0 14px 32px rgba(18, 30, 65, 0.28);
+}
+.daily-adhkar-card[data-adhkar-period="sahar"]::after {
+  opacity: 0.42;
+  background: radial-gradient(circle at 78% 23%, #fff 0 2px, transparent 3px), radial-gradient(circle at 25% 30%, #b6c9ff 0 1px, transparent 2px), radial-gradient(circle at 58% 12%, #fff 0 1px, transparent 2px), radial-gradient(circle at 43% 55%, #9bb2f5 0 1px, transparent 2px);
+  background-size: 107px 91px, 83px 73px, 137px 113px, 151px 127px;
+}
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-title,
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-text { color: #eff4ff; }
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-eyebrow,
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-hint { color: #b9c8e8; }
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-mark,
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-badge { color: #dbe6ff; border-color: #526b9d; background: rgba(66, 89, 143, 0.38); }
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-footer { border-color: rgba(200, 214, 255, 0.18); }
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-button { color: #172039; border-color: #d2ddff; background: #dce6ff; }
+
+.daily-adhkar-card.is-transitioning { animation: adhkarPeriodIn 0.42s ease both; }
+@keyframes adhkarPeriodIn { from { opacity: .72; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .daily-adhkar-card, .daily-adhkar-card.is-transitioning { animation: none; transition: none; }
+}
