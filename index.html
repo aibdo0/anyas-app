@@ -61,6 +61,10 @@
 
 <div class="home-brand">أنياس</div>
 
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
+  <span id="themeToggleIcon" aria-hidden="true">☾</span>
+</button>
+
 <div class="date-line">
 <span id="todayHijri">--</span>
 <span class="date-separator">•</span>
@@ -76,8 +80,9 @@
 
 <section class="next-prayer" aria-label="الصلاة القادمة">
 
-<div class="next-label">
-الصلاة القادمة
+<div class="prayer-hero-meta">
+  <div class="next-label">الصلاة القادمة</div>
+  <div class="prayer-city-chip"><span aria-hidden="true">⌖</span><span id="prayerHeroCity">القاهرة</span></div>
 </div>
 
 <div class="prayer-name" id="nextPrayerName">
@@ -123,6 +128,7 @@
 <div class="section-title">
 مواقيت اليوم
 </div>
+<button class="more-button prayer-adjust-button" id="openManualPrayerSettings" type="button">ضبط المواقيت</button>
 </div>
 
 <div class="prayer-list" id="prayerList">
@@ -327,6 +333,32 @@
   </div>
 </section>
 
+<section class="devotion-section" aria-labelledby="dailyDhikrTrackerHeading">
+  <div class="devotion-section-heading">
+    <div>
+      <h2 id="dailyDhikrTrackerHeading">أذكار يومية</h2>
+      <p>اختر الذكر، وردّده بما تيسّر لك</p>
+    </div>
+    <span class="hijri-day-pill" id="devotionHijriDate">اليوم</span>
+  </div>
+  <div class="dhikr-goal-list" id="dhikrGoalList"></div>
+</section>
+
+<section class="devotion-section sunnah-section" aria-labelledby="sunnahTrackerHeading">
+  <div class="devotion-section-heading">
+    <div>
+      <h2 id="sunnahTrackerHeading">السنن والنوافل</h2>
+      <p>متابعة اختيارية؛ الفرائض أولًا</p>
+    </div>
+    <span class="sunnah-total" id="sunnahProgressText">٠ / ٤</span>
+  </div>
+  <div class="sunnah-checklist" id="sunnahChecklist"></div>
+  <div class="sunnah-virtue" id="sunnahVirtue">
+    <span class="sunnah-virtue-icon" aria-hidden="true">✧</span>
+    <p>المحافظة على اثنتي عشرة ركعة من السنن الرواتب في اليوم والليلة ورد فيها وعد ببيت في الجنة. ابدأ بما تستطيع، وتدرّج برفق.</p>
+  </div>
+</section>
+
 <section class="wird-summary-card" aria-live="polite">
   <div class="wird-summary-heading">متابعتك اليوم</div>
   <div id="wirdProgressText">0 من 0 ذكرًا مكتملًا اليوم</div>
@@ -462,12 +494,7 @@
 <button
 class="back-button"
 type="button"
-onclick="
-document.querySelectorAll('.page').forEach(function(p){
-p.classList.remove('active');
-});
-document.getElementById('page-settings').classList.add('active');
-"
+id="qiblaBackButton"
 >
 رجوع
 </button>
@@ -497,19 +524,19 @@ document.getElementById('page-settings').classList.add('active');
 <div class="compass-ring">
 
 <div class="compass-mark north">
-N
+ش
 </div>
 
 <div class="compass-mark east">
-E
+ق
 </div>
 
 <div class="compass-mark south">
-S
+ج
 </div>
 
 <div class="compass-mark west">
-W
+غ
 </div>
 
 <div
@@ -862,31 +889,6 @@ type="button"
 </span>
 
 </button>
-
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-التعديل اليدوي للمواقيت
-</div>
-
-<div class="setting-description">
-إضافة أو خصم دقائق من كل صلاة
-</div>
-
-</div>
-
-<button
-id="openManualPrayerSettings"
-class="small-action-button"
-type="button"
->
-تعديل
-</button>
-
-</div>
 
 
 <div class="setting-row">
@@ -1524,7 +1526,7 @@ value="100"
 
 </main>
 
-<main class="page" id="page-learning">
+<main class="page" id="page-learning" hidden>
   <header class="plain-header">
     <div class="brand">علم ينتفع به</div>
     <div class="date">تعلم أساسيات دينك على مهل وبخطوات واضحة</div>
@@ -1541,16 +1543,50 @@ value="100"
   <p class="learning-note">المسائل الفقهية التي تتنوع فيها أقوال أهل العلم موضّحة في الدرس. اسأل عالمًا موثوقًا عن حالتك الخاصة.</p>
 </main>
 
+<main class="page" id="page-tasbeeh">
+  <header class="plain-header">
+    <button class="back-button" type="button" data-back-more>رجوع إلى المزيد</button>
+    <div class="brand">المسبحة</div>
+    <div class="date">اختر الذكر، واحتفظ بوردك اليومي</div>
+  </header>
+  <section class="tasbeeh-card" aria-labelledby="tasbeehHeading">
+    <h2 id="tasbeehHeading" class="visually-hidden">المسبحة الإلكترونية</h2>
+    <div class="tasbeeh-selected-dhikr" id="tasbeehSelectedDhikr">سبحان الله</div>
+    <div class="tasbeeh-counter" id="tasbeehCounter" aria-live="polite">٠</div>
+    <div class="tasbeeh-goal-label" id="tasbeehGoalLabel">من ١٠٠</div>
+    <div class="tasbeeh-progress-track"><div id="tasbeehProgressBar"></div></div>
+    <button class="tasbeeh-main-button" id="tasbeehIncrement" type="button">تسبيح</button>
+    <button class="tasbeeh-reset-button" id="tasbeehReset" type="button">تصفير هذا الذكر</button>
+  </section>
+  <section class="tasbeeh-presets" aria-label="اختر ذكرًا">
+    <button type="button" class="tasbeeh-preset is-active" data-dhikr="subhanallah">سبحان الله</button>
+    <button type="button" class="tasbeeh-preset" data-dhikr="alhamdulillah">الحمد لله</button>
+    <button type="button" class="tasbeeh-preset" data-dhikr="istighfar">أستغفر الله</button>
+    <button type="button" class="tasbeeh-preset" data-dhikr="salawat">اللهم صلّ على محمد</button>
+    <button type="button" class="tasbeeh-preset" data-dhikr="allahuakbar">الله أكبر</button>
+  </section>
+  <p class="tasbeeh-note">العداد وسيلة شخصية للمتابعة، وليس تحديدًا لعددٍ لازم أو فضلٍ مخصوص.</p>
+</main>
+
+<main class="page" id="page-worship">
+  <header class="plain-header">
+    <button class="back-button" type="button" data-back-more>رجوع إلى المزيد</button>
+    <div class="brand">العبادات والمواسم</div>
+    <div class="date">التقويم الهجري ومواسم الطاعة</div>
+  </header>
+  <section id="worshipContent" aria-label="التقويم الهجري والتذكيرات الموسمية"></section>
+</main>
+
 <main class="page" id="page-more">
 <header class="plain-header">
   <div class="brand">المزيد</div>
   <div class="date">كل ما تحتاجه في مكان واحد</div>
 </header>
-<section class="more-group" aria-labelledby="moreLearningHeading">
-  <h2 id="moreLearningHeading">تعلم وارتقِ</h2>
+<section class="more-group" aria-labelledby="moreDailyHeading">
+  <h2 id="moreDailyHeading">يومك وعبادتك</h2>
   <div class="more-menu">
-    <button type="button" class="more-menu-item" data-more-go="learning"><span class="more-menu-icon" aria-hidden="true">ع</span><span class="more-menu-copy"><strong>علم ينتفع به</strong><small>تعلّم العبادات والعقيدة خطوة بخطوة</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
-    <button type="button" class="more-menu-item" data-more-go="tasks"><span class="more-menu-icon" aria-hidden="true">✓</span><span class="more-menu-copy"><strong>مهام اليوم</strong><small>صلواتك وأورادك ومتابعة إنجازك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="tasks"><span class="more-menu-icon" aria-hidden="true">✓</span><span class="more-menu-copy"><strong>مهام اليوم</strong><small>صلواتك وأذكارك والسنن التي تيسرت لك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="worship"><span class="more-menu-icon" aria-hidden="true">☾</span><span class="more-menu-copy"><strong>العبادات والمواسم</strong><small>التاريخ الهجري والتذكيرات الموسمية</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
   </div>
 </section>
 <section class="more-group" aria-labelledby="moreToolsHeading">
@@ -1558,7 +1594,7 @@ value="100"
   <div class="more-menu">
     <button type="button" class="more-menu-item" data-more-go="qibla"><span class="more-menu-icon" aria-hidden="true">⌖</span><span class="more-menu-copy"><strong>اتجاه القبلة</strong><small>حدّد اتجاه القبلة من موقعك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
     <button type="button" class="more-menu-item" data-more-go="nearby-mosque"><span class="more-menu-icon" aria-hidden="true">م</span><span class="more-menu-copy"><strong>أقرب مسجد</strong><small>اعثر على مسجد قريب منك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
-    <button type="button" class="more-menu-item" data-more-go="tasbeeh"><span class="more-menu-icon" aria-hidden="true">ت</span><span class="more-menu-copy"><strong>المسبحة</strong><small>سبّح وتابع عدّك اليومي</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="tasbeeh"><span class="more-menu-icon" aria-hidden="true">ت</span><span class="more-menu-copy"><strong>المسبحة</strong><small>أذكار متعددة وعداد محفوظ لهذا اليوم</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
   </div>
 </section>
 <section class="more-group" aria-labelledby="moreSettingsHeading">
@@ -1604,6 +1640,7 @@ type="button"
 class="nav-item"
 data-page="learning"
 type="button"
+hidden
 >
 <span class="nav-icon">
 علم ينتفع به
@@ -1642,6 +1679,7 @@ type="button"
 <script src="data/azkar-topics.js"></script>
 <script src="data/daily-quran.js"></script>
 <script src="data/daily-hadith-ids.js"></script>
+<script src="data/daily-devotions.js"></script>
 <script src="data/learning-lessons.js"></script>
 <script src="js/prayer.js"></script>
 <script src="js/daily-adhkar.js"></script>
@@ -1651,6 +1689,7 @@ type="button"
 <script src="js/settings.js"></script>
 <script src="js/qibla.js"></script>
 <script src="js/learning.js"></script>
+<script src="js/daily-devotions.js"></script>
 <script src="js/app.js"></script>
 
 </body>

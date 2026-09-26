@@ -549,6 +549,9 @@ function setupThemeAndLanguage() {
     root.style.colorScheme = isDark ? "dark" : "light";
     document.body.classList.toggle("dark-mode", isDark);
 
+    const themeToggleIcon = document.getElementById("themeToggleIcon");
+    if (themeToggleIcon) themeToggleIcon.textContent = isDark ? "☀" : "☾";
+
     if (themeColorMeta) {
       themeColorMeta.setAttribute("content", isDark ? "#111216" : "#fbfaf7");
     }
