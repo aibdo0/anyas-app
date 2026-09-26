@@ -1,0 +1,100 @@
+/* بطاقة السبحة المختصرة في الصفحة الرئيسية */
+.home-tasbeeh-section { margin-top: 13px; }
+.home-tasbeeh-card {
+  position: relative;
+  overflow: hidden;
+  padding: 17px;
+  border: 1px solid #eadfc9;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #fffdf8, #f4ead7);
+  box-shadow: 0 12px 27px rgba(92, 68, 29, .10);
+}
+.home-tasbeeh-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(#c8a762, #866636);
+}
+.home-tasbeeh-card::after {
+  content: "✦";
+  position: absolute;
+  top: -20px;
+  left: 23px;
+  color: rgba(164, 126, 56, .15);
+  font-size: 76px;
+  line-height: 1;
+  pointer-events: none;
+}
+.home-tasbeeh-topline,
+.home-tasbeeh-heading-wrap,
+.home-tasbeeh-count-row { display: flex; align-items: center; }
+.home-tasbeeh-topline { position: relative; z-index: 1; justify-content: space-between; gap: 12px; }
+.home-tasbeeh-heading-wrap { gap: 10px; }
+.home-tasbeeh-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid #e4d3b0;
+  border-radius: 14px;
+  color: #856734;
+  background: rgba(255,255,255,.62);
+  font-size: 20px;
+  font-weight: 800;
+}
+.home-tasbeeh-eyebrow { color: #9a8968; font-size: 11px; }
+.home-tasbeeh-heading-wrap h2 { margin: 1px 0 0; color: #4c3c24; font-size: 18px; line-height: 1.35; }
+.home-tasbeeh-open {
+  padding: 7px 10px;
+  border: 1px solid #e4d5b8;
+  border-radius: 999px;
+  color: #765c2f;
+  background: rgba(255,255,255,.6);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.home-tasbeeh-body { position: relative; z-index: 1; margin-top: 16px; }
+.home-tasbeeh-dhikr { color: #73572b; font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: 21px; font-weight: 700; }
+.home-tasbeeh-count-row { justify-content: space-between; margin-top: 2px; }
+.home-tasbeeh-count-row strong { color: #4b3a22; font-size: 30px; font-variant-numeric: tabular-nums; line-height: 1.15; }
+.home-tasbeeh-count-row span { color: #9a8968; font-size: 12px; }
+.home-tasbeeh-progress { height: 5px; margin: 9px 0 13px; overflow: hidden; border-radius: 99px; background: rgba(150, 118, 62, .14); }
+.home-tasbeeh-progress span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #c5a05e, #806034); transition: width .22s ease; }
+.home-tasbeeh-button {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, #927443, #70552d);
+  box-shadow: 0 6px 13px rgba(112, 85, 45, .20);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.home-tasbeeh-button span { display: inline-grid; width: 20px; height: 20px; place-items: center; border: 1px solid rgba(255,255,255,.55); border-radius: 50%; font-size: 16px; line-height: 1; }
+.home-tasbeeh-button:active { transform: scale(.985); }
+@media (prefers-reduced-motion: reduce) { .home-tasbeeh-progress span { transition: none; } }
+@media (max-width: 360px) { .home-tasbeeh-card { padding: 15px; } .home-tasbeeh-open { padding-inline: 8px; } }
+
+:root[data-theme="dark"] .home-tasbeeh-card {
+  border-color: #554932;
+  background: linear-gradient(135deg, #2a2823, #1d1e23);
+  box-shadow: 0 12px 28px rgba(0,0,0,.25);
+}
+:root[data-theme="dark"] .home-tasbeeh-icon,
+:root[data-theme="dark"] .home-tasbeeh-open { border-color: #5b5039; color: #dec38c; background: rgba(55,49,37,.72); }
+:root[data-theme="dark"] .home-tasbeeh-heading-wrap h2,
+:root[data-theme="dark"] .home-tasbeeh-count-row strong,
+:root[data-theme="dark"] .home-tasbeeh-dhikr { color: #eee3cc; }
+:root[data-theme="dark"] .home-tasbeeh-eyebrow,
+:root[data-theme="dark"] .home-tasbeeh-count-row span { color: #bcb09a; }

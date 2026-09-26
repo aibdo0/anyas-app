@@ -97,6 +97,7 @@
     state.counts[id] = Math.max(0, Number(state.counts[id]) || 0) + 1;
     persist();
     renderGoalList();
+    renderHomeTasbeeh();
     if (document.getElementById("page-tasbeeh")?.classList.contains("active")) renderTasbeeh();
   }
 
@@ -124,12 +125,27 @@
     });
   }
 
+  function renderHomeTasbeeh() {
+    const selected = getSelectedDhikr();
+    if (!selected) return;
+    const count = Math.max(0, Number(state.counts[selected.id]) || 0);
+    const countElement = document.getElementById("homeTasbeehCount");
+    const goalElement = document.getElementById("homeTasbeehGoal");
+    const labelElement = document.getElementById("homeTasbeehDhikr");
+    const progressElement = document.getElementById("homeTasbeehProgress");
+    if (labelElement) labelElement.textContent = selected.label;
+    if (countElement) countElement.textContent = number(count);
+    if (goalElement) goalElement.textContent = `من ${number(selected.goal)}`;
+    if (progressElement) progressElement.style.width = `${Math.min(100, Math.round(count / selected.goal * 100))}%`;
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     const date = document.getElementById("devotionHijriDate");
     if (date) date.textContent = hijriLabel();
     renderGoalList();
     renderSunnah();
     renderTasbeeh();
+    renderHomeTasbeeh();
 
     const incrementButton = document.getElementById("tasbeehIncrement");
     incrementButton?.addEventListener("click", () => {
@@ -141,7 +157,13 @@
       button.addEventListener("click", () => {
         selectedDhikr = button.dataset.dhikr;
         renderTasbeeh();
+        renderHomeTasbeeh();
       });
+    });
+
+    document.getElementById("homeTasbeehIncrement")?.addEventListener("click", () => {
+      const selected = getSelectedDhikr();
+      if (selected) increment(selected.id);
     });
 
     document.getElementById("tasbeehReset")?.addEventListener("click", () => {
@@ -151,6 +173,7 @@
       persist();
       renderGoalList();
       renderTasbeeh();
+      renderHomeTasbeeh();
     });
 
     document.querySelectorAll("[data-back-more]").forEach(button => {
