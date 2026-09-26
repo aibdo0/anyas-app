@@ -170,6 +170,40 @@
 
   window.updateDailyOverview = updateDailyOverview;
 
+  function setupFridayTasks() {
+    const buttons = [...document.querySelectorAll("[data-friday-task]")];
+    if (!buttons.length) return;
+    const today = new Date();
+    const key = `anyas_friday_tasks_${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    let completed = {};
+    try { completed = JSON.parse(localStorage.getItem(key) || "{}") || {}; } catch (error) { completed = {}; }
+
+    const render = () => {
+      const done = buttons.filter(button => completed[button.dataset.fridayTask] === true).length;
+      buttons.forEach(button => {
+        const active = completed[button.dataset.fridayTask] === true;
+        button.classList.toggle("is-complete", active);
+        button.setAttribute("aria-pressed", String(active));
+        const check = button.querySelector(".friday-task-check");
+        if (check) check.textContent = active ? "✓" : "○";
+      });
+      const progress = document.getElementById("fridayTasksProgress");
+      const status = document.getElementById("fridayTasksStatus");
+      if (progress) progress.textContent = `${number(done)} / ${number(buttons.length)}`;
+      if (status) status.textContent = today.getDay() === 5 ? "مهام الجمعة اليوم · تقبل الله" : "جهّزها للجمعة القادمة، وستبقى محفوظة لك";
+    };
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.fridayTask;
+        completed[id] = completed[id] !== true;
+        try { localStorage.setItem(key, JSON.stringify(completed)); } catch (error) { /* التخزين اختياري */ }
+        render();
+      });
+    });
+    render();
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     const date = document.getElementById("devotionHijriDate");
     if (date) date.textContent = hijriLabel();
@@ -178,6 +212,7 @@
     renderTasbeeh();
     renderTasksTasbeeh();
     updateDailyOverview();
+    setupFridayTasks();
 
     const incrementButton = document.getElementById("tasbeehIncrement");
     incrementButton?.addEventListener("click", () => {

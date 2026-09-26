@@ -78,3 +78,32 @@
 
 @media (prefers-reduced-motion: reduce) { .daily-overview-progress span, .tasks-tasbeeh-progress span { transition: none; } }
 @media (max-width: 360px) { .daily-overview-card, .tasks-tasbeeh-card { padding: 14px; } .tasks-tasbeeh-open { padding-inline: 8px; } }
+
+
+/* مهام الجمعة داخل صفحة المهام اليومية */
+.friday-tasks-card { margin: 15px 0; padding: 16px; border: 1px solid #e9dfca; border-radius: 21px; background: linear-gradient(135deg,#fffdf8,#f5ecdc); box-shadow: 0 10px 25px rgba(74,58,31,.07); }
+.friday-tasks-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.friday-tasks-eyebrow { color: #9a8968; font-size: 11px; }
+.friday-tasks-heading h2 { margin: 1px 0 2px; color: #493921; font-size: 18px; }
+.friday-tasks-heading p { margin: 0; color: #8d806b; font-size: 11px; }
+.friday-tasks-progress { padding: 5px 9px; border: 1px solid #e4d5b8; border-radius: 99px; color: #765c2f; background: rgba(255,255,255,.6); font-size: 11px; font-weight: 800; }
+.friday-task-list { display: grid; gap: 8px; margin-top: 13px; }
+.friday-task-item { display: grid; grid-template-columns: 34px minmax(0,1fr) 24px; align-items: center; gap: 9px; width: 100%; padding: 10px; border: 1px solid #eadfc9; border-radius: 15px; color: #493921; background: rgba(255,255,255,.52); text-align: right; cursor: pointer; }
+.friday-task-item:active { transform: scale(.99); }
+.friday-task-icon { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 11px; color: #856734; background: #f4ead7; font-size: 13px; font-weight: 800; }
+.friday-task-item strong, .friday-task-item small { display: block; }
+.friday-task-item strong { font-size: 13px; }
+.friday-task-item small { margin-top: 2px; color: #9a8968; font-size: 10px; }
+.friday-task-check { color: #b49a6a; font-size: 22px; line-height: 1; }
+.friday-task-item.is-complete { border-color: #bda87b; background: #f7f0e1; }
+.friday-task-item.is-complete .friday-task-check { color: #6e8b64; }
+.friday-answer-hour { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 11px; border: 1px dashed #dcc9a3; border-radius: 14px; color: #765c2f; background: rgba(255,255,255,.34); }
+.friday-answer-hour > span:first-child { font-size: 18px; }
+.friday-answer-hour strong, .friday-answer-hour small { display: block; }
+.friday-answer-hour strong { font-size: 12px; }
+.friday-answer-hour small { margin-top: 2px; color: #9a8968; font-size: 10px; }
+:root[data-theme="dark"] .friday-tasks-card { border-color: #554932; background: linear-gradient(135deg,#2a2823,#1d1e23); }
+:root[data-theme="dark"] .friday-tasks-heading h2, :root[data-theme="dark"] .friday-task-item { color: #eee3cc; }
+:root[data-theme="dark"] .friday-tasks-eyebrow, :root[data-theme="dark"] .friday-tasks-heading p, :root[data-theme="dark"] .friday-task-item small, :root[data-theme="dark"] .friday-answer-hour small { color: #bcb09a; }
+:root[data-theme="dark"] .friday-tasks-progress, :root[data-theme="dark"] .friday-task-item, :root[data-theme="dark"] .friday-answer-hour { border-color: #5b5039; background: rgba(55,49,37,.72); }
+:root[data-theme="dark"] .friday-task-icon { color: #dec38c; background: #3c3527; }
