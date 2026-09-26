@@ -708,3 +708,82 @@ html[data-theme="dark"] { background: var(--page) !important; }
 :root[data-theme="light"] body .next-prayer .prayer-time,
 :root[data-theme="light"] body .next-prayer .next-label { color: #fff !important; }
 .bottom-nav { grid-template-columns: repeat(4,minmax(0,1fr)); }
+
+
+/* =========================================
+   HOME POLISH — 2026-09-27
+   تحسينات مركزة للصفحة الرئيسية على الموبايل
+========================================= */
+#page-home {
+  padding-bottom: calc(128px + env(safe-area-inset-bottom));
+}
+
+#page-home .main-header {
+  margin-bottom: 15px;
+  padding-block: 6px 13px;
+  border-bottom: 1px solid var(--line);
+}
+
+#page-home .home-brand {
+  font-size: clamp(28px, 8vw, 32px);
+}
+
+#page-home .next-prayer {
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding: 24px 20px 18px;
+  border-radius: 26px;
+}
+
+#page-home .prayer-hero-meta {
+  margin-bottom: 5px;
+}
+
+#page-home .daily-adhkar-card {
+  border-radius: 20px;
+  box-shadow: 0 8px 22px rgba(62, 52, 34, .045);
+}
+
+#page-home .section-heading {
+  margin-inline: 2px;
+}
+
+#page-home .prayer-section {
+  padding: 13px;
+}
+
+#page-home .prayer-row {
+  min-height: 64px;
+}
+
+#page-home .daily-content.card {
+  gap: 9px;
+}
+
+#page-home .daily-dua.card,
+#page-home .upcoming-card {
+  border-radius: 18px;
+}
+
+@media (max-width: 420px) {
+  #page-home .next-prayer {
+    min-height: 228px;
+    padding-inline: 18px;
+  }
+
+  #page-home .prayer-city-chip {
+    padding-inline: 9px;
+    font-size: 13px;
+  }
+
+  #page-home .prayer-time {
+    font-size: clamp(32px, 10vw, 44px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #page-home .next-prayer,
+  #page-home .daily-adhkar-card {
+    transition: none !important;
+  }
+}
