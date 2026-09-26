@@ -197,12 +197,12 @@ async function fetchCityName(
   longitude
 ) {
 
-  const locationElement =
+  const heroCity =
     document.getElementById(
-      "locationName"
+      "prayerHeroCity"
     );
 
-  if (!locationElement) {
+  if (!heroCity) {
     return;
   }
 
@@ -247,11 +247,7 @@ async function fetchCityName(
       "موقعك الحالي";
 
 
-    locationElement.textContent =
-      city;
-
-    const heroCity = document.getElementById("prayerHeroCity");
-    if (heroCity) heroCity.textContent = city;
+    heroCity.textContent = city;
 
 
   } catch (error) {
@@ -262,11 +258,7 @@ async function fetchCityName(
     );
 
 
-    locationElement.textContent =
-      "موقعك الحالي";
-
-    const heroCity = document.getElementById("prayerHeroCity");
-    if (heroCity) heroCity.textContent = "موقعك الحالي";
+    // أبقِ اسم المدينة الافتراضي داخل بطاقة الصلاة إذا تعذر الترميز الجغرافي.
 
   }
 
