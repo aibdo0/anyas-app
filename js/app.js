@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupQibla();
   setupUpdateBanner();
   setupExtraSettings();
+  setupLocationSettings();
 
   detectLocationAndLoadTimes();
 
@@ -157,7 +158,8 @@ function goToPage(pageId) {
     "qibla",
     "prayer-report",
     "tasbeeh",
-    "worship"
+    "worship",
+    "learning"
   ].includes(pageId) ? "more" : pageId;
 
   document
@@ -1743,6 +1745,40 @@ function setupUpdateBanner() {
 
   }
 
+}
+
+
+
+// =====================================================
+// إعداد موقع الصلاة من صفحة الإعدادات
+// =====================================================
+
+function setupLocationSettings() {
+  const button = document.getElementById("refreshLocationButton");
+  const status = document.getElementById("locationSettingsDescription");
+  const heroCity = document.getElementById("prayerHeroCity");
+  if (!button) return;
+
+  const renderStatus = (detail = {}) => {
+    const city = heroCity?.textContent?.trim() || "موقعك الحالي";
+    if (status) {
+      status.textContent = detail.fallback ? city + " — الموقع الافتراضي مستخدم" : city + " — تم تحديث الموقع والمواقيت";
+    }
+    button.disabled = false;
+    button.textContent = "تحديث";
+  };
+
+  window.addEventListener("anyas:location-updated", event => {
+    renderStatus(event.detail || {});
+  });
+
+  button.addEventListener("click", () => {
+    button.disabled = true;
+    button.textContent = "جارٍ...";
+    if (status) status.textContent = "جارٍ تحديد موقعك وإعادة حساب المواقيت...";
+    if (typeof detectLocationAndLoadTimes === "function") detectLocationAndLoadTimes();
+    else renderStatus({ fallback: true });
+  });
 }
 
 
