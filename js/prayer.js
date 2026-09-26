@@ -250,6 +250,9 @@ async function fetchCityName(
     locationElement.textContent =
       city;
 
+    const heroCity = document.getElementById("prayerHeroCity");
+    if (heroCity) heroCity.textContent = city;
+
 
   } catch (error) {
 
@@ -261,6 +264,9 @@ async function fetchCityName(
 
     locationElement.textContent =
       "موقعك الحالي";
+
+    const heroCity = document.getElementById("prayerHeroCity");
+    if (heroCity) heroCity.textContent = "موقعك الحالي";
 
   }
 

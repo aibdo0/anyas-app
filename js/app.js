@@ -11,11 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
   setupAdhan();
   setupAdhanSettings();
   setupThemeAndLanguage();
+  setupHomeThemeToggle();
   setupNotifications();
   setupVibration();
   setupMuezzinSettings();
 
   setupAzkarTopics();
+  moveWorshipSettingsToPage();
   setupWorshipSettings();
 
   setupQuickActions();
@@ -154,7 +156,8 @@ function goToPage(pageId) {
     "settings",
     "qibla",
     "prayer-report",
-    "tasbeeh"
+    "tasbeeh",
+    "worship"
   ].includes(pageId) ? "more" : pageId;
 
   document
@@ -434,19 +437,12 @@ function setupDailyDua() {
 
   if (duaElement) {
 
-    const today = new Date();
-
-    const dayNumber =
-      Math.floor(
-        new Date(
-          today.getFullYear(),
-          today.getMonth(),
-          today.getDate()
-        ).getTime() / 86400000
-      );
+    const dayNumber = typeof getHijriDayOfYear === "function"
+      ? getHijriDayOfYear()
+      : new Date().getDate();
 
     const index =
-      Math.abs(dayNumber) %
+      Math.abs(dayNumber - 1) %
       DAILY_DUAS.length;
 
     duaElement.textContent =
@@ -722,6 +718,10 @@ const TRACKED_PRAYER_KEYS =
 
 function getTodayKey() {
 
+  if (typeof window.getCurrentHijriDateKey === "function") {
+    return window.getCurrentHijriDateKey();
+  }
+
   const today =
     new Date();
 
@@ -745,7 +745,23 @@ function getPrayerTrackingData() {
         ) || "{}"
       );
 
-    return data || {};
+    const records = data || {};
+    const migratedKey = "anyas_prayer_tracking_hijri_migrated";
+    if (typeof window.getCurrentHijriDateKey === "function" && localStorage.getItem(migratedKey) !== "true") {
+      Object.entries(records).forEach(([key, value]) => {
+        const match = key.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (!match) return;
+        const oldDate = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+        const hijriKey = window.getCurrentHijriDateKey(oldDate);
+        if (hijriKey !== key) {
+          records[hijriKey] = { ...(records[hijriKey] || {}), ...value };
+          delete records[key];
+        }
+      });
+      localStorage.setItem(PRAYER_TRACKING_KEY, JSON.stringify(records));
+      localStorage.setItem(migratedKey, "true");
+    }
+    return records;
 
   } catch (error) {
 
@@ -926,12 +942,9 @@ function getPrayerTrackingForDate(date) {
   const data =
     getPrayerTrackingData();
 
-  const key =
-    [
-      date.getFullYear(),
-      formatNumber(date.getMonth() + 1),
-      formatNumber(date.getDate())
-    ].join("-");
+  const key = typeof window.getCurrentHijriDateKey === "function"
+    ? window.getCurrentHijriDateKey(date)
+    : [date.getFullYear(), formatNumber(date.getMonth() + 1), formatNumber(date.getDate())].join("-");
 
   return data[key] || {};
 
@@ -1102,12 +1115,9 @@ function computePrayerStreaks() {
 
   while (true) {
 
-    const key =
-      [
-        cursor.getFullYear(),
-        formatNumber(cursor.getMonth() + 1),
-        formatNumber(cursor.getDate())
-      ].join("-");
+    const key = typeof window.getCurrentHijriDateKey === "function"
+      ? window.getCurrentHijriDateKey(cursor)
+      : [cursor.getFullYear(), formatNumber(cursor.getMonth() + 1), formatNumber(cursor.getDate())].join("-");
 
     const complete =
       isDayComplete(key);
@@ -1599,13 +1609,46 @@ function setupQibla() {
       "click",
       () => {
 
-        goToPage("settings");
+        goToPage("more");
 
       }
     );
 
   }
 
+}
+
+
+function setupHomeThemeToggle() {
+  const button = document.getElementById("themeToggle");
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    const nextMode = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    const choice = Array.from(document.querySelectorAll('input[name="themeMode"]'))
+      .find(input => input.value === nextMode);
+    if (choice) {
+      choice.checked = true;
+      choice.dispatchEvent(new Event("change", { bubbles: true }));
+      return;
+    }
+    try { localStorage.setItem("anyas_themeMode", nextMode); } catch (error) { /* preference is optional */ }
+    document.documentElement.dataset.themeMode = nextMode;
+    document.documentElement.dataset.theme = nextMode;
+    document.documentElement.style.colorScheme = nextMode;
+    document.body.classList.toggle("dark-mode", nextMode === "dark");
+    const icon = button.querySelector("span");
+    if (icon) icon.textContent = nextMode === "dark" ? "☀" : "☾";
+  });
+}
+
+
+function moveWorshipSettingsToPage() {
+  const title = Array.from(document.querySelectorAll(".settings-section-title"))
+    .find(element => element.textContent.trim() === "العبادات والمواسم");
+  const card = title?.nextElementSibling;
+  const mount = document.getElementById("worshipContent");
+  if (title && card && mount) mount.append(title, card);
 }
 
 

@@ -53,6 +53,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .plain-header .date { color: var(--muted); font-size: 14px; }
 .plain-header .back-button { order: -1; margin: 0 0 8px; }
 .back-button { min-height: 40px; padding: 7px 13px; border: 1px solid var(--line); border-radius: 12px; color: var(--gold-dark); background: var(--surface); cursor: pointer; }
+.plain-header .back-button { width: auto; height: auto; min-height: 40px; padding: 7px 13px; }
 .section { margin: 15px 0; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 2px 11px; }
 .section-title { color: var(--ink); font-size: 18px; font-weight: 800; }
@@ -564,3 +565,145 @@ html[data-theme="dark"] { background: var(--page) !important; }
 :root[data-theme="dark"] body #page-learning .learning-intro { border-color: var(--line) !important; background: linear-gradient(135deg,#29262a,#1b1c21 82%) !important; }
 :root[data-theme="dark"] body #page-learning .learning-module { border-color: var(--line) !important; background: var(--surface) !important; }
 :root[data-theme="dark"] body #page-learning .learning-points li { border-color: var(--gold-dark) !important; color: var(--ink) !important; background: var(--surface-soft) !important; }
+
+
+/* الصفحة الرئيسية: صورة القاهرة وزر الهلال */
+.main-header { position: relative; padding-inline-end: 52px; }
+.theme-toggle {
+  position: absolute; inset-inline-end: 1px; top: 7px; display: grid; width: 42px; height: 42px;
+  place-items: center; border: 1px solid var(--line); border-radius: 15px; color: var(--gold-dark);
+  background: var(--surface); box-shadow: 0 5px 15px rgba(35,30,22,.08); font-size: 20px; cursor: pointer;
+}
+.theme-toggle:active { transform: scale(.95); }
+.next-prayer {
+  min-height: 235px; display: flex; flex-direction: column; justify-content: center; gap: 3px;
+  border: 1px solid rgba(255,255,255,.22) !important; color: #fff !important;
+  background-image: linear-gradient(105deg,rgba(19,17,14,.48),rgba(22,19,15,.55) 48%,rgba(18,16,13,.72)),url("../assets/prayer-hero.jpg") !important;
+  background-position: center 48% !important; background-size: cover !important;
+  box-shadow: 0 15px 36px rgba(31,25,16,.2) !important;
+}
+.prayer-hero-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 2px; }
+.next-prayer .next-label { color: rgba(255,255,255,.86) !important; }
+.prayer-city-chip { display: inline-flex; align-items: center; gap: 5px; padding: 5px 9px; border: 1px solid rgba(255,255,255,.27); border-radius: 99px; color: #fff; background: rgba(16,15,13,.26); font-size: 12px; font-weight: 700; backdrop-filter: blur(5px); }
+.prayer-name, .prayer-time { color: #fff !important; text-shadow: 0 2px 12px rgba(0,0,0,.22); }
+.countdown { color: #f2dfb7 !important; }
+.next-prayer .prayer-progress { background: rgba(255,255,255,.28) !important; }
+.next-prayer .prayer-progress-bar { background: #f1d89f !important; }
+.prayer-adjust-button { flex: 0 0 auto; min-height: 35px; }
+
+/* أهداف الأذكار ومتابعة السنن والنوافل */
+.devotion-section { margin: 15px 0; padding: 16px; border: 1px solid var(--line); border-radius: 21px; background: var(--surface); box-shadow: var(--shadow); }
+.devotion-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.devotion-section-heading h2 { margin: 0; color: var(--ink); font-size: 17px; font-weight: 800; }
+.devotion-section-heading p { margin: 2px 0 0; color: var(--muted); font-size: 12px; }
+.hijri-day-pill, .sunnah-total { flex: 0 0 auto; padding: 5px 9px; border: 1px solid var(--line); border-radius: 99px; color: var(--gold-dark); background: var(--surface-soft); font-size: 11px; font-weight: 800; }
+.dhikr-goal-list { display: grid; gap: 8px; }
+.dhikr-goal-card { padding: 11px 12px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
+.dhikr-goal-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dhikr-goal-top h3 { margin: 0; color: var(--ink); font-size: 15px; font-weight: 800; }
+.dhikr-goal-count { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.dhikr-goal-add { min-width: 46px; min-height: 42px; border: 1px solid #e4d7bc; border-radius: 13px; color: var(--gold-dark); background: var(--gold-pale); font-size: 16px; font-weight: 800; cursor: pointer; touch-action: manipulation; }
+.dhikr-goal-add:active { transform: scale(.94); }
+.dhikr-goal-track, .tasbeeh-progress-track { height: 5px; margin-top: 9px; overflow: hidden; border-radius: 999px; background: var(--surface-soft); }
+.dhikr-goal-track span, #tasbeehProgressBar { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#c9ae77,#927443); transition: width .2s ease; }
+.sunnah-checklist { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+.sunnah-task { display: flex; min-width: 0; min-height: 66px; align-items: center; gap: 9px; padding: 10px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); background: var(--surface); text-align: right; cursor: pointer; }
+.sunnah-task-check { display: grid; width: 23px; height: 23px; flex: 0 0 23px; place-items: center; border: 1px solid #d8cba9; border-radius: 8px; color: #fff; background: var(--surface); font-size: 14px; font-weight: 900; }
+.sunnah-task.is-done { border-color: #cbb98f; background: var(--surface-soft); }
+.sunnah-task.is-done .sunnah-task-check { border-color: var(--gold-dark); background: var(--gold-dark); }
+.sunnah-task-copy { display: grid; min-width: 0; gap: 1px; }
+.sunnah-task-copy strong { font-size: 13px; }
+.sunnah-task-copy small { color: var(--muted); font-size: 10px; line-height: 1.45; }
+.sunnah-virtue { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface-soft); }
+.sunnah-virtue-icon { color: var(--gold-dark); font-size: 19px; line-height: 1.2; }
+.sunnah-virtue p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+/* المسبحة المستقلة */
+.tasbeeh-card { display: grid; justify-items: center; gap: 10px; margin: 8px 0 12px; padding: 25px 20px 20px; border: 1px solid var(--line); border-radius: 24px; background: var(--surface); box-shadow: var(--shadow); text-align: center; }
+.tasbeeh-selected-dhikr { color: var(--gold-dark); font-family: "Amiri","Noto Naskh Arabic",serif; font-size: 23px; font-weight: 800; }
+.tasbeeh-counter { display: grid; width: 148px; height: 148px; place-items: center; margin: 6px 0 0; border: 1px solid #d9caa6; border-radius: 50%; color: var(--gold-dark); background: radial-gradient(circle at 35% 28%,var(--surface),var(--surface-soft)); box-shadow: inset 0 0 0 9px var(--surface),0 0 0 1px var(--line),0 10px 25px rgba(62,52,34,.08); font-size: 43px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.tasbeeh-goal-label { color: var(--muted); font-size: 12px; }
+.tasbeeh-progress-track { width: 100%; margin: 5px 0 2px; }
+.tasbeeh-main-button { width: 100%; min-height: 54px; border: 0; border-radius: 15px; color: #fff; background: var(--gold-dark); font-size: 17px; font-weight: 800; cursor: pointer; touch-action: manipulation; }
+.tasbeeh-main-button:active { transform: scale(.985); }
+.tasbeeh-reset-button { min-height: 40px; padding: 7px 13px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); background: transparent; font-size: 12px; cursor: pointer; }
+.tasbeeh-presets { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+.tasbeeh-preset { min-height: 48px; padding: 8px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); background: var(--surface); font-size: 13px; font-weight: 700; cursor: pointer; }
+.tasbeeh-preset.is-active { border-color: #c8b27e; color: var(--gold-dark); background: var(--gold-pale); }
+.tasbeeh-note { margin: 12px 3px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+#page-worship #worshipContent { display: grid; gap: 8px; }
+#page-worship .settings-section-title { display: none; }
+#page-worship .worship-card { margin-top: 4px; }
+
+/* تصميم بوصلة القبلة */
+#page-qibla .qibla-card { padding: 24px 18px; text-align: center; }
+.qibla-status { display: inline-flex; align-items: center; min-height: 30px; padding: 4px 11px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); background: var(--surface-soft); font-size: 12px; }
+.qibla-compass { width: min(74vw,280px); height: min(74vw,280px); margin: 23px auto 17px; border: 0; background: transparent; }
+.compass-ring { position: relative; width: 100%; height: 100%; border: 1px solid #cfbd94; border-radius: 50%; background: radial-gradient(circle,var(--surface) 0 46%,var(--surface-soft) 46.5% 48%,transparent 48.5%); box-shadow: inset 0 0 0 9px var(--surface),inset 0 0 0 10px var(--line),0 0 0 1px var(--line),0 12px 28px rgba(50,40,25,.08); }
+.compass-mark { position: absolute; display: grid; width: 28px; height: 28px; place-items: center; color: var(--muted); font-size: 12px; font-weight: 800; }
+.compass-mark.north { top: 8%; left: 50%; transform: translateX(-50%); color: var(--gold-dark); }
+.compass-mark.east { right: 8%; top: 50%; transform: translateY(-50%); }
+.compass-mark.south { bottom: 8%; left: 50%; transform: translateX(-50%); }
+.compass-mark.west { left: 8%; top: 50%; transform: translateY(-50%); }
+.qibla-arrow { position: absolute; left: 50%; top: 50%; display: grid; width: 50px; height: 116px; place-items: start center; margin: -58px 0 0 -25px; color: var(--gold-dark); font-size: 51px; line-height: 1; transform-origin: 50% 50%; transition: transform .35s ease; filter: drop-shadow(0 3px 5px rgba(44,35,20,.18)); }
+.compass-center { position: absolute; left: 50%; top: 50%; display: grid; width: 58px; height: 58px; place-items: center; transform: translate(-50%,-50%); border: 1px solid var(--line); border-radius: 50%; color: var(--gold-dark); background: var(--surface); font-size: 12px; font-weight: 800; }
+.qibla-degree { margin-top: 8px; color: var(--gold-dark); font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.qibla-direction { margin-bottom: 17px; color: var(--muted); font-size: 14px; }
+.qibla-start-button { width: 100%; min-height: 49px; border: 0; border-radius: 14px; color: #fff; background: var(--gold-dark); font-weight: 800; cursor: pointer; }
+.qibla-message { margin: 12px 2px 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+/* نافذة تعديل المواقيت بمكان واضح وثابت */
+#manualPrayerModal { position: fixed; z-index: 10020; inset: 0; align-items: center; justify-content: center; overflow: auto; padding: 18px; background: rgba(18,17,15,.58); backdrop-filter: blur(4px); }
+.manual-prayer-card { display: grid; gap: 10px; width: min(100%,420px); max-height: min(90vh,760px); overflow: auto; padding: 20px; border: 1px solid var(--line); border-radius: 23px; color: var(--ink); background: var(--surface); box-shadow: 0 25px 80px rgba(0,0,0,.25); }
+.manual-prayer-card h3 { margin: 3px 0 0; color: var(--ink); }
+.manual-prayer-card p { margin: 0; color: var(--muted); font-size: 13px; }
+.manual-prayer-card label { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); font-weight: 700; }
+.manual-prayer-card input[type=number] { width: 86px; min-height: 42px; padding: 5px 10px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: var(--surface); text-align: center; }
+.manual-prayer-card button { min-height: 43px; padding: 7px 13px; border: 1px solid var(--line); border-radius: 12px; color: var(--gold-dark); background: var(--surface-soft); font-weight: 700; cursor: pointer; }
+#saveManualPrayerSettings { color: #fff; background: var(--gold-dark); }
+
+@media (max-width: 420px) {
+  .devotion-section { padding: 13px; }
+  .sunnah-checklist { grid-template-columns: 1fr 1fr; }
+  .sunnah-task { padding: 9px 7px; gap: 7px; }
+  .sunnah-task-copy strong { font-size: 12px; }
+  .next-prayer { min-height: 218px; }
+}
+
+:root[data-theme="dark"] .devotion-section,
+:root[data-theme="dark"] .dhikr-goal-card,
+:root[data-theme="dark"] .sunnah-task,
+:root[data-theme="dark"] .tasbeeh-card,
+:root[data-theme="dark"] .tasbeeh-preset,
+:root[data-theme="dark"] .compass-center,
+:root[data-theme="dark"] .manual-prayer-card {
+  border-color: #34343a; color: var(--ink); background-color: var(--surface);
+}
+:root[data-theme="dark"] .theme-toggle { border-color: #36363d; color: #ddc58f; background: #202126; box-shadow: 0 5px 18px rgba(0,0,0,.24); }
+:root[data-theme="dark"] .sunnah-virtue,
+:root[data-theme="dark"] .hijri-day-pill,
+:root[data-theme="dark"] .sunnah-total,
+:root[data-theme="dark"] .qibla-status { border-color: #37363a; color: var(--muted); background: var(--surface-soft); }
+:root[data-theme="dark"] .sunnah-task.is-done,
+:root[data-theme="dark"] .tasbeeh-preset.is-active { border-color: #746342; color: #ead5a6; background: #2a2823; }
+:root[data-theme="dark"] .tasbeeh-reset-button,
+:root[data-theme="dark"] .manual-prayer-card button:not(#saveManualPrayerSettings) { border-color: #3a3940; color: var(--ink); background: #25262b; }
+:root[data-theme="dark"] .manual-prayer-card input[type=number] { border-color: #3a3940; color: var(--ink); background: #1b1c20; }
+:root[data-theme="dark"] .compass-ring { border-color: #66583c; box-shadow: inset 0 0 0 9px var(--surface),inset 0 0 0 10px #37353a,0 0 0 1px #37353a,0 12px 28px rgba(0,0,0,.23); }
+:root[data-theme="dark"] .qibla-arrow { color: #d0b276; }
+:root[data-theme="dark"] body .next-prayer {
+  color: #fff !important; border-color: rgba(255,255,255,.22) !important;
+  background-image: linear-gradient(105deg,rgba(19,17,14,.08),rgba(22,19,15,.24) 48%,rgba(18,16,13,.65)),url("../assets/prayer-hero.jpg") !important;
+  background-position: center 48% !important; background-size: cover !important;
+}
+:root[data-theme="dark"] body .page .back-button { color: var(--ink) !important; border-color: var(--line) !important; background: var(--surface) !important; }
+
+:root[data-theme="light"] body .next-prayer {
+  color: #fff !important; border-color: rgba(255,255,255,.22) !important;
+  background-image: linear-gradient(105deg,rgba(19,17,14,.08),rgba(22,19,15,.24) 48%,rgba(18,16,13,.65)),url("../assets/prayer-hero.jpg") !important;
+  background-position: center 48% !important; background-size: cover !important;
+}
+:root[data-theme="light"] body .next-prayer .prayer-name,
+:root[data-theme="light"] body .next-prayer .prayer-time,
+:root[data-theme="light"] body .next-prayer .next-label { color: #fff !important; }
+.bottom-nav { grid-template-columns: repeat(4,minmax(0,1fr)); }
