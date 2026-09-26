@@ -787,3 +787,12 @@ html[data-theme="dark"] { background: var(--page) !important; }
     transition: none !important;
   }
 }
+
+
+/* إكمال إعدادات الموقع وقائمة المزيد */
+#page-settings .location-setting { gap: 12px; }
+#page-settings .setting-action-button { flex: 0 0 auto; min-height: 38px; padding: 7px 13px; border: 1px solid var(--line); border-radius: 11px; color: var(--gold-dark); background: var(--surface-soft); font-family: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+#page-settings .setting-action-button:disabled { opacity: .65; cursor: wait; }
+#page-settings .location-setting .setting-description { max-width: 260px; }
+@media (max-width: 360px) { #page-settings .location-setting { align-items: flex-start; } #page-settings .location-setting .setting-description { max-width: 190px; } }
+:root[data-theme="dark"] #page-settings .setting-action-button { color: var(--ink); border-color: var(--line); background: var(--surface-soft); }
