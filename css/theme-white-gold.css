@@ -585,7 +585,6 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .prayer-hero-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 2px; }
 .next-prayer .next-label { color: rgba(255,255,255,.86) !important; }
 .prayer-city-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border: 1px solid rgba(241,216,159,.72); border-radius: 99px; color: #fff; background: rgba(16,15,13,.72); box-shadow: 0 4px 14px rgba(0,0,0,.22); font-size: 14px; font-weight: 800; white-space: nowrap; backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px); }
-.prayer-city-label { color: #ead8b3; font-size: 12px; font-weight: 700; }
 #prayerHeroCity { color: #fff; font-size: 15px; font-weight: 800; }
 .prayer-name, .prayer-time { color: #fff !important; text-shadow: 0 2px 12px rgba(0,0,0,.22); }
 .countdown { color: #f2dfb7 !important; }
