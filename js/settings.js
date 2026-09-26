@@ -179,6 +179,8 @@ function setupAdhanSettings() {
 
   }
 
+  setupAudioLibrary();
+
   function applyAudioVolume(value) {
 
     const normalized =
@@ -188,12 +190,71 @@ function setupAdhanSettings() {
       adhan.volume = normalized;
     }
 
-    if (fajr) {
-      fajr.volume = normalized;
-    }
+    if (fajr) fajr.volume = normalized;
+    document.querySelectorAll("audio").forEach(audioElement => {
+      audioElement.volume = normalized;
+    });
 
   }
 
+}
+
+
+// =====================================================
+// مكتبة الأصوات — رفع ومعاينة محلية
+// =====================================================
+
+function setupAudioLibrary() {
+  document.querySelectorAll("[data-audio-upload]").forEach(input => {
+    const audioId = input.dataset.audioUpload;
+    const nameId = input.dataset.audioName;
+    const audio = document.getElementById(audioId);
+    const name = document.getElementById(nameId);
+    if (!audio) return;
+
+    const savedSource = localStorage.getItem(`anyas_audio_${audioId}`);
+    const savedName = localStorage.getItem(`anyas_audio_name_${audioId}`);
+    if (savedSource) {
+      audio.src = savedSource;
+      audio.load();
+    }
+    if (savedName && name) name.textContent = savedName;
+
+    input.addEventListener("change", () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const source = String(reader.result || "");
+        try {
+          localStorage.setItem(`anyas_audio_${audioId}`, source);
+          localStorage.setItem(`anyas_audio_name_${audioId}`, file.name);
+        } catch (error) {
+          console.warn("تعذر حفظ الملف الصوتي محليًا:", error);
+        }
+        audio.src = source;
+        audio.load();
+        if (name) name.textContent = file.name;
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  document.querySelectorAll(".audio-library-panel .preview-button").forEach(button => {
+    button.addEventListener("click", () => {
+      const audio = document.getElementById(button.dataset.audio);
+      if (!audio || !audio.src) return;
+      stopAllAudioExcept(audio);
+      if (audio.paused) {
+        audio.currentTime = 0;
+        audio.play().then(() => { button.textContent = "إيقاف"; }).catch(() => {});
+      } else {
+        audio.pause();
+        button.textContent = "تشغيل";
+      }
+      audio.onended = () => { button.textContent = "تشغيل"; };
+    });
+  });
 }
 
 
@@ -654,7 +715,14 @@ function setupNotifications() {
     "notifySecondThird",
     "notifyLastThird",
     "notifyAyatKursi",
-    "notificationSound"
+    "notificationSound",
+    "notifyWardMorning",
+    "notifyWardEvening",
+    "notifyWardSleep",
+    "notifyFridayKahf",
+    "notifyFridayPrayer",
+    "notifyFridayHour",
+    "notifyFridaySalawat"
 
   ];
 

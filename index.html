@@ -295,6 +295,10 @@
 <source src="audio/fajr.mp3" type="audio/mpeg">
 </audio>
 
+<audio id="ayatKursiAudio" preload="auto"></audio>
+<audio id="morningWardAudio" preload="auto"></audio>
+<audio id="eveningWardAudio" preload="auto"></audio>
+
 </div>
 
 
@@ -1129,6 +1133,17 @@ type="button"
 
 </div>
 
+<div class="settings-subtitle">الورد اليومي</div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الصباح</div><div class="setting-description">تذكير لطيف ببدء ورد الصباح</div></div><label class="switch"><input id="notifyWardMorning" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار المساء</div><div class="setting-description">تذكير بورد المساء دون إزعاج</div></div><label class="switch"><input id="notifyWardEvening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار النوم</div><div class="setting-description">تذكير هادئ قبل النوم</div></div><label class="switch"><input id="notifyWardSleep" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+
+<div class="settings-subtitle">يوم الجمعة</div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">سورة الكهف</div><div class="setting-description">لا تنس قراءتها يوم الجمعة</div></div><label class="switch"><input id="notifyFridayKahf" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صلاة الجمعة</div><div class="setting-description">تذكير قبل وقت صلاة الجمعة</div></div><label class="switch"><input id="notifyFridayPrayer" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">ساعة الإجابة</div><div class="setting-description">من بعد العصر إلى المغرب</div></div><label class="switch"><input id="notifyFridayHour" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">الصلاة على النبي ﷺ</div><div class="setting-description">من مغرب الخميس إلى مغرب الجمعة</div></div><label class="switch"><input id="notifyFridaySalawat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+
 </div>
 
 
@@ -1396,7 +1411,7 @@ tabindex="0"
 </div>
 
 <div class="setting-description" id="normalMuezzinSelected">
-المؤذن الحالي
+مشاري العفاسي — جاهز للرفع
 </div>
 
 </div>
@@ -1422,7 +1437,7 @@ checked
 >
 
 <span class="muezzin-name">
-المؤذن الحالي
+مشاري العفاسي — ملف مخصص
 </span>
 
 </label>
@@ -1454,7 +1469,7 @@ tabindex="0"
 </div>
 
 <div class="setting-description" id="fajrMuezzinSelected">
-مؤذن الفجر الحالي
+مشاري العفاسي — جاهز للرفع
 </div>
 
 </div>
@@ -1480,7 +1495,7 @@ checked
 >
 
 <span class="muezzin-name">
-مؤذن الفجر الحالي
+مشاري العفاسي — أذان الفجر
 </span>
 
 </label>
@@ -1497,6 +1512,26 @@ data-audio="fajrAudio"
 
 </div>
 
+
+<div class="audio-library-panel" aria-labelledby="audioLibraryTitle">
+  <div class="settings-subtitle" id="audioLibraryTitle">مكتبة الأصوات</div>
+  <p class="setting-description audio-library-note">ارفع ملفاتك الصوتية من الجهاز لتجربتها وحفظ اختيارها محليًا. يمكن إضافة آية الكرسي وأصوات أخرى لاحقًا.</p>
+  <div class="audio-upload-row">
+    <div><strong>الأذان العادي</strong><small id="adhanAudioName">ملف مشاري العفاسي</small></div>
+    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="adhanAudio" data-audio-name="adhanAudioName" hidden></label>
+    <button class="preview-button" type="button" data-audio="adhanAudio">تشغيل</button>
+  </div>
+  <div class="audio-upload-row">
+    <div><strong>أذان الفجر</strong><small id="fajrAudioName">ملف مشاري العفاسي</small></div>
+    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="fajrAudio" data-audio-name="fajrAudioName" hidden></label>
+    <button class="preview-button" type="button" data-audio="fajrAudio">تشغيل</button>
+  </div>
+  <div class="audio-upload-row">
+    <div><strong>آية الكرسي</strong><small id="ayatKursiAudioName">جاهز لإضافة الملف</small></div>
+    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="ayatKursiAudio" data-audio-name="ayatKursiAudioName" hidden></label>
+    <button class="preview-button" type="button" data-audio="ayatKursiAudio">تشغيل</button>
+  </div>
+</div>
 
 <div class="setting-row">
 
