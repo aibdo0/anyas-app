@@ -929,9 +929,13 @@ function updatePrayerTrackingUI() {
 
     streakBadge.textContent =
       streaks.current > 0
-        ? `(${streaks.current} يوم متتالي)`
-        : "";
+      ? `(${streaks.current} يوم متتالي)`
+      : "";
 
+  }
+
+  if (typeof window.updateDailyOverview === "function") {
+    window.updateDailyOverview();
   }
 
 }

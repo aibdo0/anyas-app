@@ -86,6 +86,7 @@
         state.sunnah[id] = !state.sunnah[id];
         persist();
         renderSunnah();
+        updateDailyOverview();
       });
     });
     const done = catalog.sunnah.filter(item => state.sunnah[item.id]).length;
@@ -97,7 +98,8 @@
     state.counts[id] = Math.max(0, Number(state.counts[id]) || 0) + 1;
     persist();
     renderGoalList();
-    renderHomeTasbeeh();
+    renderTasksTasbeeh();
+    updateDailyOverview();
     if (document.getElementById("page-tasbeeh")?.classList.contains("active")) renderTasbeeh();
   }
 
@@ -125,19 +127,48 @@
     });
   }
 
-  function renderHomeTasbeeh() {
+  function renderTasksTasbeeh() {
     const selected = getSelectedDhikr();
     if (!selected) return;
     const count = Math.max(0, Number(state.counts[selected.id]) || 0);
-    const countElement = document.getElementById("homeTasbeehCount");
-    const goalElement = document.getElementById("homeTasbeehGoal");
-    const labelElement = document.getElementById("homeTasbeehDhikr");
-    const progressElement = document.getElementById("homeTasbeehProgress");
+    const countElement = document.getElementById("tasksTasbeehCount");
+    const goalElement = document.getElementById("tasksTasbeehGoal");
+    const labelElement = document.getElementById("tasksTasbeehDhikr");
+    const progressElement = document.getElementById("tasksTasbeehProgress");
     if (labelElement) labelElement.textContent = selected.label;
     if (countElement) countElement.textContent = number(count);
     if (goalElement) goalElement.textContent = `من ${number(selected.goal)}`;
     if (progressElement) progressElement.style.width = `${Math.min(100, Math.round(count / selected.goal * 100))}%`;
   }
+
+  function updateDailyOverview() {
+    const prayerCount = document.querySelectorAll(".prayer-track-item.completed").length;
+    const prayerTotal = document.querySelectorAll(".prayer-track-item").length || 5;
+    const dhikrDone = catalog.adhkar.filter(item => (Number(state.counts[item.id]) || 0) >= item.goal).length;
+    const sunnahDone = catalog.sunnah.filter(item => state.sunnah[item.id]).length;
+    const total = prayerTotal + catalog.adhkar.length + catalog.sunnah.length;
+    const done = prayerCount + dhikrDone + sunnahDone;
+    const percent = total ? Math.round(done / total * 100) : 0;
+    const score = document.getElementById("dailyOverviewScore");
+    const progress = document.getElementById("dailyOverviewProgress");
+    const message = document.getElementById("dailyOverviewMessage");
+    const focus = document.getElementById("dailyOverviewFocus");
+    if (score) score.textContent = `${number(percent)}٪`;
+    if (progress) progress.style.width = `${percent}%`;
+    if (message) message.textContent = percent === 100 ? "أحسنت، أتممت مهام يومك." : percent >= 60 ? "أحسنت، تبقّى القليل وأنت قريب." : "ابدأ بما تيسّر لك، والقليل الدائم خير.";
+    if (focus) {
+      const current = window.anyasDailyAdhkar?.getCurrentPeriod?.();
+      focus.textContent = current ? `الآن: ${current.title}` : "وردك المناسب لوقتك سيظهر هنا";
+    }
+    const prayer = document.getElementById("dailyOverviewPrayerCount");
+    const dhikr = document.getElementById("dailyOverviewDhikrCount");
+    const sunnah = document.getElementById("dailyOverviewSunnahCount");
+    if (prayer) prayer.textContent = `${number(prayerCount)}/${number(prayerTotal)}`;
+    if (dhikr) dhikr.textContent = `${number(dhikrDone)}/${number(catalog.adhkar.length)}`;
+    if (sunnah) sunnah.textContent = `${number(sunnahDone)}/${number(catalog.sunnah.length)}`;
+  }
+
+  window.updateDailyOverview = updateDailyOverview;
 
   document.addEventListener("DOMContentLoaded", () => {
     const date = document.getElementById("devotionHijriDate");
@@ -145,7 +176,8 @@
     renderGoalList();
     renderSunnah();
     renderTasbeeh();
-    renderHomeTasbeeh();
+    renderTasksTasbeeh();
+    updateDailyOverview();
 
     const incrementButton = document.getElementById("tasbeehIncrement");
     incrementButton?.addEventListener("click", () => {
@@ -157,11 +189,11 @@
       button.addEventListener("click", () => {
         selectedDhikr = button.dataset.dhikr;
         renderTasbeeh();
-        renderHomeTasbeeh();
+        renderTasksTasbeeh();
       });
     });
 
-    document.getElementById("homeTasbeehIncrement")?.addEventListener("click", () => {
+    document.getElementById("tasksTasbeehIncrement")?.addEventListener("click", () => {
       const selected = getSelectedDhikr();
       if (selected) increment(selected.id);
     });
@@ -173,7 +205,8 @@
       persist();
       renderGoalList();
       renderTasbeeh();
-      renderHomeTasbeeh();
+      renderTasksTasbeeh();
+      updateDailyOverview();
     });
 
     document.querySelectorAll("[data-back-more]").forEach(button => {

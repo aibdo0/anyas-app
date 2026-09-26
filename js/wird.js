@@ -73,6 +73,13 @@
       const count = document.querySelector(`[data-wird-count="${id}"]`);
       if (count) count.textContent = `${state.done} / ${state.total}`;
 
+      const sectionElement = document.getElementById(`wird-section-${id}`);
+      if (sectionElement) {
+        const complete = state.total > 0 && state.done === state.total;
+        sectionElement.classList.toggle("is-complete", complete);
+        if (complete) setSectionOpen(id, false);
+      }
+
       const homeTask = id === "morning"
         ? document.getElementById("morningAzkarTask")
         : id === "evening"
@@ -88,6 +95,10 @@
       const percent = total ? Math.round(done / total * 100) : 0;
       bar.style.width = `${percent}%`;
       bar.setAttribute("aria-valuenow", String(percent));
+    }
+
+    if (typeof window.updateDailyOverview === "function") {
+      window.updateDailyOverview();
     }
 
     const dailyTask = document.getElementById("dailyWirdTask");
@@ -146,6 +157,29 @@
     if (indicator) indicator.textContent = open ? "−" : "+";
   }
 
+  function suggestedSection() {
+    const current = window.anyasDailyAdhkar?.getCurrentPeriod?.();
+    const map = {
+      morning: "morning",
+      awakening: "morning",
+      evening: "evening",
+      sleep: "beforeSleep",
+      sahar: "beforeSleep",
+      day: "afterPrayer"
+    };
+    return map[current?.id] || "morning";
+  }
+
+  function openSuggestedSection() {
+    const preferred = suggestedSection();
+    const candidates = [preferred, "morning", "evening", "afterPrayer", "beforeSleep"];
+    const target = candidates.find((id) => {
+      const state = sectionProgress(id);
+      return state.total > 0 && state.done < state.total;
+    });
+    if (target) setSectionOpen(target, true);
+  }
+
   function openWirdCategory(id) {
     if (!sections[id]) return;
     goToPage("tasks");
@@ -175,6 +209,7 @@
       button.addEventListener("click", () => openWirdCategory(button.dataset.openWird || button.dataset.wirdOpen));
     });
 
+    openSuggestedSection();
     updateProgress();
   });
 })();

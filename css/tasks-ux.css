@@ -1,0 +1,80 @@
+/* تحسينات تجربة صفحة مهام اليوم */
+.daily-overview-card,
+.tasks-tasbeeh-card {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 14px;
+  border: 1px solid #e9dfca;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #fffdf8, #f5ecdc);
+  box-shadow: 0 10px 25px rgba(74, 58, 31, .07);
+}
+.daily-overview-card { padding: 17px; }
+.daily-overview-card::before,
+.tasks-tasbeeh-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(#c8a762, #856436);
+}
+.daily-overview-heading,
+.tasks-tasbeeh-heading,
+.daily-overview-metrics,
+.tasks-tasbeeh-count-row { display: flex; align-items: center; }
+.daily-overview-heading,
+.tasks-tasbeeh-heading { justify-content: space-between; gap: 12px; }
+.daily-overview-eyebrow { color: #9a8968; font-size: 11px; }
+.daily-overview-heading h2,
+.tasks-tasbeeh-heading h2 { margin: 1px 0 0; color: #493921; font-size: 19px; line-height: 1.35; }
+.daily-overview-score { color: #7e6030; font-size: 25px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.daily-overview-message { margin: 11px 0 12px; color: #756851; font-size: 13px; line-height: 1.7; }
+.daily-overview-progress,
+.tasks-tasbeeh-progress { height: 6px; overflow: hidden; border-radius: 99px; background: rgba(150, 118, 62, .13); }
+.daily-overview-progress span,
+.tasks-tasbeeh-progress span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #c6a363, #806034); transition: width .25s ease; }
+.daily-overview-metrics { gap: 7px; margin-top: 14px; }
+.daily-overview-metrics > div { display: grid; min-width: 0; flex: 1; gap: 2px; padding: 8px 5px; border: 1px solid #ebdfc8; border-radius: 13px; background: rgba(255,255,255,.48); text-align: center; }
+.daily-overview-metrics strong { color: #72572e; font-size: 15px; font-variant-numeric: tabular-nums; }
+.daily-overview-metrics span { color: #9a8968; font-size: 10px; }
+.daily-overview-focus { margin-top: 10px; color: #987c4e; font-size: 11px; font-weight: 700; }
+
+.tasks-tasbeeh-card { padding: 17px; }
+.tasks-tasbeeh-heading { position: relative; z-index: 1; }
+.tasks-tasbeeh-title-wrap { display: flex; align-items: center; gap: 10px; }
+.tasks-tasbeeh-title-wrap > div:last-child > span { color: #9a8968; font-size: 11px; }
+.tasks-tasbeeh-icon { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid #e4d3b0; border-radius: 14px; color: #856734; background: rgba(255,255,255,.62); font-size: 20px; font-weight: 800; }
+.tasks-tasbeeh-open { padding: 7px 11px; border: 1px solid #e4d5b8; border-radius: 999px; color: #765c2f; background: rgba(255,255,255,.6); font-family: inherit; font-size: 11px; font-weight: 800; cursor: pointer; }
+.tasks-tasbeeh-dhikr { position: relative; z-index: 1; margin-top: 15px; color: #73572b; font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: 22px; font-weight: 700; }
+.tasks-tasbeeh-count-row { position: relative; z-index: 1; justify-content: space-between; margin-top: 1px; }
+.tasks-tasbeeh-count-row strong { color: #4b3a22; font-size: 31px; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.tasks-tasbeeh-count-row span { color: #9a8968; font-size: 12px; }
+.tasks-tasbeeh-progress { position: relative; z-index: 1; margin: 9px 0 13px; }
+.tasks-tasbeeh-button { position: relative; z-index: 1; display: flex; width: 100%; min-height: 46px; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 14px; color: #fff; background: linear-gradient(135deg, #927443, #70552d); box-shadow: 0 6px 13px rgba(112,85,45,.18); font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer; touch-action: manipulation; }
+.tasks-tasbeeh-button span { display: inline-grid; width: 20px; height: 20px; place-items: center; border: 1px solid rgba(255,255,255,.55); border-radius: 50%; font-size: 16px; line-height: 1; }
+.tasks-tasbeeh-button:active { transform: scale(.985); }
+
+.wird-section.is-complete { border-color: #d9c79f; background: #fcfaf5; }
+.wird-section.is-complete .wird-section-meta { color: #6e8b64; }
+
+:root[data-theme="dark"] .daily-overview-card,
+:root[data-theme="dark"] .tasks-tasbeeh-card { border-color: #554932; background: linear-gradient(135deg, #2a2823, #1d1e23); box-shadow: 0 12px 28px rgba(0,0,0,.25); }
+:root[data-theme="dark"] .daily-overview-heading h2,
+:root[data-theme="dark"] .tasks-tasbeeh-heading h2,
+:root[data-theme="dark"] .tasks-tasbeeh-dhikr,
+:root[data-theme="dark"] .tasks-tasbeeh-count-row strong { color: #eee3cc; }
+:root[data-theme="dark"] .daily-overview-eyebrow,
+:root[data-theme="dark"] .daily-overview-message,
+:root[data-theme="dark"] .daily-overview-metrics span,
+:root[data-theme="dark"] .tasks-tasbeeh-title-wrap > div:last-child > span,
+:root[data-theme="dark"] .tasks-tasbeeh-count-row span { color: #bcb09a; }
+:root[data-theme="dark"] .daily-overview-score,
+:root[data-theme="dark"] .daily-overview-focus,
+:root[data-theme="dark"] .daily-overview-metrics strong { color: #dec38c; }
+:root[data-theme="dark"] .daily-overview-metrics > div,
+:root[data-theme="dark"] .tasks-tasbeeh-icon,
+:root[data-theme="dark"] .tasks-tasbeeh-open { border-color: #5b5039; color: #dec38c; background: rgba(55,49,37,.72); }
+:root[data-theme="dark"] .wird-section.is-complete { border-color: #5c513c; background: #292821; }
+
+@media (prefers-reduced-motion: reduce) { .daily-overview-progress span, .tasks-tasbeeh-progress span { transition: none; } }
+@media (max-width: 360px) { .daily-overview-card, .tasks-tasbeeh-card { padding: 14px; } .tasks-tasbeeh-open { padding-inline: 8px; } }
