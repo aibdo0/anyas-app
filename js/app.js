@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupQibla();
   setupUpdateBanner();
   setupExtraSettings();
+  setupLocationSettings();
 
   detectLocationAndLoadTimes();
 
@@ -155,7 +156,8 @@ function goToPage(pageId) {
   const navPage = [
     "settings",
     "prayer-report",
-    "worship"
+    "worship",
+    "learning"
   ].includes(pageId) ? "more" : pageId === "tasbeeh" ? "tasks" : pageId === "qibla" ? "home" : pageId;
 
   document
@@ -927,9 +929,13 @@ function updatePrayerTrackingUI() {
 
     streakBadge.textContent =
       streaks.current > 0
-        ? `(${streaks.current} يوم متتالي)`
-        : "";
+      ? `(${streaks.current} يوم متتالي)`
+      : "";
 
+  }
+
+  if (typeof window.updateDailyOverview === "function") {
+    window.updateDailyOverview();
   }
 
 }
@@ -1737,6 +1743,40 @@ function setupUpdateBanner() {
 
   }
 
+}
+
+
+
+// =====================================================
+// إعداد موقع الصلاة من صفحة الإعدادات
+// =====================================================
+
+function setupLocationSettings() {
+  const button = document.getElementById("refreshLocationButton");
+  const status = document.getElementById("locationSettingsDescription");
+  const heroCity = document.getElementById("prayerHeroCity");
+  if (!button) return;
+
+  const renderStatus = (detail = {}) => {
+    const city = heroCity?.textContent?.trim() || "موقعك الحالي";
+    if (status) {
+      status.textContent = detail.fallback ? city + " — الموقع الافتراضي مستخدم" : city + " — تم تحديث الموقع والمواقيت";
+    }
+    button.disabled = false;
+    button.textContent = "تحديث";
+  };
+
+  window.addEventListener("anyas:location-updated", event => {
+    renderStatus(event.detail || {});
+  });
+
+  button.addEventListener("click", () => {
+    button.disabled = true;
+    button.textContent = "جارٍ...";
+    if (status) status.textContent = "جارٍ تحديد موقعك وإعادة حساب المواقيت...";
+    if (typeof detectLocationAndLoadTimes === "function") detectLocationAndLoadTimes();
+    else renderStatus({ fallback: true });
+  });
 }
 
 

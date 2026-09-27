@@ -1,123 +1,72 @@
 (() => {
   "use strict";
-
   const byId = id => document.getElementById(id);
-  const card = byId("dailyAdhkarCard");
+  const section = byId("dailyAdhkarSection");
+  const card = section?.querySelector(".daily-adhkar-card");
   const title = byId("dailyAdhkarHeading");
   const text = byId("dailyAdhkarText");
   const badge = byId("dailyAdhkarBadge");
   const hint = byId("dailyAdhkarHint");
   const openButton = byId("openDailyAdhkarButton");
-  const mark = byId("dailyAdhkarMark");
-  if (!card || !title || !text || !badge || !hint || !openButton) return;
+  if (!section || !card || !title || !text || !badge || !hint || !openButton) return;
 
-  // Every interval is start-inclusive and end-exclusive, so transitions never overlap.
-  const periods = {
-    waking: {
-      title: "أذكار الاستيقاظ", badge: "الاستيقاظ", mark: "☼",
-      range: "٤:٣٠ ص — ٥:٣٠ ص", theme: "waking",
-      text: "الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور.",
-      button: "ذكر الاستيقاظ", target: "waking"
-    },
-    morning: {
-      title: "أذكار الصباح", badge: "الصباح", mark: "☀",
-      range: "٥:٣٠ ص — ١٢:٠٠ ظ", theme: "morning",
-      text: "ابدأ يومك بأذكار الصباح، وتابع ما أتممته من وردك.",
-      button: "افتح أذكار الصباح", target: "morning"
-    },
-    general: {
-      title: "أذكار اليوم", badge: "ورد اليوم", mark: "ذ",
-      range: "١٢:٠٠ ظ — ٣:٣٠ م", theme: "general",
-      text: "سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ الْعَظِيمِ",
-      button: "افتح الأذكار العامة", target: "general"
-    },
-    evening: {
-      title: "أذكار المساء", badge: "المساء", mark: "◒",
-      range: "٣:٣٠ م — ٨:٠٠ م", theme: "evening",
-      text: "حان وقت أذكار المساء؛ اقرأها بهدوء وتابع إنجاز وردك.",
-      button: "افتح أذكار المساء", target: "evening"
-    },
-    sleep: {
-      title: "أذكار النوم", badge: "قبل النوم", mark: "☾",
-      range: "٨:٠٠ م — ٢:٠٠ ص", theme: "sleep",
-      text: "باسمك اللهم أموت وأحيا.",
-      button: "افتح أذكار النوم", target: "sleep"
-    },
-    sahar: {
-      title: "الاستغفار في السحر", badge: "وقت السحر", mark: "✦",
-      range: "٢:٠٠ ص — ٤:٣٠ ص", theme: "sahar",
-      text: "أستغفر الله وأتوب إليه. كرّر الاستغفار بما تيسّر لك.",
-      button: "افتح عدّاد الاستغفار", target: "sahar"
-    }
-  };
+  // الفترات نصف مفتوحة [من، إلى) حتى لا يحدث تداخل عند الدقائق الفاصلة.
+  // الوقت مأخوذ من ساعة الجهاز المحلية، وليس من مواقيت الصلاة أو منطقة زمنية ثابتة.
+  const periods = [
+    { id: "awakening", title: "أذكار الاستيقاظ", badge: "الاستيقاظ", start: 270, end: 330, hint: "04:30 – 05:30", description: "ابدأ يومك بذكر الله بهدوء، ثم انتقل تلقائيًا إلى أذكار الصباح عند 05:30.", button: "افتح أذكار الاستيقاظ", action: "waking", icon: "☼" },
+    { id: "morning", title: "أذكار الصباح", badge: "الصباح", start: 330, end: 720, hint: "05:30 – 12:00", description: "ورد الصباح المناسب لبداية يومك، وسيبقى ظاهرًا حتى دخول وقت أذكار اليوم.", button: "افتح أذكار الصباح", action: "morning", icon: "☀" },
+    { id: "day", title: "أذكار اليوم", badge: "ورد مطلق", start: 720, end: 930, hint: "12:00 – 15:30", description: "أكثر من ذكر الله في وقت العمل والدراسة بما تيسّر لك من الأذكار المطلقة.", button: "افتح الأذكار العامة", action: "general", icon: "ذ" },
+    { id: "evening", title: "أذكار المساء", badge: "المساء", start: 930, end: 1200, hint: "15:30 – 20:00", description: "حان وقت أذكار المساء؛ اجعلها وقفة هادئة قبل دخول الليل.", button: "افتح أذكار المساء", action: "evening", icon: "◒" },
+    { id: "sleep", title: "أذكار النوم", badge: "النوم", start: 1200, end: 1560, hint: "20:00 – 02:00", description: "اختم يومك بأذكار النوم بهدوء.", button: "افتح أذكار النوم", action: "beforeSleep", icon: "☾" },
+    { id: "sahar", title: "الاستغفار في السحر", badge: "وقت السحر", start: 120, end: 270, hint: "02:00 – 04:30", description: "هذا وقت ثمين للاستغفار والدعاء؛ نسأل الله أن يرزقك فيه الخشوع والقبول.", button: "افتح عدّاد الاستغفار", action: "sahar", icon: "✦" }
+  ];
 
-  function periodAtMinute(value) {
-    const minute = ((Math.floor(Number(value) || 0) % 1440) + 1440) % 1440;
-    if (minute >= 270 && minute < 330) return "waking";
-    if (minute >= 330 && minute < 720) return "morning";
-    if (minute >= 720 && minute < 930) return "general";
-    if (minute >= 930 && minute < 1200) return "evening";
-    if (minute >= 1200 || minute < 120) return "sleep";
-    return "sahar";
+  function getMinutes(date = new Date()) {
+    return date.getHours() * 60 + date.getMinutes();
   }
 
-  window.getDailyAdhkarPeriod = periodAtMinute;
+  function getCurrentPeriod(date = new Date()) {
+    const minutes = getMinutes(date);
+    const comparableMinutes = minutes < 120 ? minutes + 1440 : minutes;
+    return periods.find(period => comparableMinutes >= period.start && comparableMinutes < period.end) || periods[0];
+  }
 
-  let activePeriod = "";
-  function renderPeriod(id) {
-    const period = periods[id] || periods.morning;
-    if (activePeriod === id) return;
-    activePeriod = id;
-    card.dataset.adhkarPeriod = period.theme;
+  function showPeriod() {
+    const period = getCurrentPeriod();
+    section.dataset.adhkarPeriod = period.id;
+    card.dataset.adhkarPeriod = period.id;
+    card.classList.remove("is-transitioning");
+    if (card.dataset.lastPeriod && card.dataset.lastPeriod !== period.id) card.classList.add("is-transitioning");
+    card.dataset.lastPeriod = period.id;
     title.textContent = period.title;
-    text.textContent = period.text;
     badge.textContent = period.badge;
-    hint.textContent = period.range;
+    text.textContent = period.description;
+    hint.textContent = period.hint;
     openButton.textContent = period.button;
-    if (mark) mark.textContent = period.mark;
-    openButton.setAttribute("data-period-target", period.target);
-  }
-
-  function currentPeriod() {
-    const now = new Date();
-    return periodAtMinute(now.getHours() * 60 + now.getMinutes());
-  }
-
-  function openPeriodTarget(target) {
-    if (target === "waking") {
-      if (typeof window.openAzkarTopic === "function") window.openAzkarTopic(1, 0);
-      else if (typeof window.goToPage === "function") window.goToPage("azkar");
-      return;
-    }
-
-    if (target === "morning" && typeof window.openWirdCategory === "function") {
-      window.openWirdCategory("morning");
-      return;
-    }
-    if (target === "evening" && typeof window.openWirdCategory === "function") {
-      window.openWirdCategory("evening");
-      return;
-    }
-    if (target === "sleep" && typeof window.openWirdCategory === "function") {
-      window.openWirdCategory("beforeSleep");
-      return;
-    }
-
-    if (typeof window.goToPage === "function") window.goToPage("tasks");
-    window.setTimeout(() => {
-      const destination = target === "sahar"
-        ? document.querySelector('[data-goal-id="istighfar"]')
-        : byId("dhikrGoalList");
-      destination?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 80);
+    const mark = card.querySelector(".daily-adhkar-mark");
+    if (mark) mark.textContent = period.icon;
+    openButton.dataset.adhkarAction = period.action;
   }
 
   openButton.addEventListener("click", () => {
-    const id = currentPeriod();
-    renderPeriod(id);
-    openPeriodTarget(periods[id].target);
+    const action = openButton.dataset.adhkarAction;
+    if (["morning", "evening", "beforeSleep"].includes(action)) {
+      window.openWirdCategory?.(action);
+      return;
+    }
+    if (action === "waking") {
+      window.openAzkarTopic?.(1, 0);
+      return;
+    }
+    window.goToPage?.("tasks");
+    window.setTimeout(() => {
+      const target = action === "sahar" ? document.querySelector('[data-goal-id="istighfar"]') : byId("dhikrGoalList");
+      target?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
   });
 
-  renderPeriod(currentPeriod());
-  window.setInterval(() => renderPeriod(currentPeriod()), 30000);
+  showPeriod();
+  window.setInterval(showPeriod, 30 * 1000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) showPeriod(); });
+  window.anyasDailyAdhkar = Object.freeze({ periods, getCurrentPeriod });
 })();

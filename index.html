@@ -24,11 +24,12 @@
   })();
 </script>
 
-<link rel="stylesheet" href="css/style.css?v=20260927-1">
-<link rel="stylesheet" href="css/home.css?v=20260927-1">
-<link rel="stylesheet" href="css/prayer.css?v=20260927-1">
-<link rel="stylesheet" href="css/azkar.css?v=20260927-1">
-<link rel="stylesheet" href="css/settings.css?v=20260927-1">
+<link rel="stylesheet" href="css/style.css?v=20260927-2">
+<link rel="stylesheet" href="css/home.css?v=20260927-2">
+<link rel="stylesheet" href="css/prayer.css?v=20260927-2">
+<link rel="stylesheet" href="css/azkar.css?v=20260927-2">
+<link rel="stylesheet" href="css/daily-adhkar.css?v=20260927-2">
+<link rel="stylesheet" href="css/settings.css?v=20260927-2">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,7 +38,8 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20260927-1">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20260927-2">
+<link rel="stylesheet" href="css/tasks-ux.css?v=20260927-2">
 </head>
 
 <body>
@@ -101,18 +103,18 @@
 
 
 <section class="section daily-adhkar-section" id="dailyAdhkarSection" aria-labelledby="dailyAdhkarHeading">
-  <div class="daily-adhkar-card" id="dailyAdhkarCard" aria-live="polite">
+  <div class="daily-adhkar-card" aria-live="polite">
     <div class="daily-adhkar-heading-row">
-      <div class="daily-adhkar-mark" id="dailyAdhkarMark" aria-hidden="true">ذ</div>
+      <div class="daily-adhkar-mark" aria-hidden="true">ذ</div>
       <div class="daily-adhkar-heading-copy">
-        <div class="daily-adhkar-eyebrow">ورد يناسب وقتك</div>
+        <div class="daily-adhkar-eyebrow">ورد يناسب وقتك · يتبدل تلقائيًا</div>
         <h2 class="daily-adhkar-title" id="dailyAdhkarHeading">أذكار الصباح</h2>
       </div>
       <span class="daily-adhkar-badge" id="dailyAdhkarBadge">الصباح</span>
     </div>
-    <p class="daily-adhkar-text" id="dailyAdhkarText">ابدأ أذكار الصباح من قسم الأذكار، وسيبقى هذا التذكير ظاهرًا حتى دخول وقت الظهر.</p>
+    <p class="daily-adhkar-text" id="dailyAdhkarText">يُحدَّد الورد المناسب اعتمادًا على ساعة جهازك المحلية.</p>
     <div class="daily-adhkar-footer">
-      <span class="daily-adhkar-hint" id="dailyAdhkarHint">حتى دخول وقت الظهر</span>
+      <span class="daily-adhkar-hint" id="dailyAdhkarHint">يُحدّث تلقائيًا</span>
       <button class="daily-adhkar-button" id="openDailyAdhkarButton" type="button">افتح الأذكار</button>
     </div>
   </div>
@@ -301,6 +303,10 @@
 <source src="audio/fajr.mp3" type="audio/mpeg">
 </audio>
 
+<audio id="ayatKursiAudio" preload="auto"></audio>
+<audio id="morningWardAudio" preload="auto"></audio>
+<audio id="eveningWardAudio" preload="auto"></audio>
+
 </div>
 
 
@@ -313,6 +319,38 @@
   <div class="brand">مهام اليوم</div>
   <div class="date">عبادتك اليومية ومتابعتك بخطوات واضحة</div>
 </header>
+
+<section class="daily-overview-card" aria-labelledby="dailyOverviewHeading">
+  <div class="daily-overview-heading">
+    <div>
+      <span class="daily-overview-eyebrow">خطوة بخطوة</span>
+      <h2 id="dailyOverviewHeading">ملخص يومك</h2>
+    </div>
+    <div class="daily-overview-score" id="dailyOverviewScore">٠٪</div>
+  </div>
+  <p class="daily-overview-message" id="dailyOverviewMessage">ابدأ بما تيسّر لك، والقليل الدائم خير.</p>
+  <div class="daily-overview-progress"><span id="dailyOverviewProgress"></span></div>
+  <div class="daily-overview-metrics">
+    <div><strong id="dailyOverviewPrayerCount">٠/٥</strong><span>الصلوات</span></div>
+    <div><strong id="dailyOverviewDhikrCount">٠/٠</strong><span>الأذكار</span></div>
+    <div><strong id="dailyOverviewSunnahCount">٠/٨</strong><span>السنن</span></div>
+  </div>
+  <div class="daily-overview-focus" id="dailyOverviewFocus">وردك المناسب لوقتك سيظهر هنا</div>
+</section>
+
+<section class="tasks-tasbeeh-card" aria-labelledby="tasksTasbeehHeading">
+  <div class="tasks-tasbeeh-heading">
+    <div class="tasks-tasbeeh-title-wrap">
+      <div class="tasks-tasbeeh-icon" aria-hidden="true">ت</div>
+      <div><span>وردك اليومي</span><h2 id="tasksTasbeehHeading">المسبحة</h2></div>
+    </div>
+    <button class="tasks-tasbeeh-open" type="button" data-more-go="tasbeeh">التفاصيل</button>
+  </div>
+  <div class="tasks-tasbeeh-dhikr" id="tasksTasbeehDhikr">سبحان الله</div>
+  <div class="tasks-tasbeeh-count-row"><strong id="tasksTasbeehCount" aria-live="polite">٠</strong><span id="tasksTasbeehGoal">من ١٠٠</span></div>
+  <div class="tasks-tasbeeh-progress" aria-hidden="true"><span id="tasksTasbeehProgress"></span></div>
+  <button class="tasks-tasbeeh-button" id="tasksTasbeehIncrement" type="button">سبّح الآن <span aria-hidden="true">+</span></button>
+</section>
 
 <section class="daily-prayer-card" aria-labelledby="dailyPrayerHeading">
   <div class="daily-prayer-heading">
@@ -345,7 +383,6 @@
     </div>
     <span class="hijri-day-pill" id="devotionHijriDate">اليوم</span>
   </div>
-  <button class="daily-task-tasbeeh-link" id="openTasbeehFromTasks" type="button"><span aria-hidden="true">ت</span><span><strong>المسبحة اليومية</strong><small>افتح العداد واختر الذكر الذي تريده</small></span><span aria-hidden="true">‹</span></button>
   <div class="dhikr-goal-list" id="dhikrGoalList"></div>
 </section>
 
@@ -362,6 +399,29 @@
     <span class="sunnah-virtue-icon" aria-hidden="true">✧</span>
     <p>المحافظة على اثنتي عشرة ركعة من السنن الرواتب في اليوم والليلة ورد فيها وعد ببيت في الجنة. ابدأ بما تستطيع، وتدرّج برفق.</p>
   </div>
+</section>
+
+<section class="friday-tasks-card" aria-labelledby="fridayTasksHeading">
+  <div class="friday-tasks-heading">
+    <div>
+      <span class="friday-tasks-eyebrow">تذكيرات أسبوعية</span>
+      <h2 id="fridayTasksHeading">مهام الجمعة</h2>
+      <p id="fridayTasksStatus">تظهر مهام الجمعة هنا كل أسبوع</p>
+    </div>
+    <span class="friday-tasks-progress" id="fridayTasksProgress">٠ / ٣</span>
+  </div>
+  <div class="friday-task-list">
+    <button class="friday-task-item" type="button" data-friday-task="kahf" aria-pressed="false">
+      <span class="friday-task-icon" aria-hidden="true">ك</span><span><strong>قراءة سورة الكهف</strong><small>يمكن قراءتها في أي وقت من يوم الجمعة</small></span><span class="friday-task-check" aria-hidden="true">○</span>
+    </button>
+    <button class="friday-task-item" type="button" data-friday-task="prayer" aria-pressed="false">
+      <span class="friday-task-icon" aria-hidden="true">ص</span><span><strong>صلاة الجمعة</strong><small>تذكير بموعد الصلاة بحسب توقيت المسجد</small></span><span class="friday-task-check" aria-hidden="true">○</span>
+    </button>
+    <button class="friday-task-item" type="button" data-friday-task="salawat" aria-pressed="false">
+      <span class="friday-task-icon" aria-hidden="true">ﷺ</span><span><strong>الصلاة على النبي ﷺ</strong><small>من مغرب الخميس إلى مغرب الجمعة</small></span><span class="friday-task-check" aria-hidden="true">○</span>
+    </button>
+  </div>
+  <div class="friday-answer-hour"><span aria-hidden="true">⌛</span><span><strong>ساعة الإجابة</strong><small>من بعد العصر إلى المغرب، أكثر من الدعاء فيها</small></span></div>
 </section>
 
 <section class="wird-summary-card" aria-live="polite">
@@ -871,6 +931,15 @@ English
 </div>
 
 
+
+<div class="setting-row location-setting">
+  <div class="setting-info">
+    <div class="setting-title">موقع الصلاة</div>
+    <div class="setting-description" id="locationSettingsDescription" aria-live="polite">يُستخدم موقعك لحساب المواقيت واتجاه القبلة</div>
+  </div>
+  <button class="setting-action-button" id="refreshLocationButton" type="button">تحديث</button>
+</div>
+
 <button
 class="setting-row setting-row-button"
 id="openPrayerReportFromSettings"
@@ -1103,6 +1172,17 @@ type="button"
 </label>
 
 </div>
+
+<div class="settings-subtitle">الورد اليومي</div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الصباح</div><div class="setting-description">تذكير لطيف ببدء ورد الصباح</div></div><label class="switch"><input id="notifyWardMorning" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار المساء</div><div class="setting-description">تذكير بورد المساء دون إزعاج</div></div><label class="switch"><input id="notifyWardEvening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار النوم</div><div class="setting-description">تذكير هادئ قبل النوم</div></div><label class="switch"><input id="notifyWardSleep" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+
+<div class="settings-subtitle">يوم الجمعة</div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">سورة الكهف</div><div class="setting-description">لا تنس قراءتها يوم الجمعة</div></div><label class="switch"><input id="notifyFridayKahf" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صلاة الجمعة</div><div class="setting-description">تذكير قبل وقت صلاة الجمعة</div></div><label class="switch"><input id="notifyFridayPrayer" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">ساعة الإجابة</div><div class="setting-description">من بعد العصر إلى المغرب</div></div><label class="switch"><input id="notifyFridayHour" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">الصلاة على النبي ﷺ</div><div class="setting-description">من مغرب الخميس إلى مغرب الجمعة</div></div><label class="switch"><input id="notifyFridaySalawat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 
 </div>
 
@@ -1371,7 +1451,7 @@ tabindex="0"
 </div>
 
 <div class="setting-description" id="normalMuezzinSelected">
-المؤذن الحالي
+مشاري العفاسي — جاهز للرفع
 </div>
 
 </div>
@@ -1397,7 +1477,7 @@ checked
 >
 
 <span class="muezzin-name">
-المؤذن الحالي
+مشاري العفاسي — ملف مخصص
 </span>
 
 </label>
@@ -1429,7 +1509,7 @@ tabindex="0"
 </div>
 
 <div class="setting-description" id="fajrMuezzinSelected">
-مؤذن الفجر الحالي
+مشاري العفاسي — جاهز للرفع
 </div>
 
 </div>
@@ -1455,7 +1535,7 @@ checked
 >
 
 <span class="muezzin-name">
-مؤذن الفجر الحالي
+مشاري العفاسي — أذان الفجر
 </span>
 
 </label>
@@ -1472,6 +1552,26 @@ data-audio="fajrAudio"
 
 </div>
 
+
+<div class="audio-library-panel" aria-labelledby="audioLibraryTitle">
+  <div class="settings-subtitle" id="audioLibraryTitle">مكتبة الأصوات</div>
+  <p class="setting-description audio-library-note">ارفع ملفاتك الصوتية من الجهاز لتجربتها وحفظ اختيارها محليًا. يمكن إضافة آية الكرسي وأصوات أخرى لاحقًا.</p>
+  <div class="audio-upload-row">
+    <div><strong>الأذان العادي</strong><small id="adhanAudioName">ملف مشاري العفاسي</small></div>
+    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="adhanAudio" data-audio-name="adhanAudioName" hidden></label>
+    <button class="preview-button" type="button" data-audio="adhanAudio">تشغيل</button>
+  </div>
+  <div class="audio-upload-row">
+    <div><strong>أذان الفجر</strong><small id="fajrAudioName">ملف مشاري العفاسي</small></div>
+    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="fajrAudio" data-audio-name="fajrAudioName" hidden></label>
+    <button class="preview-button" type="button" data-audio="fajrAudio">تشغيل</button>
+  </div>
+  <div class="audio-upload-row">
+    <div><strong>آية الكرسي</strong><small id="ayatKursiAudioName">جاهز لإضافة الملف</small></div>
+    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="ayatKursiAudio" data-audio-name="ayatKursiAudioName" hidden></label>
+    <button class="preview-button" type="button" data-audio="ayatKursiAudio">تشغيل</button>
+  </div>
+</div>
 
 <div class="setting-row">
 
@@ -1679,21 +1779,21 @@ type="button"
      ملفات JavaScript
 ===================================================== -->
 
-<script src="data/azkar-topics.js?v=20260927-1"></script>
-<script src="data/daily-quran.js?v=20260927-1"></script>
-<script src="data/daily-hadith-ids.js?v=20260927-1"></script>
-<script src="data/daily-devotions.js?v=20260927-1"></script>
-<script src="data/learning-lessons.js?v=20260927-1"></script>
-<script src="js/prayer.js?v=20260927-1"></script>
-<script src="js/daily-adhkar.js?v=20260927-1"></script>
-<script src="js/favorites.js?v=20260927-1"></script>
-<script src="js/azkar.js?v=20260927-1"></script>
-<script src="js/wird.js?v=20260927-1"></script>
-<script src="js/settings.js?v=20260927-1"></script>
-<script src="js/qibla.js?v=20260927-1"></script>
-<script src="js/learning.js?v=20260927-1"></script>
-<script src="js/daily-devotions.js?v=20260927-1"></script>
-<script src="js/app.js?v=20260927-1"></script>
+<script src="data/azkar-topics.js?v=20260926-3"></script>
+<script src="data/daily-quran.js?v=20260926-3"></script>
+<script src="data/daily-hadith-ids.js?v=20260926-3"></script>
+<script src="data/daily-devotions.js?v=20260926-3"></script>
+<script src="data/learning-lessons.js?v=20260926-3"></script>
+<script src="js/prayer.js?v=20260927-2"></script>
+<script src="js/daily-adhkar.js?v=20260926-3"></script>
+<script src="js/favorites.js?v=20260926-3"></script>
+<script src="js/azkar.js?v=20260926-3"></script>
+<script src="js/wird.js?v=20260926-3"></script>
+<script src="js/settings.js?v=20260926-3"></script>
+<script src="js/qibla.js?v=20260926-3"></script>
+<script src="js/learning.js?v=20260926-3"></script>
+<script src="js/daily-devotions.js?v=20260926-3"></script>
+<script src="js/app.js?v=20260927-2"></script>
 
 </body>
   </html>

@@ -297,3 +297,21 @@
 
     accent-color: var(--primary);
 }
+
+
+/* إعدادات الورد ومكتبة الأصوات */
+.settings-subtitle { margin: 16px 14px 8px; color: var(--primary-dark); font-size: 12px; font-weight: 800; }
+.audio-library-panel { margin-top: 14px; padding: 13px; border: 1px solid var(--border); border-radius: 16px; background: var(--background); }
+.audio-library-panel .settings-subtitle { margin: 0 0 5px; }
+.audio-library-note { margin: 0 0 10px; line-height: 1.7; }
+.audio-upload-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid var(--border); }
+.audio-upload-row strong, .audio-upload-row small { display: block; }
+.audio-upload-row strong { color: var(--text); font-size: 12px; }
+.audio-upload-row small { overflow: hidden; margin-top: 3px; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.audio-upload-button, .audio-library-panel .preview-button { min-height: 34px; padding: 7px 9px; border: 1px solid rgba(161,130,71,.22); border-radius: 10px; color: var(--primary-dark); background: var(--card); font-family: inherit; font-size: 11px; font-weight: 800; cursor: pointer; }
+.audio-library-panel .preview-button { background: rgba(161,130,71,.09); }
+@media (max-width: 360px) { .audio-upload-row { grid-template-columns: minmax(0, 1fr) auto; } .audio-upload-row .preview-button { grid-column: 2; } }
+:root[data-theme="dark"] .settings-subtitle { color: #d8bf8d; }
+:root[data-theme="dark"] .audio-library-panel { border-color: var(--border); background: var(--background); }
+:root[data-theme="dark"] .audio-upload-row { border-color: var(--border); }
+:root[data-theme="dark"] .audio-upload-button, :root[data-theme="dark"] .audio-library-panel .preview-button { border-color: var(--border); color: var(--text); background: var(--card); }

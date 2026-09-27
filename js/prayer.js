@@ -6,6 +6,11 @@
 const FALLBACK_LATITUDE = 30.0444;
 const FALLBACK_LONGITUDE = 31.2357;
 
+
+function emitLocationUpdated(latitude, longitude, fallback = false) {
+  window.dispatchEvent(new CustomEvent("anyas:location-updated", { detail: { latitude, longitude, fallback } }));
+}
+
 const PRAYER_DEFINITIONS = [
   {
     key: "Fajr",
@@ -95,7 +100,7 @@ function detectLocationAndLoadTimes() {
     fetchCityName(
       FALLBACK_LATITUDE,
       FALLBACK_LONGITUDE
-    );
+    ).finally(() => emitLocationUpdated(FALLBACK_LATITUDE, FALLBACK_LONGITUDE, true));
 
     return;
   }
@@ -138,7 +143,7 @@ function detectLocationAndLoadTimes() {
       fetchCityName(
         latitude,
         longitude
-      );
+      ).finally(() => emitLocationUpdated(latitude, longitude));
 
     },
 
@@ -170,9 +175,9 @@ function detectLocationAndLoadTimes() {
       );
 
       fetchCityName(
-        FALLBACK_LATITUDE,
-        FALLBACK_LONGITUDE
-      );
+      FALLBACK_LATITUDE,
+      FALLBACK_LONGITUDE
+    ).finally(() => emitLocationUpdated(FALLBACK_LATITUDE, FALLBACK_LONGITUDE, true));
 
     },
 
