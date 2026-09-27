@@ -1,82 +1,123 @@
 (() => {
-  const byId = (id) => document.getElementById(id);
+  "use strict";
+
+  const byId = id => document.getElementById(id);
+  const card = byId("dailyAdhkarCard");
   const title = byId("dailyAdhkarHeading");
   const text = byId("dailyAdhkarText");
   const badge = byId("dailyAdhkarBadge");
   const hint = byId("dailyAdhkarHint");
   const openButton = byId("openDailyAdhkarButton");
-  if (!title || !text || !badge || !hint || !openButton) return;
+  const mark = byId("dailyAdhkarMark");
+  if (!card || !title || !text || !badge || !hint || !openButton) return;
 
-  const normalizeDigits = (value) => String(value || "")
-    .replace(/[٠-٩]/g, (digit) => String(digit.charCodeAt(0) - 0x660))
-    .replace(/[۰-۹]/g, (digit) => String(digit.charCodeAt(0) - 0x6f0))
-    .replace(/[٫.]/g, ":");
-
-  function parseTime(value, prayerName, fallback) {
-    const normalized = normalizeDigits(value).toLowerCase();
-    const match = normalized.match(/(\d{1,2})\s*:\s*(\d{2})/);
-    if (!match) return fallback;
-    let hour = Number(match[1]);
-    const minute = Number(match[2]);
-    if (hour > 23 || minute > 59) return fallback;
-    const pm = /(?:\bpm\b|مساء|م)/i.test(normalized);
-    const am = /(?:\bam\b|صباح|ص)/i.test(normalized);
-    if (pm && hour < 12) hour += 12;
-    if (am && hour === 12) hour = 0;
-    // Some locale formatters omit AM/PM; Dhuhr and Asr are daytime prayers.
-    if (!pm && !am && (prayerName === "dhuhr" || prayerName === "asr") && hour > 0 && hour < 12) hour += 12;
-    return hour * 60 + minute;
-  }
-
-  function prayerMinute(id, prayerName, fallback) {
-    const node = byId(id);
-    return parseTime(node ? node.textContent : "", prayerName, fallback);
-  }
-
-  function showPeriod() {
-    const now = new Date();
-    const current = now.getHours() * 60 + now.getMinutes();
-    const dhuhr = prayerMinute("dhuhrTime", "dhuhr", 12 * 60);
-    const asr = prayerMinute("asrTime", "asr", 15 * 60);
-
-    if (current < dhuhr) {
-      title.textContent = "أذكار الصباح";
-      badge.textContent = "الصباح";
-      text.textContent = "ابدأ أذكار الصباح من قسم الأذكار، وسيبقى هذا التذكير ظاهرًا حتى دخول وقت الظهر.";
-      hint.textContent = "حتى دخول وقت الظهر";
-      openButton.textContent = "افتح أذكار الصباح";
-    } else if (current < asr) {
-      title.textContent = "ذكر عام";
-      badge.textContent = "ورد اليوم";
-      text.textContent = "سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ الْعَظِيمِ";
-      hint.textContent = "ذكر عام، وليس مخصوصًا بوقت الظهر";
-      openButton.textContent = "المزيد من الأذكار";
-    } else {
-      title.textContent = "أذكار المساء";
-      badge.textContent = "المساء";
-      text.textContent = "ابدأ أذكار المساء من قسم الأذكار؛ يبدأ هذا الورد بعد العصر.";
-      hint.textContent = "من بعد العصر";
-      openButton.textContent = "افتح أذكار المساء";
+  // Every interval is start-inclusive and end-exclusive, so transitions never overlap.
+  const periods = {
+    waking: {
+      title: "أذكار الاستيقاظ", badge: "الاستيقاظ", mark: "☼",
+      range: "٤:٣٠ ص — ٥:٣٠ ص", theme: "waking",
+      text: "الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور.",
+      button: "ذكر الاستيقاظ", target: "waking"
+    },
+    morning: {
+      title: "أذكار الصباح", badge: "الصباح", mark: "☀",
+      range: "٥:٣٠ ص — ١٢:٠٠ ظ", theme: "morning",
+      text: "ابدأ يومك بأذكار الصباح، وتابع ما أتممته من وردك.",
+      button: "افتح أذكار الصباح", target: "morning"
+    },
+    general: {
+      title: "أذكار اليوم", badge: "ورد اليوم", mark: "ذ",
+      range: "١٢:٠٠ ظ — ٣:٣٠ م", theme: "general",
+      text: "سُبْحَانَ اللهِ وَبِحَمْدِهِ، سُبْحَانَ اللهِ الْعَظِيمِ",
+      button: "افتح الأذكار العامة", target: "general"
+    },
+    evening: {
+      title: "أذكار المساء", badge: "المساء", mark: "◒",
+      range: "٣:٣٠ م — ٨:٠٠ م", theme: "evening",
+      text: "حان وقت أذكار المساء؛ اقرأها بهدوء وتابع إنجاز وردك.",
+      button: "افتح أذكار المساء", target: "evening"
+    },
+    sleep: {
+      title: "أذكار النوم", badge: "قبل النوم", mark: "☾",
+      range: "٨:٠٠ م — ٢:٠٠ ص", theme: "sleep",
+      text: "باسمك اللهم أموت وأحيا.",
+      button: "افتح أذكار النوم", target: "sleep"
+    },
+    sahar: {
+      title: "الاستغفار في السحر", badge: "وقت السحر", mark: "✦",
+      range: "٢:٠٠ ص — ٤:٣٠ ص", theme: "sahar",
+      text: "أستغفر الله وأتوب إليه. كرّر الاستغفار بما تيسّر لك.",
+      button: "افتح عدّاد الاستغفار", target: "sahar"
     }
+  };
+
+  function periodAtMinute(value) {
+    const minute = ((Math.floor(Number(value) || 0) % 1440) + 1440) % 1440;
+    if (minute >= 270 && minute < 330) return "waking";
+    if (minute >= 330 && minute < 720) return "morning";
+    if (minute >= 720 && minute < 930) return "general";
+    if (minute >= 930 && minute < 1200) return "evening";
+    if (minute >= 1200 || minute < 120) return "sleep";
+    return "sahar";
   }
 
-  openButton.addEventListener("click", () => {
-    const category = title.textContent.includes("المساء") ? "evening" : "morning";
-    if (typeof window.openWirdCategory === "function") {
-      window.openWirdCategory(category);
+  window.getDailyAdhkarPeriod = periodAtMinute;
+
+  let activePeriod = "";
+  function renderPeriod(id) {
+    const period = periods[id] || periods.morning;
+    if (activePeriod === id) return;
+    activePeriod = id;
+    card.dataset.adhkarPeriod = period.theme;
+    title.textContent = period.title;
+    text.textContent = period.text;
+    badge.textContent = period.badge;
+    hint.textContent = period.range;
+    openButton.textContent = period.button;
+    if (mark) mark.textContent = period.mark;
+    openButton.setAttribute("data-period-target", period.target);
+  }
+
+  function currentPeriod() {
+    const now = new Date();
+    return periodAtMinute(now.getHours() * 60 + now.getMinutes());
+  }
+
+  function openPeriodTarget(target) {
+    if (target === "waking") {
+      if (typeof window.openAzkarTopic === "function") window.openAzkarTopic(1, 0);
+      else if (typeof window.goToPage === "function") window.goToPage("azkar");
       return;
     }
 
-    const tasksTab = document.querySelector('.nav-item[data-page="tasks"]');
-    if (tasksTab) tasksTab.click();
+    if (target === "morning" && typeof window.openWirdCategory === "function") {
+      window.openWirdCategory("morning");
+      return;
+    }
+    if (target === "evening" && typeof window.openWirdCategory === "function") {
+      window.openWirdCategory("evening");
+      return;
+    }
+    if (target === "sleep" && typeof window.openWirdCategory === "function") {
+      window.openWirdCategory("beforeSleep");
+      return;
+    }
+
+    if (typeof window.goToPage === "function") window.goToPage("tasks");
+    window.setTimeout(() => {
+      const destination = target === "sahar"
+        ? document.querySelector('[data-goal-id="istighfar"]')
+        : byId("dhikrGoalList");
+      destination?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 80);
+  }
+
+  openButton.addEventListener("click", () => {
+    const id = currentPeriod();
+    renderPeriod(id);
+    openPeriodTarget(periods[id].target);
   });
 
-  showPeriod();
-  window.setInterval(showPeriod, 30000);
-  if (window.MutationObserver) {
-    const observer = new MutationObserver(showPeriod);
-    [byId("dhuhrTime"), byId("asrTime")].filter(Boolean).forEach((node) => {
-      observer.observe(node, { childList: true, characterData: true, subtree: true });
-    });
-  }
+  renderPeriod(currentPeriod());
+  window.setInterval(() => renderPeriod(currentPeriod()), 30000);
 })();

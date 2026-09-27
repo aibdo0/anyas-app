@@ -24,11 +24,11 @@
   })();
 </script>
 
-<link rel="stylesheet" href="css/style.css?v=20260926-3">
-<link rel="stylesheet" href="css/home.css?v=20260926-3">
-<link rel="stylesheet" href="css/prayer.css?v=20260926-3">
-<link rel="stylesheet" href="css/azkar.css?v=20260926-3">
-<link rel="stylesheet" href="css/settings.css?v=20260926-3">
+<link rel="stylesheet" href="css/style.css?v=20260927-1">
+<link rel="stylesheet" href="css/home.css?v=20260927-1">
+<link rel="stylesheet" href="css/prayer.css?v=20260927-1">
+<link rel="stylesheet" href="css/azkar.css?v=20260927-1">
+<link rel="stylesheet" href="css/settings.css?v=20260927-1">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,7 +37,7 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20260926-3">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20260927-1">
 </head>
 
 <body>
@@ -101,9 +101,9 @@
 
 
 <section class="section daily-adhkar-section" id="dailyAdhkarSection" aria-labelledby="dailyAdhkarHeading">
-  <div class="daily-adhkar-card" aria-live="polite">
+  <div class="daily-adhkar-card" id="dailyAdhkarCard" aria-live="polite">
     <div class="daily-adhkar-heading-row">
-      <div class="daily-adhkar-mark" aria-hidden="true">ذ</div>
+      <div class="daily-adhkar-mark" id="dailyAdhkarMark" aria-hidden="true">ذ</div>
       <div class="daily-adhkar-heading-copy">
         <div class="daily-adhkar-eyebrow">ورد يناسب وقتك</div>
         <h2 class="daily-adhkar-title" id="dailyAdhkarHeading">أذكار الصباح</h2>
@@ -257,6 +257,14 @@
 </section>
 
 <section class="section">
+  <button class="nearby-mosque-card home-qibla-card" id="openQiblaButton" type="button">
+    <span class="mosque-icon" aria-hidden="true">⌖</span>
+    <span class="mosque-info"><strong class="mosque-title">اتجاه القبلة</strong><small class="mosque-description">افتح البوصلة لتحديد الاتجاه</small></span>
+    <span class="mosque-arrow" aria-hidden="true">‹</span>
+  </button>
+</section>
+
+<section class="section">
 
 <div class="upcoming-card">
 
@@ -332,11 +340,12 @@
 <section class="devotion-section" aria-labelledby="dailyDhikrTrackerHeading">
   <div class="devotion-section-heading">
     <div>
-      <h2 id="dailyDhikrTrackerHeading">أذكار يومية</h2>
-      <p>اختر الذكر، وردّده بما تيسّر لك</p>
+      <h2 id="dailyDhikrTrackerHeading">الأذكار العامة</h2>
+      <p>تسبيح واستغفار وصلاة على النبي، وردّد ما تيسّر</p>
     </div>
     <span class="hijri-day-pill" id="devotionHijriDate">اليوم</span>
   </div>
+  <button class="daily-task-tasbeeh-link" id="openTasbeehFromTasks" type="button"><span aria-hidden="true">ت</span><span><strong>المسبحة اليومية</strong><small>افتح العداد واختر الذكر الذي تريده</small></span><span aria-hidden="true">‹</span></button>
   <div class="dhikr-goal-list" id="dhikrGoalList"></div>
 </section>
 
@@ -1541,7 +1550,7 @@ value="100"
 
 <main class="page" id="page-tasbeeh">
   <header class="plain-header">
-    <button class="back-button" type="button" data-back-more>رجوع إلى المزيد</button>
+    <button class="back-button" type="button" data-back-tasks>رجوع إلى مهام اليوم</button>
     <div class="brand">المسبحة</div>
     <div class="date">اختر الذكر، واحتفظ بوردك اليومي</div>
   </header>
@@ -1588,9 +1597,7 @@ value="100"
 <section class="more-group" aria-labelledby="moreToolsHeading">
   <h2 id="moreToolsHeading">أدوات المسلم</h2>
   <div class="more-menu">
-    <button type="button" class="more-menu-item" data-more-go="qibla"><span class="more-menu-icon" aria-hidden="true">⌖</span><span class="more-menu-copy"><strong>اتجاه القبلة</strong><small>حدّد اتجاه القبلة من موقعك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
     <button type="button" class="more-menu-item" data-more-go="nearby-mosque"><span class="more-menu-icon" aria-hidden="true">م</span><span class="more-menu-copy"><strong>أقرب مسجد</strong><small>اعثر على مسجد قريب منك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
-    <button type="button" class="more-menu-item" data-more-go="tasbeeh"><span class="more-menu-icon" aria-hidden="true">ت</span><span class="more-menu-copy"><strong>المسبحة</strong><small>أذكار متعددة وعداد محفوظ لهذا اليوم</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
   </div>
 </section>
 <section class="more-group" aria-labelledby="moreSettingsHeading">
@@ -1672,21 +1679,21 @@ type="button"
      ملفات JavaScript
 ===================================================== -->
 
-<script src="data/azkar-topics.js?v=20260926-3"></script>
-<script src="data/daily-quran.js?v=20260926-3"></script>
-<script src="data/daily-hadith-ids.js?v=20260926-3"></script>
-<script src="data/daily-devotions.js?v=20260926-3"></script>
-<script src="data/learning-lessons.js?v=20260926-3"></script>
-<script src="js/prayer.js?v=20260926-3"></script>
-<script src="js/daily-adhkar.js?v=20260926-3"></script>
-<script src="js/favorites.js?v=20260926-3"></script>
-<script src="js/azkar.js?v=20260926-3"></script>
-<script src="js/wird.js?v=20260926-3"></script>
-<script src="js/settings.js?v=20260926-3"></script>
-<script src="js/qibla.js?v=20260926-3"></script>
-<script src="js/learning.js?v=20260926-3"></script>
-<script src="js/daily-devotions.js?v=20260926-3"></script>
-<script src="js/app.js?v=20260926-3"></script>
+<script src="data/azkar-topics.js?v=20260927-1"></script>
+<script src="data/daily-quran.js?v=20260927-1"></script>
+<script src="data/daily-hadith-ids.js?v=20260927-1"></script>
+<script src="data/daily-devotions.js?v=20260927-1"></script>
+<script src="data/learning-lessons.js?v=20260927-1"></script>
+<script src="js/prayer.js?v=20260927-1"></script>
+<script src="js/daily-adhkar.js?v=20260927-1"></script>
+<script src="js/favorites.js?v=20260927-1"></script>
+<script src="js/azkar.js?v=20260927-1"></script>
+<script src="js/wird.js?v=20260927-1"></script>
+<script src="js/settings.js?v=20260927-1"></script>
+<script src="js/qibla.js?v=20260927-1"></script>
+<script src="js/learning.js?v=20260927-1"></script>
+<script src="js/daily-devotions.js?v=20260927-1"></script>
+<script src="js/app.js?v=20260927-1"></script>
 
 </body>
   </html>

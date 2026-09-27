@@ -708,3 +708,46 @@ html[data-theme="dark"] { background: var(--page) !important; }
 :root[data-theme="light"] body .next-prayer .prayer-time,
 :root[data-theme="light"] body .next-prayer .next-label { color: #fff !important; }
 .bottom-nav { grid-template-columns: repeat(4,minmax(0,1fr)); }
+
+
+/* Dynamic time-of-day adhkar card: scoped to the card so the user's global theme stays in control. */
+.daily-adhkar-card[data-adhkar-period] {
+  background: var(--period-bg) !important;
+  border-color: var(--period-border) !important;
+  color: var(--period-ink) !important;
+  transition: background-color .24s ease, border-color .24s ease;
+}
+.daily-adhkar-card[data-adhkar-period] .daily-adhkar-title,
+.daily-adhkar-card[data-adhkar-period] .daily-adhkar-text { color: var(--period-ink) !important; }
+.daily-adhkar-card[data-adhkar-period] .daily-adhkar-eyebrow,
+.daily-adhkar-card[data-adhkar-period] .daily-adhkar-hint { color: var(--period-muted) !important; }
+.daily-adhkar-card[data-adhkar-period] .daily-adhkar-mark,
+.daily-adhkar-card[data-adhkar-period] .daily-adhkar-badge { color: var(--period-accent) !important; border-color: var(--period-border) !important; background: var(--period-tint) !important; }
+.daily-adhkar-card[data-adhkar-period] .daily-adhkar-button { color: var(--period-button-ink) !important; border-color: var(--period-border) !important; background: var(--period-tint) !important; }
+.daily-adhkar-card[data-adhkar-period] .daily-adhkar-footer { border-color: var(--period-border) !important; }
+.daily-adhkar-card[data-adhkar-period="waking"] { --period-bg: #edf5fb; --period-tint: #dcebf5; --period-border: #c8dce9; --period-ink: #29465a; --period-muted: #607a8d; --period-accent: #487796; --period-button-ink: #29465a; }
+.daily-adhkar-card[data-adhkar-period="morning"] { --period-bg: #fff9e8; --period-tint: #f8ebc6; --period-border: #ead9ab; --period-ink: #514321; --period-muted: #827148; --period-accent: #a87b27; --period-button-ink: #514321; }
+.daily-adhkar-card[data-adhkar-period="general"] { --period-bg: #f7f5ef; --period-tint: #ece7db; --period-border: #ded6c3; --period-ink: #403d35; --period-muted: #777063; --period-accent: #7c6b49; --period-button-ink: #403d35; }
+.daily-adhkar-card[data-adhkar-period="evening"] { --period-bg: #fff1e6; --period-tint: #f8dfca; --period-border: #edc5a7; --period-ink: #5f402b; --period-muted: #8a6348; --period-accent: #b56d3a; --period-button-ink: #5f402b; }
+.daily-adhkar-card[data-adhkar-period="sleep"] { --period-bg: #171d32; --period-tint: #252e4a; --period-border: #3b486d; --period-ink: #edf0ff; --period-muted: #bcc5e4; --period-accent: #bdcafa; --period-button-ink: #edf0ff; background: radial-gradient(circle at 86% 18%, rgba(213,226,255,.46) 0 1px, transparent 2px), radial-gradient(circle at 16% 70%, rgba(213,226,255,.38) 0 1px, transparent 2px), linear-gradient(135deg,#202944,#151a2b) !important; }
+.daily-adhkar-card[data-adhkar-period="sahar"] { --period-bg: #111a31; --period-tint: #202c48; --period-border: #344364; --period-ink: #eef2ff; --period-muted: #b7c3e1; --period-accent: #c7d2f4; --period-button-ink: #eef2ff; background: radial-gradient(circle at 78% 20%, rgba(225,234,255,.7) 0 1px, transparent 2px), radial-gradient(circle at 24% 63%, rgba(225,234,255,.52) 0 1px, transparent 2px), radial-gradient(circle at 48% 10%, rgba(225,234,255,.42) 0 1px, transparent 2px), linear-gradient(135deg,#182441,#0f172a) !important; }
+:root[data-theme="dark"] .daily-adhkar-card[data-adhkar-period="waking"] { --period-bg: #1c2935; --period-tint: #293a49; --period-border: #3b5267; --period-ink: #e8f2fb; --period-muted: #b2c6d5; --period-accent: #a9cee6; --period-button-ink: #e8f2fb; }
+:root[data-theme="dark"] .daily-adhkar-card[data-adhkar-period="morning"] { --period-bg: #302a1d; --period-tint: #403722; --period-border: #5d4d2d; --period-ink: #fbf0d0; --period-muted: #d2c28e; --period-accent: #e6ca83; --period-button-ink: #fbf0d0; }
+:root[data-theme="dark"] .daily-adhkar-card[data-adhkar-period="general"] { --period-bg: #24252a; --period-tint: #303137; --period-border: #44454d; --period-ink: #f1efe8; --period-muted: #bab5a7; --period-accent: #d5c59d; --period-button-ink: #f1efe8; }
+:root[data-theme="dark"] .daily-adhkar-card[data-adhkar-period="evening"] { --period-bg: #30251f; --period-tint: #453126; --period-border: #644633; --period-ink: #fff0e4; --period-muted: #d9b79d; --period-accent: #efb888; --period-button-ink: #fff0e4; }
+:root[data-theme="dark"] body .daily-adhkar-card[data-adhkar-period] { background: var(--period-bg) !important; border-color: var(--period-border) !important; }
+:root[data-theme="dark"] body .daily-adhkar-card[data-adhkar-period="sleep"] { background: radial-gradient(circle at 86% 18%,rgba(213,226,255,.46) 0 1px,transparent 2px),radial-gradient(circle at 16% 70%,rgba(213,226,255,.38) 0 1px,transparent 2px),linear-gradient(135deg,#202944,#151a2b) !important; }
+:root[data-theme="dark"] body .daily-adhkar-card[data-adhkar-period="sahar"] { background: radial-gradient(circle at 78% 20%,rgba(225,234,255,.7) 0 1px,transparent 2px),radial-gradient(circle at 24% 63%,rgba(225,234,255,.52) 0 1px,transparent 2px),radial-gradient(circle at 48% 10%,rgba(225,234,255,.42) 0 1px,transparent 2px),linear-gradient(135deg,#182441,#0f172a) !important; }
+:root[data-theme="dark"] body .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-title,.daily-adhkar-text) { color: var(--period-ink) !important; }
+:root[data-theme="dark"] body .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-eyebrow,.daily-adhkar-hint) { color: var(--period-muted) !important; }
+
+.daily-task-tasbeeh-link { display: flex; width: 100%; min-height: 66px; align-items: center; gap: 11px; margin: 0 0 12px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 15px; color: var(--ink); background: var(--surface-soft); text-align: right; cursor: pointer; }
+.daily-task-tasbeeh-link > span:first-child { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; border: 1px solid var(--line); border-radius: 12px; color: var(--gold-dark); background: var(--surface); font-weight: 900; }
+.daily-task-tasbeeh-link > span:nth-child(2) { display: grid; flex: 1; gap: 2px; }
+.daily-task-tasbeeh-link strong { font-size: 14px; }
+.daily-task-tasbeeh-link small { color: var(--muted); font-size: 11px; }
+.daily-task-tasbeeh-link:active, .home-qibla-card:active { transform: scale(.985); }
+.home-qibla-card { width: 100%; margin: 0; color: var(--ink); text-align: right; }
+.home-qibla-card .mosque-title { display: block; color: var(--ink); font-size: 13px; }
+.home-qibla-card .mosque-description { display: block; color: var(--muted); font-size: 11px; }
+@media (prefers-reduced-motion: reduce) { .daily-adhkar-card[data-adhkar-period] { transition: none; } }
