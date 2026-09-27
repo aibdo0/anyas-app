@@ -35,9 +35,9 @@
 }
 
 .daily-adhkar-card[data-adhkar-period="day"] {
-  border-color: #d9ddd5;
-  background: linear-gradient(135deg, #fbfcfa, #eef2ed 88%);
-  box-shadow: 0 10px 24px rgba(75, 96, 80, 0.08);
+  border-color: #ded7c9;
+  background: linear-gradient(135deg, #fbfaf7, #f0ece3 88%);
+  box-shadow: 0 10px 24px rgba(92, 79, 57, 0.08);
 }
 
 .daily-adhkar-card[data-adhkar-period="evening"] {
@@ -95,3 +95,11 @@
 @media (prefers-reduced-motion: reduce) {
   .daily-adhkar-card, .daily-adhkar-card.is-transitioning { animation: none; transition: none; }
 }
+
+
+/* اختصار القبلة تحت بطاقة أقرب مسجد في الرئيسية */
+.home-qibla-card { width: 100%; min-height: 78px; justify-content: flex-start; margin: 0; color: var(--text); text-align: right; }
+.home-qibla-card .mosque-info { display: block; flex: 1; min-width: 0; }
+.home-qibla-card .mosque-title { display: block; margin: 0; color: var(--text); font-size: 13px; font-weight: 900; }
+.home-qibla-card .mosque-description { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
+.home-qibla-card:active { transform: scale(.985); }

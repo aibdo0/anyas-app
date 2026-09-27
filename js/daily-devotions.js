@@ -249,5 +249,15 @@
         if (typeof window.goToPage === "function") window.goToPage("more");
       });
     });
+
+    document.getElementById("openTasbeehFromTasks")?.addEventListener("click", () => {
+      if (typeof window.goToPage === "function") window.goToPage("tasbeeh");
+    });
+
+    document.querySelectorAll("[data-back-tasks]").forEach(button => {
+      button.addEventListener("click", () => {
+        if (typeof window.goToPage === "function") window.goToPage("tasks");
+      });
+    });
   });
 })();

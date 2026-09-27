@@ -155,12 +155,10 @@ function goToPage(pageId) {
 
   const navPage = [
     "settings",
-    "qibla",
     "prayer-report",
-    "tasbeeh",
     "worship",
     "learning"
-  ].includes(pageId) ? "more" : pageId;
+  ].includes(pageId) ? "more" : pageId === "tasbeeh" ? "tasks" : pageId === "qibla" ? "home" : pageId;
 
   document
     .querySelectorAll(".nav-item")
@@ -1615,7 +1613,7 @@ function setupQibla() {
       "click",
       () => {
 
-        goToPage("more");
+        goToPage("home");
 
       }
     );
