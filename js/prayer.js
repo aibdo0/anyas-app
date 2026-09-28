@@ -430,6 +430,10 @@ async function loadPrayerTimes(
       timings
     );
 
+    if (typeof syncAndroidNotificationSettings === "function") {
+      syncAndroidNotificationSettings();
+    }
+
 
   } catch (error) {
 

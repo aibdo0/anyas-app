@@ -716,9 +716,12 @@ function setupNotifications() {
     "notifyLastThird",
     "notifyAyatKursi",
     "notificationSound",
+    "notifyWardAwakening",
     "notifyWardMorning",
+    "notifyWardGeneral",
     "notifyWardEvening",
     "notifyWardSleep",
+    "notifyWardSahar",
     "notifyFridayKahf",
     "notifyFridayPrayer",
     "notifyFridayHour",
@@ -754,9 +757,11 @@ function setupNotifications() {
           key,
           element.checked
         );
+        syncAndroidNotificationSettings();
 
         if (
           element.checked &&
+          !window.AnyasAndroid &&
           "Notification" in window
         ) {
 
@@ -779,7 +784,24 @@ function setupNotifications() {
     );
 
   });
+  syncAndroidNotificationSettings();
+}
 
+function syncAndroidNotificationSettings() {
+  if (!window.AnyasAndroid || !window.AnyasAndroid.syncSettings) return;
+  const ids = ["notifyPrayerSoon", "notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar"];
+  const enabled = {};
+  ids.forEach(id => {
+    const element = document.getElementById(id);
+    enabled[id] = element ? element.checked : localStorage.getItem(`anyas_${id}`) === "true";
+  });
+  const prayers = {};
+  ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(key => {
+    const raw = window.todayTimings && window.todayTimings[key];
+    const match = raw && String(raw).match(/(\d{1,2}:\d{2})/);
+    if (match) prayers[key] = match[1].padStart(5, "0");
+  });
+  window.AnyasAndroid.syncSettings(JSON.stringify({ enabled, prayers, sound: localStorage.getItem("anyas_notificationSound") === "true" }));
 }
 
 
