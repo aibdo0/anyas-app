@@ -22,6 +22,6 @@ tasks.register('syncWebAssets', Copy) {
     from(webRoot) {
         include 'index.html', 'css/**', 'js/**', 'data/**', 'assets/**', 'audio/**'
     }
-    into layout.projectDirectory.dir('src/main/assets/web')
+    into layout.projectDirectory.dir('src/main/assets')
 }
 tasks.named('preBuild').configure { dependsOn('syncWebAssets') }

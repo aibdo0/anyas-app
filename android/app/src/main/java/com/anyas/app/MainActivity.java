@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         assetLoader = new WebViewAssetLoader.Builder()
-                .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this, "web"))
+                .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
                 .build();
         web = new WebView(this);
         setContentView(web);
