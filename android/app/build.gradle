@@ -9,6 +9,19 @@ android {
         minSdk 23
         targetSdk 34
         versionCode 1
-        versionName '1.0.0'
+        versionName '1.1.0'
     }
 }
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.12.1'
+}
+
+def webRoot = rootProject.projectDir.parentFile
+tasks.register('syncWebAssets', Copy) {
+    from(webRoot) {
+        include 'index.html', 'css/**', 'js/**', 'data/**', 'assets/**', 'audio/**'
+    }
+    into layout.projectDirectory.dir('src/main/assets/web')
+}
+tasks.named('preBuild').configure { dependsOn('syncWebAssets') }
