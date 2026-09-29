@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setupQuickActions();
   setupDailyTasks();
+  setupDailyExtraTasks();
   setupDailyDua();
   setupUpcomingOccasion();
 
@@ -424,6 +425,54 @@ const DAILY_DUAS = [
   "اللهم إني أسألك علمًا نافعًا ورزقًا طيبًا وعملًا متقبلًا."
 
 ];
+
+
+const DAILY_EXTRA_TASKS = [
+  { id: "quran", title: "قراءة ما تيسّر من القرآن", hint: "ولو صفحة واحدة" },
+  { id: "morning", title: "أذكار الصباح", hint: "ابدأ بها يومك" },
+  { id: "evening", title: "أذكار المساء", hint: "قبل نهاية اليوم" },
+  { id: "witr", title: "صلاة الوتر", hint: "اختم يومك بركعة" }
+];
+
+
+function setupDailyExtraTasks() {
+  const list = document.getElementById("dailyExtraTasksList");
+  const progress = document.getElementById("dailyExtraTasksProgress");
+  if (!list || !progress) return;
+
+  const today = new Date().toISOString().slice(0, 10);
+  const storageKey = `maab_daily_extra_tasks_${today}`;
+  let completed = {};
+
+  try {
+    completed = JSON.parse(localStorage.getItem(storageKey) || "{}");
+  } catch (error) {
+    completed = {};
+  }
+
+  const render = () => {
+    list.innerHTML = DAILY_EXTRA_TASKS.map(task => {
+      const isComplete = completed[task.id] === true;
+      return `<button class="daily-extra-task${isComplete ? " is-complete" : ""}" type="button" data-extra-task="${task.id}" aria-pressed="${isComplete}">
+        <span class="daily-extra-check" aria-hidden="true">${isComplete ? "✓" : "○"}</span>
+        <span><strong>${task.title}</strong><small>${task.hint}</small></span>
+      </button>`;
+    }).join("");
+    const count = DAILY_EXTRA_TASKS.filter(task => completed[task.id] === true).length;
+    progress.textContent = `${count} / ${DAILY_EXTRA_TASKS.length}`;
+  };
+
+  list.addEventListener("click", event => {
+    const button = event.target.closest("[data-extra-task]");
+    if (!button) return;
+    const id = button.dataset.extraTask;
+    completed[id] = completed[id] !== true;
+    localStorage.setItem(storageKey, JSON.stringify(completed));
+    render();
+  });
+
+  render();
+}
 
 
 function setupDailyDua() {

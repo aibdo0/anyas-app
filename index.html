@@ -39,7 +39,7 @@
 
 
 <link rel="stylesheet" href="css/theme-white-gold.css?v=20260927-2">
-<link rel="stylesheet" href="css/tasks-ux.css?v=20260927-2">
+<link rel="stylesheet" href="css/tasks-ux.css?v=20260929-1">
 </head>
 <body>
 <div class="app">
@@ -264,6 +264,22 @@
   </button>
 </section>
 
+<section class="section home-quick-actions" aria-labelledby="homeQuickActionsHeading">
+  <div class="quick-actions-heading">
+    <div>
+      <span class="quick-actions-eyebrow">وصول سريع</span>
+      <h2 id="homeQuickActionsHeading">كل عبادتك في مكان واحد</h2>
+    </div>
+    <span class="quick-actions-mark" aria-hidden="true">✦</span>
+  </div>
+  <div class="quick-actions-grid">
+    <button class="quick-action" type="button" data-more-go="tasks"><span class="quick-action-icon">✓</span><strong>مهام اليوم</strong><small>تابع إنجازك</small></button>
+    <button class="quick-action" type="button" data-more-go="azkar"><span class="quick-action-icon">ذ</span><strong>حصن المسلم</strong><small>أذكارك اليومية</small></button>
+    <button class="quick-action" type="button" data-more-go="tasbeeh"><span class="quick-action-icon">ت</span><strong>المسبحة</strong><small>ورد التسبيح</small></button>
+    <button class="quick-action" type="button" data-more-go="settings"><span class="quick-action-icon">⚙</span><strong>الأذان</strong><small>التنبيهات والصوت</small></button>
+  </div>
+</section>
+
 <section class="section">
 
 <div class="upcoming-card">
@@ -334,6 +350,18 @@
     <div><strong id="dailyOverviewSunnahCount">٠/٨</strong><span>السنن</span></div>
   </div>
   <div class="daily-overview-focus" id="dailyOverviewFocus">وردك المناسب لوقتك سيظهر هنا</div>
+</section>
+
+<section class="daily-extra-tasks" aria-labelledby="dailyExtraTasksHeading">
+  <div class="daily-extra-heading">
+    <div>
+      <span class="daily-extra-eyebrow">إضافات يومية</span>
+      <h2 id="dailyExtraTasksHeading">أعمال لا نريد أن ننساها</h2>
+    </div>
+    <span class="daily-extra-progress" id="dailyExtraTasksProgress">0 / 4</span>
+  </div>
+  <p class="daily-extra-description">اختر ما تيسّر لك، وسيُحفظ إنجازك لهذا اليوم.</p>
+  <div class="daily-extra-list" id="dailyExtraTasksList"></div>
 </section>
 
 <section class="tasks-tasbeeh-card" aria-labelledby="tasksTasbeehHeading">
