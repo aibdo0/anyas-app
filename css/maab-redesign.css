@@ -258,3 +258,12 @@ body::before { background: radial-gradient(circle at 90% 12%, rgba(210,178,108,.
 .setting-description, .worship-setting-description, .category-card-count { color: var(--muted) !important; }
 input, select, textarea { color: var(--ink) !important; border-color: var(--line) !important; background: #fff !important; }
 :root[data-theme="light"] { --page: #f7f4ed; --surface: #fff; --ink: #302a22; --muted: #817767; --line: rgba(150,116,55,.20); --gold: #b18a43; --gold-dark: #87652c; --gold-pale: #f3ead7; }
+
+
+/* Specificity repair: legacy dark-mode rules must not reintroduce dark chrome. */
+:root[data-theme="dark"] body .bottom-nav { border-color: var(--line) !important; background: rgba(255,255,255,.98) !important; box-shadow: 0 14px 30px rgba(75,56,26,.14) !important; }
+:root[data-theme="dark"] body .nav-item { color: #9c927f !important; }
+:root[data-theme="dark"] body .nav-item.active { color: var(--gold-dark) !important; background: var(--gold-pale) !important; box-shadow: inset 0 -2px 0 var(--gold) !important; }
+:root[data-theme="dark"] body .theme-toggle { color: var(--gold-dark) !important; border-color: var(--line) !important; background: #fff !important; }
+:root[data-theme="dark"] body .more-button { color: var(--gold-dark) !important; border-color: var(--line) !important; background: var(--gold-pale) !important; }
+:root[data-theme="dark"] body .page .back-button { color: var(--gold-dark) !important; border-color: var(--line) !important; background: #fff !important; }
