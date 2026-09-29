@@ -1,0 +1,126 @@
+/*
+   مَآبُ الأوَّاب — Islamic editorial redesign
+   Visual direction: deep navy, emerald, restrained brass, structured cards.
+   This layer changes presentation only; existing IDs, routes and state keys stay intact.
+*/
+:root {
+  --page: #071b24;
+  --surface: #0d2a34;
+  --surface-soft: #123b43;
+  --ink: #f4efe4;
+  --muted: #a9b8b5;
+  --line: rgba(201, 170, 91, .22);
+  --gold: #d5b66a;
+  --gold-dark: #b9974d;
+  --gold-pale: rgba(213, 182, 106, .12);
+  --emerald: #1e7768;
+  --emerald-deep: #125247;
+  --shadow: 0 18px 42px rgba(0, 0, 0, .24);
+  --radius: 14px;
+}
+
+html { background: var(--page); }
+body {
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(213,182,106,.035) 25%, transparent 25%) 0 0 / 28px 28px,
+    linear-gradient(315deg, rgba(213,182,106,.025) 25%, transparent 25%) 0 0 / 28px 28px,
+    var(--page);
+}
+body::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 12% 0%, rgba(31,119,104,.24), transparent 32%), radial-gradient(circle at 100% 92%, rgba(213,182,106,.08), transparent 30%);
+}
+.app { max-width: 820px; }
+.page { max-width: 760px; padding-inline: 18px; }
+
+.main-header, .plain-header {
+  border-bottom: 1px solid var(--line) !important;
+  margin-bottom: 20px !important;
+  padding-top: 14px !important;
+}
+.home-brand, .plain-header .brand { color: var(--gold) !important; letter-spacing: 0 !important; font-weight: 900 !important; }
+.date-line, .plain-header .date { color: var(--muted) !important; }
+.date-separator { color: var(--emerald) !important; }
+.location-line, .prayer-city-chip { color: #d9e8df !important; background: rgba(30,119,104,.35) !important; border: 1px solid rgba(132,205,179,.2) !important; }
+.theme-toggle { border-color: var(--line) !important; color: var(--gold) !important; background: var(--surface) !important; box-shadow: none !important; }
+
+.next-prayer {
+  border: 1px solid rgba(213,182,106,.28) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(130deg, rgba(10,55,61,.9), rgba(20,100,84,.98) 58%, rgba(108,83,38,.95)) !important;
+  box-shadow: 0 22px 38px rgba(0,0,0,.27) !important;
+}
+.next-prayer::before { content: ""; position: absolute; inset: 14px; border: 1px solid rgba(213,182,106,.17); pointer-events: none; }
+.next-label { color: #c5d9d1 !important; }
+.prayer-name { color: #fff6dc !important; }
+.prayer-time { color: var(--gold) !important; font-weight: 900 !important; }
+.countdown { color: #c4e4d6 !important; }
+.prayer-progress { background: rgba(0,0,0,.28) !important; }
+.prayer-progress-bar { background: var(--gold) !important; }
+
+.section-heading { border-inline-start: 3px solid var(--gold); padding-inline-start: 11px; }
+.section-title, .card-title, .daily-adhkar-title, .settings-section-title, .category-detail-title { color: var(--gold) !important; }
+.more-button { border: 1px solid var(--line) !important; border-radius: 8px !important; color: var(--gold) !important; background: var(--gold-pale) !important; }
+
+.prayer-section, .daily-adhkar-card, .content-block, .daily-dua.card, .upcoming-card, .card, .settings-card, .worship-card, .weekly-report-card, .qibla-card, .traveler-card, .nearby-mosque-card {
+  border-color: var(--line) !important;
+  border-radius: 12px !important;
+  background: var(--surface) !important;
+  box-shadow: var(--shadow) !important;
+}
+.prayer-row, .prayer-track-item, .task-item, .quick-action, .category-card, .dua-item, .azkar-search input, .azkar-search-result, .azkar-search-empty, #azkarList, .more-menu-item, .learning-module, .upcoming-card {
+  border-color: var(--line) !important;
+  border-radius: 10px !important;
+  color: var(--ink) !important;
+  background: #10323a !important;
+  box-shadow: none !important;
+}
+.prayer-row:hover, .category-card:hover, .quick-action:hover { border-color: rgba(213,182,106,.58) !important; background: #15434a !important; }
+.prayer-title, .prayer-label, .prayer-value, .prayer-time, .daily-adhkar-hint, .nearby-mosque-description, .reference { color: var(--muted) !important; }
+.prayer-value, .prayer-time, .nearby-mosque-title, .daily-adhkar-heading, .dua-title { color: var(--gold) !important; }
+.prayer-row.next, .prayer-track-item.completed, .task-item[data-complete="true"] { border-color: rgba(60,190,151,.5) !important; background: rgba(30,119,104,.25) !important; }
+
+.ayah, .dhikr, .daily-dua-text, .dua-text, .zikr-text, .hadith-text { color: #f1eadc !important; }
+.daily-adhkar-card { background: linear-gradient(145deg, #123f42, #0d2a34) !important; }
+.daily-adhkar-mark, .quick-icon, .nearby-mosque-icon { color: var(--gold) !important; background: rgba(213,182,106,.12) !important; border-color: var(--line) !important; }
+.daily-adhkar-button, .zikr-button, .tasbeeh-main-button, .qibla-start-button, #saveManualPrayerSettings { border-radius: 8px !important; color: #071b24 !important; background: var(--gold) !important; }
+
+.bottom-nav {
+  right: 14px !important; left: 14px !important; bottom: 14px !important;
+  height: 68px !important; padding: 5px 8px !important;
+  border: 1px solid var(--line) !important; border-radius: 12px !important;
+  background: #09232c !important; box-shadow: 0 16px 34px rgba(0,0,0,.38) !important;
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+}
+.nav-item { border-radius: 8px !important; color: #819d98 !important; }
+.nav-item.active { color: var(--gold) !important; background: rgba(30,119,104,.32) !important; }
+.nav-item.active::before { background: var(--gold) !important; }
+.nav-item::after { font-weight: 800 !important; }
+
+.setting-row, .worship-setting { border-bottom-color: rgba(201,170,91,.14) !important; }
+.setting-title, .worship-setting-title, .task-text, .category-card-title { color: var(--ink) !important; }
+.setting-description, .worship-setting-description, .category-card-count { color: var(--muted) !important; }
+input, select, textarea { border-color: var(--line) !important; color: var(--ink) !important; background: #10323a !important; }
+
+@media (min-width: 700px) { .bottom-nav { right: 0 !important; left: 0 !important; } }
+@media (max-width: 420px) { .page { padding-inline: 14px; } .home-brand { font-size: 27px !important; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* Light mode remains the same language: parchment, emerald and brass — never iOS white. */
+:root[data-theme="light"] {
+  --page: #eee9db; --surface: #fffaf0; --surface-soft: #e9f0e9; --ink: #19343a; --muted: #687b76;
+  --line: rgba(21,83,71,.18); --gold: #92702f; --gold-dark: #765722; --gold-pale: rgba(146,112,47,.11); --shadow: 0 16px 34px rgba(40,61,51,.1);
+}
+:root[data-theme="light"] body { background: linear-gradient(135deg, rgba(146,112,47,.05) 25%, transparent 25%) 0 0 / 28px 28px, var(--page); }
+:root[data-theme="light"] .next-prayer { background: linear-gradient(130deg, #164e52, #207b67 58%, #96733a) !important; }
+:root[data-theme="light"] .prayer-section, :root[data-theme="light"] .daily-adhkar-card, :root[data-theme="light"] .content-block, :root[data-theme="light"] .daily-dua.card, :root[data-theme="light"] .upcoming-card, :root[data-theme="light"] .card, :root[data-theme="light"] .settings-card, :root[data-theme="light"] .worship-card, :root[data-theme="light"] .weekly-report-card, :root[data-theme="light"] .qibla-card, :root[data-theme="light"] .traveler-card { background: var(--surface) !important; }
+:root[data-theme="light"] .prayer-row, :root[data-theme="light"] .prayer-track-item, :root[data-theme="light"] .task-item, :root[data-theme="light"] .quick-action, :root[data-theme="light"] .category-card, :root[data-theme="light"] .dua-item, :root[data-theme="light"] .azkar-search input, :root[data-theme="light"] .azkar-search-result, :root[data-theme="light"] .azkar-search-empty, :root[data-theme="light"] #azkarList, :root[data-theme="light"] .more-menu-item, :root[data-theme="light"] .learning-module, :root[data-theme="light"] .upcoming-card { color: var(--ink) !important; background: #fffaf0 !important; }
+:root[data-theme="light"] .bottom-nav { background: #173f42 !important; }
+:root[data-theme="light"] .nav-item { color: #b6d1c6 !important; }
+:root[data-theme="light"] .nav-item.active { color: #f2d796 !important; background: rgba(213,182,106,.2) !important; }
+:root[data-theme="light"] .ayah, :root[data-theme="light"] .dhikr, :root[data-theme="light"] .daily-dua-text, :root[data-theme="light"] .dua-text, :root[data-theme="light"] .zikr-text, :root[data-theme="light"] .hadith-text { color: #27433f !important; }
