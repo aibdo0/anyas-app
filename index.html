@@ -39,7 +39,7 @@
 
 
 <link rel="stylesheet" href="css/theme-white-gold.css?v=20260927-2">
-<link rel="stylesheet" href="css/tasks-ux.css?v=20260929-1">
+<link rel="stylesheet" href="css/tasks-ux.css?v=20260929-2">
 </head>
 <body>
 <div class="app">
@@ -97,6 +97,24 @@
 <div class="prayer-progress-bar" id="prayerProgressBar"></div>
 </div>
 
+</section>
+
+
+<section class="section home-daily-summary" aria-labelledby="homeDailySummaryHeading">
+  <div class="home-summary-heading">
+    <div>
+      <span class="home-summary-eyebrow">متابعتك اليوم</span>
+      <h2 id="homeDailySummaryHeading">كيف يمضي يومك؟</h2>
+    </div>
+    <span class="home-summary-percent" id="homeDailySummaryPercent">0%</span>
+  </div>
+  <div class="home-summary-progress" aria-hidden="true"><span id="homeDailySummaryProgress"></span></div>
+  <div class="home-summary-metrics">
+    <div><strong id="homeSummaryPrayerCount">0/5</strong><small>الصلوات</small></div>
+    <div><strong id="homeSummaryExtraCount">0/4</strong><small>الأعمال</small></div>
+    <div><strong id="homeSummaryNextAction">ابدأ</strong><small>خطوتك التالية</small></div>
+  </div>
+  <button class="home-summary-button" type="button" data-more-go="tasks">افتح مهام اليوم <span aria-hidden="true">←</span></button>
 </section>
 
 
