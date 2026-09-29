@@ -1667,6 +1667,12 @@ function setupUpdateBanner() {
       "updateBanner"
     );
 
+  // نسخة Android تحمل ملفاتها محليًا؛ لا تعرض تنبيه تحديث الويب داخلها.
+  if (window.AnyasAndroid && banner) {
+    banner.hidden = true;
+    return;
+  }
+
   const updateButton =
     document.getElementById(
       "updateButton"

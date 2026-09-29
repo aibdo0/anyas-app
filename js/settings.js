@@ -585,7 +585,7 @@ function setupThemeAndLanguage() {
   const language =
     document.getElementById("languageSelect");
 
-  let initialMode = "dark";
+  let initialMode = "light";
   try {
     const savedMode = localStorage.getItem("anyas_themeMode");
     const legacyMode = localStorage.getItem("anyas_darkMode");
@@ -595,9 +595,9 @@ function setupThemeAndLanguage() {
         ? "light"
         : legacyMode === "true"
           ? "dark"
-          : "dark";
+          : "light";
   } catch (error) {
-    initialMode = "dark";
+    initialMode = "light";
   }
 
   function applyTheme(mode, persist = true) {
