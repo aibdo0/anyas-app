@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.view.View;
+import android.widget.TextView;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -20,6 +22,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.webkit.WebViewAssetLoader;
 import org.json.JSONObject;
+import java.util.Calendar;
 
 public class MainActivity extends Activity {
     static final String HOST = "appassets.androidplatform.net";
@@ -31,9 +34,27 @@ public class MainActivity extends Activity {
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         View splash = getLayoutInflater().inflate(R.layout.activity_splash, null);
+        View splashTint = splash.findViewById(R.id.splashTint);
+        TextView splashQuote = splash.findViewById(R.id.splashQuote);
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        if (hour >= 5 && hour < 12) {
+            splashQuote.setText("وَاذْكُر رَّبَّكَ إِذَا نَسِيتَ");
+            splashTint.setBackgroundColor(0x120B4F3F);
+        } else if (hour >= 12 && hour < 18) {
+            splashQuote.setText("ألا بذكر الله تطمئن القلوب");
+            splashTint.setBackgroundColor(0x08B18A43);
+        } else {
+            splashQuote.setText("رفيقك اليومي للصلاة والأذكار");
+            splashTint.setBackgroundColor(0x300D1B18);
+            splashQuote.setTextColor(Color.WHITE);
+        }
         splash.setAlpha(0f);
+        splash.setScaleX(0.985f);
+        splash.setScaleY(0.985f);
         setContentView(splash);
-        splash.animate().alpha(1f).setDuration(260).start();
+        splash.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(420).start();
+        splashQuote.setAlpha(0f);
+        splashQuote.animate().alpha(1f).setStartDelay(220).setDuration(520).start();
         Handler mainHandler = new Handler(Looper.getMainLooper());
         final boolean[] appShown = { false };
         Runnable showApp = () -> {
@@ -58,7 +79,7 @@ public class MainActivity extends Activity {
         web.addJavascriptInterface(new NativeBridge(), "AnyasAndroid");
         web.setWebViewClient(new WebViewClient() {
             @Override public void onPageFinished(WebView view, String url) {
-                mainHandler.postDelayed(showApp, 850);
+                mainHandler.postDelayed(showApp, 650);
             }
             @Override public android.webkit.WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 return assetLoader.shouldInterceptRequest(request.getUrl());
@@ -99,9 +120,9 @@ public class MainActivity extends Activity {
         });
         if (state == null) web.loadUrl("https://" + HOST + "/assets/index.html"); else {
             web.restoreState(state);
-            mainHandler.postDelayed(showApp, 850);
+            mainHandler.postDelayed(showApp, 650);
         }
-        mainHandler.postDelayed(showApp, 3500);
+        mainHandler.postDelayed(showApp, 2200);
     }
 
     @Override public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
