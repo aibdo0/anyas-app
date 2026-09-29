@@ -7,7 +7,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
+import android.view.View;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -27,11 +30,21 @@ public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        View splash = getLayoutInflater().inflate(R.layout.activity_splash, null);
+        splash.setAlpha(0f);
+        setContentView(splash);
+        splash.animate().alpha(1f).setDuration(260).start();
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        final boolean[] appShown = { false };
+        Runnable showApp = () -> {
+            if (appShown[0]) return;
+            appShown[0] = true;
+            splash.animate().alpha(0f).setDuration(220).withEndAction(() -> setContentView(web)).start();
+        };
         assetLoader = new WebViewAssetLoader.Builder()
                 .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
                 .build();
         web = new WebView(this);
-        setContentView(web);
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
@@ -44,6 +57,9 @@ public class MainActivity extends Activity {
         s.setSupportMultipleWindows(true);
         web.addJavascriptInterface(new NativeBridge(), "AnyasAndroid");
         web.setWebViewClient(new WebViewClient() {
+            @Override public void onPageFinished(WebView view, String url) {
+                mainHandler.postDelayed(showApp, 850);
+            }
             @Override public android.webkit.WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 return assetLoader.shouldInterceptRequest(request.getUrl());
             }
@@ -81,7 +97,11 @@ public class MainActivity extends Activity {
                 }
             }
         });
-        if (state == null) web.loadUrl("https://" + HOST + "/assets/index.html"); else web.restoreState(state);
+        if (state == null) web.loadUrl("https://" + HOST + "/assets/index.html"); else {
+            web.restoreState(state);
+            mainHandler.postDelayed(showApp, 850);
+        }
+        mainHandler.postDelayed(showApp, 3500);
     }
 
     @Override public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
