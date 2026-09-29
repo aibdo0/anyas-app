@@ -31,8 +31,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
   width: 100%; max-width: 720px; margin-inline: auto;
   padding: 20px 18px calc(112px + env(safe-area-inset-bottom));
 }
-.page.active { animation: anyas-enter .24s ease-out both; }
-@keyframes anyas-enter { from { opacity: .65; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.page.active { animation: maab-enter .24s ease-out both; }
+@keyframes maab-enter { from { opacity: .65; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 .update-banner {
   position: sticky; top: 8px; z-index: 20; display: flex; align-items: center; gap: 10px;
   margin: 10px 16px; padding: 12px 14px; border: 1px solid #e8ddc8; border-radius: 16px;
