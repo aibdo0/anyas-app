@@ -267,3 +267,16 @@ input, select, textarea { color: var(--ink) !important; border-color: var(--line
 :root[data-theme="dark"] body .theme-toggle { color: var(--gold-dark) !important; border-color: var(--line) !important; background: #fff !important; }
 :root[data-theme="dark"] body .more-button { color: var(--gold-dark) !important; border-color: var(--line) !important; background: var(--gold-pale) !important; }
 :root[data-theme="dark"] body .page .back-button { color: var(--gold-dark) !important; border-color: var(--line) !important; background: #fff !important; }
+
+
+/* MIHRAB SIGNATURE — an Islamic arch inside the next-prayer card. */
+#page-home .next-prayer { border-radius: 18px !important; isolation: isolate; }
+#page-home .next-prayer::before {
+  content: ""; position: absolute; z-index: 0; top: 14px; left: 50%; width: min(82%, 390px); height: calc(100% - 28px);
+  transform: translateX(-50%); border: 1px solid rgba(248,233,191,.34); border-bottom: 0; border-radius: 220px 220px 0 0; pointer-events: none;
+}
+#page-home .next-prayer::after {
+  content: ""; position: absolute; z-index: 0; top: 23px; left: 50%; width: min(76%, 360px); height: calc(100% - 37px);
+  transform: translateX(-50%); border: 1px solid rgba(248,233,191,.12); border-bottom: 0; border-radius: 190px 190px 0 0; pointer-events: none;
+}
+#page-home .next-prayer > * { position: relative; z-index: 1; }
