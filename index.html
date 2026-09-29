@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta id="themeColorMeta" name="theme-color" content="#101114">
+<meta id="themeColorMeta" name="theme-color" content="#fbfaf7">
 <meta name="description" content="أنياس - رفيق يومي لمواقيت الصلاة والقرآن والأذكار">
 <title>أنياس</title>
 
 <script>
   (function () {
-    var mode = "dark";
+    var mode = "light";
     try {
       mode = localStorage.getItem("anyas_themeMode") || "";
       if (!["system", "light", "dark"].includes(mode)) {
         var legacy = localStorage.getItem("anyas_darkMode");
-        mode = legacy === "false" ? "light" : legacy === "true" ? "dark" : "dark";
+        mode = legacy === "false" ? "light" : legacy === "true" ? "dark" : "light";
       }
     } catch (error) {}
     var dark = mode === "dark" || (mode === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
@@ -795,7 +795,7 @@ aria-selected="false"
 <div class="appearance-setting">
   <div class="setting-info">
     <div class="setting-title">مظهر التطبيق</div>
-    <div class="setting-description" id="themeModeDescription">الوضع الداكن مفعّل افتراضيًا</div>
+    <div class="setting-description" id="themeModeDescription">الوضع الفاتح مفعّل افتراضيًا</div>
   </div>
   <div class="theme-mode-picker" role="radiogroup" aria-label="اختيار مظهر التطبيق">
     <label class="theme-mode-option"><input type="radio" name="themeMode" value="system"><span>النظام</span></label>
