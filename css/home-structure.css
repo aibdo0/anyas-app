@@ -1,0 +1,28 @@
+/* Keep the Ayah prominent; place the long Hadith beside Dhikr + Dua to remove dead space. */
+#page-home .daily-content.card { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: start; gap: 12px; padding: 0; border: 0; background: transparent; box-shadow: none; }
+#page-home .daily-content.card > .content-block:first-child { grid-column: 1 / -1; }
+#page-home .daily-content-columns { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,.85fr); align-items: start; gap: 12px; min-width: 0; }
+#page-home .daily-content-reading-column,
+#page-home .daily-content-side-column { display: grid; align-content: start; gap: 12px; min-width: 0; }
+#page-home .daily-content-columns .content-block,
+#page-home .daily-content-side-column .daily-dua.card { align-self: start; min-width: 0; padding: 15px 17px; border: 1px solid #e8e1d4; border-radius: 19px; background: #fff; box-shadow: 0 6px 18px rgba(56,49,40,.04); }
+#page-home .daily-content-columns .content-block { display: grid; gap: 5px; }
+#page-home .daily-content-columns .card-title,
+#page-home .daily-content-side-column .daily-dua .card-title { margin: 0 0 4px; color: var(--gold-dark); font-size: 13px; font-weight: 800; }
+#page-home .daily-content-columns .hadith-text { margin: 0; color: var(--ink); font-size: 15px; line-height: 1.75; overflow-wrap: anywhere; }
+#page-home .daily-content-columns .dhikr { margin: 0; color: var(--ink); font-family: "Amiri","Noto Naskh Arabic",serif; font-size: 17px; font-weight: 700; line-height: 1.8; overflow-wrap: anywhere; }
+#page-home .daily-content-columns .reference { margin-top: 3px; color: var(--muted); font-size: 10px; }
+#page-home .daily-content-side-column .daily-dua.card { display: grid; gap: 8px; border-color: #e6dcc9; background: linear-gradient(145deg,#faf6ed,#fffdf9); }
+#page-home .daily-content-side-column .daily-dua .card-title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+#page-home .daily-content-side-column .daily-dua-text { margin: 0; color: var(--ink); font-family: "Amiri","Noto Naskh Arabic",serif; font-size: 21px; font-weight: 700; line-height: 1.8; }
+@media (max-width: 560px) {
+  #page-home .daily-content-columns { grid-template-columns: minmax(0,1fr); gap: 10px; }
+  #page-home .daily-content-side-column { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+  #page-home .daily-content-columns .content-block,
+  #page-home .daily-content-side-column .daily-dua.card { padding: 11px 10px; border-radius: 16px; }
+  #page-home .daily-content-columns .hadith-text { font-size: 13px; line-height: 1.65; }
+  #page-home .daily-content-columns .dhikr,
+  #page-home .daily-content-side-column .daily-dua-text { font-size: 15px; line-height: 1.65; }
+}
+:root[data-theme="dark"] #page-home .daily-content-columns .content-block,
+:root[data-theme="dark"] #page-home .daily-content-side-column .daily-dua.card { border-color: var(--line); background: var(--surface); }
