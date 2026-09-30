@@ -31,10 +31,7 @@
 <link rel="stylesheet" href="css/daily-adhkar.css?v=20260927-2">
 <link rel="stylesheet" href="css/settings.css?v=20260927-2">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="css/offline-fonts.css">
 
 
 
@@ -1172,9 +1169,12 @@ type="button"
 </div>
 
 <div class="settings-subtitle">الورد اليومي</div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الاستيقاظ</div><div class="setting-description">تذكير عند بداية وقت الاستيقاظ — ٤:٣٠ ص</div></div><label class="switch"><input id="notifyWardAwakening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الصباح</div><div class="setting-description">تذكير لطيف ببدء ورد الصباح</div></div><label class="switch"><input id="notifyWardMorning" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار اليوم</div><div class="setting-description">تذكير بالورد العام — ١٢:٠٠ ظ</div></div><label class="switch"><input id="notifyWardGeneral" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار المساء</div><div class="setting-description">تذكير بورد المساء دون إزعاج</div></div><label class="switch"><input id="notifyWardEvening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار النوم</div><div class="setting-description">تذكير هادئ قبل النوم</div></div><label class="switch"><input id="notifyWardSleep" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">استغفار السحر</div><div class="setting-description">تذكير في وقت السحر — ٢:٠٠ ص</div></div><label class="switch"><input id="notifyWardSahar" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 
 <div class="settings-subtitle">يوم الجمعة</div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">سورة الكهف</div><div class="setting-description">لا تنس قراءتها يوم الجمعة</div></div><label class="switch"><input id="notifyFridayKahf" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
@@ -1782,6 +1782,7 @@ type="button"
 <script src="data/daily-hadith-ids.js?v=20260926-3"></script>
 <script src="data/daily-devotions.js?v=20260926-3"></script>
 <script src="data/learning-lessons.js?v=20260926-3"></script>
+<script src="js/vendor/adhan.umd.min.js"></script>
 <script src="js/prayer.js?v=20260927-2"></script>
 <script src="js/daily-adhkar.js?v=20260926-3"></script>
 <script src="js/favorites.js?v=20260926-3"></script>
