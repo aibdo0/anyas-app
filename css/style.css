@@ -326,7 +326,7 @@ body {
 .nav-item[data-page="tasks"] .nav-icon::before { content: "م"; }
 .nav-item[data-page="more"] .nav-icon::before { content: "+"; }
 
-.nav-item[data-page="tasks"]::after { content: "مهام اليوم"; }
+.nav-item[data-page="tasks"]::after { content: "يوم المسلم"; }
 .nav-item[data-page="more"]::after { content: "المزيد"; }
 
 .nav-item[data-page="duas"]::after {
