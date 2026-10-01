@@ -855,6 +855,11 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .bottom-nav .nav-item { min-height: 61px; margin-top: 7px; border-radius: 16px; color: #9c978e !important; background: transparent !important; }
 .bottom-nav .nav-item.active { color: #b28b43 !important; background: #fbf8f0 !important; }
 .bottom-nav .nav-item .nav-icon::before, .bottom-nav .nav-item:not(.active) .nav-icon::before, .bottom-nav .nav-item.active .nav-icon::before { width: 46px; height: 46px; color: currentColor !important; background: transparent !important; font-size: 28px; font-weight: 400; }
+.bottom-nav .nav-item .nav-icon::before { display: none !important; }
+.bottom-nav .nav-item .nav-icon { display: grid; width: 48px; height: 48px; place-items: center; overflow: visible; color: #918b80 !important; }
+.bottom-nav .nav-item .nav-icon svg { display: block; width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+.bottom-nav .nav-item.active .nav-icon { width: 58px; height: 48px; border-radius: 16px; background: #f1eadb; color: #9b783e !important; }
+.bottom-nav .nav-item.active .nav-icon svg { width: 29px; height: 29px; stroke-width: 2; }
 .bottom-nav .nav-item:nth-child(1) .nav-icon::before { content: "⌂"; }
 .bottom-nav .nav-item:nth-child(2) .nav-icon::before { content: "◷"; }
 .bottom-nav .nav-item:nth-child(4) .nav-icon::before { content: "ذ"; }
