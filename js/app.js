@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setupAzkarTopics();
   moveWorshipSettingsToPage();
+  setupSettingsSectionTabs();
   setupWorshipSettings();
 
   setupQuickActions();
@@ -1670,6 +1671,33 @@ function moveWorshipSettingsToPage() {
   const card = title?.nextElementSibling;
   const mount = document.getElementById("worshipContent");
   if (title && card && mount) mount.append(title, card);
+}
+
+function setupSettingsSectionTabs() {
+  const headings = document.querySelectorAll("#page-settings .settings-section-title");
+  headings.forEach((heading, index) => {
+    const panel = heading.nextElementSibling;
+    if (!panel || !panel.matches(".settings-card, .worship-card")) return;
+
+    const label = heading.textContent.trim();
+    const panelId = panel.id || `settingsSectionPanel${index + 1}`;
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = `${heading.className} settings-section-toggle`;
+    toggle.textContent = label;
+    toggle.setAttribute("aria-controls", panelId);
+    toggle.setAttribute("aria-expanded", "false");
+    panel.id = panelId;
+    panel.hidden = true;
+
+    toggle.addEventListener("click", () => {
+      const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!isExpanded));
+      panel.hidden = isExpanded;
+    });
+
+    heading.replaceWith(toggle);
+  });
 }
 
 

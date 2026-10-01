@@ -49,7 +49,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .date-line { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; font-weight: 600; }
 .date-separator { color: var(--gold); }
 .location-line { justify-self: end; color: var(--gold-light); background: var(--gold-pale); border-radius: 999px; padding: 5px 11px; font-size: 13px; font-weight: 700; }
-.notification-bell-button { position: absolute; top: 7px; inset-inline-end: 52px; display: grid; width: 43px; height: 43px; place-items: center; border: 1px solid #eadfc9; border-radius: 14px; color: var(--gold-dark); background: var(--surface); cursor: pointer; box-shadow: 0 5px 15px rgba(62,52,34,.07); }
+.notification-bell-button { position: absolute; top: 7px; inset-inline-end: 52px; display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid var(--line); border-radius: 15px; color: var(--gold-dark); background: var(--surface); cursor: pointer; box-shadow: 0 5px 15px rgba(35,30,22,.08); transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
 .notification-bell-icon { display: block; width: 22px; height: 22px; fill: none; stroke: var(--gold-dark); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .notification-badge { position: absolute; top: -7px; inset-inline-end: -7px; display: grid; min-width: 22px; height: 22px; padding-inline: 5px; place-items: center; border: 2px solid var(--surface); border-radius: 99px; color: #fff; background: #d9272e; font-size: 11px; font-weight: 800; line-height: 1; }
 .notification-badge[hidden] { display: none; }
@@ -413,6 +413,23 @@ button.prayer-row:hover { border-color: #dccda9 !important; background: #fffdf9 
 #page-settings .section { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
 #page-settings .plain-header, #page-more .plain-header { margin-bottom: 12px; }
 #page-settings .settings-section-title { margin: 22px 4px 9px; color: var(--gold-dark); font-size: 14px; letter-spacing: .01em; }
+#page-settings .settings-section-toggle {
+  display: flex; width: calc(100% - 8px); min-height: 48px; align-items: center; justify-content: space-between; gap: 12px;
+  margin: 22px 4px 9px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 15px;
+  color: var(--gold-dark); background: var(--surface); font: inherit; font-size: 14px; font-weight: 800;
+  letter-spacing: .01em; text-align: right; cursor: pointer; box-shadow: 0 5px 15px rgba(56,49,40,.045);
+  transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease;
+}
+#page-settings .settings-section-toggle::after {
+  content: "⌄"; display: grid; width: 27px; height: 27px; flex: 0 0 27px; place-items: center;
+  border-radius: 50%; color: var(--gold-dark); background: var(--gold-pale); font-size: 17px; line-height: 1;
+  transition: transform .18s ease;
+}
+#page-settings .settings-section-toggle[aria-expanded="true"] { border-color: rgba(196,154,85,.55); background: var(--gold-pale); }
+#page-settings .settings-section-toggle[aria-expanded="true"]::after { transform: rotate(180deg); }
+#page-settings .settings-section-toggle:hover { border-color: var(--gold); box-shadow: 0 7px 18px rgba(56,49,40,.08); }
+#page-settings .settings-section-toggle + .settings-card[hidden],
+#page-settings .settings-section-toggle + .worship-card[hidden] { display: none !important; }
 #page-settings .settings-card { padding-inline: 16px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.96); box-shadow: var(--shadow); }
 #page-settings .setting-row { min-height: 60px; }
 #page-settings .setting-title { color: var(--ink); }
@@ -585,8 +602,10 @@ html[data-theme="dark"] { background: var(--page) !important; }
   position: absolute; inset-inline-end: 1px; top: 7px; display: grid; width: 42px; height: 42px;
   place-items: center; border: 1px solid var(--line); border-radius: 15px; color: var(--gold-dark);
   background: var(--surface); box-shadow: 0 5px 15px rgba(35,30,22,.08); font-size: 20px; cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
 }
-.theme-toggle:active { transform: scale(.95); }
+.theme-toggle:hover, .notification-bell-button:hover { transform: translateY(-1px); border-color: rgba(196,154,85,.72); box-shadow: 0 7px 17px rgba(62,52,34,.10); }
+.theme-toggle:active, .notification-bell-button:active { transform: scale(.95); }
 .next-prayer {
   min-height: 235px; display: flex; flex-direction: column; justify-content: center; gap: 3px;
   border: 1px solid rgba(255,255,255,.22) !important; color: #fff !important;
@@ -692,7 +711,8 @@ html[data-theme="dark"] { background: var(--page) !important; }
 :root[data-theme="dark"] .manual-prayer-card {
   border-color: #34343a; color: var(--ink); background-color: var(--surface);
 }
-:root[data-theme="dark"] .theme-toggle { border-color: #36363d; color: #ddc58f; background: #202126; box-shadow: 0 5px 18px rgba(0,0,0,.24); }
+:root[data-theme="dark"] .theme-toggle,
+:root[data-theme="dark"] .notification-bell-button { border-color: #36363d; color: #ddc58f; background: #202126; box-shadow: 0 5px 18px rgba(0,0,0,.24); }
 :root[data-theme="dark"] .sunnah-virtue,
 :root[data-theme="dark"] .hijri-day-pill,
 :root[data-theme="dark"] .sunnah-total,
