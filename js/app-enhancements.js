@@ -6,6 +6,7 @@
   const byId = id => document.getElementById(id);
   const prayerNames = { Fajr: "الفجر", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" };
   const prayerKeys = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+  const prayerLabel = (key, date = new Date()) => key === "Dhuhr" && date.getDay() === 5 ? "الجمعة" : prayerNames[key];
 
   function initGreeting() {
     const input = byId("userNameInput");
@@ -130,7 +131,7 @@
     function renderDay(data, date) {
       const timings = data.timings || {};
       list.innerHTML = `<div class="schedule-day-title">${date.toLocaleDateString("ar-EG", { weekday: "long", day: "numeric", month: "long" })}</div>`;
-      prayerKeys.forEach(key => addRow(prayerNames[key], timings[key]));
+      prayerKeys.forEach(key => addRow(prayerLabel(key, date), timings[key]));
     }
     function renderMonth(data) {
       const weekdays = { Sunday: "الأحد", Monday: "الاثنين", Tuesday: "الثلاثاء", Wednesday: "الأربعاء", Thursday: "الخميس", Friday: "الجمعة", Saturday: "السبت" };
@@ -140,7 +141,8 @@
         const row = document.createElement("div"); row.className = "schedule-month-row";
         const weekday = weekdays[day.date?.gregorian?.weekday?.en] || "";
         const dateNumber = toArabic(day.date?.gregorian?.day || "");
-        const times = prayerKeys.map(key => `${prayerNames[key]} ${cleanTime(day.timings?.[key])}`).join(" · ");
+        const dayDate = new Date(Number(day.date?.gregorian?.year), Number(day.date?.gregorian?.month?.number || 1) - 1, Number(day.date?.gregorian?.day || 1));
+        const times = prayerKeys.map(key => `${prayerLabel(key, dayDate)} ${cleanTime(day.timings?.[key])}`).join(" · ");
         row.innerHTML = `<strong>${dateNumber}</strong><span class="schedule-month-info"><b>${weekday}</b><em>${times}</em></span>`;
         list.appendChild(row);
       });
@@ -156,6 +158,11 @@
     if (!value) return null;
     const match = String(value).match(/(\d{1,2}):(\d{2})/); if (!match) return null;
     const date = new Date(); date.setHours(Number(match[1]), Number(match[2]), 0, 0); return date;
+  }
+
+  function updateFridayPrayerLabel() {
+    const title = document.querySelector('[data-prayer="Dhuhr"] .prayer-title');
+    if (title) title.textContent = prayerLabel("Dhuhr");
   }
 
   function updatePrayerMoment() {
@@ -175,7 +182,7 @@
     let after = null;
     for (const key of prayerKeys) { const time = getTime(key); if (!time) continue; const diff = Math.floor((now - time) / 60000); if (diff >= 0 && diff < 10) after = key; }
     const sunrise = getTime("Sunrise") || (() => { const t = byId("sunriseTime")?.textContent.match(/(\d{1,2}):(\d{2})/); if (!t) return null; const d = new Date(); d.setHours(+t[1], +t[2], 0, 0); return d; })();
-    let state = after ? { title: `أذكار ما بعد صلاة ${prayerNames[after]}`, badge: "بعد الصلاة", text: "ورد قصير بعد السلام؛ اغتنم الدقائق الأولى بعد الصلاة.", hint: "متاح ١٠ دقائق", action: "afterPrayer" } : null;
+    let state = after ? { title: `أذكار ما بعد صلاة ${prayerLabel(after)}`, badge: "بعد الصلاة", text: "ورد قصير بعد السلام؛ اغتنم الدقائق الأولى بعد الصلاة.", hint: "متاح ١٠ دقائق", action: "afterPrayer" } : null;
     if (!state && sunrise && now < sunrise) state = { title: "أذكار السحر والاستغفار", badge: "قبل الفجر", text: "وقت هادئ للاستغفار والدعاء وقيام الليل.", hint: "حتى دخول الفجر", action: "sahar" };
     if (!state && sunrise && now < new Date(sunrise.getTime() + 20 * 60000)) state = { title: "أذكار عامة", badge: "بعد الشروق", text: "أكثر من ذكر الله بما تيسر لك حتى يبدأ ورد الصباح.", hint: "ورد مطلق", action: "general" };
     if (!state) state = { title: now.getHours() >= 16 ? "أذكار المساء" : "أذكار الصباح", badge: now.getHours() >= 16 ? "المساء" : "الصباح", text: "ورد مناسب لوقتك، افتحه واقرأه بهدوء.", hint: "افتح الورد", action: now.getHours() >= 16 ? "evening" : "morning" };
@@ -244,7 +251,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     initGreeting(); initCityPicker(); initPrayerSchedule(); initNotificationsList();
     byId("mosquesBackButton")?.addEventListener("click", () => openPage("home"));
-    updatePrayerMoment(); setInterval(updatePrayerMoment, 5000);
+    updateFridayPrayerLabel(); updatePrayerMoment(); setInterval(updatePrayerMoment, 5000);
   });
   window.updatePrayerMoment = updatePrayerMoment;
   window.openMosqueDirectory = openMosqueDirectory;
