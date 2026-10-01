@@ -50,7 +50,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .date-separator { color: var(--gold); }
 .location-line { justify-self: end; color: var(--gold-light); background: var(--gold-pale); border-radius: 999px; padding: 5px 11px; font-size: 13px; font-weight: 700; }
 .notification-bell-button { position: absolute; top: 7px; inset-inline-end: 52px; display: grid; width: 43px; height: 43px; place-items: center; border: 1px solid #eadfc9; border-radius: 14px; color: var(--gold-dark); background: var(--surface); cursor: pointer; box-shadow: 0 5px 15px rgba(62,52,34,.07); }
-.notification-bell-icon { display: block; font-size: 21px; line-height: 1; filter: saturate(.7); }
+.notification-bell-icon { display: block; width: 22px; height: 22px; fill: none; stroke: var(--gold-dark); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .notification-badge { position: absolute; top: -7px; inset-inline-end: -7px; display: grid; min-width: 22px; height: 22px; padding-inline: 5px; place-items: center; border: 2px solid var(--surface); border-radius: 99px; color: #fff; background: #d9272e; font-size: 11px; font-weight: 800; line-height: 1; }
 .notification-badge[hidden] { display: none; }
 .plain-header { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin: 0 0 22px; padding: 8px 2px 12px; }
