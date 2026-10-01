@@ -35,7 +35,7 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261001-4">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261001-5">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20260927-2">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 </head>
@@ -123,11 +123,6 @@
       <button class="daily-adhkar-button" id="openDailyAdhkarButton" type="button">افتح الأذكار</button>
     </div>
   </div>
-</section>
-
-<section class="section notification-preview-section" aria-labelledby="notificationPreviewHeading">
-  <div class="section-heading"><div class="section-title" id="notificationPreviewHeading">الإشعارات</div><button class="more-button" id="openNotificationsButton" type="button">عرض الكل</button></div>
-  <div class="notification-preview" id="notificationPreview"><span class="notification-dot muted" aria-hidden="true"></span><span>فعّل ما يناسبك من الإعدادات</span></div>
 </section>
 
 <section class="section prayer-section">
@@ -1666,6 +1661,11 @@ value="100"
 <main class="page" id="page-mosques">
   <header class="plain-header"><button class="back-button" id="mosquesBackButton" type="button">رجوع</button><div class="brand">أقرب مسجد</div><div class="date" id="mosquesLocationLabel">حول موقعك الحالي</div></header>
   <section class="mosques-card"><div id="mosquesList" class="mosques-list" aria-live="polite"><div class="schedule-loading">جارٍ البحث عن المساجد…</div></div><button id="openMosquesMapButton" class="secondary-action" type="button">فتح النتائج على الخريطة</button></section>
+</main>
+
+<main class="page" id="page-notifications">
+  <header class="plain-header"><button class="back-button" id="notificationsBackButton" type="button">رجوع</button><div class="brand">الإشعارات</div><div class="date">تنبيهات الصلاة والأذكار</div></header>
+  <section class="notifications-card"><div id="notificationList" class="notification-list" aria-live="polite"><div class="notification-empty">لا توجد إشعارات الآن</div></div></section>
 </main>
 
 <!-- =====================================================
