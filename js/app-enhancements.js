@@ -133,10 +133,15 @@
       prayerKeys.forEach(key => addRow(prayerNames[key], timings[key]));
     }
     function renderMonth(data) {
+      const weekdays = { Sunday: "الأحد", Monday: "الاثنين", Tuesday: "الثلاثاء", Wednesday: "الأربعاء", Thursday: "الخميس", Friday: "الجمعة", Saturday: "السبت" };
+      const cleanTime = value => String(value || "--").replace(/\s*\([^)]*\)/g, "").trim();
       list.replaceChildren();
       data.slice(0, 31).forEach(day => {
         const row = document.createElement("div"); row.className = "schedule-month-row";
-        row.innerHTML = `<strong>${day.date?.gregorian?.day || ""}</strong><span>${day.date?.gregorian?.weekday?.en || ""}</span><em>${day.timings?.Fajr || "--"} · ${day.timings?.Dhuhr || "--"} · ${day.timings?.Maghrib || "--"}</em>`;
+        const weekday = weekdays[day.date?.gregorian?.weekday?.en] || "";
+        const dateNumber = toArabic(day.date?.gregorian?.day || "");
+        const times = prayerKeys.map(key => `${prayerNames[key]} ${cleanTime(day.timings?.[key])}`).join(" · ");
+        row.innerHTML = `<strong>${dateNumber}</strong><span class="schedule-month-info"><b>${weekday}</b><em>${times}</em></span>`;
         list.appendChild(row);
       });
     }
@@ -182,6 +187,9 @@
     const button = byId("openNotificationsButton");
     const preview = byId("notificationPreview");
     if (!button || !preview) return;
+    const notificationSection = preview.closest(".notification-preview-section");
+    const homeHeader = byId("page-home")?.querySelector(".main-header");
+    if (notificationSection && homeHeader) homeHeader.after(notificationSection);
     const render = () => {
       const items = [];
       if (byId("notifyPrayerSoon")?.checked) items.push("تنبيه اقتراب الصلاة");
@@ -204,11 +212,16 @@
     }
     list.innerHTML = '<div class="schedule-loading">جارٍ البحث حولك…</div>';
     const radius = 5000;
-    const query = `[out:json][timeout:15];(nwr[amenity=place_of_worship][religion=muslim](around:${radius},${location.latitude},${location.longitude}););out center tags;`;
+    const query = `[out:json][timeout:25];(nwr[amenity=place_of_worship](around:${radius},${location.latitude},${location.longitude});nwr[building=mosque](around:${radius},${location.latitude},${location.longitude}););out center tags;`;
     try {
-      const response = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query });
+      let response = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query });
+      if (!response.ok) response = await fetch("https://overpass.kumi.systems/api/interpreter", { method: "POST", body: query });
       const data = await response.json();
-      const places = (data.elements || []).slice(0, 12);
+      const seen = new Set();
+      const places = (data.elements || []).filter(place => {
+        const lat = place.lat ?? place.center?.lat, lon = place.lon ?? place.center?.lon;
+        const key = `${lat},${lon}`; if (!lat || !lon || seen.has(key)) return false; seen.add(key); return true;
+      }).slice(0, 12);
       list.replaceChildren();
       if (!places.length) { list.innerHTML = '<div class="schedule-loading">لم نجد مسجدًا مسجلًا قريبًا. جرّب الخريطة لرؤية نتائج أكثر.</div>'; return; }
       places.forEach(place => {

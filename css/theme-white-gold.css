@@ -819,10 +819,11 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .schedule-day-title { padding: 2px 3px 8px; color: var(--gold-dark); font-size: 14px; font-weight: 800; }
 .schedule-row, .schedule-month-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; min-height: 48px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: var(--surface-soft); }
 .schedule-row strong { color: var(--gold-dark); font-variant-numeric: tabular-nums; }
-.schedule-month-row { grid-template-columns: 34px 1fr auto; }
-.schedule-month-row strong { color: var(--gold-dark); }
-.schedule-month-row span { color: var(--muted); font-size: 11px; }
-.schedule-month-row em { color: var(--ink); font-size: 11px; font-style: normal; direction: ltr; }
+.schedule-month-row { grid-template-columns: auto 1fr; direction: rtl; }
+.schedule-month-row strong { min-width: 34px; color: var(--gold-dark); font-size: 21px; text-align: center; }
+.schedule-month-info { display: grid; gap: 2px; min-width: 0; }
+.schedule-month-info b { color: var(--muted); font-size: 13px; }
+.schedule-month-info em { color: var(--ink); font-size: 11px; font-style: normal; line-height: 1.7; overflow-wrap: anywhere; }
 .schedule-loading { padding: 22px 4px; color: var(--muted); text-align: center; }
 #page-city-picker, #page-prayer-schedule { padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
 /* Arabic icon-only bottom navigation: labels remain available to screen readers. */
@@ -835,6 +836,8 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .bottom-nav .nav-item:nth-child(3) .nav-icon::before { content: "ع"; }
 .bottom-nav .nav-item:nth-child(4) .nav-icon::before { content: "ذ"; }
 .bottom-nav .nav-item:nth-child(5) .nav-icon::before { content: "⋯"; }
+.bottom-nav .nav-item:not(.active) .nav-icon::before { color: #8c744b !important; background: #faf8f3 !important; }
+.bottom-nav .nav-item.active .nav-icon::before { color: #6b5836 !important; background: #f1eadb !important; }
 :root[data-theme="dark"] .city-picker-card, :root[data-theme="dark"] .schedule-card, :root[data-theme="dark"] .notification-preview { background: var(--surface) !important; }
 :root[data-theme="dark"] .city-search-row input, :root[data-theme="dark"] .name-input, :root[data-theme="dark"] .city-result, :root[data-theme="dark"] .schedule-row, :root[data-theme="dark"] .schedule-month-row { background: var(--surface-soft) !important; color: var(--ink) !important; }
 .mosques-card { display: grid; gap: 13px; padding: 17px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
