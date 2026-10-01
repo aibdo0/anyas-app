@@ -104,46 +104,131 @@
       document.querySelectorAll("[data-schedule-view]").forEach(item => item.classList.toggle("active", item === tab));
       loadSchedule(tab.dataset.scheduleView);
     }));
+    let latestScheduleRequest = 0;
     async function loadSchedule(view) {
+      const requestId = ++latestScheduleRequest;
       const location = currentCoordinates();
-      if (!location.latitude || !location.longitude) { list.textContent = "حدّد مدينتك أولًا."; return; }
+      const latitude = Number(location?.latitude);
+      const longitude = Number(location?.longitude);
+      if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) { list.textContent = "حدّد مدينتك أولًا."; return; }
       list.innerHTML = '<div class="schedule-loading">جارٍ تحميل المواقيت…</div>';
       const date = new Date();
       if (view === "tomorrow") date.setDate(date.getDate() + 1);
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, "0");
+      const hijriMonth = view === "month" ? window.getDisplayedHijriParts?.(date) : null;
+      const method = window.getCalculationMethod?.() || 5;
       try {
         let data;
         if (view === "tomorrow") {
           const day = String(date.getDate()).padStart(2, "0");
-          const response = await fetch(`https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${location.latitude}&longitude=${location.longitude}&method=${window.getCalculationMethod?.() || 5}`);
+          const response = await fetch(`https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}`);
+          if (!response.ok) throw new Error("Prayer time request failed");
           data = (await response.json()).data;
+          if (!data) throw new Error("Prayer time data is missing");
+          if (requestId !== latestScheduleRequest) return;
           renderDay(data, date);
-        } else {
-          const response = await fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${location.latitude}&longitude=${location.longitude}&method=5`);
+        } else if (hijriMonth?.year && hijriMonth?.month) {
+          const response = await fetch(`https://api.aladhan.com/v1/hijriCalendar/${hijriMonth.year}/${hijriMonth.month}?latitude=${latitude}&longitude=${longitude}&method=${method}`);
+          if (!response.ok) throw new Error("Hijri calendar request failed");
           data = (await response.json()).data || [];
-          renderMonth(data);
+          if (requestId !== latestScheduleRequest) return;
+          renderMonth(data, hijriMonth);
+        } else {
+          const response = await fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${latitude}&longitude=${longitude}&method=${method}`);
+          if (!response.ok) throw new Error("Calendar request failed");
+          data = (await response.json()).data || [];
+          if (requestId !== latestScheduleRequest) return;
+          renderMonth(data, null);
         }
         const label = byId("scheduleLocationLabel");
         if (label) label.textContent = `${location.city || "مدينتك"} · مواقيت الصلاة`;
-      } catch (error) { list.textContent = "تعذر تحميل الجدول. تأكد من الاتصال بالإنترنت."; }
+      } catch (error) {
+        if (requestId === latestScheduleRequest) list.textContent = "تعذر تحميل الجدول. تأكد من الاتصال بالإنترنت.";
+      }
+    }
+    function hijriDateFor(date, source) {
+      const displayed = window.getDisplayedHijriParts?.(date);
+      if (displayed) return displayed;
+      const monthNames = ["", "المحرّم", "صفر", "ربيع الأول", "ربيع الآخر", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوّال", "ذو القعدة", "ذو الحجة"];
+      const month = Number(source?.month?.number) || 0;
+      return {
+        day: Number(source?.day) || date.getDate(),
+        month,
+        monthName: source?.month?.ar || monthNames[month] || "التاريخ الهجري",
+        year: Number(source?.year) || date.getFullYear()
+      };
     }
     function renderDay(data, date) {
       const timings = data.timings || {};
-      list.innerHTML = `<div class="schedule-day-title">${date.toLocaleDateString("ar-EG", { weekday: "long", day: "numeric", month: "long" })}</div>`;
+      const hijri = hijriDateFor(date, data.date?.hijri);
+      const heading = document.createElement("div");
+      heading.className = "schedule-day-title";
+      const primaryDate = document.createElement("strong");
+      primaryDate.textContent = `${toArabic(hijri.day)} ${hijri.monthName} ${toArabic(hijri.year)} هـ`;
+      const secondaryDate = document.createElement("span");
+      secondaryDate.textContent = date.toLocaleDateString("ar-EG", { weekday: "long", day: "numeric", month: "long" });
+      heading.append(primaryDate, secondaryDate);
+      list.replaceChildren(heading);
       prayerKeys.forEach(key => addRow(prayerLabel(key, date), timings[key]));
     }
-    function renderMonth(data) {
+    function renderMonth(data, selectedHijriMonth) {
       const weekdays = { Sunday: "الأحد", Monday: "الاثنين", Tuesday: "الثلاثاء", Wednesday: "الأربعاء", Thursday: "الخميس", Friday: "الجمعة", Saturday: "السبت" };
       const cleanTime = value => String(value || "--").replace(/\s*\([^)]*\)/g, "").trim();
       list.replaceChildren();
+      if (!Array.isArray(data) || !data.length) { list.textContent = "لا توجد مواقيت متاحة لهذا الشهر."; return; }
+      const firstHijri = data[0].date?.hijri || {};
+      const monthName = selectedHijriMonth?.monthName || firstHijri.month?.ar || firstHijri.month?.en || "الشهر الهجري";
+      const monthYear = selectedHijriMonth?.year || firstHijri.year || "";
+      const note = document.createElement("div");
+      note.className = "schedule-month-note";
+      const title = document.createElement("strong");
+      title.textContent = `${monthName} ${toArabic(monthYear)} هـ`;
+      const hint = document.createElement("span");
+      hint.textContent = "التاريخ الميلادي للتوضيح";
+      note.append(title, hint);
+      list.appendChild(note);
       data.slice(0, 31).forEach(day => {
-        const row = document.createElement("div"); row.className = "schedule-month-row";
-        const weekday = weekdays[day.date?.gregorian?.weekday?.en] || "";
-        const dateNumber = toArabic(day.date?.gregorian?.day || "");
-        const dayDate = new Date(Number(day.date?.gregorian?.year), Number(day.date?.gregorian?.month?.number || 1) - 1, Number(day.date?.gregorian?.day || 1));
-        const times = prayerKeys.map(key => `${prayerLabel(key, dayDate)} ${cleanTime(day.timings?.[key])}`).join(" · ");
-        row.innerHTML = `<strong>${dateNumber}</strong><span class="schedule-month-info"><b>${weekday}</b><em>${times}</em></span>`;
+        const gregorian = day.date?.gregorian || {};
+        const gregYear = Number(gregorian.year) || new Date().getFullYear();
+        const gregMonth = Math.max(1, Number(gregorian.month?.number) || 1) - 1;
+        const gregDay = Math.max(1, Number(gregorian.day) || 1);
+        const dayDate = new Date(gregYear, gregMonth, gregDay);
+        const hijri = day.date?.hijri || {};
+        const hijriDay = toArabic(hijri.day || "");
+        const row = document.createElement("div");
+        row.className = "schedule-month-row";
+        const dateHeader = document.createElement("div");
+        dateHeader.className = "schedule-month-date";
+        const dateNumber = document.createElement("strong");
+        dateNumber.className = "schedule-month-day";
+        dateNumber.textContent = hijriDay;
+        const dateCopy = document.createElement("div");
+        dateCopy.className = "schedule-month-copy";
+        const monthLabel = document.createElement("b");
+        const apiMonthNumber = Number(hijri.month?.number);
+        monthLabel.textContent = selectedHijriMonth && apiMonthNumber === Number(selectedHijriMonth.month)
+          ? monthName
+          : hijri.month?.ar || hijri.month?.en || monthName;
+        const gregorianDate = document.createElement("small");
+        const weekday = weekdays[gregorian.weekday?.en] || "";
+        gregorianDate.textContent = `${weekday ? `${weekday} · ` : ""}${dayDate.toLocaleDateString("ar-EG", { day: "numeric", month: "short" })}`;
+        dateCopy.append(monthLabel, gregorianDate);
+        dateHeader.append(dateNumber, dateCopy);
+        const times = document.createElement("div");
+        times.className = "schedule-month-times";
+        times.setAttribute("aria-label", "مواقيت الصلوات");
+        prayerKeys.forEach(key => {
+          const timeCell = document.createElement("div");
+          timeCell.className = "schedule-month-time";
+          const prayerName = document.createElement("span");
+          prayerName.textContent = prayerLabel(key, dayDate);
+          const time = document.createElement("strong");
+          time.textContent = cleanTime(day.timings?.[key]);
+          timeCell.append(prayerName, time);
+          times.appendChild(timeCell);
+        });
+        row.append(dateHeader, times);
         list.appendChild(row);
       });
     }

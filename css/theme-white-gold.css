@@ -604,6 +604,7 @@ html[data-theme="dark"] { background: var(--page) !important; }
   background: var(--surface); box-shadow: 0 5px 15px rgba(35,30,22,.08); font-size: 20px; cursor: pointer;
   transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
 }
+#themeToggleIcon { display: grid; width: 34px; height: 34px; place-items: center; font-size: 31px; line-height: 1; transform: translateY(-1px); }
 .theme-toggle:hover, .notification-bell-button:hover { transform: translateY(-1px); border-color: rgba(196,154,85,.72); box-shadow: 0 7px 17px rgba(62,52,34,.10); }
 .theme-toggle:active, .notification-bell-button:active { transform: scale(.95); }
 .next-prayer {
@@ -848,16 +849,33 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .schedule-tab { min-height: 43px; border: 1px solid var(--line); border-radius: 13px; color: var(--muted); background: var(--surface); font: inherit; font-weight: 800; cursor: pointer; }
 .schedule-tab.active { color: #fff; border-color: var(--gold-dark); background: var(--gold-dark); }
 .prayer-schedule-list { display: grid; gap: 8px; }
-.schedule-day-title { padding: 2px 3px 8px; color: var(--gold-dark); font-size: 14px; font-weight: 800; }
-.schedule-row, .schedule-month-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; min-height: 48px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: var(--surface-soft); }
+.schedule-day-title { display: grid; gap: 3px; padding: 2px 3px 8px; }
+.schedule-day-title strong { color: var(--gold-dark); font-size: 17px; font-weight: 900; }
+.schedule-day-title span { color: var(--muted); font-size: 12px; }
+.schedule-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; min-height: 48px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: var(--surface-soft); }
 .schedule-row strong { color: var(--gold-dark); font-variant-numeric: tabular-nums; }
-.schedule-month-row { grid-template-columns: auto 1fr; direction: rtl; }
-.schedule-month-row strong { min-width: 34px; color: var(--gold-dark); font-size: 21px; text-align: center; }
-.schedule-month-info { display: grid; gap: 2px; min-width: 0; }
-.schedule-month-info b { color: var(--muted); font-size: 13px; }
-.schedule-month-info em { color: var(--ink); font-size: 11px; font-style: normal; line-height: 1.7; overflow-wrap: anywhere; }
+.schedule-month-note { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 2px 3px 5px; }
+.schedule-month-note strong { color: var(--gold-dark); font-size: 15px; font-weight: 900; }
+.schedule-month-note span { color: var(--muted); font-size: 10px; white-space: nowrap; }
+.schedule-month-row { display: grid; gap: 9px; padding: 10px; border: 1px solid var(--line); border-radius: 16px; color: var(--ink); background: var(--surface-soft); }
+.schedule-month-date { display: grid; grid-template-columns: 40px minmax(0, 1fr); align-items: center; gap: 9px; direction: rtl; }
+.schedule-month-day { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid #e7dcc4; border-radius: 12px; color: var(--gold-dark); background: var(--gold-pale); font-size: 19px; font-weight: 900; }
+.schedule-month-copy { display: grid; gap: 2px; min-width: 0; }
+.schedule-month-copy b { color: var(--ink); font-size: 12px; font-weight: 900; }
+.schedule-month-copy small { color: var(--muted); font-size: 10px; }
+.schedule-month-times { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; direction: rtl; }
+.schedule-month-time { display: grid; gap: 3px; justify-items: center; min-width: 0; padding: 6px 2px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); text-align: center; }
+.schedule-month-time span { color: var(--muted); font-size: 9px; font-weight: 700; white-space: nowrap; }
+.schedule-month-time strong { color: var(--ink); font-size: 10px; font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; white-space: nowrap; }
 .schedule-loading { padding: 22px 4px; color: var(--muted); text-align: center; }
 #page-city-picker, #page-prayer-schedule { padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
+@media (max-width: 360px) {
+  .schedule-month-row { padding: 8px; gap: 7px; }
+  .schedule-month-times { gap: 3px; }
+  .schedule-month-time { padding: 5px 1px; }
+  .schedule-month-time span { font-size: 8px; }
+  .schedule-month-time strong { font-size: 9px; }
+}
 /* Arabic icon-only bottom navigation: labels remain available to screen readers. */
 .bottom-nav .nav-item { min-height: 58px; }
 .bottom-nav .nav-item .nav-icon { width: 42px; height: 42px; overflow: hidden; color: transparent; font-size: 0; }
