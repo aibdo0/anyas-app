@@ -204,7 +204,7 @@
     }
     list.innerHTML = '<div class="schedule-loading">جارٍ البحث حولك…</div>';
     const radius = 5000;
-    const query = `[out:json][timeout:15];(nwr[amenity=place_of_worship][religion=muslim](around:${radius},${location.latitude},${location.longitude););out center tags;`;
+    const query = `[out:json][timeout:15];(nwr[amenity=place_of_worship][religion=muslim](around:${radius},${location.latitude},${location.longitude}););out center tags;`;
     try {
       const response = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query });
       const data = await response.json();
