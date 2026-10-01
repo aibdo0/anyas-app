@@ -1,0 +1,27 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.anyas.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.anyas.app'
+        minSdk 23
+        targetSdk 34
+        versionCode 5
+        versionName '1.1.4'
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.12.1'
+}
+
+def webRoot = rootProject.projectDir.parentFile
+tasks.register('syncWebAssets', Copy) {
+    from(webRoot) {
+        include 'index.html', 'css/**', 'js/**', 'data/**', 'assets/**', 'audio/**'
+    }
+    into layout.projectDirectory.dir('src/main/assets')
+}
+tasks.named('preBuild').configure { dependsOn('syncWebAssets') }

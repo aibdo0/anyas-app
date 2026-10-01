@@ -226,7 +226,8 @@ async function fetchCityName(
   if (!heroCity) {
     return;
   }
-
+  const savedCity = localStorage.getItem("anyas_city_name");
+  if (savedCity) heroCity.textContent = savedCity;
 
   try {
 
@@ -269,6 +270,7 @@ async function fetchCityName(
 
 
     heroCity.textContent = city;
+    localStorage.setItem("anyas_city_name", city);
 
 
   } catch (error) {
@@ -290,188 +292,71 @@ async function fetchCityName(
 // تحميل مواقيت الصلاة
 // =====================================================
 
-async function loadPrayerTimes(
-  latitude,
-  longitude
-) {
+async function loadPrayerTimes(latitude, longitude) {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const year = now.getFullYear();
+  const dateKey = `${year}-${month}-${day}`;
+  const method = getCalculationMethod();
+  const cacheKey = `anyas_prayer_cache_${dateKey}_${Number(latitude).toFixed(3)}_${Number(longitude).toFixed(3)}_${method}`;
 
-  try {
+  const applyTimings = rawTimings => {
+    window.originalPrayerTimings = { ...rawTimings };
+    const timings = applyPrayerOffsetsToTimings(rawTimings);
+    window.todayTimings = timings;
+    setPrayerTime("fajrTime", timings.Fajr);
+    setPrayerTime("sunriseTime", timings.Sunrise);
+    setPrayerTime("dhuhrTime", timings.Dhuhr);
+    setPrayerTime("asrTime", timings.Asr);
+    setPrayerTime("maghribTime", timings.Maghrib);
+    setPrayerTime("ishaTime", timings.Isha);
+    updateNextPrayer(timings);
+    updatePrayerStates(timings);
+    updatePrayerProgress(timings);
+    if (typeof syncAndroidNotificationSettings === "function") syncAndroidNotificationSettings();
+  };
 
-    const now =
-      new Date();
-
-
-    const day =
-      String(
-        now.getDate()
-      ).padStart(
-        2,
-        "0"
-      );
-
-
-    const month =
-      String(
-        now.getMonth() + 1
-      ).padStart(
-        2,
-        "0"
-      );
-
-
-    const year =
-      now.getFullYear();
-
-
-    const date =
-      `${day}-${month}-${year}`;
-
-
-    const method =
-      getCalculationMethod();
-
-
-    const url =
-      `https://api.aladhan.com/v1/timings/${date}` +
-      `?latitude=${latitude}` +
-      `&longitude=${longitude}` +
-      `&method=${method}`;
-
-
-    const response =
-      await fetch(url);
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        "فشل تحميل مواقيت الصلاة"
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    if (
-      !data ||
-      !data.data ||
-      !data.data.timings
-    ) {
-
-      throw new Error(
-        "بيانات المواقيت غير متاحة"
-      );
-
-    }
-
-
-    const rawTimings =
-      data.data.timings;
-
-
-    /*
-     * نحتفظ بالمواقيت الأصلية
-     */
-
-    window.originalPrayerTimings = {
-      ...rawTimings
+  const calculateLocally = () => {
+    if (!window.adhan) throw new Error("مكتبة حساب الصلاة المحلية غير متاحة");
+    const coordinates = new window.adhan.Coordinates(Number(latitude), Number(longitude));
+    const parameters = method === 3
+      ? window.adhan.CalculationMethod.MuslimWorldLeague()
+      : window.adhan.CalculationMethod.Egyptian();
+    const prayerTimes = new window.adhan.PrayerTimes(coordinates, now, parameters);
+    const format = value => value.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+    return {
+      Fajr: format(prayerTimes.fajr),
+      Sunrise: format(prayerTimes.sunrise),
+      Dhuhr: format(prayerTimes.dhuhr),
+      Asr: format(prayerTimes.asr),
+      Maghrib: format(prayerTimes.maghrib),
+      Isha: format(prayerTimes.isha)
     };
+  };
 
+  let rawTimings = null;
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) rawTimings = JSON.parse(cached);
+  } catch (_) { }
+  if (!rawTimings) rawTimings = calculateLocally();
+  applyTimings(rawTimings);
 
-    /*
-     * نطبق التعديلات اليدوية
-     * قبل استخدامها في الحسابات
-     */
-
-    const timings =
-      applyPrayerOffsetsToTimings(
-        rawTimings
-      );
-
-
-    window.todayTimings =
-      timings;
-
-
-    setPrayerTime(
-      "fajrTime",
-      timings.Fajr
-    );
-
-
-    setPrayerTime(
-      "sunriseTime",
-      timings.Sunrise
-    );
-
-
-    setPrayerTime(
-      "dhuhrTime",
-      timings.Dhuhr
-    );
-
-
-    setPrayerTime(
-      "asrTime",
-      timings.Asr
-    );
-
-
-    setPrayerTime(
-      "maghribTime",
-      timings.Maghrib
-    );
-
-
-    setPrayerTime(
-      "ishaTime",
-      timings.Isha
-    );
-
-
-    updateNextPrayer(
-      timings
-    );
-
-
-    updatePrayerStates(
-      timings
-    );
-
-
-    updatePrayerProgress(
-      timings
-    );
-
-
+  // Refresh the local cache when connected; fully optional for the core screen.
+  try {
+    const url = `https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Aladhan HTTP ${response.status}`);
+    const data = await response.json();
+    if (!data?.data?.timings) throw new Error("بيانات المواقيت غير متاحة");
+    rawTimings = data.data.timings;
+    try { localStorage.setItem(cacheKey, JSON.stringify(rawTimings)); } catch (_) { }
+    applyTimings(rawTimings);
   } catch (error) {
-
-    console.error(
-      "خطأ في تحميل مواقيت الصلاة:",
-      error
-    );
-
-
-    const locationElement =
-      document.getElementById(
-        "locationName"
-      );
-
-
-    if (locationElement) {
-
-      locationElement.textContent =
-        "تعذر تحميل المواقيت";
-
-    }
-
+    console.info("استخدام حساب مواقيت الصلاة المحلي:", error.message);
   }
-
 }
-
 
 // =====================================================
 // الحصول على تعديلات المواقيت

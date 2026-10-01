@@ -524,8 +524,18 @@ async function setupDailyHadith() {
   const day = getHijriDayOfYear();
   const id = ids[day - 1];
   if (!id) return;
-  textElement.textContent = "جارٍ تحميل حديث اليوم...";
-    if (referenceElement) referenceElement.textContent = `اليوم ${day} هجريًا`;
+  const cacheKey = `anyas_hadith_${id}`;
+  try {
+    const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
+    if (cached?.hadeeth) {
+      textElement.textContent = cached.hadeeth;
+      if (referenceElement) referenceElement.textContent = cached.grade || `اليوم ${day} هجريًا`;
+    } else {
+      textElement.textContent = "سيُحمّل حديث اليوم عند توفر الاتصال، ثم يبقى محفوظًا على جهازك.";
+    }
+  } catch (_) {
+    textElement.textContent = "سيُحمّل حديث اليوم عند توفر الاتصال، ثم يبقى محفوظًا على جهازك.";
+  }
 
   try {
     const url = new URL("https://hadeethenc.com/api/v1/hadeeths/one/");
@@ -535,14 +545,13 @@ async function setupDailyHadith() {
     if (!response.ok) throw new Error(`HadeethEnc HTTP ${response.status}`);
     const hadith = await response.json();
     if (!hadith || !hadith.hadeeth) throw new Error("HadeethEnc returned no Arabic text");
+    try { localStorage.setItem(cacheKey, JSON.stringify({ hadeeth: hadith.hadeeth, grade: hadith.grade || "" })); } catch (_) { }
     textElement.textContent = hadith.hadeeth;
     if (referenceElement) {
       referenceElement.textContent = hadith.grade || "";
     }
   } catch (error) {
-    console.error("تعذر تحميل حديث اليوم من HadeethEnc:", error);
-    textElement.textContent = "تعذر تحميل الحديث الآن. تحقق من اتصال الإنترنت وأعد المحاولة.";
-    if (referenceElement) referenceElement.textContent = `اليوم ${day} هجريًا`;
+    console.info("الحديث يعرض من ذاكرة الجهاز عند الانقطاع:", error.message);
   }
 }
 
