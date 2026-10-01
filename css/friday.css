@@ -1,0 +1,26 @@
+/* تجربة الجمعة في الرئيسية وصفحة الأذكار */
+.friday-feature-card { position: relative; overflow: hidden; padding: 17px; border: 1px solid #e7d8b8; border-radius: 22px; background: linear-gradient(135deg,#fffdf7,#f4ead6); box-shadow: 0 10px 25px rgba(93,70,30,.08); }
+.friday-feature-card::before { content: "✦"; position: absolute; top: -18px; left: 20px; color: rgba(164,126,56,.14); font-size: 76px; pointer-events: none; }
+.friday-feature-heading { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.friday-feature-eyebrow { color: #9a8968; font-size: 11px; }
+.friday-feature-heading h2 { margin: 1px 0 0; color: #493921; font-size: 19px; }
+.friday-feature-badge { padding: 5px 9px; border: 1px solid #e4d5b8; border-radius: 99px; color: #765c2f; background: rgba(255,255,255,.58); font-size: 11px; font-weight: 800; }
+.friday-feature-card p { position: relative; z-index: 1; margin: 12px 0 5px; color: #756851; font-size: 13px; line-height: 1.8; }
+.friday-feature-meta { position: relative; z-index: 1; color: #9a8968; font-size: 11px; }
+.friday-feature-button, #azkarFridayAction { position: relative; z-index: 1; min-height: 39px; margin-top: 12px; padding: 8px 13px; border: 1px solid #e4d5b8; border-radius: 12px; color: #765c2f; background: rgba(255,255,255,.68); font-family: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+.friday-feature-card[data-friday-phase="active"] { border-color: #d3b36c; background: linear-gradient(135deg,#fff9e9,#f3dfb0); }
+.friday-feature-card[data-friday-phase="salawat"] { border-color: #cbb27d; background: linear-gradient(135deg,#fff8ea,#eedfbd); }
+.friday-feature-card[data-friday-phase="prayer"] { border-color: #c5aa78; background: linear-gradient(135deg,#fff6dd,#e9d09b); }
+
+.azkar-friday-card { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; padding: 12px; border: 1px solid #eadfc9; border-radius: 16px; background: linear-gradient(135deg,#fffdf7,#f5ecdc); }
+.azkar-friday-heading { display: flex; min-width: 0; align-items: center; gap: 9px; }
+.azkar-friday-icon { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border-radius: 11px; color: #856734; background: #f3e7cd; font-weight: 800; }
+.azkar-friday-heading strong, .azkar-friday-heading small { display: block; }
+.azkar-friday-heading strong { color: #4f3e25; font-size: 13px; }
+.azkar-friday-heading small { margin-top: 3px; color: #9a8968; font-size: 10px; }
+#azkarFridayAction { flex: 0 0 auto; margin-top: 0; padding-inline: 9px; }
+:root[data-theme="dark"] .friday-feature-card, :root[data-theme="dark"] .azkar-friday-card { border-color: #554932; background: linear-gradient(135deg,#2a2823,#1d1e23); }
+:root[data-theme="dark"] .friday-feature-heading h2, :root[data-theme="dark"] .azkar-friday-heading strong { color: #eee3cc; }
+:root[data-theme="dark"] .friday-feature-eyebrow, :root[data-theme="dark"] .friday-feature-card p, :root[data-theme="dark"] .friday-feature-meta, :root[data-theme="dark"] .azkar-friday-heading small { color: #bcb09a; }
+:root[data-theme="dark"] .friday-feature-badge, :root[data-theme="dark"] .friday-feature-button, :root[data-theme="dark"] #azkarFridayAction { border-color: #5b5039; color: #dec38c; background: rgba(55,49,37,.72); }
+@media (max-width: 360px) { .azkar-friday-card { align-items: flex-start; flex-direction: column; } #azkarFridayAction { align-self: flex-end; } }
