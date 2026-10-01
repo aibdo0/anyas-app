@@ -376,6 +376,20 @@ button.prayer-row:hover { border-color: #dccda9 !important; background: #fffdf9 
 .azkar-period-card { display: grid; gap: 2px; min-height: 67px; padding: 11px; border: 1px solid #e9dfca; border-radius: 14px; background: #fbf8f1; text-align: right; cursor: pointer; }
 .azkar-period-label { color: var(--gold-dark); font-size: 14px; font-weight: 800; }
 .azkar-period-time { color: var(--muted); font-size: 11px; }
+.azkar-day-order { margin: 10px 0 14px; padding: 14px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); }
+.azkar-day-order-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.azkar-day-order-heading h2 { margin: 0; color: var(--ink); font-size: 16px; font-weight: 800; }
+.azkar-day-order-heading p, .azkar-day-order-note { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+.azkar-day-order-heading > span { padding: 4px 8px; border-radius: 999px; background: var(--gold-pale); color: var(--gold-dark); font-size: 11px; font-weight: 800; white-space: nowrap; }
+.azkar-day-order-list { display: grid; gap: 7px; margin: 12px 0 0; padding: 0; list-style: none; }
+.azkar-day-step { display: flex; width: 100%; align-items: center; gap: 10px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-soft); color: var(--ink); text-align: right; cursor: pointer; }
+.azkar-day-step:hover { border-color: var(--gold) !important; }
+.azkar-day-step-number { display: grid; flex: 0 0 28px; width: 28px; height: 28px; place-items: center; border-radius: 50%; background: var(--gold-pale); color: var(--gold-dark); font-size: 12px; font-weight: 800; }
+.azkar-day-step-copy { display: grid; flex: 1; gap: 2px; min-width: 0; }
+.azkar-day-step-copy strong { color: var(--ink); font-size: 13px; font-weight: 800; }
+.azkar-day-step-copy small { color: var(--muted); font-size: 11px; line-height: 1.5; }
+.azkar-day-step-arrow { color: var(--gold-dark); font-size: 18px; }
+.azkar-day-order-note { margin-top: 9px; }
 .zikr-footer { flex-wrap: wrap; align-items: center; }
 .zikr-favorite-button { width: 34px; min-width: 34px; height: 34px; border-radius: 11px; }
 .wird-summary-card { margin: 0 0 14px; padding: 16px; color: var(--ink); }

@@ -22,6 +22,8 @@ function setupAzkarTopics() {
 
   grid.innerHTML = "";
 
+  renderDailyAzkarOrder();
+
   topics.forEach(topic => {
 
     const card =
@@ -54,6 +56,63 @@ function setupAzkarTopics() {
 }
 
 
+function renderDailyAzkarOrder() {
+  const list = document.getElementById("azkarDayOrderList");
+  if (!list) return;
+
+  const steps = [
+    { title: "أذكار أذان الفجر", detail: "من الأذان حتى انتهاء الصلاة", topic: 15 },
+    { title: "أذكار ما بعد صلاة الفجر", detail: "لمدة ١٥ دقيقة", wird: "afterPrayer" },
+    { title: "ذكر عام", detail: "بعد الفجر حتى الشروق — التسبيح والتحميد والتهليل", topic: 130 },
+    { title: "أذكار الصباح", detail: "من الشروق حتى الضحى", wird: "morning" },
+    { title: "ذكر عام", detail: "من الضحى حتى صلاة الظهر", topic: 130 },
+    { title: "أذكار ما بعد صلاة الظهر", detail: "لمدة ١٥ دقيقة", wird: "afterPrayer" },
+    { title: "ذكر عام", detail: "من بعد الظهر حتى صلاة العصر", topic: 130 },
+    { title: "أذكار ما بعد صلاة العصر", detail: "لمدة ١٥ دقيقة", wird: "afterPrayer" },
+    { title: "أذكار المساء", detail: "من بعد العصر حتى صلاة المغرب", wird: "evening" },
+    { title: "أذكار ما بعد صلاة المغرب", detail: "لمدة ١٥ دقيقة", wird: "afterPrayer" },
+    { title: "ذكر عام", detail: "من بعد المغرب حتى صلاة العشاء", topic: 130 },
+    { title: "أذكار ما بعد صلاة العشاء", detail: "لمدة ١٥ دقيقة", wird: "afterPrayer" },
+    { title: "أذكار الليل", detail: "التسبيح والتحميد والتهليل", topic: 130 },
+    { title: "الاستغفار", detail: "أذكار الاستغفار والتوبة", topic: 129 },
+    { title: "أذكار النوم", detail: "عند الاستعداد للنوم", wird: "beforeSleep" },
+    { title: "أذكار السحر", detail: "الاستغفار حتى أذان الفجر", topic: 129 }
+  ];
+
+  list.replaceChildren();
+  steps.forEach((step, index) => {
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "azkar-day-step";
+
+    const number = document.createElement("span");
+    number.className = "azkar-day-step-number";
+    number.textContent = String(index + 1).replace(/\d/g, digit => "٠١٢٣٤٥٦٧٨٩"[digit]);
+
+    const copy = document.createElement("span");
+    copy.className = "azkar-day-step-copy";
+    const title = document.createElement("strong");
+    title.textContent = step.title;
+    const detail = document.createElement("small");
+    detail.textContent = step.detail;
+    copy.append(title, detail);
+
+    const arrow = document.createElement("span");
+    arrow.className = "azkar-day-step-arrow";
+    arrow.setAttribute("aria-hidden", "true");
+    arrow.textContent = "‹";
+    button.append(number, copy, arrow);
+    button.addEventListener("click", () => {
+      if (step.wird) window.openWirdCategory?.(step.wird);
+      else openAzkarTopic(step.topic);
+    });
+    item.appendChild(button);
+    list.appendChild(item);
+  });
+}
+
+
 function normalizeAzkarSearchText(value) {
 
   return String(value || "")
@@ -80,9 +139,11 @@ function setupAzkarSearch(topics, grid, countElement) {
   const renderResults = () => {
     const query = normalizeAzkarSearchText(input.value);
     const terms = query.split(" ").filter(Boolean);
+    const dayOrder = document.getElementById("azkarDayOrder");
 
     clearButton.hidden = !query;
     grid.hidden = Boolean(query);
+    if (dayOrder) dayOrder.hidden = Boolean(query);
     results.hidden = !query;
     results.innerHTML = "";
 
