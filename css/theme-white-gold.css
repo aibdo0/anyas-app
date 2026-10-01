@@ -850,6 +850,18 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .bottom-nav .nav-item:nth-child(5) .nav-icon::before { content: "⋯"; }
 .bottom-nav .nav-item:not(.active) .nav-icon::before { color: #8c744b !important; background: #faf8f3 !important; }
 .bottom-nav .nav-item.active .nav-icon::before { color: #6b5836 !important; background: #f1eadb !important; }
+.bottom-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; width: min(calc(100% - 20px), 680px); min-height: 82px; padding: 9px 12px 10px; border: 1px solid #3a3b3c; border-radius: 30px 30px 24px 24px; background: #292a2b; box-shadow: 0 16px 36px rgba(25,23,19,.28); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.bottom-nav::before { content: ""; position: absolute; top: 8px; left: 50%; width: 74px; height: 5px; border-radius: 99px; background: #666361; transform: translateX(-50%); opacity: .85; }
+.bottom-nav .nav-item { min-height: 61px; margin-top: 7px; border-radius: 16px; color: #c5a66a !important; background: transparent !important; }
+.bottom-nav .nav-item.active { color: #d5b875 !important; }
+.bottom-nav .nav-item .nav-icon::before, .bottom-nav .nav-item:not(.active) .nav-icon::before, .bottom-nav .nav-item.active .nav-icon::before { width: 46px; height: 46px; color: currentColor !important; background: transparent !important; font-size: 28px; font-weight: 400; }
+.bottom-nav .nav-item:nth-child(1) .nav-icon::before { content: "⌂"; }
+.bottom-nav .nav-item:nth-child(2) .nav-icon::before { content: "◷"; }
+.bottom-nav .nav-item:nth-child(4) .nav-icon::before { content: "ذ"; }
+.bottom-nav .nav-item:nth-child(5) .nav-icon::before { content: "⋯"; }
+.bottom-nav .nav-item.active .nav-icon::before { color: #dfc17c !important; }
+:root[data-theme="dark"] .bottom-nav { border-color: #414044 !important; background: #292a2d !important; }
+:root[data-theme="dark"] .bottom-nav .nav-item { color: #d5b875 !important; }
 :root[data-theme="dark"] .city-picker-card, :root[data-theme="dark"] .schedule-card, :root[data-theme="dark"] .notification-preview { background: var(--surface) !important; }
 :root[data-theme="dark"] .city-search-row input, :root[data-theme="dark"] .name-input, :root[data-theme="dark"] .city-result, :root[data-theme="dark"] .schedule-row, :root[data-theme="dark"] .schedule-month-row { background: var(--surface-soft) !important; color: var(--ink) !important; }
 .mosques-card { display: grid; gap: 13px; padding: 17px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
