@@ -214,38 +214,86 @@
     openPage("mosques");
     const list = byId("mosquesList");
     const location = currentCoordinates();
-    if (!list || !location.latitude || !location.longitude) {
+    const latitude = Number(location?.latitude);
+    const longitude = Number(location?.longitude);
+    const cityName = location?.city || "موقعك الحالي";
+    if (!list || location?.latitude == null || location?.longitude == null || !Number.isFinite(latitude) || !Number.isFinite(longitude)) {
       if (list) list.textContent = "حدّد مدينتك أولًا لعرض المساجد القريبة.";
       return;
     }
-    list.innerHTML = '<div class="schedule-loading">جارٍ البحث حولك…</div>';
-    const radius = 5000;
-    const query = `[out:json][timeout:25];(nwr[amenity=place_of_worship](around:${radius},${location.latitude},${location.longitude});nwr[building=mosque](around:${radius},${location.latitude},${location.longitude}););out center tags;`;
+    const mapButton = byId("openMosquesMapButton");
+    if (mapButton) mapButton.onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=mosque+near+${latitude},${longitude}`, "_blank");
+    list.textContent = `جارٍ البحث عن مساجد قرب ${cityName}…`;
+
+    const isMosque = place => {
+      const tags = place.tags || {};
+      const amenity = String(tags.amenity || "").toLowerCase();
+      const building = String(tags.building || "").toLowerCase();
+      const religion = String(tags.religion || "").toLowerCase().split(/[;,]/).map(value => value.trim()).filter(Boolean);
+      const isMuslim = religion.length > 0 && religion.every(value => value === "muslim" || value === "islam");
+      if (religion.length && !isMuslim) return false;
+      return amenity === "mosque" || building === "mosque" || (amenity === "place_of_worship" && isMuslim);
+    };
+    const distanceMeters = (lat1, lon1, lat2, lon2) => {
+      const radians = degrees => degrees * Math.PI / 180;
+      const dLat = radians(lat2 - lat1), dLon = radians(lon2 - lon1);
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(radians(lat1)) * Math.cos(radians(lat2)) * Math.sin(dLon / 2) ** 2;
+      const bounded = Math.min(1, Math.max(0, a));
+      return 6371000 * 2 * Math.atan2(Math.sqrt(bounded), Math.sqrt(1 - bounded));
+    };
+    const fetchOverpass = async query => {
+      let lastError;
+      for (const endpoint of ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]) {
+        try {
+          const response = await fetch(endpoint, { method: "POST", body: query });
+          if (!response.ok) throw new Error(`Overpass HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          lastError = error;
+        }
+      }
+      throw lastError || new Error("تعذر الاتصال بخدمة الخرائط");
+    };
     try {
-      let response = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query });
-      if (!response.ok) response = await fetch("https://overpass.kumi.systems/api/interpreter", { method: "POST", body: query });
-      const data = await response.json();
+      let candidates = [];
+      for (const radius of [5000, 15000, 30000]) {
+        const query = `[out:json][timeout:25];(nwr[amenity=mosque](around:${radius},${latitude},${longitude});nwr[amenity=place_of_worship][religion=muslim](around:${radius},${latitude},${longitude});nwr[amenity=place_of_worship][religion=islam](around:${radius},${latitude},${longitude});nwr[building=mosque](around:${radius},${latitude},${longitude}););out center tags;`;
+        const data = await fetchOverpass(query);
+        candidates = (data.elements || []).filter(isMosque);
+        if (candidates.length) break;
+      }
       const seen = new Set();
-      const places = (data.elements || []).filter(place => {
-        const lat = place.lat ?? place.center?.lat, lon = place.lon ?? place.center?.lon;
-        const key = `${lat},${lon}`; if (!lat || !lon || seen.has(key)) return false; seen.add(key); return true;
-      }).slice(0, 12);
+      const places = candidates.map(place => {
+        const lat = Number(place.lat ?? place.center?.lat);
+        const lon = Number(place.lon ?? place.center?.lon);
+        return { place, lat, lon, distance: distanceMeters(latitude, longitude, lat, lon) };
+      }).filter(result => {
+        if (!Number.isFinite(result.lat) || !Number.isFinite(result.lon)) return false;
+        const key = result.place.id ? `${result.place.type || "place"}/${result.place.id}` : `${result.lat},${result.lon}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      }).sort((a, b) => a.distance - b.distance).slice(0, 12);
       list.replaceChildren();
-      if (!places.length) { list.innerHTML = '<div class="schedule-loading">لم نجد مسجدًا مسجلًا قريبًا. جرّب الخريطة لرؤية نتائج أكثر.</div>'; return; }
-      places.forEach(place => {
-        const lat = place.lat ?? place.center?.lat, lon = place.lon ?? place.center?.lon;
-        const name = place.tags?.name || place.tags?.["name:ar"] || "مسجد قريب";
+      if (!places.length) { list.textContent = `لم نجد مسجدًا مسجّلًا قرب ${cityName}. جرّب الخريطة أو اختر المدينة مرة أخرى.`; return; }
+      places.forEach(({ place, lat, lon, distance }) => {
+        const name = place.tags?.["name:ar"] || place.tags?.name || "مسجد قريب";
         const item = document.createElement("a"); item.className = "mosque-result"; item.target = "_blank"; item.rel = "noopener";
-        item.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}@${lat},${lon}`;
-        item.innerHTML = `<span class="mosque-result-icon">م</span><span><strong>${name}</strong><small>فتح الاتجاهات على الخريطة</small></span><span aria-hidden="true">‹</span>`;
+        item.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`;
+        const icon = document.createElement("span"); icon.className = "mosque-result-icon"; icon.textContent = "م";
+        const info = document.createElement("span");
+        const title = document.createElement("strong"); title.textContent = name;
+        const details = document.createElement("small");
+        const distanceText = distance < 1000 ? `${toArabic(Math.max(10, Math.round(distance / 10) * 10))} م` : `${toArabic((distance / 1000).toFixed(1))} كم`;
+        details.textContent = `يبعد تقريبًا ${distanceText} · فتح الاتجاهات`;
+        info.append(title, details);
+        const arrow = document.createElement("span"); arrow.setAttribute("aria-hidden", "true"); arrow.textContent = "‹";
+        item.append(icon, info, arrow);
         list.appendChild(item);
       });
     } catch (error) {
-      list.innerHTML = '<div class="schedule-loading">تعذر تحميل القائمة الآن. استخدم زر الخريطة للبحث المباشر.</div>';
+      list.textContent = `تعذر تحميل مساجد قرب ${cityName} الآن. استخدم زر الخريطة للبحث المباشر.`;
     }
-    byId("openMosquesMapButton")?.addEventListener("click", () => {
-      window.open(`https://www.google.com/maps/search/?api=1&query=mosque+near+${location.latitude},${location.longitude}`, "_blank");
-    }, { once: true });
   }
 
   document.addEventListener("DOMContentLoaded", () => {
