@@ -187,6 +187,8 @@
     const button = byId("openNotificationsButton");
     const preview = byId("notificationPreview");
     if (!button || !preview) return;
+    const bell = byId("notificationBellButton");
+    const badge = byId("notificationBadge");
     const notificationSection = preview.closest(".notification-preview-section");
     const homeHeader = byId("page-home")?.querySelector(".main-header");
     if (notificationSection && homeHeader) homeHeader.after(notificationSection);
@@ -196,9 +198,11 @@
       if (byId("notifyWardMorning")?.checked) items.push("ورد الصباح");
       if (byId("notifyWardEvening")?.checked) items.push("ورد المساء");
       preview.innerHTML = items.length ? `<span class="notification-dot"></span><span>${items.slice(0, 2).join(" · ")}</span>` : `<span class="notification-dot muted"></span><span>فعّل ما يناسبك من الإعدادات</span>`;
+      if (badge) { badge.textContent = toArabic(items.length); badge.hidden = !items.length; }
     };
     document.querySelectorAll('#page-settings input[type="checkbox"]').forEach(input => input.addEventListener("change", render));
     render();
+    bell?.addEventListener("click", () => notificationSection?.scrollIntoView({ behavior: "smooth", block: "start" }));
     button.addEventListener("click", () => { openPage("settings"); document.querySelector("#page-settings .settings-section-title:nth-of-type(2)")?.scrollIntoView({ behavior: "smooth" }); });
   }
 

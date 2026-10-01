@@ -41,7 +41,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .update-banner-text { flex: 1; font-weight: 700; }
 .update-banner button, .small-action-button { border: 0; border-radius: 12px; padding: 9px 13px; background: var(--gold-dark); color: #fff; cursor: pointer; }
 .main-header {
-  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3px 12px;
+  position: relative; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3px 12px;
   margin: 0 0 18px; padding: 8px 2px 12px;
 }
 .home-brand, .plain-header .brand { color: var(--gold-dark); font-size: 29px; line-height: 1.15; font-weight: 800; letter-spacing: -.5px; }
@@ -49,6 +49,10 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .date-line { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; font-weight: 600; }
 .date-separator { color: var(--gold); }
 .location-line { justify-self: end; color: var(--gold-light); background: var(--gold-pale); border-radius: 999px; padding: 5px 11px; font-size: 13px; font-weight: 700; }
+.notification-bell-button { position: absolute; top: 7px; inset-inline-end: 52px; display: grid; width: 43px; height: 43px; place-items: center; border: 1px solid #eadfc9; border-radius: 14px; color: var(--gold-dark); background: var(--surface); cursor: pointer; box-shadow: 0 5px 15px rgba(62,52,34,.07); }
+.notification-bell-icon { display: block; font-size: 21px; line-height: 1; filter: saturate(.7); }
+.notification-badge { position: absolute; top: -7px; inset-inline-end: -7px; display: grid; min-width: 22px; height: 22px; padding-inline: 5px; place-items: center; border: 2px solid var(--surface); border-radius: 99px; color: #fff; background: #d9272e; font-size: 11px; font-weight: 800; line-height: 1; }
+.notification-badge[hidden] { display: none; }
 .plain-header { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin: 0 0 22px; padding: 8px 2px 12px; }
 .plain-header .date { color: var(--muted); font-size: 14px; }
 .plain-header .back-button { order: -1; margin: 0 0 8px; }
