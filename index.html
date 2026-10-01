@@ -10,8 +10,12 @@
 <script>
   (function () {
     var mode = "light";
+    var locale = "ar";
+    var autoBackground = true;
     try {
       mode = localStorage.getItem("anyas_themeMode") || "";
+      locale = localStorage.getItem("anyas_language") === "en" ? "en" : "ar";
+      autoBackground = localStorage.getItem("anyas_autoBackground") !== "false";
       if (!["system", "light", "dark"].includes(mode)) {
         var legacy = localStorage.getItem("anyas_darkMode");
         mode = legacy === "false" ? "light" : legacy === "true" ? "dark" : "light";
@@ -21,6 +25,11 @@
     document.documentElement.dataset.themeMode = mode;
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "en" ? "ltr" : "rtl";
+    document.documentElement.dataset.autoBackground = String(autoBackground);
+    var hour = new Date().getHours();
+    document.documentElement.dataset.timeScene = hour >= 4 && hour < 8 ? "dawn" : hour >= 8 && hour < 16 ? "day" : hour >= 16 && hour < 19 ? "sunset" : "night";
   })();
 </script>
 
@@ -35,7 +44,7 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261001-14">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261001-15">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20260927-2">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 </head>
@@ -743,8 +752,19 @@ aria-selected="false"
   </div>
 </div>
 
+<div class="setting-row time-background-setting">
+  <div class="setting-info">
+    <div class="setting-title">خلفية حسب وقت اليوم</div>
+    <div class="setting-description" id="timeBackgroundDescription">تتغير تلقائيًا بين الفجر والنهار والغروب والليل</div>
+  </div>
+  <label class="switch" aria-label="تفعيل الخلفيات حسب وقت اليوم">
+    <input id="timeBackgroundToggle" type="checkbox" checked>
+    <span class="switch-track"></span><span class="switch-knob"></span>
+  </label>
+</div>
 
-<div class="setting-row" style="display:none">
+
+<div class="setting-row">
 
 <div class="setting-info">
 
@@ -868,10 +888,13 @@ English
 
 <div class="setting-row location-setting">
   <div class="setting-info">
-    <div class="setting-title">موقع الصلاة</div>
-    <div class="setting-description" id="locationSettingsDescription" aria-live="polite">يُستخدم موقعك لحساب المواقيت واتجاه القبلة</div>
+    <div class="setting-title">إعدادات الموقع الجغرافي</div>
+    <div class="setting-description" id="locationSettingsDescription" aria-live="polite">اختر مدينة يدويًا أو استخدم موقعك لحساب المواقيت والقبلة والمساجد القريبة. إذن الموقع اختياري.</div>
   </div>
-  <button class="setting-action-button" id="refreshLocationButton" type="button">تحديث</button>
+  <div class="location-setting-actions">
+    <button class="setting-action-button" id="refreshLocationButton" type="button">استخدام موقعي الحالي</button>
+    <button class="setting-action-button" id="openCityPickerFromSettings" type="button">اختيار المدينة يدويًا</button>
+  </div>
 </div>
 
 <button
@@ -1641,9 +1664,90 @@ value="100"
   <h2 id="moreSettingsHeading">التطبيق</h2>
   <div class="more-menu">
     <button type="button" class="more-menu-item" data-more-go="settings"><span class="more-menu-icon" aria-hidden="true">⚙</span><span class="more-menu-copy"><strong>الإعدادات</strong><small>المظهر، التنبيهات، والمواقيت</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="about"><span class="more-menu-icon" aria-hidden="true">☾</span><span class="more-menu-copy"><strong>عن التطبيق</strong><small>اللغة، المصادر، ومعلومات أنياس</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
   </div>
 </section>
 </main>
+
+<main class="page" id="page-about">
+  <header class="plain-header">
+    <button class="back-button" type="button" data-back-more>رجوع إلى المزيد</button>
+    <div class="brand">عن التطبيق</div>
+    <div class="date">معلومات أنياس ومصادره</div>
+  </header>
+  <section class="about-hero" aria-labelledby="aboutAppName">
+    <img src="assets/anyas-app-icon.png" alt="" class="about-app-icon">
+    <div><h2 id="aboutAppName">أنياس</h2><p>رفيقك اليومي للعبادة وتنظيم يومك</p></div>
+    <span class="about-version">آخر إصدار رسمي: 1.1.5</span>
+  </section>
+  <section class="about-card" aria-labelledby="aboutLanguageHeading">
+    <h2 id="aboutLanguageHeading">اللغة</h2>
+    <p>اختر لغة واجهة التطبيق. نصوص القرآن والأذكار الأصلية تبقى بالعربية.</p>
+    <label class="about-language-row" for="aboutLanguageSelect"><span>لغة الواجهة</span>
+      <select id="aboutLanguageSelect" class="select-control">
+        <option value="ar">العربية</option><option value="en">English</option>
+      </select>
+    </label>
+  </section>
+  <section class="about-card" aria-labelledby="aboutPermissionsHeading">
+    <h2 id="aboutPermissionsHeading">أذونات التطبيق</h2>
+    <p>كل إذن مرتبط بوظيفة محددة ولا يضر الجهاز بذاته. إذن الموقع يكشف موقعك عند استخدام ميزاته؛ امنحه فقط إذا رغبت فيها.</p>
+    <ul class="about-detail-list">
+      <li><strong>الموقع</strong><span>اختياري؛ للمواقيت والقبلة والمساجد القريبة. يمكنك اختيار مدينة يدويًا دون منحه.</span></li>
+      <li><strong>الإشعارات</strong><span>اختيارية؛ لتذكيرات الصلاة والأذكار التي تفعّلها. لن تُرسل التنبيهات إذا رفضت الإذن.</span></li>
+      <li><strong>اتجاه الجهاز والبوصلة</strong><span>اختياري؛ لعرض اتجاه القبلة عند فتح البوصلة، إذا كان جهازك يدعم ذلك.</span></li>
+      <li><strong>الاتصال بالإنترنت</strong><span>لجلب المواقيت والخرائط والحديث اليومي عند الحاجة.</span></li>
+      <li><strong>استعادة التذكيرات بعد إعادة التشغيل</strong><span>إذن نظامي في أندرويد يعيد جدولة تذكيراتك المحفوظة بعد تشغيل الجهاز، ولا يحتاج نافذة موافقة.</span></li>
+      <li><strong>الظهور فوق التطبيقات الأخرى</strong><span>غير مستخدم وغير مطلوب في الإصدار الحالي؛ لا يحتاج أنياس إلى نافذة عائمة.</span></li>
+      <li><strong>تحسين البطارية</strong><span>اترك تحسين البطارية مفعّلًا؛ لا يحتاج التطبيق إلى استثنائه. إذا تأخرت التنبيهات، فقد يساعد السماح بعمله في الخلفية، لكن ذلك قد يزيد استهلاك البطارية قليلًا.</span></li>
+    </ul>
+    <p class="about-note">لا يطلب أنياس هذه الأذونات إلا عند الحاجة لوظيفتها، ويمكنك الرفض أو تغييرها من إعدادات جهازك. بعض بيانات الموقع تُرسل إلى خدمات التوقيت والخرائط عند استخدام تلك الميزات.</p>
+    <button class="secondary-action about-location-link" id="aboutLocationSettingsButton" type="button">إعدادات الموقع الجغرافي</button>
+    <button class="secondary-action about-location-link" id="aboutNotificationSettingsButton" type="button">إعدادات التذكيرات والإشعارات</button>
+  </section>
+  <section class="about-card" aria-labelledby="aboutSourcesHeading">
+    <h2 id="aboutSourcesHeading">مصادر المحتوى</h2>
+    <ul class="about-detail-list">
+      <li><strong>القرآن الكريم</strong><span>نص عثماني من مشروع تنزيل، يُعرض كما ورد دون تغيير.</span></li>
+      <li><strong>حديث اليوم</strong><span>من موسوعة الحديث النبوي <a href="https://hadeethenc.com/en/home" target="_blank" rel="noopener noreferrer">HadeethEnc</a>.</span></li>
+      <li><strong>الأذكار</strong><span>مبنية على أبواب حصن المسلم؛ والشروح الموجزة توضيحية وليست نصوصًا من المصدر.</span></li>
+      <li><strong>مواقيت الصلاة والتاريخ الهجري</strong><span>تُحسب عبر <a href="https://aladhan.com/prayer-times-api" target="_blank" rel="noopener noreferrer">AlAdhan API</a> وفق موقعك وطريقة الحساب المختارة.</span></li>
+      <li><strong>المدن والمساجد</strong><span>بحث الخرائط يعتمد على بيانات <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>.</span></li>
+    </ul>
+    <a class="about-source-link" href="https://tanzil.net/" target="_blank" rel="noopener noreferrer">مشروع تنزيل — مصدر نص القرآن</a>
+  </section>
+  <section class="about-card" aria-labelledby="aboutActionsHeading">
+    <h2 id="aboutActionsHeading">نحتاج رأيك</h2>
+    <div class="about-actions">
+      <button class="about-action" id="aboutSupportButton" type="button"><span>الحصول على الدعم</span><small>اكتب وصفًا للمشكلة واختر طريقة مشاركته</small></button>
+      <button class="about-action" id="aboutFeedbackButton" type="button"><span>الملاحظات والاقتراحات</span><small>شارك رأيك يدويًا، دون إرسال تلقائي</small></button>
+      <button class="about-action" id="aboutShareButton" type="button"><span>مشاركة التطبيق</span><small>أرسل رابط أنياس لمن تحب</small></button>
+    </div>
+    <p id="aboutActionStatus" class="about-note" aria-live="polite" hidden></p>
+  </section>
+  <section class="about-card" aria-labelledby="aboutRateHeading">
+    <h2 id="aboutRateHeading">تقييم التطبيق</h2>
+    <div id="aboutRatingControl" class="about-rating" role="radiogroup" aria-label="قيّم التطبيق من نجمة إلى خمس نجوم">
+      <button type="button" role="radio" aria-label="نجمة واحدة" data-rating="1">★</button><button type="button" role="radio" aria-label="نجمتان" data-rating="2">★</button><button type="button" role="radio" aria-label="ثلاث نجوم" data-rating="3">★</button><button type="button" role="radio" aria-label="أربع نجوم" data-rating="4">★</button><button type="button" role="radio" aria-label="خمس نجوم" data-rating="5">★</button>
+    </div>
+    <p id="aboutRatingStatus" class="about-note">يُحفظ تقييمك على هذا الجهاز فقط؛ لا يوجد رابط متجر للتقييم حاليًا.</p>
+  </section>
+  <section class="about-card about-policy-card" aria-labelledby="aboutPrivacyHeading">
+    <h2 id="aboutPrivacyHeading">سياسة الخصوصية</h2>
+    <p>سياسة الخصوصية التفصيلية قيد الإعداد وستُضاف لاحقًا.</p>
+    <span class="about-coming-soon">قريبًا</span>
+  </section>
+</main>
+
+<dialog id="aboutFeedbackDialog" class="about-dialog" aria-labelledby="aboutFeedbackTitle" aria-describedby="aboutFeedbackHint">
+  <form method="dialog" id="aboutFeedbackForm">
+    <button class="about-dialog-close" value="cancel" aria-label="إغلاق" type="submit">×</button>
+    <h2 id="aboutFeedbackTitle">ملاحظاتك</h2>
+    <p id="aboutFeedbackHint">اكتب رسالتك، ثم اختر مشاركتها من قائمة جهازك.</p>
+    <textarea id="aboutFeedbackText" rows="5" maxlength="1500" placeholder="اكتب هنا…"></textarea>
+    <div class="about-dialog-actions"><button id="aboutFeedbackShare" type="button" class="primary-action">مشاركة الرسالة</button><button id="aboutFeedbackCopy" type="button" class="secondary-action">نسخ الرسالة</button></div>
+  </form>
+</dialog>
 
 <main class="page" id="page-city-picker">
   <header class="plain-header"><button class="back-button" id="cityPickerBackButton" type="button">رجوع</button><div class="brand">مدينة الصلاة</div><div class="date">اكتب مدينتك يدويًا لحساب المواقيت</div></header>
@@ -1741,7 +1845,7 @@ type="button"
 <!-- =====================================================
      ملفات JavaScript
 ===================================================== -->
-
+<script src="js/i18n.js?v=20261001-1"></script>
 <script src="data/azkar-topics.js?v=20260926-3"></script>
 <script src="data/azkar-benefits.js?v=20261001-1"></script>
 <script src="data/daily-quran.js?v=20260926-3"></script>
@@ -1749,17 +1853,18 @@ type="button"
 <script src="data/daily-devotions.js?v=20260926-3"></script>
 <script src="data/learning-lessons.js?v=20260926-3"></script>
 <script src="js/vendor/adhan.umd.min.js"></script>
-<script src="js/prayer.js?v=20260927-2"></script>
+<script src="js/prayer.js?v=20261001-2"></script>
 <script src="js/daily-adhkar.js?v=20260926-3"></script>
 <script src="js/favorites.js?v=20260926-3"></script>
 <script src="js/azkar.js?v=20261001-2"></script>
 <script src="js/wird.js?v=20261001-1"></script>
-<script src="js/settings.js?v=20260926-3"></script>
+<script src="js/settings.js?v=20261001-2"></script>
 <script src="js/qibla.js?v=20261001-2"></script>
 <script src="js/learning.js?v=20260926-3"></script>
-<script src="js/app-enhancements.js?v=20261001-8"></script>
+<script src="js/app-enhancements.js?v=20261001-9"></script>
 <script src="js/daily-devotions.js?v=20260926-3"></script>
-<script src="js/app.js?v=20261001-4"></script>
+<script src="js/app.js?v=20261001-5"></script>
+<script src="js/about.js?v=20261001-1"></script>
 
 </body>
   </html>

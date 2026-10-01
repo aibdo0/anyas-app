@@ -62,7 +62,8 @@
       if (!query) return;
       results.textContent = "جارٍ البحث…";
       try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&accept-language=ar&q=${encodeURIComponent(query)}`);
+        const language = document.documentElement.lang === "en" ? "en" : "ar";
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&accept-language=${language}&q=${encodeURIComponent(query)}`);
         const places = await response.json();
         results.replaceChildren();
         if (!places.length) { results.textContent = "لم نجد المدينة. جرّب كتابة المدينة والدولة."; return; }

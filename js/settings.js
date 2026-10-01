@@ -581,9 +581,11 @@ function setupThemeAndLanguage() {
   const themeChoices = document.querySelectorAll('input[name="themeMode"]');
   const themeDescription = document.getElementById("themeModeDescription");
   const themeColorMeta = document.getElementById("themeColorMeta");
+  const timeBackgroundToggle = document.getElementById("timeBackgroundToggle");
+  const timeBackgroundDescription = document.getElementById("timeBackgroundDescription");
 
-  const language =
-    document.getElementById("languageSelect");
+  const languageControls =
+    document.querySelectorAll("#languageSelect, #aboutLanguageSelect");
 
   let initialMode = "light";
   try {
@@ -659,44 +661,50 @@ function setupThemeAndLanguage() {
     }
   }
 
-  const savedLanguage =
-    localStorage.getItem("anyas_language");
+  let timeBackgroundEnabled = true;
+  try {
+    const savedTimeBackground = localStorage.getItem("anyas_autoBackground");
+    if (savedTimeBackground === "false") timeBackgroundEnabled = false;
+  } catch (error) { /* time-based backgrounds default to on */ }
 
-  if (savedLanguage && language) {
+  const updateTimeBackground = () => {
+    const hour = new Date().getHours();
+    const scene = hour >= 4 && hour < 8 ? "dawn"
+      : hour >= 8 && hour < 16 ? "day"
+        : hour >= 16 && hour < 19 ? "sunset" : "night";
+    root.dataset.timeScene = scene;
+    root.dataset.autoBackground = timeBackgroundEnabled ? "true" : "false";
+    const sceneNames = { dawn: "الفجر", day: "النهار", sunset: "الغروب", night: "الليل" };
+    if (timeBackgroundDescription) {
+      timeBackgroundDescription.textContent = timeBackgroundEnabled
+        ? `خلفية ${sceneNames[scene]} مفعّلة — تتغير تلقائيًا حسب ساعة جهازك`
+        : "الخلفية التلقائية متوقفة";
+    }
+    if (timeBackgroundToggle) timeBackgroundToggle.checked = timeBackgroundEnabled;
+  };
 
-    language.value =
-      savedLanguage;
+  timeBackgroundToggle?.addEventListener("change", () => {
+    timeBackgroundEnabled = timeBackgroundToggle.checked;
+    try { localStorage.setItem("anyas_autoBackground", String(timeBackgroundEnabled)); } catch (error) { /* preference is optional */ }
+    updateTimeBackground();
+  });
+  updateTimeBackground();
+  window.setInterval(updateTimeBackground, 60 * 1000);
 
-  }
-
-  if (language) {
-
-    language.addEventListener("change", () => {
-
-      localStorage.setItem(
-        "anyas_language",
-        language.value
-      );
-
-      if (language.value === "en") {
-
-        alert(
-          "النسخة الإنجليزية سيتم تفعيلها بالكامل في تحديث لاحق."
-        );
-
-        language.value =
-          "ar";
-
-        localStorage.setItem(
-          "anyas_language",
-          "ar"
-        );
-
+  let savedLanguage = "ar";
+  try {
+    savedLanguage = localStorage.getItem("anyas_language") === "en" ? "en" : "ar";
+  } catch (error) { /* use Arabic if storage is unavailable */ }
+  languageControls.forEach(control => {
+    control.value = savedLanguage;
+    control.addEventListener("change", () => {
+      const nextLanguage = control.value === "en" ? "en" : "ar";
+      if (typeof window.setAppLanguage === "function") {
+        window.setAppLanguage(nextLanguage);
       }
-
+      languageControls.forEach(peer => { peer.value = nextLanguage; });
     });
-
-  }
+  });
 
 }
 

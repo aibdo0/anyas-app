@@ -236,7 +236,7 @@ async function fetchCityName(
       `?format=json` +
       `&lat=${latitude}` +
       `&lon=${longitude}` +
-      `&accept-language=ar`;
+      `&accept-language=${document.documentElement.lang === "en" ? "en" : "ar"}`;
 
 
     const response =
