@@ -182,6 +182,10 @@
 
   function openWirdCategory(id) {
     if (!sections[id]) return;
+    if (document.getElementById("page-azkar")?.classList.contains("active")) {
+      window.openAzkarWird?.(id);
+      return;
+    }
     goToPage("tasks");
     setSectionOpen(id, true);
     window.setTimeout(() => {
@@ -191,6 +195,14 @@
   }
 
   window.openWirdCategory = openWirdCategory;
+  window.openAzkarWird = id => {
+    const section = sections[id];
+    if (!section || typeof window.openAzkarTopic !== "function") return;
+    window.openAzkarTopic(section.topicNumber, null, {
+      title: section.title,
+      itemIndexes: [...section.itemIndexes]
+    });
+  };
 
   document.addEventListener("DOMContentLoaded", () => {
     Object.keys(sections).forEach(id => {

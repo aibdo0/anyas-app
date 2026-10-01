@@ -104,7 +104,7 @@ function renderDailyAzkarOrder() {
     arrow.textContent = "‹";
     button.append(number, copy, arrow);
     button.addEventListener("click", () => {
-      if (step.wird) window.openWirdCategory?.(step.wird);
+      if (step.wird) window.openAzkarWird?.(step.wird);
       else openAzkarTopic(step.topic);
     });
     item.appendChild(button);
@@ -239,7 +239,7 @@ function setupAzkarSearch(topics, grid, countElement) {
 // فتح باب الأذكار
 // =====================================================
 
-function openAzkarTopic(number, focusIndex = null) {
+function openAzkarTopic(number, focusIndex = null, options = null) {
 
   const topics =
     window.azkarTopics || [];
@@ -259,23 +259,18 @@ function openAzkarTopic(number, focusIndex = null) {
   const detailPage =
     document.getElementById("page-azkar-detail");
 
-  if (topicsPage) {
-    topicsPage.classList.remove("active");
-  }
-
-  if (detailPage) {
-    detailPage.classList.add("active");
-  }
+  if (topicsPage) topicsPage.classList.remove("active");
+  if (detailPage) detailPage.classList.add("active");
 
   const titleElement =
     document.getElementById("categoryDetailTitle");
 
   if (titleElement) {
-    titleElement.textContent =
-      `${topic.number}. ${topic.title || "باب الأذكار"}`;
+    titleElement.textContent = options?.title
+      || `${topic.number}. ${topic.title || "باب الأذكار"}`;
   }
 
-  renderAzkarTopic(topic.number);
+  renderAzkarTopic(topic.number, options?.itemIndexes || null, options?.title || null);
 
   if (Number.isInteger(focusIndex)) {
     requestAnimationFrame(() => {
@@ -286,6 +281,7 @@ function openAzkarTopic(number, focusIndex = null) {
 
 }
 
+window.openAzkarTopic = openAzkarTopic;
 
 // =====================================================
 // مفتاح حفظ التقدم
@@ -367,7 +363,7 @@ function saveTopicProgress(number, progress) {
 // عرض أذكار الباب
 // =====================================================
 
-function renderAzkarTopic(number) {
+function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
 
   const topics =
     window.azkarTopics || [];
@@ -387,18 +383,22 @@ function renderAzkarTopic(number) {
   const progress =
     loadTopicProgress(number);
 
-  const items =
+  const allItems =
     Array.isArray(topic.items)
       ? topic.items
       : [];
 
-  items.forEach((zikr, index) => {
+  const items = allItems
+    .map((item, sourceIndex) => ({ item, sourceIndex }))
+    .filter(entry => !itemIndexes || itemIndexes.includes(entry.sourceIndex));
+
+  items.forEach(({ item: zikr, sourceIndex }) => {
 
     const count =
       Number(zikr.count) || 1;
 
     const current =
-      Number(progress[index]) || 0;
+      Number(progress[sourceIndex]) || 0;
 
     const remaining =
       Math.max(
@@ -411,11 +411,16 @@ function renderAzkarTopic(number) {
 
     card.className =
       "zikr-card";
-    card.dataset.zikrIndex = String(index);
+    card.dataset.zikrIndex = String(sourceIndex);
 
     card.innerHTML = `
       <div class="zikr-text">
         ${zikr.text || ""}
+      </div>
+
+      <div class="zikr-meaning-wrap">
+        <strong>المعنى والفائدة</strong>
+        <p class="zikr-meaning"></p>
       </div>
 
       <div class="zikr-footer">
@@ -426,6 +431,12 @@ function renderAzkarTopic(number) {
           aria-pressed="false"
           aria-label="أضف إلى المفضلة"
         >☆</button>
+
+        <button
+          type="button"
+          class="zikr-share-button"
+          aria-label="مشاركة هذا الذكر"
+        >مشاركة</button>
 
         <span class="zikr-count">
           ${
@@ -445,10 +456,18 @@ function renderAzkarTopic(number) {
       </div>
     `;
 
+    const meaning = window.azkarBenefits?.[String(number)]?.[sourceIndex]
+      || "توضيح معنى هذا الذكر غير متاح حاليًا.";
+    card.querySelector(".zikr-meaning").textContent = meaning;
+
+    card.querySelector(".zikr-share-button").addEventListener("click", () => {
+      shareAzkarItem(topic, zikr, meaning, titleOverride);
+    });
+
     window.azkarFavorites?.bindButton(
       card.querySelector(".zikr-favorite-button"),
       Number(number),
-      index
+      sourceIndex
     );
 
     const button =
@@ -465,7 +484,7 @@ function renderAzkarTopic(number) {
         () => {
 
           const currentProgress =
-            Number(progress[index]) || 0;
+            Number(progress[sourceIndex]) || 0;
 
           const newProgress =
             Math.min(
@@ -473,7 +492,7 @@ function renderAzkarTopic(number) {
               count
             );
 
-          progress[index] =
+          progress[sourceIndex] =
             newProgress;
 
           saveTopicProgress(
@@ -490,7 +509,7 @@ function renderAzkarTopic(number) {
             navigator.vibrate(30);
           }
 
-          renderAzkarTopic(number);
+          renderAzkarTopic(number, itemIndexes, titleOverride);
 
         }
       );
@@ -501,8 +520,55 @@ function renderAzkarTopic(number) {
 
   });
 
-  renderTopicNavigation(number);
+  if (itemIndexes) {
+    document.getElementById("azkarTopicNavigation")?.replaceChildren();
+  } else {
+    renderTopicNavigation(number);
+  }
 
+}
+
+
+async function shareAzkarItem(topic, zikr, meaning, titleOverride = null) {
+  const displayTitle = titleOverride || topic.title;
+  const payload = `${displayTitle}\n\n${String(zikr.text || "").trim()}\n\nالمعنى والفائدة: ${meaning}\n\nمن تطبيق أنياس — حصن المسلم`;
+  const status = document.getElementById("azkarShareStatus");
+  const announce = message => {
+    if (!status) return;
+    status.textContent = message;
+    window.clearTimeout(announce.timer);
+    announce.timer = window.setTimeout(() => { status.textContent = ""; }, 3500);
+  };
+
+  if (typeof navigator.share === "function") {
+    try {
+      await navigator.share({ title: `ذكر من حصن المسلم — ${displayTitle}`, text: payload });
+      announce("تم فتح خيارات المشاركة.");
+      return;
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+    }
+  }
+
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(payload);
+    } else {
+      const field = document.createElement("textarea");
+      field.value = payload;
+      field.setAttribute("readonly", "");
+      field.style.position = "fixed";
+      field.style.opacity = "0";
+      document.body.appendChild(field);
+      field.select();
+      const copied = document.execCommand("copy");
+      field.remove();
+      if (!copied) throw new Error("clipboard unavailable");
+    }
+    announce("نُسخ الذكر ومعناه؛ يمكنك لصقه ومشاركته على أي منصة.");
+  } catch (_) {
+    announce("تعذّر النسخ تلقائيًا؛ حدّد نص الذكر وانسخه للمشاركة.");
+  }
 }
 
 
@@ -631,22 +697,8 @@ document.addEventListener(
             "page-azkar-detail"
           );
 
-        const azkarPage =
-          document.getElementById(
-            "page-azkar"
-          );
-
-        if (detailPage) {
-          detailPage.classList.remove(
-            "active"
-          );
-        }
-
-        if (azkarPage) {
-          azkarPage.classList.add(
-            "active"
-          );
-        }
+        if (detailPage) detailPage.classList.remove("active");
+        document.getElementById("page-azkar")?.classList.add("active");
 
       }
     );

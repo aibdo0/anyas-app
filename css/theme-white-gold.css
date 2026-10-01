@@ -165,10 +165,15 @@ button.prayer-row:hover { border-color: #decda8; background: #fcf9f3; transform:
 .zikr-card { padding: 20px 18px; border-bottom: 1px solid var(--line); }
 .zikr-card:last-child { border-bottom: 0; }
 .zikr-text { scroll-margin-top: 16px; color: var(--ink); font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: clamp(20px, 5vw, 24px); font-weight: 700; line-height: 2; overflow-wrap: anywhere; }
+.zikr-meaning-wrap { margin-top: 10px; padding: 10px 12px; border-inline-start: 3px solid var(--gold); border-radius: 11px; background: var(--surface-soft); }
+.zikr-meaning-wrap strong { color: var(--gold-dark); font-size: 12px; font-weight: 800; }
+.zikr-meaning { margin: 3px 0 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+.azkar-meaning-disclaimer { margin: 4px 18px 8px; color: var(--muted); font-size: 11px; }
 .zikr-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
 .zikr-count { color: var(--muted); font-size: 13px; font-weight: 700; }
 .zikr-button { min-width: 100px; padding: 10px 16px; border: 0; border-radius: 12px; color: #fff; background: var(--gold-dark); font-weight: 800; cursor: pointer; }
 .zikr-button:disabled { color: var(--gold-dark); background: var(--gold-pale); cursor: default; }
+.zikr-share-button { min-height: 38px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 11px; color: var(--gold-dark); background: var(--surface); font-size: 12px; font-weight: 800; cursor: pointer; }
 #azkarTopicNavigation button { min-height: 44px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; color: var(--gold-dark); background: var(--surface); font-weight: 800; cursor: pointer; }
 .category-detail-header + .section { padding-inline: 0; }
 .category-grid > *, #azkarList > *, #azkarTopicNavigation > * { min-width: 0; border-radius: 17px; }
