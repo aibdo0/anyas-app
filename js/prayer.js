@@ -79,6 +79,22 @@ function getCalculationMethod() {
 
 function detectLocationAndLoadTimes() {
 
+  try {
+    const saved = JSON.parse(localStorage.getItem("anyas_manual_location") || "null");
+    if (saved && Number.isFinite(Number(saved.latitude)) && Number.isFinite(Number(saved.longitude))) {
+      window.lastKnownLocation = saved;
+      window.currentLatitude = Number(saved.latitude);
+      window.currentLongitude = Number(saved.longitude);
+      const heroCity = document.getElementById("prayerHeroCity");
+      if (heroCity && saved.city) heroCity.textContent = saved.city;
+      loadPrayerTimes(window.currentLatitude, window.currentLongitude);
+      emitLocationUpdated(window.currentLatitude, window.currentLongitude, false);
+      return;
+    }
+  } catch (error) {
+    console.warn("تعذر قراءة المدينة المحفوظة:", error);
+  }
+
   if (!navigator.geolocation) {
 
     window.lastKnownLocation = {
@@ -1261,15 +1277,9 @@ function setupPrayerRowActions() {
           row.dataset.prayer;
 
 
-        if (
-          typeof goToPage ===
-          "function"
-        ) {
-
-          goToPage(
-            "settings"
-          );
-
+        if (typeof goToPage === "function") {
+          goToPage("prayer-schedule");
+          document.querySelector('[data-schedule-view="tomorrow"]')?.click();
         }
 
 

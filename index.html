@@ -59,6 +59,8 @@
 
 <header class="main-header">
 
+<div class="home-greeting" id="homeGreeting">السلام عليكم يا أخي المسلم</div>
+
 <div class="home-brand">أنياس</div>
 
 <button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
@@ -78,7 +80,7 @@
 
 <div class="prayer-hero-meta">
   <div class="next-label">الصلاة القادمة</div>
-  <div class="prayer-city-chip" aria-label="موقع الصلاة"><span aria-hidden="true">⌖</span><span id="prayerHeroCity">القاهرة</span></div>
+  <button class="prayer-city-chip" id="openCityPickerButton" type="button" aria-label="تغيير المدينة"><span aria-hidden="true">⌖</span><span id="prayerHeroCity">القاهرة</span></button>
 </div>
 
 <div class="prayer-name" id="nextPrayerName">
@@ -105,7 +107,7 @@
     <div class="daily-adhkar-heading-row">
       <div class="daily-adhkar-mark" aria-hidden="true">ذ</div>
       <div class="daily-adhkar-heading-copy">
-        <div class="daily-adhkar-eyebrow">ورد يناسب وقتك · يتبدل تلقائيًا</div>
+        <div class="daily-adhkar-eyebrow">ورد يناسب وقت الصلاة</div>
         <h2 class="daily-adhkar-title" id="dailyAdhkarHeading">أذكار الصباح</h2>
       </div>
       <span class="daily-adhkar-badge" id="dailyAdhkarBadge">الصباح</span>
@@ -118,12 +120,15 @@
   </div>
 </section>
 
+<section class="section notification-preview-section" aria-labelledby="notificationPreviewHeading">
+  <div class="section-heading"><div class="section-title" id="notificationPreviewHeading">الإشعارات</div><button class="more-button" id="openNotificationsButton" type="button">عرض الكل</button></div>
+  <div class="notification-preview" id="notificationPreview"><span class="notification-dot muted" aria-hidden="true"></span><span>فعّل ما يناسبك من الإعدادات</span></div>
+</section>
+
 <section class="section prayer-section">
 
 <div class="section-heading">
-<div class="section-title">
-مواقيت اليوم
-</div>
+<button class="section-title section-title-button" id="openPrayerScheduleButton" type="button">مواقيت الصلاة</button>
 <button class="more-button prayer-adjust-button" id="openManualPrayerSettings" type="button">ضبط المواقيت</button>
 </div>
 
@@ -793,6 +798,11 @@ aria-selected="false"
 </div>
 
 <div class="settings-card">
+
+<div class="setting-row name-setting-row">
+  <div class="setting-info"><div class="setting-title">اسمك في التحية</div><div class="setting-description">غيّر الاسم فقط، وتبقى عبارة التحية كما هي</div></div>
+  <input id="userNameInput" class="select-control name-input" type="text" maxlength="24" placeholder="أخي المسلم" autocomplete="nickname">
+</div>
 
 
 <div class="appearance-setting">
@@ -1706,6 +1716,17 @@ value="100"
 </section>
 </main>
 
+<main class="page" id="page-city-picker">
+  <header class="plain-header"><button class="back-button" id="cityPickerBackButton" type="button">رجوع</button><div class="brand">مدينة الصلاة</div><div class="date">اكتب مدينتك يدويًا لحساب المواقيت</div></header>
+  <section class="city-picker-card"><label for="citySearchInput">المدينة أو الدولة</label><div class="city-search-row"><input id="citySearchInput" type="search" placeholder="مثال: القاهرة، مصر"><button id="citySearchButton" type="button">بحث</button></div><div id="citySearchResults" class="city-search-results" aria-live="polite"></div><button id="useCurrentLocationButton" class="secondary-action" type="button">استخدام موقعي الحالي</button></section>
+</main>
+
+<main class="page" id="page-prayer-schedule">
+  <header class="plain-header"><button class="back-button" id="prayerScheduleBackButton" type="button">رجوع</button><div class="brand">جدول المواقيت</div><div class="date" id="scheduleLocationLabel">مواقيت الصلاة</div></header>
+  <div class="schedule-tabs" role="tablist"><button class="schedule-tab active" data-schedule-view="tomorrow" type="button">غدًا</button><button class="schedule-tab" data-schedule-view="month" type="button">هذا الشهر</button></div>
+  <section class="schedule-card"><div id="prayerScheduleList" class="prayer-schedule-list" aria-live="polite"><div class="schedule-loading">جارٍ تحميل الجدول…</div></div><button id="scheduleManualAdjustButton" class="secondary-action" type="button">تعديل المواقيت</button></section>
+</main>
+
 <!-- =====================================================
      التنقل السفلي
 ===================================================== -->
@@ -1718,6 +1739,7 @@ value="100"
 <button
 class="nav-item active"
 data-page="home"
+aria-label="الرئيسية"
 type="button"
 >
 <span class="nav-icon">
@@ -1729,6 +1751,7 @@ type="button"
 <button
 class="nav-item"
 data-page="tasks"
+aria-label="يوم المسلم"
 type="button"
 >
 <span class="nav-icon">
@@ -1740,6 +1763,7 @@ type="button"
 <button
 class="nav-item"
 data-page="learning"
+aria-label="علم ينتفع به"
 type="button"
 hidden
 >
@@ -1752,6 +1776,7 @@ hidden
 <button
 class="nav-item"
 data-page="azkar"
+aria-label="الأذكار"
 type="button"
 >
 <span class="nav-icon">
@@ -1763,6 +1788,7 @@ type="button"
 <button
 class="nav-item"
 data-page="more"
+aria-label="المزيد"
 type="button"
 >
 <span class="nav-icon">
@@ -1790,6 +1816,7 @@ type="button"
 <script src="js/settings.js?v=20260926-3"></script>
 <script src="js/qibla.js?v=20260926-3"></script>
 <script src="js/learning.js?v=20260926-3"></script>
+<script src="js/app-enhancements.js?v=20261001-1"></script>
 <script src="js/daily-devotions.js?v=20260926-3"></script>
 <script src="js/app.js?v=20260927-2"></script>
 

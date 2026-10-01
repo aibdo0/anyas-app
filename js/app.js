@@ -157,7 +157,9 @@ function goToPage(pageId) {
     "settings",
     "prayer-report",
     "worship",
-    "learning"
+    "learning",
+    "city-picker",
+    "prayer-schedule"
   ].includes(pageId) ? "more" : pageId === "tasbeeh" ? "tasks" : pageId === "qibla" ? "home" : pageId;
 
   document
