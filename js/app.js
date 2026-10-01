@@ -159,7 +159,8 @@ function goToPage(pageId) {
     "worship",
     "learning",
     "city-picker",
-    "prayer-schedule"
+    "prayer-schedule",
+    "mosques"
   ].includes(pageId) ? "more" : pageId === "tasbeeh" ? "tasks" : pageId === "qibla" ? "home" : pageId;
 
   document
@@ -1512,6 +1513,11 @@ function setupNearbyMosque() {
 
 
 function openNearbyMosque() {
+
+  if (typeof window.openMosqueDirectory === "function") {
+    window.openMosqueDirectory();
+    return;
+  }
 
   let latitude =
     window.currentLatitude ||

@@ -194,9 +194,44 @@
     button.addEventListener("click", () => { openPage("settings"); document.querySelector("#page-settings .settings-section-title:nth-of-type(2)")?.scrollIntoView({ behavior: "smooth" }); });
   }
 
+  async function openMosqueDirectory() {
+    openPage("mosques");
+    const list = byId("mosquesList");
+    const location = currentCoordinates();
+    if (!list || !location.latitude || !location.longitude) {
+      if (list) list.textContent = "حدّد مدينتك أولًا لعرض المساجد القريبة.";
+      return;
+    }
+    list.innerHTML = '<div class="schedule-loading">جارٍ البحث حولك…</div>';
+    const radius = 5000;
+    const query = `[out:json][timeout:15];(nwr[amenity=place_of_worship][religion=muslim](around:${radius},${location.latitude},${location.longitude););out center tags;`;
+    try {
+      const response = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query });
+      const data = await response.json();
+      const places = (data.elements || []).slice(0, 12);
+      list.replaceChildren();
+      if (!places.length) { list.innerHTML = '<div class="schedule-loading">لم نجد مسجدًا مسجلًا قريبًا. جرّب الخريطة لرؤية نتائج أكثر.</div>'; return; }
+      places.forEach(place => {
+        const lat = place.lat ?? place.center?.lat, lon = place.lon ?? place.center?.lon;
+        const name = place.tags?.name || place.tags?.["name:ar"] || "مسجد قريب";
+        const item = document.createElement("a"); item.className = "mosque-result"; item.target = "_blank"; item.rel = "noopener";
+        item.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}@${lat},${lon}`;
+        item.innerHTML = `<span class="mosque-result-icon">م</span><span><strong>${name}</strong><small>فتح الاتجاهات على الخريطة</small></span><span aria-hidden="true">‹</span>`;
+        list.appendChild(item);
+      });
+    } catch (error) {
+      list.innerHTML = '<div class="schedule-loading">تعذر تحميل القائمة الآن. استخدم زر الخريطة للبحث المباشر.</div>';
+    }
+    byId("openMosquesMapButton")?.addEventListener("click", () => {
+      window.open(`https://www.google.com/maps/search/?api=1&query=mosque+near+${location.latitude},${location.longitude}`, "_blank");
+    }, { once: true });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initGreeting(); initCityPicker(); initPrayerSchedule(); initNotificationsList();
+    byId("mosquesBackButton")?.addEventListener("click", () => openPage("home"));
     updatePrayerMoment(); setInterval(updatePrayerMoment, 5000);
   });
   window.updatePrayerMoment = updatePrayerMoment;
+  window.openMosqueDirectory = openMosqueDirectory;
 })();

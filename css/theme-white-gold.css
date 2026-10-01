@@ -837,3 +837,11 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .bottom-nav .nav-item:nth-child(5) .nav-icon::before { content: "⋯"; }
 :root[data-theme="dark"] .city-picker-card, :root[data-theme="dark"] .schedule-card, :root[data-theme="dark"] .notification-preview { background: var(--surface) !important; }
 :root[data-theme="dark"] .city-search-row input, :root[data-theme="dark"] .name-input, :root[data-theme="dark"] .city-result, :root[data-theme="dark"] .schedule-row, :root[data-theme="dark"] .schedule-month-row { background: var(--surface-soft) !important; color: var(--ink) !important; }
+.mosques-card { display: grid; gap: 13px; padding: 17px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
+.mosques-list { display: grid; gap: 8px; }
+.mosque-result { display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 10px; min-height: 62px; padding: 10px; border: 1px solid var(--line); border-radius: 15px; color: var(--ink); background: var(--surface-soft); text-decoration: none; }
+.mosque-result-icon { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 11px; color: var(--gold-dark); background: var(--gold-pale); font-weight: 800; }
+.mosque-result strong, .mosque-result small { display: block; }
+.mosque-result strong { font-size: 13px; }
+.mosque-result small { margin-top: 3px; color: var(--muted); font-size: 11px; }
+:root[data-theme="dark"] .mosques-card, :root[data-theme="dark"] .mosque-result { background: var(--surface) !important; color: var(--ink) !important; }
