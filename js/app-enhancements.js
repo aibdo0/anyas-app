@@ -159,6 +159,15 @@
         year: Number(source?.year) || date.getFullYear()
       };
     }
+    function formatScheduleTime(value) {
+      const clean = String(value || "--").replace(/\s*\([^)]*\)/g, "").trim();
+      const match = clean.match(/^(\d{1,2}):(\d{2})/);
+      if (!match) return clean;
+      const hour = Number(match[1]);
+      const hour12 = hour % 12 || 12;
+      const period = hour >= 12 ? "م" : "ص";
+      return `${String(hour12).padStart(2, "0")}:${match[2]} ${period}`;
+    }
     function renderDay(data, date) {
       const timings = data.timings || {};
       const hijri = hijriDateFor(date, data.date?.hijri);
@@ -174,7 +183,6 @@
     }
     function renderMonth(data, selectedHijriMonth) {
       const weekdays = { Sunday: "الأحد", Monday: "الاثنين", Tuesday: "الثلاثاء", Wednesday: "الأربعاء", Thursday: "الخميس", Friday: "الجمعة", Saturday: "السبت" };
-      const cleanTime = value => String(value || "--").replace(/\s*\([^)]*\)/g, "").trim();
       list.replaceChildren();
       if (!Array.isArray(data) || !data.length) { list.textContent = "لا توجد مواقيت متاحة لهذا الشهر."; return; }
       const firstHijri = data[0].date?.hijri || {};
@@ -224,7 +232,7 @@
           const prayerName = document.createElement("span");
           prayerName.textContent = prayerLabel(key, dayDate);
           const time = document.createElement("strong");
-          time.textContent = cleanTime(day.timings?.[key]);
+          time.textContent = formatScheduleTime(day.timings?.[key]);
           timeCell.append(prayerName, time);
           times.appendChild(timeCell);
         });
@@ -234,7 +242,9 @@
     }
     function addRow(name, time) {
       const row = document.createElement("div"); row.className = "schedule-row";
-      row.innerHTML = `<span>${name}</span><strong>${time || "--"}</strong>`; list.appendChild(row);
+      const label = document.createElement("span"); label.textContent = name;
+      const value = document.createElement("strong"); value.textContent = formatScheduleTime(time);
+      row.append(label, value); list.appendChild(row);
     }
   }
 
