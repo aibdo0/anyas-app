@@ -222,7 +222,8 @@
       return;
     }
     const mapButton = byId("openMosquesMapButton");
-    if (mapButton) mapButton.onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=mosque+near+${latitude},${longitude}`, "_blank");
+    const mosqueMapUrl = `https://www.google.com/maps/search/${encodeURIComponent("مسجد")}/@${latitude},${longitude},15z`;
+    if (mapButton) mapButton.onclick = () => window.open(mosqueMapUrl, "_blank");
     list.textContent = `جارٍ البحث عن مساجد قرب ${cityName}…`;
 
     const isMosque = place => {
