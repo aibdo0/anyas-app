@@ -1416,7 +1416,7 @@ tabindex="0"
 </div>
 
 <div class="setting-description" id="normalMuezzinSelected">
-الصوت الافتراضي — يمكنك إضافة صوت اختياري
+مشاري العفاسي
 </div>
 
 </div>
@@ -1432,16 +1432,28 @@ tabindex="0"
 
 <div class="muezzin-row">
 
+<label class="muezzin-select">
+  <input type="radio" name="normalMuezzin" value="default" checked>
+  <span class="muezzin-name">مشاري العفاسي</span>
+</label>
+
+<button class="preview-button" type="button" data-audio="adhanAudio">تشغيل</button>
+
+</div>
+
+<div class="muezzin-row">
+
 <div class="muezzin-select">
+  <input id="normalMuezzinCustom" type="radio" name="normalMuezzin" value="custom" data-audio-id="adhanAudio">
   <div>
-    <span class="muezzin-name">صوت مخصص اختياري</span>
+    <span class="muezzin-name">أذان آخر — صوت مخصص</span>
     <small class="audio-file-name" id="adhanAudioName">لم يتم اختيار ملف</small>
   </div>
 </div>
 
 <label class="audio-upload-button">
 رفع صوت
-<input type="file" accept="audio/*" data-audio-upload="adhanAudio" data-audio-name="adhanAudioName" hidden>
+<input type="file" accept="audio/*" data-audio-upload="adhanAudio" data-audio-name="adhanAudioName" data-muezzin-radio="normalMuezzinCustom" hidden>
 </label>
 
 <button
@@ -1471,7 +1483,7 @@ tabindex="0"
 </div>
 
 <div class="setting-description" id="fajrMuezzinSelected">
-الصوت الافتراضي — يمكنك إضافة صوت اختياري
+مشاري العفاسي
 </div>
 
 </div>
@@ -1487,16 +1499,28 @@ tabindex="0"
 
 <div class="muezzin-row">
 
+<label class="muezzin-select">
+  <input type="radio" name="fajrMuezzin" value="default" checked>
+  <span class="muezzin-name">مشاري العفاسي — أذان الفجر</span>
+</label>
+
+<button class="preview-button" type="button" data-audio="fajrAudio">تشغيل</button>
+
+</div>
+
+<div class="muezzin-row">
+
 <div class="muezzin-select">
+  <input id="fajrMuezzinCustom" type="radio" name="fajrMuezzin" value="custom" data-audio-id="fajrAudio">
   <div>
-    <span class="muezzin-name">صوت فجر مخصص اختياري</span>
+    <span class="muezzin-name">أذان آخر — صوت فجر مخصص</span>
     <small class="audio-file-name" id="fajrAudioName">لم يتم اختيار ملف</small>
   </div>
 </div>
 
 <label class="audio-upload-button">
 رفع صوت
-<input type="file" accept="audio/*" data-audio-upload="fajrAudio" data-audio-name="fajrAudioName" hidden>
+<input type="file" accept="audio/*" data-audio-upload="fajrAudio" data-audio-name="fajrAudioName" data-muezzin-radio="fajrMuezzinCustom" hidden>
 </label>
 
 <button

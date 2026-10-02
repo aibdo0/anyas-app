@@ -201,13 +201,14 @@ function setupAdhanSettings() {
 
 
 // =====================================================
-// مكتبة الأصوات — رفع ومعاينة محلية
+// رفع الأصوات المخصصة — حفظ ومعاينة محلية
 // =====================================================
 
 function setupAudioLibrary() {
   document.querySelectorAll("[data-audio-upload]").forEach(input => {
     const audioId = input.dataset.audioUpload;
     const nameId = input.dataset.audioName;
+    const customRadioId = input.dataset.muezzinRadio || "";
     const selectedId = audioId === "adhanAudio"
       ? "normalMuezzinSelected"
       : audioId === "fajrAudio"
@@ -226,6 +227,10 @@ function setupAudioLibrary() {
     }
     if (savedName && name) name.textContent = savedName;
     if (savedName && selected) selected.textContent = savedName;
+    if (savedName && customRadioId) {
+      const customRadio = document.getElementById(customRadioId);
+      if (customRadio) customRadio.checked = true;
+    }
 
     input.addEventListener("change", () => {
       const file = input.files?.[0];
@@ -243,26 +248,18 @@ function setupAudioLibrary() {
         audio.load();
         if (name) name.textContent = file.name;
         if (selected) selected.textContent = file.name;
+        if (customRadioId) {
+          const customRadio = document.getElementById(customRadioId);
+          if (customRadio) {
+            customRadio.checked = true;
+            customRadio.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        }
       };
       reader.readAsDataURL(file);
     });
   });
 
-  document.querySelectorAll(".audio-library-panel .preview-button").forEach(button => {
-    button.addEventListener("click", () => {
-      const audio = document.getElementById(button.dataset.audio);
-      if (!audio || !audio.src) return;
-      stopAllAudioExcept(audio);
-      if (audio.paused) {
-        audio.currentTime = 0;
-        audio.play().then(() => { button.textContent = "إيقاف"; }).catch(() => {});
-      } else {
-        audio.pause();
-        button.textContent = "تشغيل";
-      }
-      audio.onended = () => { button.textContent = "تشغيل"; };
-    });
-  });
 }
 
 
@@ -318,15 +315,14 @@ function setupMuezzinPicker(
       `input[name="${radioName}"]`
     );
 
-  if (saved) {
-
+  const hasSavedChoice = Array.from(radios).some(radio => radio.value === saved);
+  if (saved && hasSavedChoice) {
     radios.forEach(radio => {
-
-      radio.checked =
-        radio.value === saved;
-
+      radio.checked = radio.value === saved;
     });
-
+  } else {
+    const defaultRadio = options.querySelector(`input[name="${radioName}"][value="default"]`);
+    if (defaultRadio) defaultRadio.checked = true;
   }
 
   updateSelectedName();
@@ -436,14 +432,16 @@ function setupMuezzinPicker(
     const label =
       checked.closest(".muezzin-select");
 
-    const name =
-      label?.querySelector(".muezzin-name");
+    const name = label?.querySelector(".muezzin-name");
+    const customAudioId = checked.dataset.audioId;
+    const savedCustomName = customAudioId
+      ? localStorage.getItem(`anyas_audio_name_${customAudioId}`)
+      : "";
 
-    if (name) {
-
-      selected.textContent =
-        name.textContent;
-
+    if (savedCustomName && checked.value === "custom") {
+      selected.textContent = savedCustomName;
+    } else if (name) {
+      selected.textContent = name.textContent;
     }
 
   }

@@ -214,6 +214,7 @@
 .muezzin-row {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
 
     padding: 12px 0;
@@ -227,6 +228,7 @@
     gap: 10px;
 
     flex: 1;
+    min-width: 0;
 
     cursor: pointer;
 }
