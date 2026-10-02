@@ -24,4 +24,21 @@ tasks.register('syncWebAssets', Copy) {
     }
     into layout.projectDirectory.dir('src/main/assets')
 }
-tasks.named('preBuild').configure { dependsOn('syncWebAssets') }
+tasks.register('syncReminderAudio') {
+    doLast {
+        def sourceDir = new File(webRoot, 'audio')
+        def targetDir = file('src/main/res/raw')
+        targetDir.mkdirs()
+        sourceDir.eachFile { source ->
+            if (!source.name.toLowerCase().endsWith('.mp3')) return
+            def base = source.name.substring(0, source.name.length() - 4)
+            def safe = base.toLowerCase().replaceAll('[^a-z0-9_]', '_')
+            copy {
+                from source
+                into targetDir
+                rename { safe + '.mp3' }
+            }
+        }
+    }
+}
+tasks.named('preBuild').configure { dependsOn('syncWebAssets', 'syncReminderAudio') }

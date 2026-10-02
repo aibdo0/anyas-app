@@ -9,16 +9,36 @@ import android.content.Intent;
 import android.os.Build;
 
 public class ReminderReceiver extends BroadcastReceiver {
-    @Override public void onReceive(Context c, Intent i) {
-        String id=i.getStringExtra("id"), title=i.getStringExtra("title"), body=i.getStringExtra("body"), time=i.getStringExtra("time");
-        if(id==null)return;
-        ReminderScheduler.createChannels(c);
-        Intent open=new Intent(c,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pi=PendingIntent.getActivity(c,id.hashCode()&0x7fffffff,open,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
-        String channel=i.getBooleanExtra("sound",true)?"reminders_sound":"reminders_silent";
-        Notification.Builder b=Build.VERSION.SDK_INT>=26?new Notification.Builder(c,channel):new Notification.Builder(c).setDefaults(i.getBooleanExtra("sound",true)?Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE:0);
-        b.setSmallIcon(android.R.drawable.ic_dialog_info).setContentTitle(title==null?"أنياس":title).setContentText(body==null?"حان وقت وردك اليومي":body).setAutoCancel(true).setContentIntent(pi);
-        ((NotificationManager)c.getSystemService(Context.NOTIFICATION_SERVICE)).notify(id.hashCode(),b.build());
-        if(time!=null) ReminderScheduler.scheduleOne(c,(android.app.AlarmManager)c.getSystemService(Context.ALARM_SERVICE),new ReminderScheduler.Reminder(id,title,time,body),i.getBooleanExtra("sound",true));
+    @Override public void onReceive(Context context, Intent intent) {
+        String id = intent.getStringExtra("id");
+        if (id == null) return;
+        String title = intent.getStringExtra("title");
+        String body = intent.getStringExtra("body");
+        boolean sound = intent.getBooleanExtra("sound", true);
+        String soundFile = intent.getStringExtra("soundFile");
+        showNotification(context, id, title, body);
+        if (sound && soundFile != null && !soundFile.isEmpty()) {
+            Intent player = new Intent(context, ReminderPlayerService.class).putExtra("soundFile", soundFile).putExtra("title", title).putExtra("volume", intent.getFloatExtra("volume", 1f));
+            try {
+                if (Build.VERSION.SDK_INT >= 26) context.startForegroundService(player);
+                else context.startService(player);
+            } catch (Exception ignored) { }
+        }
+        ReminderScheduler.scheduleSaved(context);
+    }
+
+    static void showNotification(Context context, String id, String title, String body) {
+        ReminderScheduler.createChannels(context);
+        Intent open = new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pending = PendingIntent.getActivity(context, ReminderScheduler.requestCode(id), open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        Notification.Builder builder = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(context, "reminders") : new Notification.Builder(context).setDefaults(Notification.DEFAULT_VIBRATE);
+        builder.setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setContentTitle(title == null ? "أنياس" : title)
+                .setContentText(body == null ? "حان وقت التذكير." : body)
+                .setAutoCancel(true)
+                .setContentIntent(pending)
+                .setCategory(Notification.CATEGORY_REMINDER);
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager != null) manager.notify(ReminderScheduler.requestCode(id), builder.build());
     }
 }

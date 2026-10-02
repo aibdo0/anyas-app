@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupBeforeFajrReminder();
   setupAyatKursiVoices();
   setupAdhkarAudioControls();
+  setupAdhkarVoiceChoices();
   setupThemeAndLanguage();
   setupHomeThemeToggle();
   setupNotifications();

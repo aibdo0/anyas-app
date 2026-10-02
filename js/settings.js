@@ -145,6 +145,7 @@ function setupAdhanSettings() {
       if (value) value.textContent = `${next}%`;
       localStorage.setItem(control.key, String(next));
       applyAudioVolume(Number(volume?.value) || 100);
+      syncAndroidNotificationSettings();
     });
   });
 
@@ -238,6 +239,7 @@ function setupBeforeFajrReminder() {
   toggle.checked = localStorage.getItem("anyas_beforeFajrReminder") === "true";
   toggle.addEventListener("change", () => {
     localStorage.setItem("anyas_beforeFajrReminder", String(toggle.checked));
+    if (typeof syncAndroidNotificationSettings === "function") syncAndroidNotificationSettings();
   });
 
   button.addEventListener("click", () => {
@@ -301,6 +303,7 @@ function setupAyatKursiVoices() {
     if (!radio.checked) return;
     localStorage.setItem("anyas_ayatKursiVoice", radio.value);
     applySource(radio);
+    if (typeof syncAndroidNotificationSettings === "function") syncAndroidNotificationSettings();
   }));
 
   options.querySelectorAll("[data-ayat-preview]").forEach(button => {
@@ -502,6 +505,33 @@ function setupAdhkarAudioControls() {
       button.textContent = "إيقاف";
       audio.play().catch(() => { button.textContent = "تشغيل"; button._adhkarPreview = null; });
       audio.onended = () => { button.textContent = "تشغيل"; button._adhkarPreview = null; };
+    });
+  });
+}
+
+function setupAdhkarVoiceChoices() {
+  const choices = [
+    { id: "morningWardVoice", storage: "anyas_morningWardVoice", audioId: "morningWardAudio", mishary: "audio/adhkar-morning-mishary-alafasy.mp3?v=20261003-1", ahmed: "audio/adhkar-morning-ahmed-al-nafis.mp3" },
+    { id: "eveningWardVoice", storage: "anyas_eveningWardVoice", audioId: "eveningWardAudio", mishary: "audio/adhkar-evening-mishary-alafasy.mp3?v=20261003-1", ahmed: "audio/adhkar-evening-ahmed-al-nafis.mp3" }
+  ];
+  choices.forEach(choice => {
+    const select = document.getElementById(choice.id);
+    const audio = document.getElementById(choice.audioId);
+    if (!select || !audio) return;
+    const saved = localStorage.getItem(choice.storage) === "ahmed" ? "ahmed" : "mishary";
+    select.value = saved;
+    const apply = value => {
+      const source = audio.querySelector("source");
+      if (!source) return;
+      source.src = value === "ahmed" ? choice.ahmed : choice.mishary;
+      audio.load();
+    };
+    apply(saved);
+    select.addEventListener("change", () => {
+      const value = select.value === "ahmed" ? "ahmed" : "mishary";
+      localStorage.setItem(choice.storage, value);
+      apply(value);
+      if (typeof syncAndroidNotificationSettings === "function") syncAndroidNotificationSettings();
     });
   });
 }
@@ -1170,6 +1200,7 @@ function setupNotifications() {
     "notifyFastingMonday",
     "notifyFastingFisabilillah",
     "notifyRainSunnah",
+    "beforeFajrReminder",
     "notifyWardAwakening",
     "notifyWardMorning",
     "notifyWardGeneral",
@@ -1243,19 +1274,41 @@ function setupNotifications() {
 
 function syncAndroidNotificationSettings() {
   if (!window.AnyasAndroid || !window.AnyasAndroid.syncSettings) return;
-  const ids = ["notifyPrayerSoon", "notifySunrise", "notifyLastThird", "notifyAyatKursi", "notifyHadith", "notifyDuha", "notifySalawat", "notifyBaqiyat", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyRainSunnah", "notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar"];
+  const ids = ["notifyPrayerSoon", "notifySunrise", "notifyLastThird", "notifyAyatKursi", "notifyHadith", "notifyDuha", "notifyBaqiyat", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyRainSunnah", "beforeFajrReminder", "notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyFridayKahf", "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat"];
   const enabled = {};
   ids.forEach(id => {
     const element = document.getElementById(id);
     enabled[id] = element ? element.checked : localStorage.getItem(`anyas_${id}`) === "true";
   });
+  const salawatEnabled = document.getElementById("notifySalawat")?.checked === true || localStorage.getItem("anyas_notifySalawat") === "true";
+  enabled.notifySalawat_1 = salawatEnabled;
+  enabled.notifySalawat_2 = salawatEnabled;
   const prayers = {};
-  ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(key => {
+  ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"].forEach(key => {
     const raw = window.todayTimings && window.todayTimings[key];
     const match = raw && String(raw).match(/(\d{1,2}:\d{2})/);
     if (match) prayers[key] = match[1].padStart(5, "0");
   });
-  window.AnyasAndroid.syncSettings(JSON.stringify({ enabled, prayers, sound: localStorage.getItem("anyas_notificationSound") === "true" }));
+  window.AnyasAndroid.syncSettings(JSON.stringify({
+    enabled,
+    prayers,
+    latitude: Number(window.currentLatitude),
+    longitude: Number(window.currentLongitude),
+    morningVoice: localStorage.getItem("anyas_morningWardVoice") || "mishary",
+    eveningVoice: localStorage.getItem("anyas_eveningWardVoice") || "mishary",
+    ayatVoice: localStorage.getItem("anyas_ayatKursiVoice") || "mishary",
+    sound: localStorage.getItem("anyas_notificationSound") === "true",
+    volumes: {
+      normalMuezzin: Number(localStorage.getItem("anyas_normalMuezzinVolume") ?? 100),
+      fajrMuezzin: Number(localStorage.getItem("anyas_fajrMuezzinVolume") ?? 100),
+      beforeFajr: Number(localStorage.getItem("anyas_beforeFajrVolume") ?? 100),
+      ayatKursi: Number(localStorage.getItem("anyas_ayatKursiVolume") ?? 100),
+      wakeupWard: Number(localStorage.getItem("anyas_wakeupWardVolume") ?? 100),
+      morningWard: Number(localStorage.getItem("anyas_morningWardVolume") ?? 100),
+      eveningWard: Number(localStorage.getItem("anyas_eveningWardVolume") ?? 100),
+      sleepWard: Number(localStorage.getItem("anyas_sleepWardVolume") ?? 100)
+    }
+  }));
 }
 
 

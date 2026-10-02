@@ -1,0 +1,10 @@
+android/.gradle/
+android/local.properties
+android/app/build/
+android/app/src/main/assets/assets/
+android/app/src/main/assets/audio/
+android/app/src/main/assets/css/
+android/app/src/main/assets/data/
+android/app/src/main/assets/index.html
+android/app/src/main/assets/js/
+android/app/src/main/res/raw/
