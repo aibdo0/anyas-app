@@ -508,7 +508,7 @@ function setupAdhkarAudioControls() {
 
 function checkDailyAdhkarNotifications() {
   const schedule = [
-    { id: "notifyWardSahar", key: "sahar", title: "أذكار السحر", body: "حان وقت الاستغفار والدعاء.", minute: 120, audioId: "" },
+    { id: "notifyWardSahar", key: "sahar", title: "أذكار السحر", body: "حان وقت الاستغفار والدعاء.", minute: 120, audioId: "qiyamReminderAudio" },
     { id: "notifyWardAwakening", key: "awakening", title: "أذكار الاستيقاظ", body: "ابدأ يومك بذكر الله.", minute: 270, audioId: "wakeupWardAudio" },
     { id: "notifyWardMorning", key: "morning", title: "أذكار الصباح", body: "حان وقت أذكار الصباح.", minute: 330, audioId: "morningWardAudio" },
     { id: "notifyWardGeneral", key: "general", title: "أذكار اليوم", body: "تذكير بوردك اليومي.", minute: 720, audioId: "" },
@@ -532,6 +532,42 @@ function checkDailyAdhkarNotifications() {
     }
     if (localStorage.getItem("anyas_notificationSound") === "true" && item.audioId) {
       const audio = document.getElementById(item.audioId);
+      if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
+    }
+  });
+}
+
+
+function checkPrayerReminderNotifications() {
+  if (localStorage.getItem("anyas_notifyPrayerSoon") !== "true") return;
+  const timings = window.todayTimings;
+  if (!timings) return;
+  const sounds = {
+    Fajr: "beforePrayerFajrAudio",
+    Dhuhr: "beforePrayerDhuhrAudio",
+    Asr: "beforePrayerAsrAudio",
+    Maghrib: "beforePrayerMaghribAudio",
+    Isha: "beforePrayerIshaAudio"
+  };
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const dayKey = now.toDateString();
+  window.anyasPrayerReminderFired ||= {};
+  Object.entries(sounds).forEach(([prayer, audioId]) => {
+    const match = String(timings[prayer] || "").match(/(\d{1,2}):(\d{2})/);
+    if (!match) return;
+    const prayerMinutes = Number(match[1]) * 60 + Number(match[2]);
+    const target = (prayerMinutes - 15 + 1440) % 1440;
+    if (currentMinutes < target || currentMinutes > target + 1) return;
+    const key = `${dayKey}-${prayer}`;
+    if (window.anyasPrayerReminderFired[key]) return;
+    window.anyasPrayerReminderFired[key] = true;
+    if ("Notification" in window && Notification.permission === "granted") {
+      const names = { Fajr: "الفجر", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" };
+      new Notification(`اقتربت صلاة ${names[prayer]}`, { body: "تبقّى ربع ساعة على موعد الصلاة." });
+    }
+    if (localStorage.getItem("anyas_notificationSound") === "true") {
+      const audio = document.getElementById(audioId);
       if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
     }
   });

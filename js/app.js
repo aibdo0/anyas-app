@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupHomeThemeToggle();
   setupNotifications();
   checkDailyAdhkarNotifications();
+  checkPrayerReminderNotifications();
   setupVibration();
   setupMuezzinSettings();
 
@@ -49,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
     checkAutoAdhan();
     checkBeforeFajrReminder();
     checkDailyAdhkarNotifications();
+    checkPrayerReminderNotifications();
   }, 1000 * 20);
 
   setInterval(() => {

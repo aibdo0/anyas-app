@@ -69,8 +69,8 @@
 
   function playNotificationSound() {
     if (!isEnabled("notificationSound")) return;
-    const audio = document.getElementById("ayatKursiAudio") || document.getElementById("adhanAudio");
-    if (audio?.src) { audio.currentTime = 0; audio.play().catch(() => {}); }
+    const audio = document.getElementById("fridayReminderAudio") || document.getElementById("ayatKursiAudio") || document.getElementById("adhanAudio");
+    if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
   }
 
   function sendNotification(id, title, body, target) {
