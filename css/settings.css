@@ -216,7 +216,7 @@
 }
 
 #ayatKursiOptions {
-    display: block;
+    display: block !important;
 }
 
 .muezzin-row {
