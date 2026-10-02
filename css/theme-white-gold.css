@@ -972,14 +972,10 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .permission-enable-button:disabled { opacity: .72; cursor: default; }
 .permission-message { min-height: 0; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .permission-settings-button[hidden] { display: none; }
-.about-actions { display: grid; gap: 8px; }
 .about-action { display: grid; gap: 2px; width: 100%; padding: 12px 13px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); background: var(--surface-soft); text-align: start; cursor: pointer; transition: border-color .18s,transform .18s; }
 .about-action:hover { border-color: var(--gold); transform: translateY(-1px); }
 .about-action span { font-size: 14px; font-weight: 800; }
 .about-action small { color: var(--muted); font-size: 11px; line-height: 1.5; }
-.about-rating { display: flex; justify-content: center; gap: 7px; direction: ltr; }
-.about-rating button { width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 13px; color: #a8a092; background: var(--surface-soft); font-size: 24px; cursor: pointer; }
-.about-rating button[aria-checked="true"], .about-rating button.is-selected { border-color: var(--gold); color: var(--gold); background: var(--gold-pale); }
 .about-coming-soon { justify-self: start; padding: 4px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: var(--surface-soft); font-size: 11px; font-weight: 800; }
 .about-dialog { width: min(92vw,520px); max-width: 520px; padding: 0; border: 1px solid var(--line); border-radius: 22px; color: var(--ink); background: var(--surface); box-shadow: 0 24px 80px rgba(0,0,0,.25); }
 .about-dialog::backdrop { background: rgba(24,22,19,.52); backdrop-filter: blur(3px); }
@@ -1006,7 +1002,7 @@ html[lang="en"] .location-setting-actions { justify-content: flex-start; }
 :root[data-theme="dark"][data-auto-background="true"][data-time-scene="sunset"] body { background: radial-gradient(ellipse at 90% 0%,rgba(166,102,66,.18),transparent 36rem),linear-gradient(145deg,#1c1919,#19181b 64%,#17171a); }
 :root[data-theme="dark"][data-auto-background="true"][data-time-scene="night"] body { background: radial-gradient(ellipse at 90% 0%,rgba(74,91,119,.19),transparent 35rem),linear-gradient(145deg,#141820,#15171d 65%,#17171b); }
 .setting-info { min-width: 0; }
-@media(max-width:420px) { .about-hero { gap: 10px; padding: 13px; } .about-app-icon { width: 48px; height: 48px; flex-basis: 48px; } .about-version { padding-inline: 7px; font-size: 10px; } .about-rating button { width: 39px; height: 39px; } }
+@media(max-width:420px) { .about-hero { gap: 10px; padding: 13px; } .about-app-icon { width: 48px; height: 48px; flex-basis: 48px; } .about-version { padding-inline: 7px; font-size: 10px; } }
 
 
 html[lang="en"] .app, html[lang="en"] .page { direction: ltr; text-align: left; }
