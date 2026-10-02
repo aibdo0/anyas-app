@@ -182,16 +182,7 @@
 
   function openWirdCategory(id) {
     if (!sections[id]) return;
-    if (document.getElementById("page-azkar")?.classList.contains("active")) {
-      window.openAzkarWird?.(id);
-      return;
-    }
-    goToPage("tasks");
-    setSectionOpen(id, true);
-    window.setTimeout(() => {
-      document.getElementById(`wird-section-${id}`)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 30);
+    window.openAzkarWird?.(id);
   }
 
   window.openWirdCategory = openWirdCategory;
@@ -210,10 +201,7 @@
       setSectionOpen(id, false);
       const toggle = document.querySelector(`[data-wird-toggle="${id}"]`);
       if (toggle) {
-        toggle.addEventListener("click", () => {
-          const container = document.getElementById(`wird-items-${id}`);
-          setSectionOpen(id, Boolean(container?.hidden));
-        });
+        toggle.addEventListener("click", () => openWirdCategory(id));
       }
     });
 
