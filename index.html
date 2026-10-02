@@ -1430,10 +1430,10 @@ tabindex="0"
 
 <div class="audio-picker" id="normalMuezzinOptions">
 
-<div class="muezzin-row">
+<div class="muezzin-row muezzin-card">
 
 <label class="muezzin-select">
-  <input type="radio" name="normalMuezzin" value="default" checked>
+  <input type="radio" name="normalMuezzin" value="default" data-audio-id="adhanAudio" checked>
   <span class="muezzin-name">مشاري العفاسي</span>
 </label>
 
@@ -1441,10 +1441,10 @@ tabindex="0"
 
 </div>
 
-<div class="muezzin-row">
+<div class="muezzin-row muezzin-card">
 
 <div class="muezzin-select">
-  <input id="normalMuezzinCustom" type="radio" name="normalMuezzin" value="custom" data-audio-id="adhanAudio">
+  <input id="normalMuezzinCustom" type="radio" name="normalMuezzin" value="custom" data-audio-id="adhanAudio" data-muezzin-name="normalMuezzin">
   <div>
     <span class="muezzin-name">أذان آخر — صوت مخصص</span>
     <small class="audio-file-name" id="adhanAudioName">لم يتم اختيار ملف</small>
@@ -1452,9 +1452,13 @@ tabindex="0"
 </div>
 
 <label class="audio-upload-button">
-رفع صوت
-<input type="file" accept="audio/*" data-audio-upload="adhanAudio" data-audio-name="adhanAudioName" data-muezzin-radio="normalMuezzinCustom" hidden>
+تغيير الصوت
+<input type="file" accept="audio/*" data-audio-upload="adhanAudio" data-audio-name="adhanAudioName" data-muezzin-radio="normalMuezzinCustom" data-muezzin-name="normalMuezzin" hidden>
 </label>
+
+<button class="audio-apply-button" type="button" data-audio-apply="adhanAudio" hidden>اعتماد الصوت</button>
+
+<button class="audio-delete-button" type="button" data-audio-delete="adhanAudio" hidden>حذف</button>
 
 <button
 class="preview-button"
@@ -1466,6 +1470,13 @@ data-audio="adhanAudio"
 
 </div>
 
+</div>
+
+<small class="audio-upload-status" id="adhanAudioStatus" aria-live="polite">MP3 أو M4A أو WAV — حتى 15 ميجابايت</small>
+
+<div class="muezzin-volume-control">
+  <div class="muezzin-volume-header"><span>مستوى صوت الأذان العادي</span><output id="normalMuezzinVolumeValue">100%</output></div>
+  <input id="normalMuezzinVolume" type="range" min="0" max="100" step="1" value="100" aria-label="مستوى صوت الأذان العادي">
 </div>
 
 
@@ -1497,10 +1508,10 @@ tabindex="0"
 
 <div class="audio-picker" id="fajrMuezzinOptions">
 
-<div class="muezzin-row">
+<div class="muezzin-row muezzin-card">
 
 <label class="muezzin-select">
-  <input type="radio" name="fajrMuezzin" value="default" checked>
+  <input type="radio" name="fajrMuezzin" value="default" data-audio-id="fajrAudio" checked>
   <span class="muezzin-name">مشاري العفاسي — أذان الفجر</span>
 </label>
 
@@ -1508,10 +1519,10 @@ tabindex="0"
 
 </div>
 
-<div class="muezzin-row">
+<div class="muezzin-row muezzin-card">
 
 <div class="muezzin-select">
-  <input id="fajrMuezzinCustom" type="radio" name="fajrMuezzin" value="custom" data-audio-id="fajrAudio">
+  <input id="fajrMuezzinCustom" type="radio" name="fajrMuezzin" value="custom" data-audio-id="fajrAudio" data-muezzin-name="fajrMuezzin">
   <div>
     <span class="muezzin-name">أذان آخر — صوت فجر مخصص</span>
     <small class="audio-file-name" id="fajrAudioName">لم يتم اختيار ملف</small>
@@ -1519,9 +1530,13 @@ tabindex="0"
 </div>
 
 <label class="audio-upload-button">
-رفع صوت
-<input type="file" accept="audio/*" data-audio-upload="fajrAudio" data-audio-name="fajrAudioName" data-muezzin-radio="fajrMuezzinCustom" hidden>
+تغيير الصوت
+<input type="file" accept="audio/*" data-audio-upload="fajrAudio" data-audio-name="fajrAudioName" data-muezzin-radio="fajrMuezzinCustom" data-muezzin-name="fajrMuezzin" hidden>
 </label>
+
+<button class="audio-apply-button" type="button" data-audio-apply="fajrAudio" hidden>اعتماد الصوت</button>
+
+<button class="audio-delete-button" type="button" data-audio-delete="fajrAudio" hidden>حذف</button>
 
 <button
 class="preview-button"
@@ -1533,6 +1548,13 @@ data-audio="fajrAudio"
 
 </div>
 
+</div>
+
+<small class="audio-upload-status" id="fajrAudioStatus" aria-live="polite">MP3 أو M4A أو WAV — حتى 15 ميجابايت</small>
+
+<div class="muezzin-volume-control">
+  <div class="muezzin-volume-header"><span>مستوى صوت أذان الفجر</span><output id="fajrMuezzinVolumeValue">100%</output></div>
+  <input id="fajrMuezzinVolume" type="range" min="0" max="100" step="1" value="100" aria-label="مستوى صوت أذان الفجر">
 </div>
 
 

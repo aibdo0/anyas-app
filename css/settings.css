@@ -222,6 +222,19 @@
     border-top: 1px solid var(--border);
 }
 
+.muezzin-card {
+    margin-top: 10px;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.muezzin-card:has(input[type="radio"]:checked) { border-color: var(--primary); box-shadow: 0 7px 20px rgba(161,130,71,.13); }
+.muezzin-card:has(input[type="radio"]:checked) .muezzin-name { color: var(--primary-dark); }
+
 .muezzin-select {
     display: flex;
     align-items: center;
@@ -261,6 +274,15 @@
 
 .muezzin-select > div { min-width: 0; }
 .audio-file-name { display: block; overflow: hidden; margin-top: 3px; color: var(--muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.audio-upload-button, .audio-apply-button, .audio-delete-button { min-height: 34px; padding: 7px 10px; border: 1px solid rgba(161,130,71,.22); border-radius: 10px; font-family: inherit; font-size: 11px; font-weight: 800; cursor: pointer; }
+.audio-upload-button { color: var(--primary-dark); background: var(--card); }
+.audio-apply-button { color: #fff; border-color: var(--primary); background: var(--primary); }
+.audio-delete-button { color: #a84f45; border-color: rgba(168,79,69,.25); background: rgba(168,79,69,.06); }
+.audio-upload-status { display: block; margin: 8px 4px 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.muezzin-volume-control { margin: 14px 4px 3px; padding-top: 12px; border-top: 1px solid var(--border); }
+.muezzin-volume-header { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 7px; color: var(--muted); font-size: 11px; font-weight: 700; }
+.muezzin-volume-header output { color: var(--primary-dark); }
+.muezzin-volume-control input[type="range"] { width: 100%; accent-color: var(--primary); }
 
 .settings-arrow,
 .setting-arrow,
@@ -306,6 +328,7 @@
 
 /* إعدادات الورد */
 .settings-subtitle { margin: 16px 14px 8px; color: var(--primary-dark); font-size: 12px; font-weight: 800; }
-.audio-upload-button { min-height: 34px; padding: 7px 9px; border: 1px solid rgba(161,130,71,.22); border-radius: 10px; color: var(--primary-dark); background: var(--card); font-family: inherit; font-size: 11px; font-weight: 800; cursor: pointer; }
 :root[data-theme="dark"] .settings-subtitle { color: #d8bf8d; }
 :root[data-theme="dark"] .audio-upload-button { border-color: var(--border); color: var(--text); background: var(--card); }
+:root[data-theme="dark"] .audio-apply-button { color: #1b1a17; border-color: #d6bd85; background: #d6bd85; }
+:root[data-theme="dark"] .audio-delete-button { border-color: #70423d; color: #e3a39b; background: rgba(168,79,69,.12); }

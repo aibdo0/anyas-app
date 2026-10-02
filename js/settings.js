@@ -78,6 +78,11 @@ function setupAdhanSettings() {
   const volumeValue =
     document.getElementById("volumeValue");
 
+  const muezzinVolumeControls = [
+    { inputId: "normalMuezzinVolume", valueId: "normalMuezzinVolumeValue", key: "anyas_normalMuezzinVolume" },
+    { inputId: "fajrMuezzinVolume", valueId: "fajrMuezzinVolumeValue", key: "anyas_fajrMuezzinVolume" }
+  ];
+
   const testButton =
     document.getElementById("testAdhanButton");
 
@@ -120,6 +125,21 @@ function setupAdhanSettings() {
   }
 
   applyAudioVolume(initialVolume);
+
+  muezzinVolumeControls.forEach(control => {
+    const input = document.getElementById(control.inputId);
+    const value = document.getElementById(control.valueId);
+    const savedValue = localStorage.getItem(control.key);
+    const saved = Math.max(0, Math.min(100, savedValue === null ? 100 : Number(savedValue) || 0));
+    if (input) input.value = String(saved);
+    if (value) value.textContent = `${saved}%`;
+    input?.addEventListener("input", () => {
+      const next = Math.max(0, Math.min(100, Number(input.value) || 0));
+      if (value) value.textContent = `${next}%`;
+      localStorage.setItem(control.key, String(next));
+      applyAudioVolume(Number(volume?.value) || 100);
+    });
+  });
 
   if (auto) {
 
@@ -186,14 +206,13 @@ function setupAdhanSettings() {
     const normalized =
       value / 100;
 
-    if (adhan) {
-      adhan.volume = normalized;
-    }
-
-    if (fajr) fajr.volume = normalized;
     document.querySelectorAll("audio").forEach(audioElement => {
       audioElement.volume = normalized;
     });
+    const normalVolume = Number(localStorage.getItem("anyas_normalMuezzinVolume"));
+    const fajrVolume = Number(localStorage.getItem("anyas_fajrMuezzinVolume"));
+    if (adhan) adhan.volume = normalized * (Number.isFinite(normalVolume) ? normalVolume / 100 : 1);
+    if (fajr) fajr.volume = normalized * (Number.isFinite(fajrVolume) ? fajrVolume / 100 : 1);
 
   }
 
@@ -203,6 +222,21 @@ function setupAdhanSettings() {
 // =====================================================
 // رفع الأصوات المخصصة — حفظ ومعاينة محلية
 // =====================================================
+
+const DEFAULT_MUEZZIN_SOURCES = {
+  adhanAudio: "audio/adhan.mp3",
+  fajrAudio: "audio/fajr.mp3"
+};
+
+const MAX_MUEZZIN_FILE_SIZE = 15 * 1024 * 1024;
+
+function restoreDefaultMuezzinAudio(audioId) {
+  const audio = document.getElementById(audioId);
+  const source = DEFAULT_MUEZZIN_SOURCES[audioId];
+  if (!audio || !source) return;
+  audio.src = source;
+  audio.load();
+}
 
 function setupAudioLibrary() {
   document.querySelectorAll("[data-audio-upload]").forEach(input => {
@@ -217,6 +251,10 @@ function setupAudioLibrary() {
     const audio = document.getElementById(audioId);
     const name = document.getElementById(nameId);
     const selected = selectedId ? document.getElementById(selectedId) : null;
+    const status = document.getElementById(`${audioId}Status`);
+    const deleteButton = document.querySelector(`[data-audio-delete="${audioId}"]`);
+    const applyButton = document.querySelector(`[data-audio-apply="${audioId}"]`);
+    const customRadio = customRadioId ? document.getElementById(customRadioId) : null;
     if (!audio) return;
 
     const savedSource = localStorage.getItem(`anyas_audio_${audioId}`);
@@ -227,14 +265,26 @@ function setupAudioLibrary() {
     }
     if (savedName && name) name.textContent = savedName;
     if (savedName && selected) selected.textContent = savedName;
-    if (savedName && customRadioId) {
-      const customRadio = document.getElementById(customRadioId);
-      if (customRadio) customRadio.checked = true;
+    if (savedName && customRadio) {
+      customRadio.checked = true;
+      if (input.dataset.muezzinName) localStorage.setItem(`anyas_${input.dataset.muezzinName}`, "custom");
     }
+    if (savedName && deleteButton) deleteButton.hidden = false;
+    if (savedName && applyButton) applyButton.hidden = true;
 
     input.addEventListener("change", () => {
       const file = input.files?.[0];
       if (!file) return;
+      if (!file.type.startsWith("audio/")) {
+        if (status) status.textContent = "الملف غير صالح — اختر ملفًا صوتيًا فقط";
+        input.value = "";
+        return;
+      }
+      if (file.size > MAX_MUEZZIN_FILE_SIZE) {
+        if (status) status.textContent = "الملف كبير جدًا — الحد الأقصى 15 ميجابايت";
+        input.value = "";
+        return;
+      }
       const reader = new FileReader();
       reader.onload = () => {
         const source = String(reader.result || "");
@@ -248,15 +298,40 @@ function setupAudioLibrary() {
         audio.load();
         if (name) name.textContent = file.name;
         if (selected) selected.textContent = file.name;
-        if (customRadioId) {
-          const customRadio = document.getElementById(customRadioId);
-          if (customRadio) {
-            customRadio.checked = true;
-            customRadio.dispatchEvent(new Event("change", { bubbles: true }));
-          }
-        }
+        if (status) status.textContent = "تم حفظ الصوت — يمكنك تغييره أو حذفه";
+        if (deleteButton) deleteButton.hidden = false;
+        if (applyButton) applyButton.hidden = false;
       };
       reader.readAsDataURL(file);
+    });
+
+    deleteButton?.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      localStorage.removeItem(`anyas_audio_${audioId}`);
+      localStorage.removeItem(`anyas_audio_name_${audioId}`);
+      restoreDefaultMuezzinAudio(audioId);
+      if (name) name.textContent = "لم يتم اختيار ملف";
+      if (selected) selected.textContent = audioId === "fajrAudio" ? "مشاري العفاسي" : "مشاري العفاسي";
+      if (status) status.textContent = "تم حذف الصوت والعودة إلى مشاري العفاسي";
+      if (deleteButton) deleteButton.hidden = true;
+      if (applyButton) applyButton.hidden = true;
+      if (customRadio) customRadio.checked = false;
+      const defaultRadio = document.querySelector(`input[name="${input.dataset.muezzinName}"][value="default"]`);
+      if (defaultRadio) {
+        defaultRadio.checked = true;
+        defaultRadio.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+
+    applyButton?.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!customRadio) return;
+      customRadio.checked = true;
+      customRadio.dispatchEvent(new Event("change", { bubbles: true }));
+      if (applyButton) applyButton.hidden = true;
+      if (status) status.textContent = "تم اعتماد الصوت المخصص";
     });
   });
 
@@ -351,6 +426,28 @@ function setupMuezzinPicker(
         storageKey,
         radio.value
       );
+
+      const audioId = radio.dataset.audioId;
+      if (audioId && radio.value === "default") {
+        restoreDefaultMuezzinAudio(audioId);
+      } else if (audioId && radio.value === "custom") {
+        const savedSource = localStorage.getItem(`anyas_audio_${audioId}`);
+        const audio = document.getElementById(audioId);
+        if (savedSource && audio) {
+          audio.src = savedSource;
+          audio.load();
+          document.querySelector(`[data-audio-apply="${audioId}"]`)?.setAttribute("hidden", "hidden");
+        } else {
+          const status = document.getElementById(`${audioId}Status`);
+          const defaultRadio = options.querySelector(`input[name="${radioName}"][value="default"]`);
+          if (status) status.textContent = "ارفع صوتًا مخصصًا أولًا لاستخدام هذا الخيار";
+          if (defaultRadio) {
+            defaultRadio.checked = true;
+            localStorage.setItem(storageKey, "default");
+            restoreDefaultMuezzinAudio(audioId);
+          }
+        }
+      }
 
       updateSelectedName();
 
