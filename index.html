@@ -45,7 +45,8 @@
 
 
 <link rel="stylesheet" href="css/theme-white-gold.css?v=20261002-2">
-<link rel="stylesheet" href="css/tasks-ux.css?v=20260927-2">
+<link rel="stylesheet" href="css/tasks-ux.css?v=20261002-3">
+<link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 <link rel="stylesheet" href="css/friday.css?v=20261001-1">
 </head>
@@ -288,20 +289,8 @@
   <div class="daily-overview-focus" id="dailyOverviewFocus">وردك المناسب لوقتك سيظهر هنا</div>
 </section>
 
-<section class="tasks-tasbeeh-card" aria-labelledby="tasksTasbeehHeading">
-  <div class="tasks-tasbeeh-heading">
-    <div class="tasks-tasbeeh-title-wrap">
-      <div class="tasks-tasbeeh-icon" aria-hidden="true">ت</div>
-      <div><span>وردك اليومي</span><h2 id="tasksTasbeehHeading">المسبحة</h2></div>
-    </div>
-    <button class="tasks-tasbeeh-open" type="button" data-more-go="tasbeeh">التفاصيل</button>
-  </div>
-  <div class="tasks-tasbeeh-dhikr" id="tasksTasbeehDhikr">سبحان الله</div>
-  <div class="tasks-tasbeeh-count-row"><strong id="tasksTasbeehCount" aria-live="polite">٠</strong><span id="tasksTasbeehGoal">من ١٠٠</span></div>
-  <div class="tasks-tasbeeh-progress" aria-hidden="true"><span id="tasksTasbeehProgress"></span></div>
-  <button class="tasks-tasbeeh-button" id="tasksTasbeehIncrement" type="button">سبّح الآن <span aria-hidden="true">+</span></button>
-</section>
-
+<section class="tasks-section-group" aria-labelledby="tasksPrayersHeading">
+<div class="tasks-section-heading"><span class="tasks-section-index" aria-hidden="true">١</span><div><h2 id="tasksPrayersHeading">الفرائض أولًا</h2><p>سجّل صلواتك الخمس وتابع تقدمك خلال اليوم.</p></div></div>
 <section class="daily-prayer-card" aria-labelledby="dailyPrayerHeading">
   <div class="daily-prayer-heading">
     <div>
@@ -324,7 +313,10 @@
     <button class="prayer-track-item" data-track-prayer="Isha" type="button"><span>العشاء</span><span class="track-status">لم تُسجل</span></button>
   </div>
 </section>
+</section>
 
+<section class="tasks-section-group" aria-labelledby="tasksAdhkarHeading">
+<div class="tasks-section-heading"><span class="tasks-section-index" aria-hidden="true">٢</span><div><h2 id="tasksAdhkarHeading">الأذكار والورد اليومي</h2><p>الأذكار العامة، والمسبحة، والأوراد حسب وقتها.</p></div></div>
 <section class="devotion-section" aria-labelledby="dailyDhikrTrackerHeading">
   <div class="devotion-section-heading">
     <div>
@@ -335,7 +327,52 @@
   </div>
   <div class="dhikr-goal-list" id="dhikrGoalList"></div>
 </section>
+<section class="tasks-tasbeeh-card" aria-labelledby="tasksTasbeehHeading">
+  <div class="tasks-tasbeeh-heading">
+    <div class="tasks-tasbeeh-title-wrap">
+      <div class="tasks-tasbeeh-icon" aria-hidden="true">ت</div>
+      <div><span>وردك اليومي</span><h2 id="tasksTasbeehHeading">المسبحة</h2></div>
+    </div>
+    <button class="tasks-tasbeeh-open" type="button" data-more-go="tasbeeh">التفاصيل</button>
+  </div>
+  <div class="tasks-tasbeeh-dhikr" id="tasksTasbeehDhikr">سبحان الله</div>
+  <div class="tasks-tasbeeh-count-row"><strong id="tasksTasbeehCount" aria-live="polite">٠</strong><span id="tasksTasbeehGoal">من ١٠٠</span></div>
+  <div class="tasks-tasbeeh-progress" aria-hidden="true"><span id="tasksTasbeehProgress"></span></div>
+  <button class="tasks-tasbeeh-button" id="tasksTasbeehIncrement" type="button">سبّح الآن <span aria-hidden="true">+</span></button>
+</section>
+<section class="wird-summary-card" aria-live="polite">
+  <div class="wird-summary-heading">متابعتك اليوم</div>
+  <div id="wirdProgressText">0 من 0 ذكرًا مكتملًا اليوم</div>
+  <div class="wird-progress-track"><div id="wirdProgressBar" role="progressbar" aria-label="إنجاز الورد اليومي" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
+</section>
+<section class="wird-section" id="wird-section-morning">
+  <button class="wird-section-toggle" type="button" data-wird-toggle="morning" aria-expanded="false">
+    <span>أذكار الصباح</span><span class="wird-section-meta" data-wird-count="morning"></span><span aria-hidden="true">+</span>
+  </button>
+  <div class="wird-items" id="wird-items-morning" hidden></div>
+</section>
+<section class="wird-section" id="wird-section-evening">
+  <button class="wird-section-toggle" type="button" data-wird-toggle="evening" aria-expanded="false">
+    <span>أذكار المساء</span><span class="wird-section-meta" data-wird-count="evening"></span><span aria-hidden="true">+</span>
+  </button>
+  <div class="wird-items" id="wird-items-evening" hidden></div>
+</section>
+<section class="wird-section" id="wird-section-afterPrayer">
+  <button class="wird-section-toggle" type="button" data-wird-toggle="afterPrayer" aria-expanded="false">
+    <span>أذكار بعد الصلاة</span><span class="wird-section-meta" data-wird-count="afterPrayer"></span><span aria-hidden="true">+</span>
+  </button>
+  <div class="wird-items" id="wird-items-afterPrayer" hidden></div>
+</section>
+<section class="wird-section" id="wird-section-beforeSleep">
+  <button class="wird-section-toggle" type="button" data-wird-toggle="beforeSleep" aria-expanded="false">
+    <span>أذكار النوم</span><span class="wird-section-meta" data-wird-count="beforeSleep"></span><span aria-hidden="true">+</span>
+  </button>
+  <div class="wird-items" id="wird-items-beforeSleep" hidden></div>
+</section>
+</section>
 
+<section class="tasks-section-group" aria-labelledby="tasksOptionalHeading">
+<div class="tasks-section-heading"><span class="tasks-section-index" aria-hidden="true">٣</span><div><h2 id="tasksOptionalHeading">السنن والمهام الأسبوعية</h2><p>متابعة اختيارية لما تيسّر من النوافل وأعمال الجمعة.</p></div></div>
 <section class="devotion-section sunnah-section" aria-labelledby="sunnahTrackerHeading">
   <div class="devotion-section-heading">
     <div>
@@ -350,7 +387,6 @@
     <p>المحافظة على اثنتي عشرة ركعة من السنن الرواتب في اليوم والليلة ورد فيها وعد ببيت في الجنة. ابدأ بما تستطيع، وتدرّج برفق.</p>
   </div>
 </section>
-
 <section class="friday-tasks-card" aria-labelledby="fridayTasksHeading">
   <div class="friday-tasks-heading">
     <div>
@@ -373,39 +409,6 @@
   </div>
   <div class="friday-answer-hour"><span aria-hidden="true">⌛</span><span><strong>ساعة الإجابة</strong><small>من بعد العصر إلى المغرب، أكثر من الدعاء فيها</small></span></div>
 </section>
-
-<section class="wird-summary-card" aria-live="polite">
-  <div class="wird-summary-heading">متابعتك اليوم</div>
-  <div id="wirdProgressText">0 من 0 ذكرًا مكتملًا اليوم</div>
-  <div class="wird-progress-track"><div id="wirdProgressBar" role="progressbar" aria-label="إنجاز الورد اليومي" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
-</section>
-
-<section class="wird-section" id="wird-section-morning">
-  <button class="wird-section-toggle" type="button" data-wird-toggle="morning" aria-expanded="false">
-    <span>أذكار الصباح</span><span class="wird-section-meta" data-wird-count="morning"></span><span aria-hidden="true">+</span>
-  </button>
-  <div class="wird-items" id="wird-items-morning" hidden></div>
-</section>
-
-<section class="wird-section" id="wird-section-evening">
-  <button class="wird-section-toggle" type="button" data-wird-toggle="evening" aria-expanded="false">
-    <span>أذكار المساء</span><span class="wird-section-meta" data-wird-count="evening"></span><span aria-hidden="true">+</span>
-  </button>
-  <div class="wird-items" id="wird-items-evening" hidden></div>
-</section>
-
-<section class="wird-section" id="wird-section-afterPrayer">
-  <button class="wird-section-toggle" type="button" data-wird-toggle="afterPrayer" aria-expanded="false">
-    <span>أذكار بعد الصلاة</span><span class="wird-section-meta" data-wird-count="afterPrayer"></span><span aria-hidden="true">+</span>
-  </button>
-  <div class="wird-items" id="wird-items-afterPrayer" hidden></div>
-</section>
-
-<section class="wird-section" id="wird-section-beforeSleep">
-  <button class="wird-section-toggle" type="button" data-wird-toggle="beforeSleep" aria-expanded="false">
-    <span>أذكار النوم</span><span class="wird-section-meta" data-wird-count="beforeSleep"></span><span aria-hidden="true">+</span>
-  </button>
-  <div class="wird-items" id="wird-items-beforeSleep" hidden></div>
 </section>
 </main>
 
@@ -1871,7 +1874,7 @@ type="button"
 <script src="js/friday.js?v=20261001-1"></script>
 <script src="js/favorites.js?v=20260926-3"></script>
 <script src="js/azkar.js?v=20261001-2"></script>
-<script src="js/wird.js?v=20261001-1"></script>
+<script src="js/wird.js?v=20261002-2"></script>
 <script src="js/settings.js?v=20261001-2"></script>
 <script src="js/qibla.js?v=20261001-2"></script>
 <script src="js/learning.js?v=20260926-3"></script>
