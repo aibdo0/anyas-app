@@ -193,11 +193,13 @@
     <div class="card-title">آية اليوم</div>
     <div class="ayah" id="dailyAyahText">﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾</div>
     <div class="reference" id="dailyAyahReference">سورة الرعد — 28</div>
+    <a class="content-source-link" href="https://tanzil.net/" target="_blank" rel="noopener noreferrer">مصدر نص القرآن: مشروع تنزيل (Tanzil)</a>
   </div>
   <div class="content-block" id="dailyHadithBlock">
     <div class="card-title">حديث اليوم</div>
     <div class="hadith-text" id="dailyHadithText">إنما الأعمال بالنيات</div>
     <div class="reference" id="dailyHadithReference">متفق عليه</div>
+    <a class="content-source-link" href="https://hadeethenc.com/en/home" target="_blank" rel="noopener noreferrer">مصدر الحديث: HadeethEnc.com</a>
   </div>
 </div>
 </section>
@@ -1678,7 +1680,7 @@ value="100"
   <h2 id="moreSettingsHeading">التطبيق</h2>
   <div class="more-menu">
     <button type="button" class="more-menu-item" data-more-go="settings"><span class="more-menu-icon" aria-hidden="true">⚙</span><span class="more-menu-copy"><strong>الإعدادات</strong><small>المظهر، التنبيهات، والمواقيت</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
-    <button type="button" class="more-menu-item" data-more-go="about"><span class="more-menu-icon" aria-hidden="true">☾</span><span class="more-menu-copy"><strong>عن التطبيق</strong><small>اللغة، المصادر، ومعلومات أنياس</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="about"><span class="more-menu-icon" aria-hidden="true">☾</span><span class="more-menu-copy"><strong>عن التطبيق</strong><small>معلومات عن أنياس ومزاياه</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
   </div>
 </section>
 </main>
@@ -1687,21 +1689,12 @@ value="100"
   <header class="plain-header">
     <button class="back-button" type="button" data-back-more>رجوع إلى المزيد</button>
     <div class="brand">عن التطبيق</div>
-    <div class="date">معلومات أنياس ومصادره</div>
+    <div class="date">معلومات عن أنياس</div>
   </header>
   <section class="about-hero" aria-labelledby="aboutAppName">
     <img src="assets/anyas-app-icon.png" alt="" class="about-app-icon">
     <div><h2 id="aboutAppName">أنياس</h2><p>رفيقك اليومي للعبادة وتنظيم يومك</p></div>
     <span class="about-version">آخر إصدار رسمي: 1.1.5</span>
-  </section>
-  <section class="about-card" aria-labelledby="aboutLanguageHeading">
-    <h2 id="aboutLanguageHeading">اللغة</h2>
-    <p>اختر لغة واجهة التطبيق. نصوص القرآن والأذكار الأصلية تبقى بالعربية.</p>
-    <label class="about-language-row" for="aboutLanguageSelect"><span>لغة الواجهة</span>
-      <select id="aboutLanguageSelect" class="select-control">
-        <option value="ar">العربية</option><option value="en">English</option>
-      </select>
-    </label>
   </section>
   <section class="about-card" aria-labelledby="aboutPermissionsHeading">
     <h2 id="aboutPermissionsHeading">أذونات التطبيق</h2>
@@ -1718,17 +1711,6 @@ value="100"
     <p class="about-note">لا يطلب أنياس هذه الأذونات إلا عند الحاجة لوظيفتها، ويمكنك الرفض أو تغييرها من إعدادات جهازك. بعض بيانات الموقع تُرسل إلى خدمات التوقيت والخرائط عند استخدام تلك الميزات.</p>
     <button class="secondary-action about-location-link" id="aboutLocationSettingsButton" type="button">إعدادات الموقع الجغرافي</button>
     <button class="secondary-action about-location-link" id="aboutNotificationSettingsButton" type="button">إعدادات التذكيرات والإشعارات</button>
-  </section>
-  <section class="about-card" aria-labelledby="aboutSourcesHeading">
-    <h2 id="aboutSourcesHeading">مصادر المحتوى</h2>
-    <ul class="about-detail-list">
-      <li><strong>القرآن الكريم</strong><span>نص عثماني من مشروع تنزيل، يُعرض كما ورد دون تغيير.</span></li>
-      <li><strong>حديث اليوم</strong><span>من موسوعة الحديث النبوي <a href="https://hadeethenc.com/en/home" target="_blank" rel="noopener noreferrer">HadeethEnc</a>.</span></li>
-      <li><strong>الأذكار</strong><span>مبنية على أبواب حصن المسلم؛ والشروح الموجزة توضيحية وليست نصوصًا من المصدر.</span></li>
-      <li><strong>مواقيت الصلاة والتاريخ الهجري</strong><span>تُحسب عبر <a href="https://aladhan.com/prayer-times-api" target="_blank" rel="noopener noreferrer">AlAdhan API</a> وفق موقعك وطريقة الحساب المختارة.</span></li>
-      <li><strong>المدن والمساجد</strong><span>بحث الخرائط يعتمد على بيانات <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>.</span></li>
-    </ul>
-    <a class="about-source-link" href="https://tanzil.net/" target="_blank" rel="noopener noreferrer">مشروع تنزيل — مصدر نص القرآن</a>
   </section>
   <section class="about-card" aria-labelledby="aboutActionsHeading">
     <h2 id="aboutActionsHeading">نحتاج رأيك</h2>

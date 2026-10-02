@@ -585,7 +585,7 @@ function setupThemeAndLanguage() {
   const timeBackgroundDescription = document.getElementById("timeBackgroundDescription");
 
   const languageControls =
-    document.querySelectorAll("#languageSelect, #aboutLanguageSelect");
+    document.querySelectorAll("#languageSelect");
 
   let initialMode = "light";
   try {

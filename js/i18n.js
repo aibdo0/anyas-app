@@ -2,12 +2,11 @@
   const manual = {
     "أنياس": "Anias", "القاهرة": "Cairo", "مصر": "Egypt",
     "الفجر": "Fajr", "الشروق": "Sunrise", "الظهر": "Dhuhr", "العصر": "Asr", "المغرب": "Maghrib", "العشاء": "Isha",
-    "عن التطبيق": "About the App", "معلومات أنياس ومصادره": "About Anias and its sources",
-    "اللغة، المصادر، ومعلومات أنياس": "Language, sources, and app details",
+    "عن التطبيق": "About the App", "معلومات عن أنياس": "About Anias",
+    "معلومات عن أنياس ومزاياه": "About Anias and its features",
     "رفيقك اليومي للعبادة وتنظيم يومك": "Your daily companion for worship and an organized day",
     "آخر إصدار رسمي: 1.1.5": "Latest official release: 1.1.5",
-    "اختر لغة واجهة التطبيق. نصوص القرآن والأذكار الأصلية تبقى بالعربية.": "Choose the app language. Original Quran and adhkar texts remain in Arabic.",
-    "لغة الواجهة": "Interface language", "العربية": "Arabic",
+    "العربية": "Arabic",
     "أذونات التطبيق": "App permissions", "الموقع": "Location",
     "اختياري؛ للمواقيت والقبلة والمساجد القريبة. يمكنك اختيار مدينة يدويًا دون منحه.": "Optional. Used for prayer times, Qibla, and nearby mosques. You can choose a city manually without granting it.",
     "اختياري؛ لعرض اتجاه القبلة عند فتح البوصلة، إذا كان جهازك يدعم ذلك.": "Optional. Used to show the Qibla direction when you open the compass, if your device supports it.",
@@ -28,16 +27,10 @@
     "إعدادات التذكيرات والإشعارات": "Reminder and notification settings",
     "نجمة واحدة": "One star", "نجمتان": "Two stars", "ثلاث نجوم": "Three stars", "أربع نجوم": "Four stars", "خمس نجوم": "Five stars",
     "إعدادات الموقع الجغرافي": "Location settings",
-    "مصادر المحتوى": "Content sources", "القرآن الكريم": "The Quran",
-    "نص عثماني من مشروع تنزيل، يُعرض كما ورد دون تغيير.": "Uthmani text from the Tanzil Project, displayed as provided without alteration.",
-    "حديث اليوم": "Hadith of the day", "من موسوعة الحديث النبوي": "From the Prophetic Hadith Encyclopedia",
-    "الأذكار": "Adhkar", "مبنية على أبواب حصن المسلم؛ والشروح الموجزة توضيحية وليست نصوصًا من المصدر.": "Based on Hisn al-Muslim chapters. Brief explanations are editorial and are not part of the source text.",
-    "مواقيت الصلاة والتاريخ الهجري": "Prayer times and Hijri date",
-    "تُحسب عبر": "Calculated via",
-    "وفق موقعك وطريقة الحساب المختارة.": "according to your location and selected calculation method.",
-    "المدن والمساجد": "Cities and mosques",
-    "بحث الخرائط يعتمد على بيانات": "Map search uses data from",
-    "مشروع تنزيل — مصدر نص القرآن": "Tanzil Project — Quran text source",
+    "مصدر نص القرآن: مشروع تنزيل (Tanzil)": "Quran text source: Tanzil Project",
+    "مصدر الحديث: HadeethEnc.com": "Hadith source: HadeethEnc.com",
+    "حديث اليوم": "Hadith of the day",
+    "الأذكار": "Adhkar",
     "نحتاج رأيك": "We value your feedback", "الحصول على الدعم": "Get support",
     "اكتب وصفًا للمشكلة واختر طريقة مشاركته": "Describe the issue and choose how to share it",
     "الملاحظات والاقتراحات": "Feedback and suggestions",
@@ -169,7 +162,7 @@
     if (description) description.content = current === "en"
       ? "Anias — a daily companion for prayer times, the Quran, and adhkar."
       : "أنياس - رفيق يومي لمواقيت الصلاة والقرآن والأذكار";
-    document.querySelectorAll("#languageSelect, #aboutLanguageSelect").forEach(select => { select.value = current; });
+    document.querySelectorAll("#languageSelect").forEach(select => { select.value = current; });
     if (persist) {
       try { localStorage.setItem("anyas_language", current); } catch (error) { /* locale still applies in memory */ }
     }
