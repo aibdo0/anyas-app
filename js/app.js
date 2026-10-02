@@ -159,7 +159,6 @@ function goToPage(pageId) {
     "about",
     "prayer-report",
     "worship",
-    "learning",
     "city-picker",
     "prayer-schedule",
     "mosques"
