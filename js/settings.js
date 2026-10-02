@@ -24,6 +24,7 @@ function setupAdhan() {
 
     if (audio.paused) {
 
+      syncSelectedMuezzinAudio("adhanAudio", "normalMuezzin", "anyas_normalMuezzin", "normalMuezzinOptions");
       audio.currentTime = 0;
 
       audio.play()
@@ -183,6 +184,7 @@ function setupAdhanSettings() {
 
     testButton.addEventListener("click", () => {
 
+      syncSelectedMuezzinAudio("adhanAudio", "normalMuezzin", "anyas_normalMuezzin", "normalMuezzinOptions");
       adhan.currentTime = 0;
 
       adhan.play()
@@ -236,6 +238,30 @@ function restoreDefaultMuezzinAudio(audioId) {
   if (!audio || !source) return;
   audio.src = source;
   audio.load();
+}
+
+function syncSelectedMuezzinAudio(audioId, radioName, storageKey, optionsId) {
+  const audio = document.getElementById(audioId);
+  const options = document.getElementById(optionsId);
+  if (!audio || !options) return;
+
+  const savedChoice = localStorage.getItem(storageKey) || "default";
+  const selected = options.querySelector(`input[name="${radioName}"][value="${savedChoice}"]`)
+    || options.querySelector(`input[name="${radioName}"][value="default"]`);
+  if (!selected) return;
+
+  if (selected.dataset.audioSource) {
+    audio.src = selected.dataset.audioSource;
+    audio.load();
+  } else if (selected.value === "custom") {
+    const customSource = localStorage.getItem(`anyas_audio_${audioId}`);
+    if (customSource) {
+      audio.src = customSource;
+      audio.load();
+    }
+  } else {
+    restoreDefaultMuezzinAudio(audioId);
+  }
 }
 
 function setupAudioLibrary() {
@@ -479,46 +505,54 @@ function setupMuezzinPicker(
         button.dataset.audio;
 
       const audio =
-        document.getElementById(audioId);
+        document.getElementById(button.dataset.audio);
 
       if (!audio) return;
 
-      stopAllAudioExcept(audio);
-
-      if (audio.paused) {
-
-        audio.currentTime = 0;
-
-        audio.play()
-          .then(() => {
-
-            button.textContent =
-              "إيقاف";
-
-          })
-          .catch(error => {
-
-            console.error(
-              "تعذر تشغيل المعاينة:",
-              error
-            );
-
-          });
-
-      } else {
-
-        audio.pause();
-
-        button.textContent =
-          "تشغيل";
-
+      if (button._previewAudio) {
+        const previousPreview = button._previewAudio;
+        previousPreview.pause();
+        previousPreview.currentTime = 0;
+        button._previewAudio = null;
+        if (window.anyasMuezzinPreview === previousPreview) window.anyasMuezzinPreview = null;
+        button.textContent = "تشغيل";
+        return;
       }
 
-      audio.onended = () => {
+      if (window.anyasMuezzinPreview) {
+        window.anyasMuezzinPreview.pause();
+        window.anyasMuezzinPreview.currentTime = 0;
+        if (window.anyasMuezzinPreviewButton) window.anyasMuezzinPreviewButton.textContent = "تشغيل";
+        if (window.anyasMuezzinPreviewButton) window.anyasMuezzinPreviewButton._previewAudio = null;
+      }
 
-        button.textContent =
-          "تشغيل";
+      const cardRadio = button.closest(".muezzin-card")?.querySelector('input[type="radio"]');
+      const source = cardRadio?.dataset.audioSource
+        || (cardRadio?.value === "default" ? DEFAULT_MUEZZIN_SOURCES[button.dataset.audio] : "")
+        || (cardRadio?.value === "custom" ? localStorage.getItem(`anyas_audio_${button.dataset.audio}`) : "")
+        || audio.currentSrc
+        || audio.src;
+      if (!source) return;
 
+      stopAllAudioExcept(audio);
+      const previewAudio = new Audio(source);
+      previewAudio.volume = audio.volume;
+      button._previewAudio = previewAudio;
+      window.anyasMuezzinPreview = previewAudio;
+      window.anyasMuezzinPreviewButton = button;
+      button.textContent = "إيقاف";
+
+      previewAudio.play().catch(error => {
+        console.error("تعذر تشغيل معاينة الأذان:", error);
+        button.textContent = "تشغيل";
+        button._previewAudio = null;
+        if (window.anyasMuezzinPreview === previewAudio) window.anyasMuezzinPreview = null;
+      });
+
+      previewAudio.onended = () => {
+        button.textContent = "تشغيل";
+        button._previewAudio = null;
+        if (window.anyasMuezzinPreview === previewAudio) window.anyasMuezzinPreview = null;
       };
 
     });
@@ -665,6 +699,12 @@ function playAdhanFor(prayerKey) {
       : adhan;
 
   if (!audio) return;
+
+  if (prayerKey === "Fajr") {
+    syncSelectedMuezzinAudio("fajrAudio", "fajrMuezzin", "anyas_fajrMuezzin", "fajrMuezzinOptions");
+  } else {
+    syncSelectedMuezzinAudio("adhanAudio", "normalMuezzin", "anyas_normalMuezzin", "normalMuezzinOptions");
+  }
 
   stopAllAudioExcept(audio);
 
