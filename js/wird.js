@@ -221,7 +221,6 @@
       button.addEventListener("click", () => openWirdCategory(button.dataset.openWird || button.dataset.wirdOpen));
     });
 
-    openSuggestedSection();
     updateProgress();
   });
 })();
