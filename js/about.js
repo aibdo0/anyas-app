@@ -250,35 +250,25 @@
       }
     });
 
-    const ratingButtons = [...( $("aboutRatingControl")?.querySelectorAll("[data-rating]") || [] )];
-    const renderRating = rating => {
-      ratingButtons.forEach(button => {
-        const selected = Number(button.dataset.rating) <= rating;
-        button.classList.toggle("is-selected", selected);
-        button.setAttribute("aria-checked", String(Number(button.dataset.rating) === rating));
-        button.tabIndex = Number(button.dataset.rating) === (rating || 1) ? 0 : -1;
-      });
-    };
-    let savedRating = 0;
-    try { savedRating = Number(localStorage.getItem("anyas_rating") || 0); } catch (error) { /* rating is optional */ }
-    renderRating(savedRating >= 1 && savedRating <= 5 ? savedRating : 0);
-    ratingButtons.forEach(button => {
-      button.addEventListener("keydown", event => {
-        if (!["ArrowRight", "ArrowUp", "ArrowLeft", "ArrowDown"].includes(event.key)) return;
-        event.preventDefault();
-        const direction = ["ArrowRight", "ArrowUp"].includes(event.key) ? 1 : -1;
-        const currentIndex = ratingButtons.indexOf(button);
-        ratingButtons[(currentIndex + direction + ratingButtons.length) % ratingButtons.length]?.click();
-        ratingButtons[(currentIndex + direction + ratingButtons.length) % ratingButtons.length]?.focus();
-      });
-      button.addEventListener("click", () => {
-      const rating = Number(button.dataset.rating);
-      renderRating(rating);
-      let stored = true;
-      try { localStorage.setItem("anyas_rating", String(rating)); } catch (error) { stored = false; }
+    $("aboutPlayStoreRatingButton")?.addEventListener("click", event => {
       const status = $("aboutRatingStatus");
-      if (status) status.textContent = t(stored ? "تم حفظ تقييمك على هذا الجهاز فقط." : "تعذر حفظ التقييم على هذا الجهاز.");
-      });
+      const rawUrl = event.currentTarget?.dataset.googlePlayUrl?.trim() || "";
+      let playStoreUrl = "";
+      try {
+        const candidate = new URL(rawUrl);
+        if (candidate.protocol === "https:" && candidate.hostname === "play.google.com"
+          && candidate.pathname.startsWith("/store/apps/details")) playStoreUrl = candidate.href;
+      } catch (error) { /* a store URL has not been configured yet */ }
+
+      if (!playStoreUrl) {
+        if (status) status.textContent = t("رابط Google Play سيُضاف قريبًا.");
+        return;
+      }
+      const link = document.createElement("a");
+      link.href = playStoreUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.click();
     });
   }, { once: true });
 })();

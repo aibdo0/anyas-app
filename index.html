@@ -44,7 +44,7 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261002-1">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261002-2">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20260927-2">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 <link rel="stylesheet" href="css/friday.css?v=20261001-1">
@@ -1730,21 +1730,20 @@ value="100"
       </details>
     </div>
   </section>
-  <section class="about-card" aria-labelledby="aboutActionsHeading">
-    <h2 id="aboutActionsHeading">نحتاج رأيك</h2>
-    <div class="about-actions">
-      <button class="about-action" id="aboutSupportButton" type="button"><span>الحصول على الدعم</span><small>اكتب وصفًا للمشكلة واختر طريقة مشاركته</small></button>
-      <button class="about-action" id="aboutFeedbackButton" type="button"><span>الملاحظات والاقتراحات</span><small>شارك رأيك يدويًا، دون إرسال تلقائي</small></button>
-      <button class="about-action" id="aboutShareButton" type="button"><span>مشاركة التطبيق</span><small>أرسل رابط أنياس لمن تحب</small></button>
-    </div>
-    <p id="aboutActionStatus" class="about-note" aria-live="polite" hidden></p>
+  <section class="about-card about-action-card" aria-label="الدعم">
+    <button class="about-action" id="aboutSupportButton" type="button"><span>الحصول على الدعم</span><small>اكتب وصفًا للمشكلة واختر طريقة مشاركته</small></button>
   </section>
+  <section class="about-card about-action-card" aria-label="الملاحظات والاقتراحات">
+    <button class="about-action" id="aboutFeedbackButton" type="button"><span>الملاحظات والاقتراحات</span><small>شارك رأيك يدويًا، دون إرسال تلقائي</small></button>
+  </section>
+  <section class="about-card about-action-card" aria-label="مشاركة التطبيق">
+    <button class="about-action" id="aboutShareButton" type="button"><span>مشاركة التطبيق</span><small>أرسل رابط أنياس لمن تحب</small></button>
+  </section>
+  <p id="aboutActionStatus" class="about-note about-action-status" aria-live="polite" hidden></p>
   <section class="about-card" aria-labelledby="aboutRateHeading">
     <h2 id="aboutRateHeading">تقييم التطبيق</h2>
-    <div id="aboutRatingControl" class="about-rating" role="radiogroup" aria-label="قيّم التطبيق من نجمة إلى خمس نجوم">
-      <button type="button" role="radio" aria-label="نجمة واحدة" data-rating="1">★</button><button type="button" role="radio" aria-label="نجمتان" data-rating="2">★</button><button type="button" role="radio" aria-label="ثلاث نجوم" data-rating="3">★</button><button type="button" role="radio" aria-label="أربع نجوم" data-rating="4">★</button><button type="button" role="radio" aria-label="خمس نجوم" data-rating="5">★</button>
-    </div>
-    <p id="aboutRatingStatus" class="about-note">يُحفظ تقييمك على هذا الجهاز فقط؛ لا يوجد رابط متجر للتقييم حاليًا.</p>
+    <button class="about-action" id="aboutPlayStoreRatingButton" type="button" data-google-play-url=""><span>قيّم أنياس على Google Play</span><small>سيفتح صفحة التطبيق على Google Play بعد إضافة الرابط</small></button>
+    <p id="aboutRatingStatus" class="about-note" aria-live="polite">رابط Google Play سيُضاف قريبًا.</p>
   </section>
   <section class="about-card about-policy-card" aria-labelledby="aboutPrivacyHeading">
     <h2 id="aboutPrivacyHeading">سياسة الخصوصية</h2>
@@ -1859,7 +1858,7 @@ type="button"
 <!-- =====================================================
      ملفات JavaScript
 ===================================================== -->
-<script src="js/i18n.js?v=20261002-1"></script>
+<script src="js/i18n.js?v=20261002-2"></script>
 <script src="data/azkar-topics.js?v=20260926-3"></script>
 <script src="data/azkar-benefits.js?v=20261001-1"></script>
 <script src="data/daily-quran.js?v=20260926-3"></script>
@@ -1879,7 +1878,7 @@ type="button"
 <script src="js/app-enhancements.js?v=20261001-9"></script>
 <script src="js/daily-devotions.js?v=20260926-3"></script>
 <script src="js/app.js?v=20261002-1"></script>
-<script src="js/about.js?v=20261002-1"></script>
+<script src="js/about.js?v=20261002-2"></script>
 
 </body>
   </html>
