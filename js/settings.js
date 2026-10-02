@@ -573,6 +573,86 @@ function checkPrayerReminderNotifications() {
   });
 }
 
+function fireOptionalReminder(id, key, title, body, audioId, dayKey = new Date().toDateString()) {
+  if (localStorage.getItem(`anyas_${id}`) !== "true") return;
+  const firedKey = `anyas_optional_${key}_${dayKey}`;
+  if (localStorage.getItem(firedKey) === "true") return;
+  localStorage.setItem(firedKey, "true");
+  if ("Notification" in window && Notification.permission === "granted") {
+    new Notification(title, { body, tag: `anyas-${key}` });
+  }
+  if (localStorage.getItem("anyas_notificationSound") === "true" && audioId) {
+    const audio = document.getElementById(audioId);
+    if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
+  }
+}
+
+function checkLastThirdNotification() {
+  const timings = window.todayTimings;
+  if (localStorage.getItem("anyas_notifyLastThird") !== "true" || !timings) return;
+  const parseToday = value => {
+    const match = String(value || "").match(/(\d{1,2}):(\d{2})/);
+    if (!match) return null;
+    const date = new Date();
+    date.setHours(Number(match[1]), Number(match[2]), 0, 0);
+    return date;
+  };
+  const now = new Date();
+  const fajr = parseToday(timings.Fajr);
+  const maghrib = parseToday(timings.Maghrib);
+  if (!fajr || !maghrib) return;
+  let nightStart;
+  let nightEnd;
+  if (now < fajr) {
+    nightStart = new Date(maghrib.getTime() - 24 * 60 * 60 * 1000);
+    nightEnd = fajr;
+  } else if (now >= maghrib) {
+    nightStart = maghrib;
+    nightEnd = new Date(fajr.getTime() + 24 * 60 * 60 * 1000);
+  } else return;
+  const target = new Date(nightStart.getTime() + (nightEnd.getTime() - nightStart.getTime()) * (2 / 3));
+  if (now < target || now > new Date(target.getTime() + 2 * 60 * 1000)) return;
+  fireOptionalReminder("notifyLastThird", "last-third", "الثلث الأخير من الليل", "حان وقت قيام الليل والدعاء.", "qiyamReminderAudio", nightStart.toDateString());
+}
+
+function checkAdditionalReminders() {
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const withinMinute = target => currentMinutes >= target && currentMinutes <= target + 1;
+  const timings = window.todayTimings || {};
+  const timeMinutes = value => {
+    const match = String(value || "").match(/(\d{1,2}):(\d{2})/);
+    return match ? Number(match[1]) * 60 + Number(match[2]) : null;
+  };
+
+  if (withinMinute(750)) fireOptionalReminder("notifyHadith", "hadith", "حديث اليوم", "تذكير بحديث اليوم.", "hadithReminderAudio");
+  if (withinMinute(600)) fireOptionalReminder("notifySalawat", "salawat-1", "الصلاة على النبي ﷺ", "أكثر من الصلاة والسلام على النبي ﷺ.", "salawatReminderOneAudio");
+  if (withinMinute(1020)) fireOptionalReminder("notifySalawat", "salawat-2", "الصلاة على النبي ﷺ", "أكثر من الصلاة والسلام على النبي ﷺ.", "salawatReminderTwoAudio");
+  if (withinMinute(840)) fireOptionalReminder("notifyBaqiyat", "baqiyat", "الباقيات الصالحات", "سبحان الله والحمد لله ولا إله إلا الله والله أكبر.", "baqiyatReminderAudio");
+  const sunrise = timeMinutes(timings.Sunrise);
+  if (sunrise !== null && withinMinute(sunrise)) fireOptionalReminder("notifySunrise", "sunrise", "الشروق", "ابدأ صباحك بذكر الله.", "sunriseReminderAudio");
+  if (withinMinute(1260)) fireOptionalReminder("notifyAyatKursi", "ayat-kursi", "آية الكرسي", "تذكير بقراءة آية الكرسي.", "ayatKursiAudio");
+  if (sunrise !== null && withinMinute((sunrise + 30) % 1440)) fireOptionalReminder("notifyDuha", "duha", "صلاة الضحى", "حان وقت صلاة الضحى.", "duhaReminderAudio");
+
+  const weekday = now.getDay();
+  if (weekday === 3 && withinMinute(1200)) {
+    fireOptionalReminder("notifyFastingThursday1", "fasting-thursday-1", "صيام الخميس", "تذكير بصيام يوم الخميس.", "fastingThursdayOneAudio");
+    fireOptionalReminder("notifyFastingThursday2", "fasting-thursday-2", "صيام الخميس", "تذكير بصيام يوم الخميس.", "fastingThursdayTwoAudio");
+  }
+  if (weekday === 0 && withinMinute(1200)) fireOptionalReminder("notifyFastingMonday", "fasting-monday", "صيام الاثنين", "تذكير بصيام يوم الاثنين.", "fastingMondayAudio");
+  if (weekday === 6 && withinMinute(1200)) fireOptionalReminder("notifyFastingFisabilillah", "fasting-fisabilillah", "صيام في سبيل الله", "تذكير بالصيام في سبيل الله.", "fastingFisabilillahAudio");
+
+  if (localStorage.getItem("anyas_notifyRainSunnah") !== "true" || !window.currentLatitude || !window.currentLongitude) return;
+  if (window.anyasRainCheckAt && Date.now() < window.anyasRainCheckAt) return;
+  window.anyasRainCheckAt = Date.now() + 30 * 60 * 1000;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(window.currentLatitude)}&longitude=${encodeURIComponent(window.currentLongitude)}&current=rain,precipitation&timezone=auto`;
+  fetch(url).then(response => response.ok ? response.json() : null).then(data => {
+    const current = data?.current;
+    if (!current || !(Number(current.rain) > 0 || Number(current.precipitation) > 0)) return;
+    fireOptionalReminder("notifyRainSunnah", "rain-sunnah", "سنة نزول المطر", "اللهم صيبًا نافعًا.", "rainSunnahAudio", `${now.toDateString()}-${now.getHours()}`);
+  }).catch(() => {});
+}
+
 
 // اختيار المؤذن
 // =====================================================
@@ -1078,11 +1158,18 @@ function setupNotifications() {
 
     "notifyPrayerSoon",
     "notifySunrise",
-    "notifyFirstThird",
-    "notifySecondThird",
     "notifyLastThird",
     "notifyAyatKursi",
     "notificationSound",
+    "notifyHadith",
+    "notifyDuha",
+    "notifySalawat",
+    "notifyBaqiyat",
+    "notifyFastingThursday1",
+    "notifyFastingThursday2",
+    "notifyFastingMonday",
+    "notifyFastingFisabilillah",
+    "notifyRainSunnah",
     "notifyWardAwakening",
     "notifyWardMorning",
     "notifyWardGeneral",
@@ -1156,7 +1243,7 @@ function setupNotifications() {
 
 function syncAndroidNotificationSettings() {
   if (!window.AnyasAndroid || !window.AnyasAndroid.syncSettings) return;
-  const ids = ["notifyPrayerSoon", "notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar"];
+  const ids = ["notifyPrayerSoon", "notifySunrise", "notifyLastThird", "notifyAyatKursi", "notifyHadith", "notifyDuha", "notifySalawat", "notifyBaqiyat", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyRainSunnah", "notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar"];
   const enabled = {};
   ids.forEach(id => {
     const element = document.getElementById(id);

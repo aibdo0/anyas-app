@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
   setupNotifications();
   checkDailyAdhkarNotifications();
   checkPrayerReminderNotifications();
+  checkLastThirdNotification();
+  checkAdditionalReminders();
   setupVibration();
   setupMuezzinSettings();
 
@@ -51,6 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
     checkBeforeFajrReminder();
     checkDailyAdhkarNotifications();
     checkPrayerReminderNotifications();
+    checkLastThirdNotification();
+    checkAdditionalReminders();
   }, 1000 * 20);
 
   setInterval(() => {

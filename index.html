@@ -265,6 +265,17 @@
 <audio id="beforePrayerMaghribAudio" preload="auto"><source src="audio/before-prayer-maghrib..mp3" type="audio/mpeg"></audio>
 <audio id="beforePrayerIshaAudio" preload="auto"><source src="audio/before-prayer-isha.mp3" type="audio/mpeg"></audio>
 <audio id="fridayReminderAudio" preload="auto"><source src="audio/friday-prayer-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="sunriseReminderAudio" preload="auto"><source src="audio/sunrise-birds.mp3" type="audio/mpeg"></audio>
+<audio id="hadithReminderAudio" preload="auto"><source src="audio/hadith-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="duhaReminderAudio" preload="auto"><source src="audio/duha-prayer-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="salawatReminderOneAudio" preload="auto"><source src="audio/salawat-reminder-1.mp3" type="audio/mpeg"></audio>
+<audio id="salawatReminderTwoAudio" preload="auto"><source src="audio/salawat-reminder-2.mp3" type="audio/mpeg"></audio>
+<audio id="baqiyatReminderAudio" preload="auto"><source src="audio/baqiyat-as-salihat-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="fastingThursdayOneAudio" preload="auto"><source src="audio/fasting-thursday-reminder-1.mp3" type="audio/mpeg"></audio>
+<audio id="fastingThursdayTwoAudio" preload="auto"><source src="audio/fasting-thursday-reminder-2.mp3" type="audio/mpeg"></audio>
+<audio id="fastingMondayAudio" preload="auto"><source src="audio/fasting-monday-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="fastingFisabilillahAudio" preload="auto"><source src="audio/fasting-fisabilillah-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="rainSunnahAudio" preload="auto"><source src="audio/rain-sunnah-reminder.mp3" type="audio/mpeg"></audio>
 
 <audio id="ayatKursiAudio" preload="auto"></audio>
 <audio id="morningWardAudio" preload="auto"><source src="audio/adhkar-morning-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
@@ -1041,50 +1052,6 @@ type="button"
 <div class="setting-info">
 
 <div class="setting-title">
-الثلث الأول من الليل
-</div>
-
-</div>
-
-<label class="switch">
-
-<input id="notifyFirstThird" type="checkbox">
-
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-
-</label>
-
-</div>
-
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-الثلث الثاني من الليل
-</div>
-
-</div>
-
-<label class="switch">
-
-<input id="notifySecondThird" type="checkbox">
-
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-
-</label>
-
-</div>
-
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
 الثلث الأخير من الليل
 </div>
 
@@ -1147,6 +1114,17 @@ type="button"
 </label>
 
 </div>
+
+<div class="settings-subtitle">تذكيرات إضافية</div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">حديث اليوم</div><div class="setting-description">تذكير يومي بحديث اليوم — ١٢:٣٠ ظهرًا</div></div><label class="switch"><input id="notifyHadith" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صلاة الضحى</div><div class="setting-description">تذكير بصلاة الضحى بعد الشروق</div></div><label class="switch"><input id="notifyDuha" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">الصلاة على النبي ﷺ</div><div class="setting-description">تذكيران يوميًا في أوقات متباعدة</div></div><label class="switch"><input id="notifySalawat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">الباقيات الصالحات</div><div class="setting-description">تذكير بالذكر خلال اليوم</div></div><label class="switch"><input id="notifyBaqiyat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صيام الخميس — تذكير ١</div><div class="setting-description">يظهر مساء الأربعاء</div></div><label class="switch"><input id="notifyFastingThursday1" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صيام الخميس — تذكير ٢</div><div class="setting-description">يظهر مساء الأربعاء</div></div><label class="switch"><input id="notifyFastingThursday2" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صيام الاثنين</div><div class="setting-description">يظهر مساء الأحد</div></div><label class="switch"><input id="notifyFastingMonday" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صيام في سبيل الله</div><div class="setting-description">تذكير أسبوعي اختياري يوم السبت</div></div><label class="switch"><input id="notifyFastingFisabilillah" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">سنة نزول المطر</div><div class="setting-description">يعمل تلقائيًا عند توقع المطر في موقعك</div></div><label class="switch"><input id="notifyRainSunnah" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 
 <div class="settings-subtitle">الورد اليومي</div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الاستيقاظ</div><div class="setting-description">تذكير عند بداية وقت الاستيقاظ — ٤:٣٠ ص</div></div><label class="switch"><input id="notifyWardAwakening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
