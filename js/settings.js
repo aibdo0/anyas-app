@@ -224,7 +224,7 @@ function setupAdhanSettings() {
 // =====================================================
 
 const DEFAULT_MUEZZIN_SOURCES = {
-  adhanAudio: "audio/adhan.mp3",
+  adhanAudio: "audio/adhan.mp3?v=20261002-1",
   fajrAudio: "audio/fajr.mp3"
 };
 
