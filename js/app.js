@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupAdhan();
   setupAdhanSettings();
   setupBeforeFajrReminder();
+  setupAyatKursiVoices();
   setupThemeAndLanguage();
   setupHomeThemeToggle();
   setupNotifications();

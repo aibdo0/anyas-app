@@ -32,6 +32,8 @@
 }
 
 .setting-actions { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+.ayat-kursi-voice-setting { padding-bottom: 7px; border-bottom: 0; }
+.ayat-kursi-options { padding: 0 0 10px; }
 
 .setting-row:last-child,
 .worship-setting:last-child {

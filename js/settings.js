@@ -271,6 +271,58 @@ function checkBeforeFajrReminder() {
   audio.play().catch(error => console.error("تعذر تشغيل تنبيه الفجر تلقائيًا:", error));
 }
 
+function setupAyatKursiVoices() {
+  const options = document.getElementById("ayatKursiOptions");
+  const audio = document.getElementById("ayatKursiAudio");
+  if (!options || !audio) return;
+
+  const radios = options.querySelectorAll('input[name="ayatKursiVoice"]');
+  const saved = localStorage.getItem("anyas_ayatKursiVoice") || "mishary";
+  const selected = Array.from(radios).find(radio => radio.value === saved) || radios[0];
+  if (!selected) return;
+  selected.checked = true;
+
+  const applySource = radio => {
+    if (!radio?.dataset.audioSource) return;
+    audio.src = radio.dataset.audioSource;
+    audio.load();
+  };
+  applySource(selected);
+
+  radios.forEach(radio => radio.addEventListener("change", () => {
+    if (!radio.checked) return;
+    localStorage.setItem("anyas_ayatKursiVoice", radio.value);
+    applySource(radio);
+  }));
+
+  options.querySelectorAll("[data-ayat-preview]").forEach(button => {
+    button.addEventListener("click", () => {
+      if (button._ayatPreview) {
+        button._ayatPreview.pause();
+        button._ayatPreview.currentTime = 0;
+        button._ayatPreview = null;
+        button.textContent = "تشغيل";
+        return;
+      }
+      if (window.anyasAyatPreview) {
+        window.anyasAyatPreview.pause();
+        if (window.anyasAyatPreviewButton) {
+          window.anyasAyatPreviewButton.textContent = "تشغيل";
+          window.anyasAyatPreviewButton._ayatPreview = null;
+        }
+      }
+      const preview = new Audio(button.dataset.ayatPreview);
+      preview.volume = audio.volume;
+      button._ayatPreview = preview;
+      window.anyasAyatPreview = preview;
+      window.anyasAyatPreviewButton = button;
+      button.textContent = "إيقاف";
+      preview.play().catch(() => { button.textContent = "تشغيل"; button._ayatPreview = null; });
+      preview.onended = () => { button.textContent = "تشغيل"; button._ayatPreview = null; };
+    });
+  });
+}
+
 
 // =====================================================
 // رفع الأصوات المخصصة — حفظ ومعاينة محلية
