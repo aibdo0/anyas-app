@@ -1806,13 +1806,11 @@ function setupUpdateBanner() {
 function setupLocationSettings() {
   const button = document.getElementById("refreshLocationButton");
   const cityButton = document.getElementById("openCityPickerFromSettings");
-  const aboutLocationButton = document.getElementById("aboutLocationSettingsButton");
   const status = document.getElementById("locationSettingsDescription");
   const heroCity = document.getElementById("prayerHeroCity");
   if (!button) return;
 
   cityButton?.addEventListener("click", () => goToPage("city-picker"));
-  aboutLocationButton?.addEventListener("click", () => goToPage("city-picker"));
 
   const renderStatus = (detail = {}) => {
     const city = heroCity?.textContent?.trim() || "موقعك الحالي";
