@@ -2,6 +2,7 @@ package com.anyas.app;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.TextView;
 import android.webkit.GeolocationPermissions;
@@ -132,12 +134,62 @@ public class MainActivity extends Activity {
             for (int r : results) if (r == PackageManager.PERMISSION_GRANTED) allowed = true;
             geoCallback.invoke(geoOrigin, allowed, false); geoCallback = null; geoOrigin = null;
         }
-        if (requestCode == 43 && results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED) ReminderScheduler.scheduleSaved(this);
+        if (requestCode == 43) {
+            boolean granted = aboutPermissionGranted("notifications");
+            if (granted) ReminderScheduler.scheduleSaved(this);
+            reportAboutPermission("notifications", granted);
+        }
+        if (requestCode == 44) reportAboutPermission("location", aboutPermissionGranted("location"));
     }
     @Override protected void onSaveInstanceState(Bundle out) { web.saveState(out); super.onSaveInstanceState(out); }
     @Override public void onBackPressed() { if (web != null && web.canGoBack()) web.goBack(); else super.onBackPressed(); }
 
+    private boolean aboutPermissionGranted(String kind) {
+        if ("location".equals(kind)) {
+            return checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        }
+        if ("notifications".equals(kind)) {
+            if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return false;
+            if (Build.VERSION.SDK_INT >= 24) {
+                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                return manager != null && manager.areNotificationsEnabled();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void reportAboutPermission(String kind, boolean granted) {
+        if (web == null) return;
+        String script = "if (window.anyasAboutPermissionResult) { window.anyasAboutPermissionResult('" + kind + "', " + granted + "); }";
+        web.post(() -> web.evaluateJavascript(script, null));
+    }
+
     public class NativeBridge {
+        @JavascriptInterface public boolean hasAboutPermission(String kind) {
+            return aboutPermissionGranted(kind);
+        }
+        @JavascriptInterface public void requestAboutPermission(String kind) {
+            runOnUiThread(() -> {
+                if ("location".equals(kind)) {
+                    if (aboutPermissionGranted(kind)) reportAboutPermission(kind, true);
+                    else requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 44);
+                } else if ("notifications".equals(kind)) {
+                    if (aboutPermissionGranted(kind)) reportAboutPermission(kind, true);
+                    else if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 43);
+                    } else reportAboutPermission(kind, false);
+                }
+            });
+        }
+        @JavascriptInterface public void openAboutPermissionSettings() {
+            runOnUiThread(() -> {
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.fromParts("package", getPackageName(), null));
+                startActivity(intent);
+            });
+        }
         @JavascriptInterface public void syncSettings(String json) {
             runOnUiThread(() -> {
                 getSharedPreferences(ReminderScheduler.PREFS, MODE_PRIVATE).edit().putString("settings", json).apply();

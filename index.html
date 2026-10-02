@@ -44,7 +44,7 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261001-15">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261002-1">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20260927-2">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 <link rel="stylesheet" href="css/friday.css?v=20261001-1">
@@ -1696,19 +1696,39 @@ value="100"
   </section>
   <section class="about-card" aria-labelledby="aboutPermissionsHeading">
     <h2 id="aboutPermissionsHeading">أذونات التطبيق</h2>
-    <p>كل إذن مرتبط بوظيفة محددة ولا يضر الجهاز بذاته. إذن الموقع يكشف موقعك عند استخدام ميزاته؛ امنحه فقط إذا رغبت فيها.</p>
-    <ul class="about-detail-list">
-      <li><strong>الموقع</strong><span>اختياري؛ للمواقيت والقبلة والمساجد القريبة. يمكنك اختيار مدينة يدويًا دون منحه.</span></li>
-      <li><strong>الإشعارات</strong><span>اختيارية؛ لتذكيرات الصلاة والأذكار التي تفعّلها. لن تُرسل التنبيهات إذا رفضت الإذن.</span></li>
-      <li><strong>اتجاه الجهاز والبوصلة</strong><span>اختياري؛ لعرض اتجاه القبلة عند فتح البوصلة، إذا كان جهازك يدعم ذلك.</span></li>
-      <li><strong>الاتصال بالإنترنت</strong><span>لجلب المواقيت والخرائط والحديث اليومي عند الحاجة.</span></li>
-      <li><strong>استعادة التذكيرات بعد إعادة التشغيل</strong><span>إذن نظامي في أندرويد يعيد جدولة تذكيراتك المحفوظة بعد تشغيل الجهاز، ولا يحتاج نافذة موافقة.</span></li>
-      <li><strong>الظهور فوق التطبيقات الأخرى</strong><span>غير مستخدم وغير مطلوب في الإصدار الحالي؛ لا يحتاج أنياس إلى نافذة عائمة.</span></li>
-      <li><strong>تحسين البطارية</strong><span>اترك تحسين البطارية مفعّلًا؛ لا يحتاج التطبيق إلى استثنائه. إذا تأخرت التنبيهات، فقد يساعد السماح بعمله في الخلفية، لكن ذلك قد يزيد استهلاك البطارية قليلًا.</span></li>
-    </ul>
-    <p class="about-note">لا يطلب أنياس هذه الأذونات إلا عند الحاجة لوظيفتها، ويمكنك الرفض أو تغييرها من إعدادات جهازك. بعض بيانات الموقع تُرسل إلى خدمات التوقيت والخرائط عند استخدام تلك الميزات.</p>
-    <button class="secondary-action about-location-link" id="aboutLocationSettingsButton" type="button">إعدادات الموقع الجغرافي</button>
-    <button class="secondary-action about-location-link" id="aboutNotificationSettingsButton" type="button">إعدادات التذكيرات والإشعارات</button>
+    <p class="about-note">اختر إذنًا لمعرفة فائدته وتفعيله عند الحاجة.</p>
+    <div class="permission-list">
+      <details class="permission-accordion">
+        <summary>
+          <span class="permission-summary-copy"><strong>الموقع الجغرافي</strong><small>مواقيت الصلاة والقبلة والمساجد القريبة</small></span>
+          <span class="permission-status" id="locationPermissionStatus" aria-live="polite">جارٍ التحقق...</span>
+          <span class="permission-chevron" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="permission-panel">
+          <p class="permission-why"><strong>لماذا أفعّل هذا الإذن؟</strong> يساعد أنياس على حساب المواقيت لموقعك والعثور على المساجد القريبة وتحديد القبلة. يمكنك اختيار مدينة يدويًا بدلًا من مشاركة موقعك.</p>
+          <div class="permission-actions">
+            <button class="secondary-action permission-enable-button" id="enableLocationPermission" type="button">تفعيل إذن الموقع</button>
+            <button class="secondary-action permission-settings-button" id="openLocationPermissionSettings" type="button" hidden>فتح إعدادات الهاتف</button>
+          </div>
+          <p class="permission-message" id="locationPermissionMessage" aria-live="polite"></p>
+        </div>
+      </details>
+      <details class="permission-accordion">
+        <summary>
+          <span class="permission-summary-copy"><strong>الإشعارات</strong><small>تذكيرات الصلاة والأذكار التي تختارها</small></span>
+          <span class="permission-status" id="notificationsPermissionStatus" aria-live="polite">جارٍ التحقق...</span>
+          <span class="permission-chevron" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="permission-panel">
+          <p class="permission-why"><strong>لماذا أفعّل هذا الإذن؟</strong> لتصلك تذكيرات الصلاة والأذكار التي تشغّلها من إعدادات أنياس. لن يرسل التطبيق تنبيهًا لم تختره.</p>
+          <div class="permission-actions">
+            <button class="secondary-action permission-enable-button" id="enableNotificationsPermission" type="button">تفعيل إذن الإشعارات</button>
+            <button class="secondary-action permission-settings-button" id="openNotificationsPermissionSettings" type="button" hidden>فتح إعدادات الهاتف</button>
+          </div>
+          <p class="permission-message" id="notificationsPermissionMessage" aria-live="polite"></p>
+        </div>
+      </details>
+    </div>
   </section>
   <section class="about-card" aria-labelledby="aboutActionsHeading">
     <h2 id="aboutActionsHeading">نحتاج رأيك</h2>
@@ -1839,7 +1859,7 @@ type="button"
 <!-- =====================================================
      ملفات JavaScript
 ===================================================== -->
-<script src="js/i18n.js?v=20261001-1"></script>
+<script src="js/i18n.js?v=20261002-1"></script>
 <script src="data/azkar-topics.js?v=20260926-3"></script>
 <script src="data/azkar-benefits.js?v=20261001-1"></script>
 <script src="data/daily-quran.js?v=20260926-3"></script>
@@ -1858,8 +1878,8 @@ type="button"
 <script src="js/learning.js?v=20260926-3"></script>
 <script src="js/app-enhancements.js?v=20261001-9"></script>
 <script src="js/daily-devotions.js?v=20260926-3"></script>
-<script src="js/app.js?v=20261001-5"></script>
-<script src="js/about.js?v=20261001-1"></script>
+<script src="js/app.js?v=20261002-1"></script>
+<script src="js/about.js?v=20261002-1"></script>
 
 </body>
   </html>
