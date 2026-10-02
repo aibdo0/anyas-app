@@ -428,7 +428,13 @@ function setupMuezzinPicker(
       );
 
       const audioId = radio.dataset.audioId;
-      if (audioId && radio.value === "default") {
+      if (audioId && radio.dataset.audioSource) {
+        const audio = document.getElementById(audioId);
+        if (audio) {
+          audio.src = radio.dataset.audioSource;
+          audio.load();
+        }
+      } else if (audioId && radio.value === "default") {
         restoreDefaultMuezzinAudio(audioId);
       } else if (audioId && radio.value === "custom") {
         const savedSource = localStorage.getItem(`anyas_audio_${audioId}`);
@@ -454,6 +460,9 @@ function setupMuezzinPicker(
     });
 
   });
+
+  const initialChecked = options.querySelector(`input[name="${radioName}"]:checked`);
+  initialChecked?.dispatchEvent(new Event("change", { bubbles: true }));
 
   const previewButtons =
     options.querySelectorAll(
