@@ -656,20 +656,20 @@ function checkAutoAdhan() {
   const now =
     new Date();
 
-  const currentHM =
-    `${String(now.getHours()).padStart(2, "0")}:` +
-    `${String(now.getMinutes()).padStart(2, "0")}`;
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
   const todayKey =
     now.toDateString();
 
   for (const prayer of prayers) {
 
-    if (
-      prayer.time === currentHM &&
-      window.lastAdhanFired !==
-      `${todayKey}-${prayer.key}`
-    ) {
+    const [hour, minute] = String(prayer.time || "").split(":").map(Number);
+    const prayerMinutes = hour * 60 + minute;
+    const isDue = Number.isFinite(prayerMinutes)
+      && currentMinutes >= prayerMinutes
+      && currentMinutes <= prayerMinutes + 1;
+
+    if (isDue && window.lastAdhanFired !== `${todayKey}-${prayer.key}`) {
 
       window.lastAdhanFired =
         `${todayKey}-${prayer.key}`;
