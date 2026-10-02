@@ -259,8 +259,8 @@
 </audio>
 
 <audio id="ayatKursiAudio" preload="auto"></audio>
-<audio id="morningWardAudio" preload="auto"></audio>
-<audio id="eveningWardAudio" preload="auto"></audio>
+<audio id="morningWardAudio" preload="auto"><source src="audio/adhkar-morning-mishary-alafasy.m4a" type="audio/mp4"></audio>
+<audio id="eveningWardAudio" preload="auto"><source src="audio/adhkar-evening-mishary-alafasy.m4a" type="audio/mp4"></audio>
 <audio id="wakeupWardAudio" preload="auto"><source src="audio/adhkar-wakeup-mishary-alafasy.mp3" type="audio/mpeg"></audio>
 <audio id="sleepWardAudio" preload="auto"><source src="audio/adhkar-sleep-mishary-alafasy.m4a" type="audio/mp4"></audio>
 
@@ -1649,6 +1649,18 @@ data-audio="fajrAudio"
 <button class="preview-button" type="button" data-adhkar-preview="wakeupWardAudio">تشغيل</button>
 </div>
 <div class="muezzin-volume-control sound-volume-control"><div class="muezzin-volume-header"><span>مستوى صوت أذكار الاستيقاظ</span><output id="wakeupWardVolumeValue">100%</output></div><input id="wakeupWardVolume" type="range" min="0" max="100" value="100" aria-label="مستوى صوت أذكار الاستيقاظ"></div>
+
+<div class="setting-row sound-card">
+<div class="setting-info"><div class="setting-title">أذكار الصباح — مشاري العفاسي</div><div class="setting-description">صوت التنبيه عند بداية ورد الصباح</div></div>
+<button class="preview-button" type="button" data-adhkar-preview="morningWardAudio">تشغيل</button>
+</div>
+<div class="muezzin-volume-control sound-volume-control"><div class="muezzin-volume-header"><span>مستوى صوت أذكار الصباح</span><output id="morningWardVolumeValue">100%</output></div><input id="morningWardVolume" type="range" min="0" max="100" value="100" aria-label="مستوى صوت أذكار الصباح"></div>
+
+<div class="setting-row sound-card">
+<div class="setting-info"><div class="setting-title">أذكار المساء — مشاري العفاسي</div><div class="setting-description">صوت التنبيه عند بداية ورد المساء</div></div>
+<button class="preview-button" type="button" data-adhkar-preview="eveningWardAudio">تشغيل</button>
+</div>
+<div class="muezzin-volume-control sound-volume-control"><div class="muezzin-volume-header"><span>مستوى صوت أذكار المساء</span><output id="eveningWardVolumeValue">100%</output></div><input id="eveningWardVolume" type="range" min="0" max="100" value="100" aria-label="مستوى صوت أذكار المساء"></div>
 
 <div class="setting-row sound-card">
 <div class="setting-info"><div class="setting-title">أذكار النوم — مشاري العفاسي</div><div class="setting-description">صوت التنبيه الهادئ قبل النوم</div></div>

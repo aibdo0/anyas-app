@@ -85,6 +85,8 @@ function setupAdhanSettings() {
     { inputId: "beforeFajrVolume", valueId: "beforeFajrVolumeValue", key: "anyas_beforeFajrVolume", audioId: "beforeFajrAudio" },
     { inputId: "ayatKursiVolume", valueId: "ayatKursiVolumeValue", key: "anyas_ayatKursiVolume", audioId: "ayatKursiAudio" },
     { inputId: "wakeupWardVolume", valueId: "wakeupWardVolumeValue", key: "anyas_wakeupWardVolume", audioId: "wakeupWardAudio" },
+    { inputId: "morningWardVolume", valueId: "morningWardVolumeValue", key: "anyas_morningWardVolume", audioId: "morningWardAudio" },
+    { inputId: "eveningWardVolume", valueId: "eveningWardVolumeValue", key: "anyas_eveningWardVolume", audioId: "eveningWardAudio" },
     { inputId: "sleepWardVolume", valueId: "sleepWardVolumeValue", key: "anyas_sleepWardVolume", audioId: "sleepWardAudio" }
   ];
 
