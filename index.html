@@ -1416,7 +1416,7 @@ tabindex="0"
 </div>
 
 <div class="setting-description" id="normalMuezzinSelected">
-مشاري العفاسي — جاهز للرفع
+الصوت الافتراضي — يمكنك إضافة صوت اختياري
 </div>
 
 </div>
@@ -1432,19 +1432,16 @@ tabindex="0"
 
 <div class="muezzin-row">
 
-<label class="muezzin-select">
+<div class="muezzin-select">
+  <div>
+    <span class="muezzin-name">صوت مخصص اختياري</span>
+    <small class="audio-file-name" id="adhanAudioName">لم يتم اختيار ملف</small>
+  </div>
+</div>
 
-<input
-type="radio"
-name="normalMuezzin"
-value="current"
-checked
->
-
-<span class="muezzin-name">
-مشاري العفاسي — ملف مخصص
-</span>
-
+<label class="audio-upload-button">
+رفع صوت
+<input type="file" accept="audio/*" data-audio-upload="adhanAudio" data-audio-name="adhanAudioName" hidden>
 </label>
 
 <button
@@ -1474,7 +1471,7 @@ tabindex="0"
 </div>
 
 <div class="setting-description" id="fajrMuezzinSelected">
-مشاري العفاسي — جاهز للرفع
+الصوت الافتراضي — يمكنك إضافة صوت اختياري
 </div>
 
 </div>
@@ -1490,19 +1487,16 @@ tabindex="0"
 
 <div class="muezzin-row">
 
-<label class="muezzin-select">
+<div class="muezzin-select">
+  <div>
+    <span class="muezzin-name">صوت فجر مخصص اختياري</span>
+    <small class="audio-file-name" id="fajrAudioName">لم يتم اختيار ملف</small>
+  </div>
+</div>
 
-<input
-type="radio"
-name="fajrMuezzin"
-value="current"
-checked
->
-
-<span class="muezzin-name">
-مشاري العفاسي — أذان الفجر
-</span>
-
+<label class="audio-upload-button">
+رفع صوت
+<input type="file" accept="audio/*" data-audio-upload="fajrAudio" data-audio-name="fajrAudioName" hidden>
 </label>
 
 <button
@@ -1517,26 +1511,6 @@ data-audio="fajrAudio"
 
 </div>
 
-
-<div class="audio-library-panel" aria-labelledby="audioLibraryTitle">
-  <div class="settings-subtitle" id="audioLibraryTitle">مكتبة الأصوات</div>
-  <p class="setting-description audio-library-note">ارفع ملفاتك الصوتية من الجهاز لتجربتها وحفظ اختيارها محليًا. يمكن إضافة آية الكرسي وأصوات أخرى لاحقًا.</p>
-  <div class="audio-upload-row">
-    <div><strong>الأذان العادي</strong><small id="adhanAudioName">ملف مشاري العفاسي</small></div>
-    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="adhanAudio" data-audio-name="adhanAudioName" hidden></label>
-    <button class="preview-button" type="button" data-audio="adhanAudio">تشغيل</button>
-  </div>
-  <div class="audio-upload-row">
-    <div><strong>أذان الفجر</strong><small id="fajrAudioName">ملف مشاري العفاسي</small></div>
-    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="fajrAudio" data-audio-name="fajrAudioName" hidden></label>
-    <button class="preview-button" type="button" data-audio="fajrAudio">تشغيل</button>
-  </div>
-  <div class="audio-upload-row">
-    <div><strong>آية الكرسي</strong><small id="ayatKursiAudioName">جاهز لإضافة الملف</small></div>
-    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="ayatKursiAudio" data-audio-name="ayatKursiAudioName" hidden></label>
-    <button class="preview-button" type="button" data-audio="ayatKursiAudio">تشغيل</button>
-  </div>
-</div>
 
 <div class="setting-row">
 

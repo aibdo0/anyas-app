@@ -208,8 +208,14 @@ function setupAudioLibrary() {
   document.querySelectorAll("[data-audio-upload]").forEach(input => {
     const audioId = input.dataset.audioUpload;
     const nameId = input.dataset.audioName;
+    const selectedId = audioId === "adhanAudio"
+      ? "normalMuezzinSelected"
+      : audioId === "fajrAudio"
+        ? "fajrMuezzinSelected"
+        : "";
     const audio = document.getElementById(audioId);
     const name = document.getElementById(nameId);
+    const selected = selectedId ? document.getElementById(selectedId) : null;
     if (!audio) return;
 
     const savedSource = localStorage.getItem(`anyas_audio_${audioId}`);
@@ -219,6 +225,7 @@ function setupAudioLibrary() {
       audio.load();
     }
     if (savedName && name) name.textContent = savedName;
+    if (savedName && selected) selected.textContent = savedName;
 
     input.addEventListener("change", () => {
       const file = input.files?.[0];
@@ -235,6 +242,7 @@ function setupAudioLibrary() {
         audio.src = source;
         audio.load();
         if (name) name.textContent = file.name;
+        if (selected) selected.textContent = file.name;
       };
       reader.readAsDataURL(file);
     });
