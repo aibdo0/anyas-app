@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setupAdhan();
   setupAdhanSettings();
+  setupBeforeFajrReminder();
   setupThemeAndLanguage();
   setupHomeThemeToggle();
   setupNotifications();
@@ -41,7 +42,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setInterval(updateDate, 60 * 1000);
   setInterval(updateCountdown, 1000);
-  setInterval(checkAutoAdhan, 1000 * 20);
+  setInterval(() => {
+    checkAutoAdhan();
+    checkBeforeFajrReminder();
+  }, 1000 * 20);
 
   setInterval(() => {
     updatePrayerTrackingUI();

@@ -31,6 +31,8 @@
     border-bottom: 1px solid var(--border);
 }
 
+.setting-actions { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+
 .setting-row:last-child,
 .worship-setting:last-child {
     border-bottom: none;

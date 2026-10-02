@@ -221,6 +221,57 @@ function setupAdhanSettings() {
 }
 
 
+function setupBeforeFajrReminder() {
+  const toggle = document.getElementById("beforeFajrReminder");
+  const button = document.getElementById("beforeFajrPreviewButton");
+  const audio = document.getElementById("beforeFajrAudio");
+  if (!toggle || !button || !audio) return;
+
+  toggle.checked = localStorage.getItem("anyas_beforeFajrReminder") === "true";
+  toggle.addEventListener("change", () => {
+    localStorage.setItem("anyas_beforeFajrReminder", String(toggle.checked));
+  });
+
+  button.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.currentTime = 0;
+      audio.play().then(() => { button.textContent = "إيقاف"; }).catch(error => {
+        console.error("تعذر تشغيل تنبيه الفجر:", error);
+        button.textContent = "تشغيل";
+      });
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+      button.textContent = "تشغيل";
+    }
+    audio.onended = () => { button.textContent = "تشغيل"; };
+  });
+}
+
+function checkBeforeFajrReminder() {
+  const toggle = document.getElementById("beforeFajrReminder");
+  const audio = document.getElementById("beforeFajrAudio");
+  const fajrTime = window.todayTimings?.Fajr;
+  if (!toggle?.checked || !audio || !fajrTime) return;
+
+  const [hour, minute] = String(fajrTime).split(":").map(Number);
+  const fajrMinutes = hour * 60 + minute;
+  const targetMinutes = fajrMinutes - 30;
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const todayKey = now.toDateString();
+  const reminderKey = `${todayKey}-before-fajr-30`;
+  const isDue = Number.isFinite(targetMinutes)
+    && currentMinutes >= targetMinutes
+    && currentMinutes <= targetMinutes + 1;
+  if (!isDue || window.lastBeforeFajrReminder === reminderKey) return;
+
+  window.lastBeforeFajrReminder = reminderKey;
+  audio.currentTime = 0;
+  audio.play().catch(error => console.error("تعذر تشغيل تنبيه الفجر تلقائيًا:", error));
+}
+
+
 // =====================================================
 // رفع الأصوات المخصصة — حفظ ومعاينة محلية
 // =====================================================
