@@ -182,7 +182,7 @@
 
   function openWirdCategory(id) {
     if (!sections[id]) return;
-    window.openAzkarWird?.(id);
+    goToPage("azkar");
   }
 
   window.openWirdCategory = openWirdCategory;
