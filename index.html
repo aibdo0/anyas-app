@@ -29,7 +29,7 @@
     document.documentElement.dir = locale === "en" ? "ltr" : "rtl";
     document.documentElement.dataset.autoBackground = String(autoBackground);
     var hour = new Date().getHours();
-    document.documentElement.dataset.timeScene = hour >= 4 && hour < 8 ? "dawn" : hour >= 8 && hour < 16 ? "day" : hour >= 16 && hour < 19 ? "sunset" : "night";
+    document.documentElement.dataset.timeScene = hour >= 6 && hour < 18 ? "morning" : "night";
   })();
 </script>
 
@@ -44,7 +44,7 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261002-3">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261002-4">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20261002-3">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
@@ -759,8 +759,8 @@ aria-selected="false"
 
 <div class="setting-row time-background-setting">
   <div class="setting-info">
-    <div class="setting-title">خلفية حسب وقت اليوم</div>
-    <div class="setting-description" id="timeBackgroundDescription">تتغير تلقائيًا بين الفجر والنهار والغروب والليل</div>
+    <div class="setting-title">خلفيات العدادات حسب الوقت</div>
+    <div class="setting-description" id="timeBackgroundDescription">خلفية صباحية أو ليلية هادئة للعدادات ويمكنك إيقافها متى شئت</div>
   </div>
   <label class="switch" aria-label="تفعيل الخلفيات حسب وقت اليوم">
     <input id="timeBackgroundToggle" type="checkbox" checked>

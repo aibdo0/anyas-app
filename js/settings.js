@@ -669,16 +669,14 @@ function setupThemeAndLanguage() {
 
   const updateTimeBackground = () => {
     const hour = new Date().getHours();
-    const scene = hour >= 4 && hour < 8 ? "dawn"
-      : hour >= 8 && hour < 16 ? "day"
-        : hour >= 16 && hour < 19 ? "sunset" : "night";
+    const scene = hour >= 6 && hour < 18 ? "morning" : "night";
     root.dataset.timeScene = scene;
     root.dataset.autoBackground = timeBackgroundEnabled ? "true" : "false";
-    const sceneNames = { dawn: "الفجر", day: "النهار", sunset: "الغروب", night: "الليل" };
+    const sceneNames = { morning: "الصباح", night: "الليل" };
     if (timeBackgroundDescription) {
       timeBackgroundDescription.textContent = timeBackgroundEnabled
-        ? `خلفية ${sceneNames[scene]} مفعّلة — تتغير تلقائيًا حسب ساعة جهازك`
-        : "الخلفية التلقائية متوقفة";
+        ? `الخلفية ${sceneNames[scene]} مفعّلة — تتبدّل تلقائيًا حسب ساعة جهازك`
+        : "خلفيات العدادات متوقفة";
     }
     if (timeBackgroundToggle) timeBackgroundToggle.checked = timeBackgroundEnabled;
   };

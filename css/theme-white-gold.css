@@ -992,15 +992,21 @@ html[data-theme="dark"] { background: var(--page) !important; }
 html[lang="en"] .more-menu-copy, html[lang="en"] .setting-info, html[lang="en"] .about-card, html[lang="en"] .about-hero { text-align: left; }
 html[lang="en"] .location-setting-actions { justify-content: flex-start; }
 
-/* Subtle, automatic time-of-day atmospheres; theme surfaces and contrast stay intact. */
-:root[data-auto-background="true"] body { transition: background-color .7s ease, background-image .7s ease; }
-:root[data-auto-background="true"][data-time-scene="dawn"] body { background: radial-gradient(ellipse at 85% 0%,rgba(223,174,124,.32),transparent 34rem),linear-gradient(145deg,#f8f3e9,#f2eee8 65%,#eee9df); }
-:root[data-auto-background="true"][data-time-scene="day"] body { background: radial-gradient(ellipse at 10% 0%,rgba(205,190,146,.22),transparent 34rem),linear-gradient(145deg,#f7f5ed,#f3f1e9 65%,#eeece4); }
-:root[data-auto-background="true"][data-time-scene="sunset"] body { background: radial-gradient(ellipse at 90% 0%,rgba(214,153,106,.30),transparent 36rem),linear-gradient(145deg,#f6eee5,#f3ece4 64%,#eee8e1); }
-:root[data-theme="dark"][data-auto-background="true"][data-time-scene="dawn"] body { background: radial-gradient(ellipse at 85% 0%,rgba(142,106,74,.17),transparent 34rem),linear-gradient(145deg,#191a1d,#17181b 65%,#17171a); }
-:root[data-theme="dark"][data-auto-background="true"][data-time-scene="day"] body { background: radial-gradient(ellipse at 10% 0%,rgba(133,125,94,.12),transparent 34rem),linear-gradient(145deg,#18191c,#17181b 65%,#16171a); }
-:root[data-theme="dark"][data-auto-background="true"][data-time-scene="sunset"] body { background: radial-gradient(ellipse at 90% 0%,rgba(166,102,66,.18),transparent 36rem),linear-gradient(145deg,#1c1919,#19181b 64%,#17171a); }
-:root[data-theme="dark"][data-auto-background="true"][data-time-scene="night"] body { background: radial-gradient(ellipse at 90% 0%,rgba(74,91,119,.19),transparent 35rem),linear-gradient(145deg,#141820,#15171d 65%,#17171b); }
+/* Optional professional morning/night artwork for the countdown surfaces. */
+:root[data-auto-background="true"] body {
+  min-height: 100%;
+  background-color: #f3eee4;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center top;
+  background-size: cover;
+  background-image: linear-gradient(rgba(255,255,255,.16), rgba(255,255,255,.16)), url("../assets/anyas-morning-background.webp");
+  transition: background-color .7s ease, background-image .7s ease;
+}
+:root[data-auto-background="true"][data-time-scene="night"] body {
+  background-color: #0e1824;
+  background-image: linear-gradient(rgba(5,12,22,.12), rgba(5,12,22,.12)), url("../assets/anyas-night-background.webp");
+}
 .setting-info { min-width: 0; }
 @media(max-width:420px) { .about-hero { gap: 10px; padding: 13px; } .about-app-icon { width: 48px; height: 48px; flex-basis: 48px; } .about-version { padding-inline: 7px; font-size: 10px; } }
 
@@ -1010,5 +1016,3 @@ html[lang="en"] .page :is(.section-heading,.prayer-row,.task-item,.setting-row,.
 html[lang="en"] .plain-header { align-items: flex-start; }
 html[lang="en"] .date-line, html[lang="en"] .location-line { direction: ltr; }
 html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
-
-:root[data-theme="light"][data-auto-background="true"][data-time-scene="night"] body { background: radial-gradient(ellipse at 82% 0%,rgba(89,113,150,.18),transparent 35rem),linear-gradient(145deg,#eef0f2,#f0efec 64%,#ecebe8); }
