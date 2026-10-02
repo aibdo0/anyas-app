@@ -215,6 +215,10 @@
     display: block;
 }
 
+#ayatKursiOptions {
+    display: block;
+}
+
 .muezzin-row {
     display: flex;
     align-items: center;
