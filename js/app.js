@@ -12,9 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
   setupAdhanSettings();
   setupBeforeFajrReminder();
   setupAyatKursiVoices();
+  setupAdhkarAudioControls();
   setupThemeAndLanguage();
   setupHomeThemeToggle();
   setupNotifications();
+  checkDailyAdhkarNotifications();
   setupVibration();
   setupMuezzinSettings();
 
@@ -46,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(() => {
     checkAutoAdhan();
     checkBeforeFajrReminder();
+    checkDailyAdhkarNotifications();
   }, 1000 * 20);
 
   setInterval(() => {

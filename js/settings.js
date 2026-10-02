@@ -80,8 +80,12 @@ function setupAdhanSettings() {
     document.getElementById("volumeValue");
 
   const muezzinVolumeControls = [
-    { inputId: "normalMuezzinVolume", valueId: "normalMuezzinVolumeValue", key: "anyas_normalMuezzinVolume" },
-    { inputId: "fajrMuezzinVolume", valueId: "fajrMuezzinVolumeValue", key: "anyas_fajrMuezzinVolume" }
+    { inputId: "normalMuezzinVolume", valueId: "normalMuezzinVolumeValue", key: "anyas_normalMuezzinVolume", audioId: "adhanAudio" },
+    { inputId: "fajrMuezzinVolume", valueId: "fajrMuezzinVolumeValue", key: "anyas_fajrMuezzinVolume", audioId: "fajrAudio" },
+    { inputId: "beforeFajrVolume", valueId: "beforeFajrVolumeValue", key: "anyas_beforeFajrVolume", audioId: "beforeFajrAudio" },
+    { inputId: "ayatKursiVolume", valueId: "ayatKursiVolumeValue", key: "anyas_ayatKursiVolume", audioId: "ayatKursiAudio" },
+    { inputId: "wakeupWardVolume", valueId: "wakeupWardVolumeValue", key: "anyas_wakeupWardVolume", audioId: "wakeupWardAudio" },
+    { inputId: "sleepWardVolume", valueId: "sleepWardVolumeValue", key: "anyas_sleepWardVolume", audioId: "sleepWardAudio" }
   ];
 
   const testButton =
@@ -211,10 +215,12 @@ function setupAdhanSettings() {
     document.querySelectorAll("audio").forEach(audioElement => {
       audioElement.volume = normalized;
     });
-    const normalVolume = Number(localStorage.getItem("anyas_normalMuezzinVolume"));
-    const fajrVolume = Number(localStorage.getItem("anyas_fajrMuezzinVolume"));
-    if (adhan) adhan.volume = normalized * (Number.isFinite(normalVolume) ? normalVolume / 100 : 1);
-    if (fajr) fajr.volume = normalized * (Number.isFinite(fajrVolume) ? fajrVolume / 100 : 1);
+    muezzinVolumeControls.forEach(control => {
+      if (!control.audioId) return;
+      const audio = document.getElementById(control.audioId);
+      const savedValue = Number(localStorage.getItem(control.key));
+      if (audio) audio.volume = normalized * (Number.isFinite(savedValue) ? savedValue / 100 : 1);
+    });
 
   }
 
@@ -468,6 +474,68 @@ function setupAudioLibrary() {
 
 
 // =====================================================
+function setupAdhkarAudioControls() {
+  document.querySelectorAll("[data-adhkar-preview]").forEach(button => {
+    button.addEventListener("click", () => {
+      const audio = document.getElementById(button.dataset.adhkarPreview);
+      if (!audio) return;
+      if (button._adhkarPreview) {
+        button._adhkarPreview.pause();
+        button._adhkarPreview.currentTime = 0;
+        button._adhkarPreview = null;
+        button.textContent = "تشغيل";
+        return;
+      }
+      if (window.anyasAdhkarPreview) {
+        window.anyasAdhkarPreview.pause();
+        if (window.anyasAdhkarPreviewButton) {
+          window.anyasAdhkarPreviewButton.textContent = "تشغيل";
+          window.anyasAdhkarPreviewButton._adhkarPreview = null;
+        }
+      }
+      audio.currentTime = 0;
+      button._adhkarPreview = audio;
+      window.anyasAdhkarPreview = audio;
+      window.anyasAdhkarPreviewButton = button;
+      button.textContent = "إيقاف";
+      audio.play().catch(() => { button.textContent = "تشغيل"; button._adhkarPreview = null; });
+      audio.onended = () => { button.textContent = "تشغيل"; button._adhkarPreview = null; };
+    });
+  });
+}
+
+function checkDailyAdhkarNotifications() {
+  const schedule = [
+    { id: "notifyWardSahar", key: "sahar", title: "أذكار السحر", body: "حان وقت الاستغفار والدعاء.", minute: 120, audioId: "" },
+    { id: "notifyWardAwakening", key: "awakening", title: "أذكار الاستيقاظ", body: "ابدأ يومك بذكر الله.", minute: 270, audioId: "wakeupWardAudio" },
+    { id: "notifyWardMorning", key: "morning", title: "أذكار الصباح", body: "حان وقت أذكار الصباح.", minute: 330, audioId: "morningWardAudio" },
+    { id: "notifyWardGeneral", key: "general", title: "أذكار اليوم", body: "تذكير بوردك اليومي.", minute: 720, audioId: "" },
+    { id: "notifyWardEvening", key: "evening", title: "أذكار المساء", body: "حان وقت أذكار المساء.", minute: 930, audioId: "eveningWardAudio" },
+    { id: "notifyWardSleep", key: "sleep", title: "أذكار النوم", body: "اختم يومك بأذكار النوم.", minute: 1200, audioId: "sleepWardAudio" }
+  ];
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const dayKey = now.toDateString();
+  window.anyasDailyNotificationFired ||= {};
+
+  schedule.forEach(item => {
+    const enabled = localStorage.getItem(`anyas_${item.id}`) === "true";
+    if (!enabled || currentMinutes < item.minute || currentMinutes > item.minute + 1) return;
+    const firedKey = `${dayKey}-${item.key}`;
+    if (window.anyasDailyNotificationFired[firedKey]) return;
+    window.anyasDailyNotificationFired[firedKey] = true;
+
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification(item.title, { body: item.body, tag: `anyas-${item.key}` });
+    }
+    if (localStorage.getItem("anyas_notificationSound") === "true" && item.audioId) {
+      const audio = document.getElementById(item.audioId);
+      if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
+    }
+  });
+}
+
+
 // اختيار المؤذن
 // =====================================================
 
