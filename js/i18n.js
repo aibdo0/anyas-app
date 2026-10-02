@@ -27,8 +27,6 @@
     "إعدادات التذكيرات والإشعارات": "Reminder and notification settings",
     "نجمة واحدة": "One star", "نجمتان": "Two stars", "ثلاث نجوم": "Three stars", "أربع نجوم": "Four stars", "خمس نجوم": "Five stars",
     "إعدادات الموقع الجغرافي": "Location settings",
-    "مصدر نص القرآن: مشروع تنزيل (Tanzil)": "Quran text source: Tanzil Project",
-    "مصدر الحديث: HadeethEnc.com": "Hadith source: HadeethEnc.com",
     "حديث اليوم": "Hadith of the day",
     "الأذكار": "Adhkar",
     "نحتاج رأيك": "We value your feedback", "الحصول على الدعم": "Get support",

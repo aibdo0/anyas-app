@@ -21,5 +21,4 @@
 #page-home #dailyHadithBlock .card-title { margin-bottom: 6px; color: var(--gold-dark); font-size: 14px; font-weight: 800; }
 #page-home #dailyHadithBlock .hadith-text { margin: 0; color: var(--ink); font-size: 16px; line-height: 1.85; overflow-wrap: anywhere; }
 #page-home #dailyHadithBlock .reference { margin-top: 5px; color: var(--muted); font-size: 11px; }
-#page-home .content-source-link { display: inline-block; margin-top: 5px; color: var(--gold-dark); font-size: 10px; font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: 2px; }
 :root[data-theme="dark"] #page-home .daily-content.card > #dailyHadithBlock { border-color: var(--line); background: var(--surface); }
