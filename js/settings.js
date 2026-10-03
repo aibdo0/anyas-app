@@ -221,8 +221,10 @@ function setupAdhanSettings() {
     muezzinVolumeControls.forEach(control => {
       if (!control.audioId) return;
       const audio = document.getElementById(control.audioId);
-      const savedValue = Number(localStorage.getItem(control.key));
-      if (audio) audio.volume = normalized * (Number.isFinite(savedValue) ? savedValue / 100 : 1);
+      const storedValue = localStorage.getItem(control.key);
+      const parsedValue = storedValue === null ? 100 : Number(storedValue);
+      const savedValue = Number.isFinite(parsedValue) ? Math.max(0, Math.min(100, parsedValue)) : 100;
+      if (audio) audio.volume = normalized * (savedValue / 100);
     });
 
   }
