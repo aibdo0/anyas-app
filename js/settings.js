@@ -554,7 +554,7 @@ function checkDailyAdhkarNotifications() {
       new Notification(item.title, { body: item.body, tag: `anyas-${item.key}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
       recordAnyasNotification(item.title, item.body, `anyas-${item.key}`);
     }
-    if (localStorage.getItem("anyas_notificationSound") === "true" && item.audioId) {
+    if (localStorage.getItem("anyas_notificationSound") !== "false" && item.audioId) {
       const audio = document.getElementById(item.audioId);
       if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
     }
@@ -593,7 +593,7 @@ function checkPrayerReminderNotifications() {
       new Notification(title, { body, tag: `anyas-prayer-${prayer}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
       recordAnyasNotification(title, body, `anyas-prayer-${prayer}`);
     }
-    if (localStorage.getItem("anyas_notificationSound") === "true") {
+    if (localStorage.getItem("anyas_notificationSound") !== "false") {
       const audio = document.getElementById(audioId);
       if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
     }
@@ -609,7 +609,7 @@ function fireOptionalReminder(id, key, title, body, audioId, dayKey = new Date()
     new Notification(title, { body, tag: `anyas-${key}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
     recordAnyasNotification(title, body, `anyas-${key}`);
   }
-  if (localStorage.getItem("anyas_notificationSound") === "true" && audioId) {
+  if (localStorage.getItem("anyas_notificationSound") !== "false" && audioId) {
     const audio = document.getElementById(audioId);
     if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
   }
@@ -1312,7 +1312,7 @@ function syncAndroidNotificationSettings() {
     morningVoice: localStorage.getItem("anyas_morningWardVoice") || "mishary",
     eveningVoice: localStorage.getItem("anyas_eveningWardVoice") || "mishary",
     ayatVoice: localStorage.getItem("anyas_ayatKursiVoice") || "mishary",
-    sound: localStorage.getItem("anyas_notificationSound") === "true",
+    sound: document.getElementById("notificationSound")?.checked === true,
     volume: masterVolume
   }));
 }
