@@ -3,6 +3,7 @@ package com.anyas.app;
 import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
@@ -18,9 +19,11 @@ public class ReminderPlayerService extends Service {
         Notification.Builder builder = Build.VERSION.SDK_INT >= 26
                 ? new Notification.Builder(this, "reminder_playback")
                 : new Notification.Builder(this);
-        Notification notification = builder.setSmallIcon(android.R.drawable.ic_lock_silent_mode_off)
+        Notification notification = builder.setSmallIcon(R.drawable.ic_notification)
+                .setColor(Color.rgb(196, 154, 85))
+                .setSubText("أنياس")
                 .setContentTitle(title == null ? "صوت التذكير" : title)
-                .setContentText("يعمل صوت التذكير الآن")
+                .setContentText("يُشغَّل التذكير الصوتي")
                 .setOngoing(true)
                 .build();
         if (Build.VERSION.SDK_INT >= 26) startForeground(9001, notification);

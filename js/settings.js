@@ -558,7 +558,7 @@ function checkDailyAdhkarNotifications() {
     window.anyasDailyNotificationFired[firedKey] = true;
 
     if ("Notification" in window && Notification.permission === "granted") {
-      new Notification(item.title, { body: item.body, tag: `anyas-${item.key}` });
+      new Notification(item.title, { body: item.body, tag: `anyas-${item.key}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
     }
     if (localStorage.getItem("anyas_notificationSound") === "true" && item.audioId) {
       const audio = document.getElementById(item.audioId);
@@ -594,7 +594,7 @@ function checkPrayerReminderNotifications() {
     window.anyasPrayerReminderFired[key] = true;
     if ("Notification" in window && Notification.permission === "granted") {
       const names = { Fajr: "الفجر", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" };
-      new Notification(`اقتربت صلاة ${names[prayer]}`, { body: "تبقّى ربع ساعة على موعد الصلاة." });
+      new Notification(`اقتربت صلاة ${names[prayer]}`, { body: "تبقّى ربع ساعة على موعد الصلاة.", tag: `anyas-prayer-${prayer}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
     }
     if (localStorage.getItem("anyas_notificationSound") === "true") {
       const audio = document.getElementById(audioId);
@@ -609,7 +609,7 @@ function fireOptionalReminder(id, key, title, body, audioId, dayKey = new Date()
   if (localStorage.getItem(firedKey) === "true") return;
   localStorage.setItem(firedKey, "true");
   if ("Notification" in window && Notification.permission === "granted") {
-    new Notification(title, { body, tag: `anyas-${key}` });
+    new Notification(title, { body, tag: `anyas-${key}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
   }
   if (localStorage.getItem("anyas_notificationSound") === "true" && audioId) {
     const audio = document.getElementById(audioId);

@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 
 public class ReminderReceiver extends BroadcastReceiver {
@@ -31,10 +33,18 @@ public class ReminderReceiver extends BroadcastReceiver {
         ReminderScheduler.createChannels(context);
         Intent open = new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pending = PendingIntent.getActivity(context, ReminderScheduler.requestCode(id), open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        String safeTitle = title == null || title.trim().isEmpty() ? "أنياس" : title.trim();
+        String safeBody = body == null || body.trim().isEmpty() ? "حان وقت تذكيرك. افتح أنياس للتفاصيل." : body.trim();
         Notification.Builder builder = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(context, "reminders") : new Notification.Builder(context).setDefaults(Notification.DEFAULT_VIBRATE);
-        builder.setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle(title == null ? "أنياس" : title)
-                .setContentText(body == null ? "حان وقت التذكير." : body)
+        builder.setSmallIcon(R.drawable.ic_notification)
+                .setLargeIcon(Icon.createWithResource(context, R.mipmap.ic_launcher))
+                .setColor(Color.rgb(196, 154, 85))
+                .setSubText("أنياس")
+                .setContentTitle(safeTitle)
+                .setContentText(safeBody)
+                .setStyle(new Notification.BigTextStyle().setBigContentTitle(safeTitle).bigText(safeBody))
+                .setPriority(Notification.PRIORITY_DEFAULT)
+                .setVisibility(Notification.VISIBILITY_PRIVATE)
                 .setAutoCancel(true)
                 .setContentIntent(pending)
                 .setCategory(Notification.CATEGORY_REMINDER);

@@ -78,7 +78,7 @@
     const key = `anyas_friday_notice_${id}_${dateKey(target)}`;
     if (localStorage.getItem(key) === "true") return;
     localStorage.setItem(key, "true");
-    new Notification(title, { body, tag: `anyas-${id}` });
+    new Notification(title, { body, tag: `anyas-${id}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
     playNotificationSound();
   }
 
