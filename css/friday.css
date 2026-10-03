@@ -1,4 +1,5 @@
 /* تجربة الجمعة في الرئيسية وصفحة الأذكار */
+.friday-feature-section[hidden], .azkar-friday-card[hidden], .friday-tasks-card[hidden] { display: none !important; }
 .friday-feature-card { position: relative; overflow: hidden; padding: 17px; border: 1px solid #e7d8b8; border-radius: 22px; background: linear-gradient(135deg,#fffdf7,#f4ead6); box-shadow: 0 10px 25px rgba(93,70,30,.08); }
 .friday-feature-card::before { content: "✦"; position: absolute; top: -18px; left: 20px; color: rgba(164,126,56,.14); font-size: 76px; pointer-events: none; }
 .friday-feature-heading { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
