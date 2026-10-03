@@ -203,6 +203,36 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             });
         }
+        @JavascriptInterface public String testNotificationAndSound(String soundFile, double volume) {
+            if (!aboutPermissionGranted("notifications")) return "permission_required";
+            if (volume <= 0d) return "volume_muted";
+            String safeSound;
+            if ("adhkar-morning-ahmed-al-nafis.mp3".equals(soundFile)) safeSound = soundFile;
+            else if ("adhkar-morning-mishary-alafasy.mp3".equals(soundFile)) safeSound = soundFile;
+            else return "invalid_audio";
+
+            ReminderScheduler.createChannels(MainActivity.this);
+            if (Build.VERSION.SDK_INT >= 26) {
+                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                android.app.NotificationChannel channel = manager == null ? null : manager.getNotificationChannel("reminders");
+                if (channel == null || channel.getImportance() == NotificationManager.IMPORTANCE_NONE) return "channel_disabled";
+            }
+
+            String id = "test-audio-" + System.currentTimeMillis();
+            ReminderReceiver.showTestNotification(MainActivity.this, id, "اختبار أنياس", "إذا ظهر هذا التنبيه وسمعت الصوت فالإعدادات تعمل.");
+            Intent player = new Intent(MainActivity.this, ReminderPlayerService.class)
+                    .putExtra("soundFile", safeSound)
+                    .putExtra("title", "اختبار صوت الأذكار")
+                    .putExtra("volume", (float) Math.max(0d, Math.min(1d, volume)))
+                    .putExtra("testDurationMs", 3000);
+            try {
+                if (Build.VERSION.SDK_INT >= 26) startForegroundService(player);
+                else startService(player);
+                return "started";
+            } catch (Exception error) {
+                return "notification_only";
+            }
+        }
         @JavascriptInterface public void syncSettings(String json) {
             runOnUiThread(() -> {
                 getSharedPreferences(ReminderScheduler.PREFS, MODE_PRIVATE).edit().putString("settings", json).apply();

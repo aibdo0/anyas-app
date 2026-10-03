@@ -31,6 +31,14 @@ public class ReminderReceiver extends BroadcastReceiver {
     }
 
     static void showNotification(Context context, String id, String title, String body) {
+        showNotification(context, id, title, body, true);
+    }
+
+    static void showTestNotification(Context context, String id, String title, String body) {
+        showNotification(context, id, title, body, false);
+    }
+
+    private static void showNotification(Context context, String id, String title, String body, boolean recordHistory) {
         ReminderScheduler.createChannels(context);
         Intent open = new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pending = PendingIntent.getActivity(context, ReminderScheduler.requestCode(id), open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -54,6 +62,6 @@ public class ReminderReceiver extends BroadcastReceiver {
                 .setContentIntent(pending)
                 .setCategory(Notification.CATEGORY_REMINDER);
         manager.notify(ReminderScheduler.requestCode(id), builder.build());
-        NotificationHistory.record(context, id, safeTitle, safeBody);
+        if (recordHistory) NotificationHistory.record(context, id, safeTitle, safeBody);
     }
 }
