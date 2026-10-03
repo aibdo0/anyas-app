@@ -2,8 +2,27 @@
 .daily-adhkar-card {
   overflow: hidden;
   position: relative;
+  margin: 0;
+  padding: 18px;
+  border: 1px solid rgba(166, 137, 82, .28);
+  border-radius: 23px;
+  box-shadow: 0 14px 34px rgba(57, 46, 27, .09);
   transition: background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease, color 0.45s ease;
 }
+
+.daily-adhkar-card::before { content: ""; position: absolute; inset-block: 18px; inset-inline-start: 0; width: 4px; border-radius: 0 5px 5px 0; background: linear-gradient(180deg, #c6a363, #806034); }
+.daily-adhkar-heading-row { display: flex; align-items: center; gap: 11px; }
+.daily-adhkar-mark { display: grid; width: 45px; height: 45px; flex: 0 0 45px; place-items: center; border: 1px solid rgba(166, 137, 82, .3); border-radius: 15px; color: #806034; background: rgba(255, 255, 255, .62); font-size: 21px; font-weight: 800; }
+.daily-adhkar-heading-copy { flex: 1; min-width: 0; }
+.daily-adhkar-eyebrow { color: #8c7954; font-size: 11px; font-weight: 700; }
+.daily-adhkar-title { margin: 2px 0 0; font-size: 19px; font-weight: 900; line-height: 1.35; }
+.daily-adhkar-badge { flex: 0 0 auto; padding: 6px 10px; border: 1px solid rgba(166, 137, 82, .28); border-radius: 999px; color: #765c2f; background: rgba(255, 255, 255, .56); font-size: 10px; font-weight: 800; }
+.daily-adhkar-text { margin: 15px 0 0; padding: 11px 13px; border-inline-start: 3px solid rgba(144, 112, 58, .62); border-radius: 13px; color: #665a45; background: rgba(255, 255, 255, .34); font-size: 13px; line-height: 1.8; }
+.daily-adhkar-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 13px; padding-top: 12px; border-top: 1px solid rgba(140, 117, 75, .2); }
+.daily-adhkar-hint { color: #8b7958; font-size: 11px; font-weight: 700; }
+.daily-adhkar-button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: 7px; padding: 9px 14px; border: 1px solid rgba(128, 96, 52, .22); border-radius: 13px; color: #fff; background: linear-gradient(135deg, #927443, #70552d); box-shadow: 0 6px 13px rgba(112, 85, 45, .16); font-family: inherit; font-size: 12px; font-weight: 800; cursor: pointer; transition: transform .16s ease, box-shadow .16s ease; }
+.daily-adhkar-button:active { transform: scale(.98); }
+.daily-adhkar-button:focus-visible { outline: 3px solid rgba(144, 112, 58, .36); outline-offset: 2px; }
 
 .daily-adhkar-card::after {
   content: "";
@@ -103,3 +122,16 @@
 .home-qibla-card .mosque-title { display: block; margin: 0; color: var(--text); font-size: 13px; font-weight: 900; }
 .home-qibla-card .mosque-description { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
 .home-qibla-card:active { transform: scale(.985); }
+
+:root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) { border-color: #554932; background: linear-gradient(135deg, #2a2823, #1d1e23); box-shadow: 0 14px 32px rgba(0, 0, 0, .25); }
+:root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) .daily-adhkar-mark,
+:root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) .daily-adhkar-badge { border-color: #5b5039; color: #dec38c; background: rgba(55, 49, 37, .72); }
+:root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) .daily-adhkar-text { border-color: #b99b62; color: #d3c7b0; background: rgba(255, 255, 255, .035); }
+:root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) .daily-adhkar-footer { border-color: rgba(220, 195, 140, .18); }
+
+@media (max-width: 360px) {
+  .daily-adhkar-card { padding: 15px; }
+  .daily-adhkar-mark { width: 40px; height: 40px; flex-basis: 40px; }
+  .daily-adhkar-title { font-size: 17px; }
+  .daily-adhkar-badge { padding-inline: 8px; }
+}

@@ -35,6 +35,22 @@
 .ayat-kursi-voice-setting { padding-bottom: 7px; border-bottom: 0; }
 .ayat-kursi-options { padding: 0 0 10px; }
 
+.reminder-time-panel { margin: 0 0 10px; padding: 0 0 11px; border-bottom: 1px solid var(--border); }
+.reminder-time-panel[hidden] { display: none !important; }
+.reminder-time-panel > summary { display: flex; min-height: 40px; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid var(--border); border-radius: 13px; color: var(--muted); background: var(--bg); font-size: 12px; cursor: pointer; list-style: none; user-select: none; }
+.reminder-time-panel > summary::-webkit-details-marker { display: none; }
+.reminder-time-panel > summary::after { content: "⌄"; margin-inline-start: 2px; color: var(--muted); font-size: 17px; line-height: 1; transition: transform .18s ease; }
+.reminder-time-panel[open] > summary::after { transform: rotate(180deg); }
+.reminder-time-panel > summary strong { margin-inline-start: auto; color: var(--primary); font-size: 12px; font-weight: 800; text-align: left; }
+.reminder-time-panel-content { display: grid; gap: 8px; margin: 9px 2px 0; padding: 12px; border: 1px solid var(--border); border-radius: 15px; background: var(--bg); }
+.reminder-time-panel-content > label { color: var(--muted); font-size: 11px; font-weight: 700; }
+.reminder-time-panel-content .reminder-schedule-mode { width: 100%; min-height: 42px; }
+.reminder-schedule-time { width: 100%; min-height: 42px; padding: 8px 11px; border: 1px solid var(--border); border-radius: 12px; outline: none; background: var(--card); color: var(--text); font: inherit; direction: ltr; text-align: center; }
+.reminder-schedule-time:focus-visible, .reminder-time-panel-content .reminder-schedule-mode:focus-visible { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(158, 127, 71, .14); }
+.reminder-schedule-time:disabled { opacity: .55; }
+.reminder-schedule-time[hidden], .reminder-time-panel-content > label[hidden] { display: none !important; }
+.reminder-schedule-hint { color: var(--muted); font-size: 11px; line-height: 1.65; }
+
 .setting-row:last-child,
 .worship-setting:last-child {
     border-bottom: none;

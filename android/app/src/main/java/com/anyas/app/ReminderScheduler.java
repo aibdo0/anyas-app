@@ -23,6 +23,7 @@ final class ReminderScheduler {
             JSONObject data = new JSONObject(raw);
             JSONObject enabled = data.optJSONObject("enabled");
             JSONObject prayers = data.optJSONObject("prayers");
+            JSONObject schedules = data.optJSONObject("schedules");
             boolean sound = data.optBoolean("sound", true);
             float masterVolume = (float) Math.max(0d, Math.min(100d, data.optDouble("volume", 100d))) / 100f;
             String morningVoice = data.optString("morningVoice", "mishary");
@@ -32,17 +33,26 @@ final class ReminderScheduler {
             cancelKnown(context, alarm);
             List<Reminder> reminders = new ArrayList<>();
 
-            addDaily(reminders, enabled, "notifyWardAwakening", "أذكار الاستيقاظ", "04:30", "adhkar-wakeup-mishary-alafasy.mp3");
-            addDaily(reminders, enabled, "notifyWardMorning", "أذكار الصباح", "05:30", "ahmed".equals(morningVoice) ? "adhkar-morning-ahmed-al-nafis.mp3" : "adhkar-morning-mishary-alafasy.mp3");
+            addCustomizableDaily(reminders, enabled, schedules, "notifyWardAwakening", "أذكار الاستيقاظ", "04:30", "03:00", "11:59", "adhkar-wakeup-mishary-alafasy.mp3");
+            addCustomizableDaily(reminders, enabled, schedules, "notifyWardMorning", "أذكار الصباح", "05:30", "04:00", "11:59", "ahmed".equals(morningVoice) ? "adhkar-morning-ahmed-al-nafis.mp3" : "adhkar-morning-mishary-alafasy.mp3");
             addDaily(reminders, enabled, "notifyWardGeneral", "أذكار اليوم", "12:00", null);
-            addDaily(reminders, enabled, "notifyWardEvening", "أذكار المساء", "15:30", "ahmed".equals(eveningVoice) ? "adhkar-evening-ahmed-al-nafis.mp3" : "adhkar-evening-mishary-alafasy.mp3");
-            addDaily(reminders, enabled, "notifyWardSleep", "أذكار النوم", "20:00", "adhkar-sleep-mishary-alafasy.mp3");
+            addCustomizableDaily(reminders, enabled, schedules, "notifyWardEvening", "أذكار المساء", "15:30", "12:00", "23:59", "ahmed".equals(eveningVoice) ? "adhkar-evening-ahmed-al-nafis.mp3" : "adhkar-evening-mishary-alafasy.mp3");
+            addCustomizableDaily(reminders, enabled, schedules, "notifyWardSleep", "أذكار النوم", "20:00", "18:00", "23:59", "adhkar-sleep-mishary-alafasy.mp3");
             addDaily(reminders, enabled, "notifyWardSahar", "استغفار السحر", "02:00", "qiyam-al-layl-reminder.mp3");
             addDaily(reminders, enabled, "notifyHadith", "حديث اليوم", "12:30", "hadith-reminder.mp3");
             addDaily(reminders, enabled, "notifyBaqiyat", "الباقيات الصالحات", "14:00", "baqiyat-as-salihat-reminder.mp3");
             addDaily(reminders, enabled, "notifySalawat_1", "الصلاة على النبي ﷺ", "10:00", "salawat-reminder-1.mp3");
             addDaily(reminders, enabled, "notifySalawat_2", "الصلاة على النبي ﷺ", "17:00", "salawat-reminder-2.mp3");
-            addDaily(reminders, enabled, "notifyAyatKursi", "آية الكرسي", "21:00", ayatSound(ayatVoice));
+            String maghrib = time(prayers, "Maghrib");
+            if (enabled(enabled, "notifyAyatKursi")) {
+                JSONObject ayatSchedule = schedules == null ? null : schedules.optJSONObject("notifyAyatKursi");
+                String ayatMode = ayatSchedule == null ? "beforeMaghrib" : ayatSchedule.optString("mode", "beforeMaghrib");
+                String ayatTime = "custom".equals(ayatMode) && ayatSchedule != null
+                        ? normalizeClockTime(ayatSchedule.optString("time", "18:00"))
+                        : null;
+                if (ayatTime == null && maghrib != null) ayatTime = minusMinutes(maghrib, 30);
+                if (ayatTime != null) addDaily(reminders, "notifyAyatKursi", "آية الكرسي", ayatTime, ayatSound(ayatVoice));
+            }
 
             String sunrise = time(prayers, "Sunrise");
             if (enabled(enabled, "notifySunrise") && sunrise != null) addDaily(reminders, "notifySunrise", "الشروق", sunrise, "sunrise-birds.mp3");
@@ -77,7 +87,6 @@ final class ReminderScheduler {
                 if (asr != null) addWeekly(reminders, "notifyFridayHour", "ساعة الإجابة", asr, null, Calendar.FRIDAY);
             }
             if (enabled(enabled, "notifyFridaySalawat") && prayers != null) {
-                String maghrib = time(prayers, "Maghrib");
                 if (maghrib != null) addWeekly(reminders, "notifyFridaySalawat", "الصلاة على النبي ﷺ", maghrib, null, Calendar.THURSDAY);
             }
 
@@ -94,6 +103,17 @@ final class ReminderScheduler {
 
     private static void addDaily(List<Reminder> list, JSONObject enabled, String key, String title, String time, String soundFile) {
         if (enabled(enabled, key)) list.add(new Reminder(key, title, time, reminderBody(key, title), soundFile, DAILY));
+    }
+
+    private static void addCustomizableDaily(List<Reminder> list, JSONObject enabled, JSONObject schedules, String key, String title, String suggestedTime, String minTime, String maxTime, String soundFile) {
+        if (!enabled(enabled, key)) return;
+        JSONObject preference = schedules == null ? null : schedules.optJSONObject(key);
+        String selectedTime = suggestedTime;
+        if (preference != null && "custom".equals(preference.optString("mode", "suggested"))) {
+            String customTime = normalizeClockTime(preference.optString("time", suggestedTime));
+            if (isWithinClockRange(customTime, minTime, maxTime)) selectedTime = customTime;
+        }
+        list.add(new Reminder(key, title, selectedTime, reminderBody(key, title), soundFile, DAILY));
     }
 
     private static void addDaily(List<Reminder> list, String key, String title, String time, String soundFile) {
@@ -169,6 +189,22 @@ final class ReminderScheduler {
     static int requestCode(String id) { return id.hashCode() & 0x7fffffff; }
     static boolean enabled(JSONObject enabled, String key) { return enabled != null && enabled.optBoolean(key, false); }
     static String time(JSONObject object, String key) { if (object == null) return null; String value = object.optString(key, ""); return value.matches("\\d{1,2}:\\d{2}(:\\d{2})?") ? value.substring(0, 5) : null; }
+    static String normalizeClockTime(String value) {
+        try {
+            String[] parts = value.split(":");
+            if (parts.length != 2) return null;
+            int hours = Integer.parseInt(parts[0]);
+            int minutes = Integer.parseInt(parts[1]);
+            if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
+            return String.format(java.util.Locale.US, "%02d:%02d", hours, minutes);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+    static boolean isWithinClockRange(String value, String minTime, String maxTime) {
+        String normalized = normalizeClockTime(value);
+        return normalized != null && normalized.compareTo(minTime) >= 0 && normalized.compareTo(maxTime) <= 0;
+    }
     static String minusMinutes(String value, int amount) { return shiftMinutes(value, -amount); }
     static String plusMinutes(String value, int amount) { return shiftMinutes(value, amount); }
     static String shiftMinutes(String value, int amount) { try { String[] p = value.split(":"); int total = (Integer.parseInt(p[0]) * 60 + Integer.parseInt(p[1]) + amount + 1440) % 1440; return String.format(java.util.Locale.US, "%02d:%02d", total / 60, total % 60); } catch (Exception e) { return value; } }
