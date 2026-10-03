@@ -315,13 +315,8 @@ function setupAyatKursiVoices() {
         button.textContent = "تشغيل";
         return;
       }
-      if (window.anyasAyatPreview) {
-        window.anyasAyatPreview.pause();
-        if (window.anyasAyatPreviewButton) {
-          window.anyasAyatPreviewButton.textContent = "تشغيل";
-          window.anyasAyatPreviewButton._ayatPreview = null;
-        }
-      }
+      stopOtherAudioPreviews(button);
+      stopAllAudioExcept(null);
       const preview = new Audio(button.dataset.ayatPreview);
       preview.volume = audio.volume;
       button._ayatPreview = preview;
@@ -379,6 +374,12 @@ function syncSelectedMuezzinAudio(audioId, radioName, storageKey, optionsId) {
 }
 
 function setupAudioLibrary() {
+  const audioGroups = Array.from(document.querySelectorAll(".audio-library-group"));
+  audioGroups.forEach(group => group.addEventListener("toggle", () => {
+    if (!group.open) return;
+    audioGroups.forEach(other => { if (other !== group) other.open = false; });
+  }));
+
   document.querySelectorAll("[data-audio-upload]").forEach(input => {
     const audioId = input.dataset.audioUpload;
     const nameId = input.dataset.audioName;
@@ -491,13 +492,8 @@ function setupAdhkarAudioControls() {
         button.textContent = "تشغيل";
         return;
       }
-      if (window.anyasAdhkarPreview) {
-        window.anyasAdhkarPreview.pause();
-        if (window.anyasAdhkarPreviewButton) {
-          window.anyasAdhkarPreviewButton.textContent = "تشغيل";
-          window.anyasAdhkarPreviewButton._adhkarPreview = null;
-        }
-      }
+      stopOtherAudioPreviews(button);
+      stopAllAudioExcept(audio);
       audio.currentTime = 0;
       button._adhkarPreview = audio;
       window.anyasAdhkarPreview = audio;
@@ -536,6 +532,26 @@ function setupAdhkarVoiceChoices() {
   });
 }
 
+function recordAnyasNotification(title, body, tag) {
+  const safeTag = String(tag || `anyas-${Date.now()}`);
+  if (window.AnyasAndroid && typeof window.AnyasAndroid.recordNotification === "function") {
+    window.AnyasAndroid.recordNotification(safeTag, title, body);
+    window.dispatchEvent(new Event("anyas-notification-recorded"));
+    return;
+  }
+  try {
+    const storageKey = "anyas_notification_history";
+    const now = Date.now();
+    const history = JSON.parse(localStorage.getItem(storageKey) || "[]");
+    if (history.some(item => item?.tag === safeTag && Math.abs(now - Number(item.timestamp)) < 90_000)) return;
+    const entry = { id: `${safeTag}-${now}-${Math.random().toString(36).slice(2, 7)}`, tag: safeTag, title: String(title || "أنياس"), body: String(body || ""), timestamp: now, read: false };
+    localStorage.setItem(storageKey, JSON.stringify([entry, ...history].slice(0, 100)));
+    window.dispatchEvent(new Event("anyas-notification-recorded"));
+  } catch (error) {
+    console.warn("تعذر حفظ سجل الإشعارات محليًا:", error);
+  }
+}
+
 function checkDailyAdhkarNotifications() {
   const schedule = [
     { id: "notifyWardSahar", key: "sahar", title: "أذكار السحر", body: "حان وقت الاستغفار والدعاء.", minute: 120, audioId: "qiyamReminderAudio" },
@@ -559,6 +575,7 @@ function checkDailyAdhkarNotifications() {
 
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification(item.title, { body: item.body, tag: `anyas-${item.key}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+      recordAnyasNotification(item.title, item.body, `anyas-${item.key}`);
     }
     if (localStorage.getItem("anyas_notificationSound") === "true" && item.audioId) {
       const audio = document.getElementById(item.audioId);
@@ -594,7 +611,10 @@ function checkPrayerReminderNotifications() {
     window.anyasPrayerReminderFired[key] = true;
     if ("Notification" in window && Notification.permission === "granted") {
       const names = { Fajr: "الفجر", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" };
-      new Notification(`اقتربت صلاة ${names[prayer]}`, { body: "تبقّى ربع ساعة على موعد الصلاة.", tag: `anyas-prayer-${prayer}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+      const title = `اقتربت صلاة ${names[prayer]}`;
+      const body = "تبقّى ربع ساعة على موعد الصلاة.";
+      new Notification(title, { body, tag: `anyas-prayer-${prayer}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+      recordAnyasNotification(title, body, `anyas-prayer-${prayer}`);
     }
     if (localStorage.getItem("anyas_notificationSound") === "true") {
       const audio = document.getElementById(audioId);
@@ -610,6 +630,7 @@ function fireOptionalReminder(id, key, title, body, audioId, dayKey = new Date()
   localStorage.setItem(firedKey, "true");
   if ("Notification" in window && Notification.permission === "granted") {
     new Notification(title, { body, tag: `anyas-${key}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+    recordAnyasNotification(title, body, `anyas-${key}`);
   }
   if (localStorage.getItem("anyas_notificationSound") === "true" && audioId) {
     const audio = document.getElementById(audioId);
@@ -838,12 +859,7 @@ function setupMuezzinPicker(
         return;
       }
 
-      if (window.anyasMuezzinPreview) {
-        window.anyasMuezzinPreview.pause();
-        window.anyasMuezzinPreview.currentTime = 0;
-        if (window.anyasMuezzinPreviewButton) window.anyasMuezzinPreviewButton.textContent = "تشغيل";
-        if (window.anyasMuezzinPreviewButton) window.anyasMuezzinPreviewButton._previewAudio = null;
-      }
+      stopOtherAudioPreviews(button);
 
       const cardRadio = button.closest(".muezzin-card")?.querySelector('input[type="radio"]');
       const source = cardRadio?.dataset.audioSource
@@ -927,6 +943,25 @@ function stopAllAudioExcept(currentAudio) {
 
     });
 
+}
+
+
+function stopOtherAudioPreviews(activeButton) {
+  const previews = [
+    ["anyasMuezzinPreview", "anyasMuezzinPreviewButton", "_previewAudio"],
+    ["anyasAyatPreview", "anyasAyatPreviewButton", "_ayatPreview"],
+    ["anyasAdhkarPreview", "anyasAdhkarPreviewButton", "_adhkarPreview"]
+  ];
+  previews.forEach(([audioKey, buttonKey, buttonAudioKey]) => {
+    const button = window[buttonKey];
+    const audio = window[audioKey];
+    if (!audio || button === activeButton) return;
+    audio.pause();
+    try { audio.currentTime = 0; } catch (error) { }
+    if (button) { button.textContent = "تشغيل"; button[buttonAudioKey] = null; }
+    window[audioKey] = null;
+    window[buttonKey] = null;
+  });
 }
 
 

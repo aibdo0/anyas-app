@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Build;
@@ -35,6 +36,10 @@ public class ReminderReceiver extends BroadcastReceiver {
         PendingIntent pending = PendingIntent.getActivity(context, ReminderScheduler.requestCode(id), open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         String safeTitle = title == null || title.trim().isEmpty() ? "أنياس" : title.trim();
         String safeBody = body == null || body.trim().isEmpty() ? "حان وقت تذكيرك. افتح أنياس للتفاصيل." : body.trim();
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager == null) return;
+        if (Build.VERSION.SDK_INT >= 24 && !manager.areNotificationsEnabled()) return;
+        if (Build.VERSION.SDK_INT >= 33 && context.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return;
         Notification.Builder builder = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(context, "reminders") : new Notification.Builder(context).setDefaults(Notification.DEFAULT_VIBRATE);
         builder.setSmallIcon(R.drawable.ic_notification)
                 .setLargeIcon(Icon.createWithResource(context, R.mipmap.ic_launcher))
@@ -48,7 +53,7 @@ public class ReminderReceiver extends BroadcastReceiver {
                 .setAutoCancel(true)
                 .setContentIntent(pending)
                 .setCategory(Notification.CATEGORY_REMINDER);
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (manager != null) manager.notify(ReminderScheduler.requestCode(id), builder.build());
+        manager.notify(ReminderScheduler.requestCode(id), builder.build());
+        NotificationHistory.record(context, id, safeTitle, safeBody);
     }
 }

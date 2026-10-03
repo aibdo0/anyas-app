@@ -142,6 +142,10 @@ public class MainActivity extends Activity {
         if (requestCode == 44) reportAboutPermission("location", aboutPermissionGranted("location"));
     }
     @Override protected void onSaveInstanceState(Bundle out) { web.saveState(out); super.onSaveInstanceState(out); }
+    @Override protected void onResume() {
+        super.onResume();
+        if (web != null) web.post(() -> web.evaluateJavascript("if (window.anyasNotificationInboxRefresh) window.anyasNotificationInboxRefresh();", null));
+    }
     @Override public void onBackPressed() { if (web != null && web.canGoBack()) web.goBack(); else super.onBackPressed(); }
 
     private boolean aboutPermissionGranted(String kind) {
@@ -167,6 +171,15 @@ public class MainActivity extends Activity {
     }
 
     public class NativeBridge {
+        @JavascriptInterface public String getNotificationHistory() {
+            return NotificationHistory.getJson(MainActivity.this);
+        }
+        @JavascriptInterface public void markNotificationHistoryRead() {
+            NotificationHistory.markAllRead(MainActivity.this);
+        }
+        @JavascriptInterface public void recordNotification(String tag, String title, String body) {
+            NotificationHistory.record(MainActivity.this, tag, title, body);
+        }
         @JavascriptInterface public boolean hasAboutPermission(String kind) {
             return aboutPermissionGranted(kind);
         }

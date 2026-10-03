@@ -79,6 +79,7 @@
     if (localStorage.getItem(key) === "true") return;
     localStorage.setItem(key, "true");
     new Notification(title, { body, tag: `anyas-${id}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+    if (typeof recordAnyasNotification === "function") recordAnyasNotification(title, body, `anyas-${id}`);
     playNotificationSound();
   }
 
