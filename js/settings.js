@@ -87,6 +87,10 @@ function setupAdhanSettings() {
   const testButton =
     document.getElementById("testAdhanButton");
 
+  const testAdhkarButton = document.getElementById("testAdhkarButton");
+  const testNotificationButton = document.getElementById("testNotificationButton");
+  const audioTestStatus = document.getElementById("audioTestStatus");
+
   const adhan =
     document.getElementById("adhanAudio");
 
@@ -99,6 +103,19 @@ function setupAdhanSettings() {
   const savedVolume =
     localStorage.getItem("anyas_adhanVolume");
 
+  const volumeRecoveryKey = "anyas_audio_zero_volume_recovered_v1";
+  const recoveredLegacySilentVolume = savedVolume !== null
+    && Number(savedVolume) === 0
+    && localStorage.getItem(volumeRecoveryKey) !== "done";
+  if (recoveredLegacySilentVolume) {
+    try {
+      localStorage.setItem("anyas_adhanVolume", "70");
+      localStorage.setItem(volumeRecoveryKey, "done");
+    } catch (error) {
+      console.warn("تعذر حفظ استعادة مستوى الصوت:", error);
+    }
+  }
+
   if (savedAuto !== null && auto) {
 
     auto.checked =
@@ -107,9 +124,10 @@ function setupAdhanSettings() {
   }
 
   const parsedInitialVolume = savedVolume === null ? 100 : Number(savedVolume);
-  const initialVolume = Number.isFinite(parsedInitialVolume)
+  const storedInitialVolume = Number.isFinite(parsedInitialVolume)
     ? Math.max(0, Math.min(100, parsedInitialVolume))
     : 100;
+  const initialVolume = recoveredLegacySilentVolume ? 70 : storedInitialVolume;
 
   if (volume) {
 
@@ -168,25 +186,89 @@ function setupAdhanSettings() {
 
   }
 
-  if (testButton && adhan) {
-
-    testButton.addEventListener("click", () => {
-
-      syncSelectedMuezzinAudio("adhanAudio", "normalMuezzin", "anyas_normalMuezzin", "normalMuezzinOptions");
-      adhan.currentTime = 0;
-
-      adhan.play()
-        .catch(error => {
-
-          console.error(
-            "تعذر تشغيل الأذان:",
-            error
-          );
-
-        });
-
+  let audioTestStopTimer = null;
+  let audioTestRun = 0;
+  const playAudioTest = (button, audio, label, audioId) => {
+    if (!button || !audio) return;
+    button.addEventListener("click", () => {
+      const masterVolume = volume ? Number(volume.value) : initialVolume;
+      if (masterVolume <= 0) {
+        if (audioTestStatus) audioTestStatus.textContent = "مستوى الصوت الموحد صفر؛ ارفعه أولًا لتسمع الاختبار.";
+        return;
+      }
+      const runId = ++audioTestRun;
+      if (audioTestStopTimer) window.clearTimeout(audioTestStopTimer);
+      stopOtherAudioPreviews(button);
+      stopAllAudioExcept(audio);
+      if (audioId === "adhanAudio") {
+        syncSelectedMuezzinAudio("adhanAudio", "normalMuezzin", "anyas_normalMuezzin", "normalMuezzinOptions");
+      }
+      audio.currentTime = 0;
+      if (audioTestStatus) audioTestStatus.textContent = `جارٍ اختبار ${label}…`;
+      let playPromise;
+      try {
+        playPromise = audio.play();
+      } catch (error) {
+        showAudioTestError(label, audio, error);
+        return;
+      }
+      Promise.resolve(playPromise).then(() => {
+        if (runId !== audioTestRun) return;
+        if (audioTestStatus) audioTestStatus.textContent = `بدأ تشغيل عينة ${label}.`;
+        audioTestStopTimer = window.setTimeout(() => {
+          audio.pause();
+          audio.currentTime = 0;
+          if (audioTestStatus) audioTestStatus.textContent = `انتهى اختبار ${label}. إذا لم تسمعها، ارفع صوت الوسائط في الهاتف.`;
+        }, 3000);
+      }).catch(error => { if (runId === audioTestRun) showAudioTestError(label, audio, error); });
     });
+  };
 
+  playAudioTest(testButton, adhan, "الأذان", "adhanAudio");
+  playAudioTest(testAdhkarButton, document.getElementById("morningWardAudio"), "أذكار الصباح", "morningWardAudio");
+
+  if (testNotificationButton) {
+    testNotificationButton.addEventListener("click", () => {
+      audioTestRun++;
+      if (audioTestStopTimer) window.clearTimeout(audioTestStopTimer);
+      stopOtherAudioPreviews(testNotificationButton);
+      stopAllAudioExcept(null);
+      const masterVolume = volume ? Number(volume.value) : initialVolume;
+      if (masterVolume <= 0) {
+        if (audioTestStatus) audioTestStatus.textContent = "مستوى الصوت الموحد صفر؛ ارفعه أولًا.";
+        return;
+      }
+      const morningVoice = localStorage.getItem("anyas_morningWardVoice") === "ahmed" ? "adhkar-morning-ahmed-al-nafis.mp3" : "adhkar-morning-mishary-alafasy.mp3";
+      if (window.AnyasAndroid && typeof window.AnyasAndroid.testNotificationAndSound === "function") {
+        const result = window.AnyasAndroid.testNotificationAndSound(morningVoice, masterVolume / 100);
+        const messages = {
+          started: "أُرسل إشعار الاختبار وشُغّل صوت الأذكار لبضع ثوانٍ.",
+          permission_required: "لم يصل الإشعار: فعّل إذن الإشعارات من إعدادات الهاتف.",
+          channel_disabled: "قناة إشعارات أنياس متوقفة في إعدادات الهاتف.",
+          volume_muted: "مستوى الصوت الموحد صفر؛ ارفعه أولًا.",
+          invalid_audio: "تعذر اختيار ملف صوت الاختبار. أعد اختيار صوت الأذكار الافتراضي.",
+          notification_only: "وصل إشعار الاختبار، لكن تعذر بدء صوت الخلفية.",
+          failed: "تعذر إرسال اختبار الإشعار والصوت. تحقق من أذونات التطبيق."
+        };
+        if (audioTestStatus) audioTestStatus.textContent = messages[result] || messages.failed;
+        return;
+      }
+      if (!("Notification" in window)) {
+        if (audioTestStatus) audioTestStatus.textContent = "اختبار إشعار النظام متاح في نسخة Android من التطبيق.";
+        return;
+      }
+      const showBrowserTest = permission => {
+        if (permission === "granted") {
+          new Notification("اختبار إشعار أنياس", { body: "إذا ظهر هذا التنبيه فإذن الإشعارات يعمل." });
+          if (audioTestStatus) audioTestStatus.textContent = "تم إرسال إشعار الاختبار. اختبر صوت الأذان والأذكار من الزرين المجاورين.";
+        } else if (audioTestStatus) {
+          audioTestStatus.textContent = "لم يُسمح بإشعارات المتصفح؛ فعّل الإذن ثم أعد الاختبار.";
+        }
+      };
+      if (Notification.permission === "granted") showBrowserTest("granted");
+      else if (Notification.permission === "denied") showBrowserTest("denied");
+      else Notification.requestPermission().then(showBrowserTest).catch(() => showBrowserTest("denied"));
+    });
   }
 
   setupAudioLibrary();
@@ -1721,3 +1803,12 @@ function updateWorshipCountdowns() {
   );
 
         }
+
+
+function showAudioTestError(label, audio, error) {
+  const mediaError = audio && audio.error;
+  const detail = mediaError ? `رمز الوسائط ${mediaError.code}` : (error && error.name ? error.name : "خطأ غير معروف");
+  console.error(`تعذر تشغيل اختبار ${label}:`, error || mediaError);
+  const status = document.getElementById("audioTestStatus");
+  if (status) status.textContent = `تعذر تشغيل ${label} (${detail}). تحقق من ملف الصوت ومستوى صوت الوسائط.`;
+}

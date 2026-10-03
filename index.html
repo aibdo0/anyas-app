@@ -1402,6 +1402,16 @@ type="button"
   <input id="adhanVolume" type="range" min="0" max="100" step="1" value="100" aria-label="مستوى الصوت لجميع الأصوات">
 </div>
 
+<div class="audio-test-panel" aria-label="اختبار الصوت والإشعارات">
+  <div class="audio-test-actions">
+    <button class="preview-button audio-test-button" id="testAdhanButton" type="button">اختبر الأذان</button>
+    <button class="preview-button audio-test-button" id="testAdhkarButton" type="button">اختبر الأذكار</button>
+    <button class="preview-button audio-test-button" id="testNotificationButton" type="button">اختبر الإشعار</button>
+  </div>
+  <p class="audio-test-help">تُشغَّل عينة قصيرة. ارفع صوت الوسائط في الهاتف، وتأكد أن مستوى التطبيق ليس صفرًا.</p>
+  <p class="audio-test-status" id="audioTestStatus" role="status" aria-live="polite"></p>
+</div>
+
 <details class="audio-library-group" open>
 <summary class="audio-library-summary">
   <span class="audio-category-icon adhan" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg></span>

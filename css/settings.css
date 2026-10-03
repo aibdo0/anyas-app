@@ -351,6 +351,12 @@
 .audio-library-intro-copy strong { color: var(--text); font-size: 14px; line-height: 1.4; }
 .audio-library-intro-copy span { color: var(--muted); font-size: 11px; line-height: 1.5; }
 .audio-library-card { display: grid; gap: 10px; padding: 11px; }
+.audio-test-panel { display: grid; gap: 8px; padding: 11px; border: 1px solid var(--border); border-radius: 15px; background: var(--bg); }
+.audio-test-actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+.audio-test-button { width: 100%; min-width: 0; min-height: 42px; padding-inline: 6px; white-space: normal; }
+.audio-test-help, .audio-test-status { margin: 0; font-size: 11px; line-height: 1.55; }
+.audio-test-help { color: var(--muted); }
+.audio-test-status { min-height: 1.4em; color: var(--primary-dark); font-weight: 700; }
 .audio-library-group { overflow: hidden; border: 1px solid var(--border); border-radius: 17px; background: var(--card); }
 .audio-library-summary { display: flex; min-height: 70px; align-items: center; gap: 11px; padding: 11px 12px; cursor: pointer; list-style: none; user-select: none; }
 .audio-library-summary::-webkit-details-marker { display: none; }
