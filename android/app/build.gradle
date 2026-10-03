@@ -29,9 +29,31 @@ tasks.register('syncReminderAudio') {
         def sourceDir = new File(webRoot, 'audio')
         def targetDir = file('src/main/res/raw')
         targetDir.mkdirs()
-        sourceDir.eachFile { source ->
-            if (!source.name.toLowerCase().endsWith('.mp3')) return
-            def base = source.name.substring(0, source.name.length() - 4)
+
+        // Only duplicate MP3s referenced by Android background reminder entry points.
+        def javaAudioSources = [
+            file('src/main/java/com/anyas/app/ReminderScheduler.java'),
+            file('src/main/java/com/anyas/app/RainReceiver.java')
+        ]
+        def reminderAudioNames = new LinkedHashSet()
+        javaAudioSources.each { javaSource ->
+            if (!javaSource.isFile()) throw new GradleException("Missing reminder audio source: ${javaSource}")
+            def matcher = javaSource.text =~ /"([^"]+\.mp3)"/
+            matcher.each { match -> reminderAudioNames.add(match[1]) }
+        }
+        if (reminderAudioNames.isEmpty()) throw new GradleException('No Android reminder audio files were found.')
+
+        def missingAudio = reminderAudioNames.findAll { name -> !new File(sourceDir, name).isFile() }
+        if (!missingAudio.isEmpty()) throw new GradleException("Missing reminder audio files: ${missingAudio.join(', ')}")
+
+        // Remove stale generated MP3 copies from previous builds, keeping non-MP3 resources intact.
+        (targetDir.listFiles()?.findAll { it.isFile() && it.name.toLowerCase().endsWith('.mp3') } ?: []).each { existing ->
+            if (!existing.delete()) throw new GradleException("Could not remove stale reminder audio: ${existing}")
+        }
+
+        reminderAudioNames.sort().each { audioName ->
+            def source = new File(sourceDir, audioName)
+            def base = audioName.substring(0, audioName.length() - 4)
             def safe = base.toLowerCase().replaceAll('[^a-z0-9_]', '_')
             copy {
                 from source
