@@ -41,6 +41,7 @@ public class RainReceiver extends BroadcastReceiver {
                 String raw = context.getSharedPreferences(ReminderScheduler.PREFS, Context.MODE_PRIVATE).getString("settings", "{}");
                 JSONObject root = new JSONObject(raw);
                 JSONObject enabled = root.optJSONObject("enabled");
+                float masterVolume = (float) Math.max(0d, Math.min(100d, root.optDouble("volume", 100d))) / 100f;
                 double latitude = root.optDouble("latitude", Double.NaN);
                 double longitude = root.optDouble("longitude", Double.NaN);
                 if (enabled == null || !enabled.optBoolean("notifyRainSunnah", false) || Double.isNaN(latitude) || Double.isNaN(longitude)) return;
@@ -62,7 +63,7 @@ public class RainReceiver extends BroadcastReceiver {
                 if (key.equals(prefs.getString("lastRainReminder", ""))) return;
                 prefs.edit().putString("lastRainReminder", key).apply();
                 ReminderReceiver.showNotification(context, "notifyRainSunnah", "سنة نزول المطر", "اللهم صيبًا نافعًا.");
-                Intent player = new Intent(context, ReminderPlayerService.class).putExtra("soundFile", "rain-sunnah-reminder.mp3").putExtra("title", "سنة نزول المطر").putExtra("volume", 1f);
+                Intent player = new Intent(context, ReminderPlayerService.class).putExtra("soundFile", "rain-sunnah-reminder.mp3").putExtra("title", "سنة نزول المطر").putExtra("volume", masterVolume);
                 if (Build.VERSION.SDK_INT >= 26) context.startForegroundService(player); else context.startService(player);
             } catch (Exception ignored) {
             } finally {
