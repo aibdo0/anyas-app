@@ -87,7 +87,6 @@ final class ReminderScheduler {
                 if (asr != null) addWeekly(reminders, "notifyFridayHour", "ساعة الإجابة", asr, null, Calendar.FRIDAY);
             }
             if (enabled(enabled, "notifyFridaySalawat") && prayers != null) {
-                String maghrib = time(prayers, "Maghrib");
                 if (maghrib != null) addWeekly(reminders, "notifyFridaySalawat", "الصلاة على النبي ﷺ", maghrib, null, Calendar.THURSDAY);
             }
 
