@@ -79,16 +79,10 @@ function setupAdhanSettings() {
   const volumeValue =
     document.getElementById("volumeValue");
 
-  const muezzinVolumeControls = [
-    { inputId: "normalMuezzinVolume", valueId: "normalMuezzinVolumeValue", key: "anyas_normalMuezzinVolume", audioId: "adhanAudio" },
-    { inputId: "fajrMuezzinVolume", valueId: "fajrMuezzinVolumeValue", key: "anyas_fajrMuezzinVolume", audioId: "fajrAudio" },
-    { inputId: "beforeFajrVolume", valueId: "beforeFajrVolumeValue", key: "anyas_beforeFajrVolume", audioId: "beforeFajrAudio" },
-    { inputId: "ayatKursiVolume", valueId: "ayatKursiVolumeValue", key: "anyas_ayatKursiVolume", audioId: "ayatKursiAudio" },
-    { inputId: "wakeupWardVolume", valueId: "wakeupWardVolumeValue", key: "anyas_wakeupWardVolume", audioId: "wakeupWardAudio" },
-    { inputId: "morningWardVolume", valueId: "morningWardVolumeValue", key: "anyas_morningWardVolume", audioId: "morningWardAudio" },
-    { inputId: "eveningWardVolume", valueId: "eveningWardVolumeValue", key: "anyas_eveningWardVolume", audioId: "eveningWardAudio" },
-    { inputId: "sleepWardVolume", valueId: "sleepWardVolumeValue", key: "anyas_sleepWardVolume", audioId: "sleepWardAudio" }
-  ];
+  const formatVolumeLabel = value => {
+    const locale = document.documentElement.lang === "en" ? "en" : "ar";
+    return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 0, useGrouping: false }).format(value)}%`;
+  };
 
   const testButton =
     document.getElementById("testAdhanButton");
@@ -112,10 +106,10 @@ function setupAdhanSettings() {
 
   }
 
-  const initialVolume =
-    savedVolume !== null
-      ? Number(savedVolume)
-      : 100;
+  const parsedInitialVolume = savedVolume === null ? 100 : Number(savedVolume);
+  const initialVolume = Number.isFinite(parsedInitialVolume)
+    ? Math.max(0, Math.min(100, parsedInitialVolume))
+    : 100;
 
   if (volume) {
 
@@ -126,28 +120,11 @@ function setupAdhanSettings() {
 
   if (volumeValue) {
 
-    volumeValue.textContent =
-      `${initialVolume}%`;
+    volumeValue.textContent = formatVolumeLabel(initialVolume);
 
   }
 
   applyAudioVolume(initialVolume);
-
-  muezzinVolumeControls.forEach(control => {
-    const input = document.getElementById(control.inputId);
-    const value = document.getElementById(control.valueId);
-    const savedValue = localStorage.getItem(control.key);
-    const saved = Math.max(0, Math.min(100, savedValue === null ? 100 : Number(savedValue) || 0));
-    if (input) input.value = String(saved);
-    if (value) value.textContent = `${saved}%`;
-    input?.addEventListener("input", () => {
-      const next = Math.max(0, Math.min(100, Number(input.value) || 0));
-      if (value) value.textContent = `${next}%`;
-      localStorage.setItem(control.key, String(next));
-      applyAudioVolume(Number(volume?.value) || 100);
-      syncAndroidNotificationSettings();
-    });
-  });
 
   if (auto) {
 
@@ -171,8 +148,7 @@ function setupAdhanSettings() {
 
       if (volumeValue) {
 
-        volumeValue.textContent =
-          `${value}%`;
+        volumeValue.textContent = formatVolumeLabel(value);
 
       }
 
@@ -182,7 +158,12 @@ function setupAdhanSettings() {
         "anyas_adhanVolume",
         value
       );
+      syncAndroidNotificationSettings();
 
+    });
+
+    window.addEventListener("anyas:languagechange", () => {
+      if (volumeValue) volumeValue.textContent = formatVolumeLabel(Number(volume.value));
     });
 
   }
@@ -218,14 +199,8 @@ function setupAdhanSettings() {
     document.querySelectorAll("audio").forEach(audioElement => {
       audioElement.volume = normalized;
     });
-    muezzinVolumeControls.forEach(control => {
-      if (!control.audioId) return;
-      const audio = document.getElementById(control.audioId);
-      const storedValue = localStorage.getItem(control.key);
-      const parsedValue = storedValue === null ? 100 : Number(storedValue);
-      const savedValue = Number.isFinite(parsedValue) ? Math.max(0, Math.min(100, parsedValue)) : 100;
-      if (audio) audio.volume = normalized * (savedValue / 100);
-    });
+    [window.anyasMuezzinPreview, window.anyasAyatPreview, window.anyasAdhkarPreview]
+      .forEach(preview => { if (preview) preview.volume = normalized; });
 
   }
 
@@ -1326,6 +1301,9 @@ function syncAndroidNotificationSettings() {
     const match = raw && String(raw).match(/(\d{1,2}:\d{2})/);
     if (match) prayers[key] = match[1].padStart(5, "0");
   });
+  const storedVolume = localStorage.getItem("anyas_adhanVolume");
+  const parsedVolume = storedVolume === null ? 100 : Number(storedVolume);
+  const masterVolume = Number.isFinite(parsedVolume) ? Math.max(0, Math.min(100, parsedVolume)) : 100;
   window.AnyasAndroid.syncSettings(JSON.stringify({
     enabled,
     prayers,
@@ -1335,16 +1313,7 @@ function syncAndroidNotificationSettings() {
     eveningVoice: localStorage.getItem("anyas_eveningWardVoice") || "mishary",
     ayatVoice: localStorage.getItem("anyas_ayatKursiVoice") || "mishary",
     sound: localStorage.getItem("anyas_notificationSound") === "true",
-    volumes: {
-      normalMuezzin: Number(localStorage.getItem("anyas_normalMuezzinVolume") ?? 100),
-      fajrMuezzin: Number(localStorage.getItem("anyas_fajrMuezzinVolume") ?? 100),
-      beforeFajr: Number(localStorage.getItem("anyas_beforeFajrVolume") ?? 100),
-      ayatKursi: Number(localStorage.getItem("anyas_ayatKursiVolume") ?? 100),
-      wakeupWard: Number(localStorage.getItem("anyas_wakeupWardVolume") ?? 100),
-      morningWard: Number(localStorage.getItem("anyas_morningWardVolume") ?? 100),
-      eveningWard: Number(localStorage.getItem("anyas_eveningWardVolume") ?? 100),
-      sleepWard: Number(localStorage.getItem("anyas_sleepWardVolume") ?? 100)
-    }
+    volume: masterVolume
   }));
 }
 

@@ -24,7 +24,7 @@ final class ReminderScheduler {
             JSONObject enabled = data.optJSONObject("enabled");
             JSONObject prayers = data.optJSONObject("prayers");
             boolean sound = data.optBoolean("sound", true);
-            JSONObject volumes = data.optJSONObject("volumes");
+            float masterVolume = (float) Math.max(0d, Math.min(100d, data.optDouble("volume", 100d))) / 100f;
             String morningVoice = data.optString("morningVoice", "mishary");
             String eveningVoice = data.optString("eveningVoice", "mishary");
             String ayatVoice = data.optString("ayatVoice", "mishary");
@@ -85,7 +85,7 @@ final class ReminderScheduler {
                 String target = lastThirdStart(time(prayers, "Maghrib"), time(prayers, "Fajr"));
                 if (target != null) addDaily(reminders, "notifyLastThird", "الثلث الأخير من الليل", target, "qiyam-al-layl-reminder.mp3");
             }
-            for (Reminder reminder : reminders) scheduleOne(context, alarm, reminder, sound, volumes);
+            for (Reminder reminder : reminders) scheduleOne(context, alarm, reminder, sound, masterVolume);
             if (enabled(enabled, "notifyRainSunnah")) RainReceiver.schedule(context);
             else RainReceiver.cancel(context);
         } catch (Exception ignored) {
@@ -127,7 +127,7 @@ final class ReminderScheduler {
         return "حان وقت " + title + ". افتح أنياس للتفاصيل.";
     }
 
-    static void scheduleOne(Context context, AlarmManager alarm, Reminder reminder, boolean sound, JSONObject volumes) {
+    static void scheduleOne(Context context, AlarmManager alarm, Reminder reminder, boolean sound, float masterVolume) {
         try {
             Calendar target = Calendar.getInstance();
             String[] parts = reminder.time.split(":");
@@ -147,7 +147,7 @@ final class ReminderScheduler {
                     .putExtra("body", reminder.body)
                     .putExtra("sound", sound)
                     .putExtra("soundFile", reminder.soundFile == null ? "" : reminder.soundFile)
-                    .putExtra("volume", volumeFor(volumes, reminder.soundFile))
+                    .putExtra("volume", masterVolume)
                     .putExtra("time", reminder.time);
             PendingIntent pending = PendingIntent.getBroadcast(context, requestCode(reminder.id), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             alarm.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pending);
@@ -167,18 +167,6 @@ final class ReminderScheduler {
     }
 
     static int requestCode(String id) { return id.hashCode() & 0x7fffffff; }
-    private static float volumeFor(JSONObject volumes, String file) {
-        if (volumes == null || file == null) return 1f;
-        String key;
-        if (file.startsWith("adhkar-wakeup")) key = "wakeupWard";
-        else if (file.startsWith("adhkar-morning")) key = "morningWard";
-        else if (file.startsWith("adhkar-evening")) key = "eveningWard";
-        else if (file.startsWith("adhkar-sleep")) key = "sleepWard";
-        else if (file.startsWith("ayat-al-kursi")) key = "ayatKursi";
-        else if (file.startsWith("before-fajr")) key = "beforeFajr";
-        else return 1f;
-        return Math.max(0f, Math.min(1f, (float) volumes.optDouble(key, 100d) / 100f));
-    }
     static boolean enabled(JSONObject enabled, String key) { return enabled != null && enabled.optBoolean(key, false); }
     static String time(JSONObject object, String key) { if (object == null) return null; String value = object.optString(key, ""); return value.matches("\\d{1,2}:\\d{2}(:\\d{2})?") ? value.substring(0, 5) : null; }
     static String minusMinutes(String value, int amount) { return shiftMinutes(value, -amount); }
