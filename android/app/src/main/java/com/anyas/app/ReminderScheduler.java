@@ -93,19 +93,38 @@ final class ReminderScheduler {
     }
 
     private static void addDaily(List<Reminder> list, JSONObject enabled, String key, String title, String time, String soundFile) {
-        if (enabled(enabled, key)) list.add(new Reminder(key, title, time, "حان وقت التذكير.", soundFile, DAILY));
+        if (enabled(enabled, key)) list.add(new Reminder(key, title, time, reminderBody(key, title), soundFile, DAILY));
     }
 
     private static void addDaily(List<Reminder> list, String key, String title, String time, String soundFile) {
-        list.add(new Reminder(key, title, time, "حان وقت التذكير.", soundFile, DAILY));
+        list.add(new Reminder(key, title, time, reminderBody(key, title), soundFile, DAILY));
     }
 
     private static void addWeekly(List<Reminder> list, JSONObject enabled, String key, String title, String soundFile, int weekday, String time) {
-        if (enabled(enabled, key)) list.add(new Reminder(key, title, time, "تذكير بالصيام.", soundFile, weekday));
+        if (enabled(enabled, key)) list.add(new Reminder(key, title, time, reminderBody(key, title), soundFile, weekday));
     }
 
     private static void addWeekly(List<Reminder> list, String key, String title, String time, String soundFile, int weekday) {
-        list.add(new Reminder(key, title, time, "حان وقت التذكير.", soundFile, weekday));
+        list.add(new Reminder(key, title, time, reminderBody(key, title), soundFile, weekday));
+    }
+
+    private static String reminderBody(String key, String title) {
+        if (key.startsWith("prayer_")) return "تبقّى ١٥ دقيقة على موعد الصلاة.";
+        if ("beforeFajrReminder".equals(key)) return "تبقّى ٣٠ دقيقة على الفجر؛ استعد للصلاة.";
+        if (key.startsWith("notifyWard")) return "حان وقت وردك؛ خذ دقيقة للذكر وافتح أنياس.";
+        if (key.startsWith("notifyFasting")) return "تذكير بصيام الغد؛ استعد للسحور إن رغبت.";
+        if ("notifyHadith".equals(key)) return "اقرأ حديث اليوم وخذ منه ما ينفعك.";
+        if ("notifyAyatKursi".equals(key)) return "لحظة للذكر وقراءة آية الكرسي.";
+        if ("notifySalawat_1".equals(key) || "notifySalawat_2".equals(key) || "notifyFridaySalawat".equals(key)) return "أكثر من الصلاة على النبي ﷺ.";
+        if ("notifyBaqiyat".equals(key)) return "جدّد وردك من الباقيات الصالحات.";
+        if ("notifyLastThird".equals(key)) return "هذه ساعة مباركة للدعاء والقيام.";
+        if ("notifySunrise".equals(key)) return "حان وقت الشروق؛ ابدأ يومك بهدوء.";
+        if ("notifyDuha".equals(key)) return "حان وقت صلاة الضحى.";
+        if ("notifyRainSunnah".equals(key)) return "عند نزول المطر، ادعُ بما تحب وتذكّر السنة.";
+        if ("notifyFridayKahf".equals(key)) return "لا تنس قراءة سورة الكهف اليوم.";
+        if ("notifyFridayPrayer".equals(key)) return "اقترب وقت صلاة الجمعة؛ استعد لها.";
+        if ("notifyFridayHour".equals(key)) return "وقت للدعاء من بعد العصر إلى المغرب.";
+        return "حان وقت " + title + ". افتح أنياس للتفاصيل.";
     }
 
     static void scheduleOne(Context context, AlarmManager alarm, Reminder reminder, boolean sound, JSONObject volumes) {
@@ -189,9 +208,11 @@ final class ReminderScheduler {
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (manager == null) return;
         NotificationChannel reminders = new NotificationChannel("reminders", "تذكيرات أنياس", NotificationManager.IMPORTANCE_DEFAULT);
+        reminders.setDescription("تنبيهات مواقيت الصلاة والأذكار التي اخترتها في أنياس.");
         reminders.setSound(null, null);
         manager.createNotificationChannel(reminders);
         NotificationChannel playback = new NotificationChannel("reminder_playback", "صوت التذكيرات", NotificationManager.IMPORTANCE_LOW);
+        playback.setDescription("إشعار مؤقت أثناء تشغيل صوت التذكير.");
         playback.setSound(null, null);
         manager.createNotificationChannel(playback);
     }

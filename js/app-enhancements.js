@@ -4,6 +4,7 @@
   const ARABIC_DIGITS = "٠١٢٣٤٥٦٧٨٩";
   const toArabic = value => String(value).replace(/\d/g, d => ARABIC_DIGITS[d]);
   const byId = id => document.getElementById(id);
+  const t = value => window.anyasTranslate ? window.anyasTranslate(value) : value;
   const prayerNames = { Fajr: "الفجر", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" };
   const prayerKeys = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
   const prayerLabel = (key, date = new Date()) => key === "Dhuhr" && date.getDay() === 5 ? "الجمعة" : prayerNames[key];
@@ -292,18 +293,81 @@
     const bell = byId("notificationBellButton");
     const badge = byId("notificationBadge");
     const back = byId("notificationsBackButton");
-    const render = () => {
-      const items = [];
-      if (byId("notifyPrayerSoon")?.checked) items.push("تنبيه اقتراب الصلاة");
-      if (byId("notifyWardMorning")?.checked) items.push("ورد الصباح");
-      if (byId("notifyWardEvening")?.checked) items.push("ورد المساء");
-      list.innerHTML = items.length ? items.map((item, index) => `<div class="notification-item"><span class="notification-item-icon">${index === 0 ? "ص" : "ذ"}</span><span><strong>${item}</strong><small>مفعّل من إعدادات أنياس</small></span></div>`).join("") : `<div class="notification-empty">فعّل تنبيهات الصلاة أو الأذكار من الإعدادات لتظهر هنا.</div>`;
-      if (badge) { badge.textContent = toArabic(items.length); badge.hidden = !items.length; }
+    const activeCount = byId("notificationActiveCount");
+    const activeCountLabel = byId("notificationActiveLabel");
+    const manage = byId("manageNotificationsButton");
+    const reminderIds = [
+      "notifyPrayerSoon", "notifySunrise", "notifyLastThird", "notifyAyatKursi", "notifyHadith", "notifyDuha",
+      "notifySalawat", "notifyBaqiyat", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday",
+      "notifyFastingFisabilillah", "notifyRainSunnah", "beforeFajrReminder", "notifyWardAwakening", "notifyWardMorning",
+      "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyFridayKahf",
+      "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat"
+    ];
+    const bellSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>';
+    const categoryFor = id => {
+      if (["notifyPrayerSoon", "notifySunrise", "notifyDuha", "beforeFajrReminder"].includes(id)) return "prayer";
+      if (id.startsWith("notifyWard") || ["notifyHadith", "notifyAyatKursi", "notifySalawat", "notifyBaqiyat", "notifyLastThird"].includes(id)) return "adhkar";
+      return "weekly";
     };
-    document.querySelectorAll('#page-settings input[type="checkbox"]').forEach(input => input.addEventListener("change", render));
+    const render = () => {
+      const items = reminderIds.flatMap(id => {
+        const checkbox = byId(id);
+        const enabled = Boolean(checkbox?.checked) || localStorage.getItem(`anyas_${id}`) === "true";
+        if (!enabled) return [];
+        const row = checkbox?.closest(".setting-row");
+        return [{
+          id,
+          title: row?.querySelector(".setting-title")?.textContent.trim() || id,
+          description: row?.querySelector(".setting-description")?.textContent.trim() || "تذكير اختياري من أنياس.",
+          category: categoryFor(id)
+        }];
+      });
+      if (badge) { badge.textContent = toArabic(items.length); badge.hidden = !items.length; }
+      if (activeCount) activeCount.textContent = toArabic(items.length);
+      if (activeCountLabel) activeCountLabel.textContent = t(items.length === 1 ? "تنبيه مفعّل" : "تنبيهات مفعّلة");
+      list.replaceChildren();
+      if (!items.length) {
+        const empty = document.createElement("div");
+        empty.className = "notification-empty";
+        const icon = document.createElement("span");
+        icon.className = "notification-empty-icon";
+        icon.innerHTML = bellSvg;
+        const title = document.createElement("strong");
+        title.textContent = t("لا توجد تنبيهات مفعّلة");
+        const hint = document.createElement("small");
+        hint.textContent = t("فعّل تذكيرًا من الإعدادات ليظهر هنا.");
+        empty.append(icon, title, hint);
+        list.append(empty);
+      } else {
+        items.forEach(item => {
+          const card = document.createElement("article");
+          card.className = `notification-item ${item.category}`;
+          const icon = document.createElement("span");
+          icon.className = `notification-item-icon ${item.category}`;
+          icon.innerHTML = bellSvg;
+          const copy = document.createElement("span");
+          copy.className = "notification-item-copy";
+          const title = document.createElement("strong");
+          title.textContent = item.title;
+          const description = document.createElement("small");
+          description.textContent = item.description;
+          copy.append(title, description);
+          const status = document.createElement("span");
+          status.className = "notification-item-status";
+          status.textContent = t("نشط");
+          card.append(icon, copy, status);
+          list.append(card);
+        });
+      }
+    };
+    reminderIds.forEach(id => byId(id)?.addEventListener("change", render));
     render();
     bell?.addEventListener("click", () => openPage("notifications"));
     back?.addEventListener("click", () => openPage("home"));
+    manage?.addEventListener("click", () => {
+      openPage("settings");
+      window.setTimeout(() => byId("notificationSettingsHeading")?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+    });
   }
 
   async function openMosqueDirectory() {
