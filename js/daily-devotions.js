@@ -174,9 +174,16 @@
     const buttons = [...document.querySelectorAll("[data-friday-task]")];
     if (!buttons.length) return;
     const today = new Date();
-    const key = `anyas_friday_tasks_${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    const fridayState = window.anyasFriday?.getFridayState(today);
+    const fridayDate = fridayState?.fridayDate || new Date(today.getFullYear(), today.getMonth(), today.getDate() + ((5 - today.getDay() + 7) % 7));
+    const key = `anyas_friday_tasks_${fridayDate.getFullYear()}-${fridayDate.getMonth() + 1}-${fridayDate.getDate()}`;
+    const legacyThursdayKey = `anyas_friday_tasks_${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
     let completed = {};
-    try { completed = JSON.parse(localStorage.getItem(key) || "{}") || {}; } catch (error) { completed = {}; }
+    try {
+      const stored = localStorage.getItem(key) || (today.getDay() === 4 ? localStorage.getItem(legacyThursdayKey) : null) || "{}";
+      completed = JSON.parse(stored) || {};
+      if (today.getDay() === 4 && !localStorage.getItem(key) && stored !== "{}") localStorage.setItem(key, stored);
+    } catch (error) { completed = {}; }
 
     const render = () => {
       const done = buttons.filter(button => completed[button.dataset.fridayTask] === true).length;
@@ -190,7 +197,8 @@
       const progress = document.getElementById("fridayTasksProgress");
       const status = document.getElementById("fridayTasksStatus");
       if (progress) progress.textContent = `${number(done)} / ${number(buttons.length)}`;
-      if (status) status.textContent = today.getDay() === 5 ? "مهام الجمعة اليوم · تقبل الله" : "جهّزها للجمعة القادمة، وستبقى محفوظة لك";
+      const currentFridayState = window.anyasFriday?.getFridayState(new Date());
+      if (status) status.textContent = currentFridayState?.isThursdayEvening ? "بدأ وقت الجمعة · تقبل الله طاعتكم" : currentFridayState?.isFriday ? "مهام الجمعة اليوم · تقبل الله" : "تظهر مهام الجمعة من مغرب الخميس إلى نهاية يوم الجمعة";
     };
 
     buttons.forEach(button => {

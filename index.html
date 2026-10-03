@@ -48,7 +48,7 @@
 <link rel="stylesheet" href="css/tasks-ux.css?v=20261002-3">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
-<link rel="stylesheet" href="css/friday.css?v=20261001-1">
+<link rel="stylesheet" href="css/friday.css?v=20261003-2">
 </head>
 <body>
 <div class="app">
@@ -136,11 +136,11 @@
   </div>
 </section>
 
-<section class="section friday-feature-section" aria-labelledby="homeFridayHeading">
+<section class="section friday-feature-section" aria-labelledby="homeFridayHeading" hidden>
   <div class="friday-feature-card" id="homeFridayCard" data-friday-phase="upcoming">
     <div class="friday-feature-heading"><div><span class="friday-feature-eyebrow">تذكير أسبوعي</span><h2 id="homeFridayHeading">جمعة مباركة</h2></div><span class="friday-feature-badge" id="homeFridayBadge">الجمعة</span></div>
     <p id="homeFridayText">تظهر هنا تذكيرات سورة الكهف وصلاة الجمعة والصلاة على النبي ﷺ.</p>
-    <div class="friday-feature-meta" id="homeFridayMeta">من مغرب الخميس إلى مغرب الجمعة</div>
+    <div class="friday-feature-meta" id="homeFridayMeta">من مغرب الخميس إلى نهاية يوم الجمعة</div>
     <button class="friday-feature-button" id="homeFridayAction" type="button">افتح مهام الجمعة</button>
   </div>
 </section>
@@ -412,7 +412,7 @@
     <p>المحافظة على اثنتي عشرة ركعة من السنن الرواتب في اليوم والليلة ورد فيها وعد ببيت في الجنة. ابدأ بما تستطيع، وتدرّج برفق.</p>
   </div>
 </section>
-<section class="friday-tasks-card" aria-labelledby="fridayTasksHeading">
+<section class="friday-tasks-card" id="fridayTasksCard" aria-labelledby="fridayTasksHeading" hidden>
   <div class="friday-tasks-heading">
     <div>
       <span class="friday-tasks-eyebrow">تذكيرات أسبوعية</span>
@@ -429,7 +429,7 @@
       <span class="friday-task-icon" aria-hidden="true">ص</span><span><strong>صلاة الجمعة</strong><small>تذكير بموعد الصلاة بحسب توقيت المسجد</small></span><span class="friday-task-check" aria-hidden="true">○</span>
     </button>
     <button class="friday-task-item" type="button" data-friday-task="salawat" aria-pressed="false">
-      <span class="friday-task-icon" aria-hidden="true">ﷺ</span><span><strong>الصلاة على النبي ﷺ</strong><small>من مغرب الخميس إلى مغرب الجمعة</small></span><span class="friday-task-check" aria-hidden="true">○</span>
+      <span class="friday-task-icon" aria-hidden="true">ﷺ</span><span><strong>الصلاة على النبي ﷺ</strong><small>من مغرب الخميس إلى نهاية يوم الجمعة</small></span><span class="friday-task-check" aria-hidden="true">○</span>
     </button>
   </div>
   <div class="friday-answer-hour"><span aria-hidden="true">⌛</span><span><strong>ساعة الإجابة</strong><small>من بعد العصر إلى المغرب، أكثر من الدعاء فيها</small></span></div>
@@ -472,7 +472,7 @@
       <span class="azkar-period-time">ابدأ ورد المساء</span>
     </button>
   </div>
-  <div class="azkar-friday-card" id="azkarFridayCard" data-friday-phase="upcoming">
+  <div class="azkar-friday-card" id="azkarFridayCard" data-friday-phase="upcoming" hidden>
     <div class="azkar-friday-heading"><span class="azkar-friday-icon" aria-hidden="true">ج</span><div><strong id="azkarFridayTitle">تذكيرات الجمعة</strong><small id="azkarFridayText">سورة الكهف، صلاة الجمعة، والصلاة على النبي ﷺ</small></div></div>
     <button type="button" id="azkarFridayAction">افتح مهام الجمعة</button>
   </div>
@@ -1138,7 +1138,7 @@ type="button"
 <div class="setting-row"><div class="setting-info"><div class="setting-title">سورة الكهف</div><div class="setting-description">لا تنس قراءتها يوم الجمعة</div></div><label class="switch"><input id="notifyFridayKahf" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">صلاة الجمعة</div><div class="setting-description">تذكير قبل وقت صلاة الجمعة</div></div><label class="switch"><input id="notifyFridayPrayer" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">ساعة الإجابة</div><div class="setting-description">من بعد العصر إلى المغرب</div></div><label class="switch"><input id="notifyFridayHour" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">الصلاة على النبي ﷺ</div><div class="setting-description">من مغرب الخميس إلى مغرب الجمعة</div></div><label class="switch"><input id="notifyFridaySalawat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">الصلاة على النبي ﷺ</div><div class="setting-description">من مغرب الخميس إلى نهاية يوم الجمعة</div></div><label class="switch"><input id="notifyFridaySalawat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 
 </div>
 
@@ -1936,14 +1936,14 @@ type="button"
 <script src="js/vendor/adhan.umd.min.js"></script>
 <script src="js/prayer.js?v=20261001-2"></script>
 <script src="js/daily-adhkar.js?v=20260926-3"></script>
-<script src="js/friday.js?v=20261003-2"></script>
+<script src="js/friday.js?v=20261003-3"></script>
 <script src="js/favorites.js?v=20260926-3"></script>
 <script src="js/azkar.js?v=20261002-4"></script>
 <script src="js/wird.js?v=20261002-5"></script>
 <script src="js/settings.js?v=20261003-5"></script>
 <script src="js/qibla.js?v=20261001-2"></script>
 <script src="js/app-enhancements.js?v=20261003-2"></script>
-<script src="js/daily-devotions.js?v=20260926-3"></script>
+<script src="js/daily-devotions.js?v=20261003-1"></script>
 <script src="js/app.js?v=20261002-2"></script>
 <script src="js/about.js?v=20261002-2"></script>
 

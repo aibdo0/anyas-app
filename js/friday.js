@@ -14,52 +14,67 @@
   const dateKey = date => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
   const arabicTime = date => date.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
 
-  function timeToday(name, fallbackHour, fallbackMinute) {
+  function timeToday(name, fallbackHour, fallbackMinute, date = new Date()) {
     const raw = window.todayTimings?.[name];
     const match = typeof raw === "string" && raw.match(/(\d{1,2}):(\d{2})/);
-    const result = new Date();
+    const result = new Date(date);
     result.setSeconds(0, 0);
     result.setHours(match ? Number(match[1]) : fallbackHour, match ? Number(match[2]) : fallbackMinute, 0, 0);
     return result;
   }
 
   function getFridayState(now = new Date()) {
-    const fajr = timeToday("Fajr", 5, 0);
-    const dhuhr = timeToday("Dhuhr", 12, 0);
-    const asr = timeToday("Asr", 15, 30);
-    const maghrib = timeToday("Maghrib", 18, 0);
+    const fajr = timeToday("Fajr", 5, 0, now);
+    const dhuhr = timeToday("Dhuhr", 12, 0, now);
+    const asr = timeToday("Asr", 15, 30, now);
+    const maghrib = timeToday("Maghrib", 18, 0, now);
     const isFriday = now.getDay() === 5;
-    const isThursdayEvening = now.getDay() === 4 && now >= maghrib;
-    const salawatStart = isThursdayEvening ? maghrib : new Date(maghrib.getTime() - 24 * 60 * 60 * 1000);
-    const salawatEnd = isThursdayEvening ? new Date(maghrib.getTime() + 24 * 60 * 60 * 1000) : maghrib;
-    const isSalawatWindow = (isFriday || isThursdayEvening) && now >= salawatStart && now < salawatEnd;
+    const fridayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    fridayDate.setDate(fridayDate.getDate() + ((5 - fridayDate.getDay() + 7) % 7));
+    const fridayEnd = new Date(fridayDate);
+    fridayEnd.setHours(23, 59, 59, 999);
+    const thursdayDate = new Date(fridayDate);
+    thursdayDate.setDate(thursdayDate.getDate() - 1);
+    const salawatStart = timeToday("Maghrib", 18, 0, thursdayDate);
+    const salawatEnd = fridayEnd;
+    const isThursdayEvening = now.getDay() === 4 && now >= salawatStart;
+    const isWeeklyWindow = isThursdayEvening || (isFriday && now <= fridayEnd);
+    const isSalawatWindow = isWeeklyWindow;
     const isPrayerWindow = isFriday && now >= new Date(dhuhr.getTime() - 45 * 60 * 1000) && now < new Date(dhuhr.getTime() + 60 * 60 * 1000);
     const isAnswerHour = isFriday && now >= asr && now < maghrib;
-    return { isFriday, isThursdayEvening, fajr, dhuhr, asr, maghrib, salawatStart, salawatEnd, isSalawatWindow, isPrayerWindow, isAnswerHour };
+    return { isFriday, isThursdayEvening, isWeeklyWindow, fridayDate, fridayEnd, fajr, dhuhr, asr, maghrib, salawatStart, salawatEnd, isSalawatWindow, isPrayerWindow, isAnswerHour };
   }
 
-  function renderCards() {
-    const state = getFridayState();
+  function renderCards(now = new Date()) {
+    const state = getFridayState(now);
+    const homeSection = document.querySelector(".friday-feature-section");
     const homeCard = document.getElementById("homeFridayCard");
     const homeBadge = document.getElementById("homeFridayBadge");
     const homeText = document.getElementById("homeFridayText");
     const homeMeta = document.getElementById("homeFridayMeta");
     const azkarText = document.getElementById("azkarFridayText");
+    const azkarCard = document.getElementById("azkarFridayCard");
+    const tasksCard = document.getElementById("fridayTasksCard");
+    const tasksStatus = document.getElementById("fridayTasksStatus");
 
     let phase = "upcoming";
     let badge = "الجمعة";
-    let text = state.isFriday ? "جمعة مباركة؛ ابدأ بسورة الكهف وأكثر من الصلاة على النبي ﷺ." : "تذكير أسبوعي بسورة الكهف وصلاة الجمعة والصلاة على النبي ﷺ.";
-    let meta = `الصلاة على النبي: من ${arabicTime(state.salawatStart)} إلى ${arabicTime(state.salawatEnd)}`;
+    let text = state.isFriday ? "جمعة مباركة؛ ابدأ بسورة الكهف وأكثر من الصلاة على النبي ﷺ." : "بدأ وقت الجمعة؛ أكثر من الصلاة على النبي ﷺ واستعد لمهام اليوم المبارك.";
+    let meta = "الصلاة على النبي: من مغرب الخميس إلى نهاية يوم الجمعة";
     if (state.isPrayerWindow) { phase = "prayer"; badge = "وقت الصلاة"; text = "حان وقت صلاة الجمعة؛ نسأل الله أن يتقبل منك."; }
     else if (state.isAnswerHour) { phase = "active"; badge = "ساعة الإجابة"; text = "من بعد العصر إلى المغرب؛ أكثر من الدعاء في هذه الساعة."; }
-    else if (state.isSalawatWindow) { phase = "salawat"; badge = "الصلاة على النبي ﷺ"; text = "أكثر من الصلاة على النبي ﷺ حتى مغرب الجمعة."; }
+    else if (state.isSalawatWindow) { phase = "salawat"; badge = "الصلاة على النبي ﷺ"; text = "أكثر من الصلاة على النبي ﷺ حتى نهاية يوم الجمعة."; }
     else if (state.isFriday) { phase = "active"; badge = "جمعة مباركة"; }
 
+    if (homeSection) homeSection.hidden = !state.isWeeklyWindow;
+    if (azkarCard) azkarCard.hidden = !state.isWeeklyWindow;
+    if (tasksCard) tasksCard.hidden = !state.isWeeklyWindow;
     if (homeCard) homeCard.dataset.fridayPhase = phase;
     if (homeBadge) homeBadge.textContent = badge;
     if (homeText) homeText.textContent = text;
     if (homeMeta) homeMeta.textContent = meta;
-    if (azkarText) azkarText.textContent = state.isFriday ? `${badge} · ${text}` : "تذكير أسبوعي: سورة الكهف، صلاة الجمعة، والصلاة على النبي ﷺ";
+    if (azkarText) azkarText.textContent = `${badge} · ${text}`;
+    if (tasksStatus) tasksStatus.textContent = state.isThursdayEvening ? "بدأ وقت الجمعة · تقبل الله طاعتكم" : state.isFriday ? "مهام الجمعة اليوم · تقبل الله" : "تظهر مهام الجمعة من مغرب الخميس إلى نهاية يوم الجمعة";
   }
 
   function openFridayTasks() {
@@ -91,7 +106,7 @@
     if (friday && sameMinute(state.fajr)) sendNotification("notifyFridayKahf", "سورة الكهف", "لا تنس قراءة سورة الكهف اليوم.", now);
     if (friday && sameMinute(new Date(state.dhuhr.getTime() - 45 * 60 * 1000))) sendNotification("notifyFridayPrayer", "صلاة الجمعة", "استعد لصلاة الجمعة بحسب توقيت مسجدك.", now);
     if (friday && sameMinute(state.asr)) sendNotification("notifyFridayHour", "ساعة الإجابة", "من بعد العصر إلى المغرب؛ أكثر من الدعاء.", now);
-    if (state.isThursdayEvening && sameMinute(state.salawatStart)) sendNotification("notifyFridaySalawat", "الصلاة على النبي ﷺ", "بدأ وقت الصلاة على النبي من مغرب الخميس إلى مغرب الجمعة.", now);
+    if (state.isThursdayEvening && sameMinute(state.salawatStart)) sendNotification("notifyFridaySalawat", "الصلاة على النبي ﷺ", "بدأ وقت الصلاة على النبي من مغرب الخميس إلى نهاية يوم الجمعة.", now);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
