@@ -36,16 +36,16 @@
 <link rel="stylesheet" href="css/style.css?v=20260927-2">
 <link rel="stylesheet" href="css/home.css?v=20260927-2">
 <link rel="stylesheet" href="css/prayer.css?v=20260927-2">
-<link rel="stylesheet" href="css/azkar.css?v=20260927-2">
-<link rel="stylesheet" href="css/daily-adhkar.css?v=20260927-2">
-<link rel="stylesheet" href="css/settings.css?v=20261003-2">
+<link rel="stylesheet" href="css/azkar.css?v=20261003-1">
+<link rel="stylesheet" href="css/daily-adhkar.css?v=20261003-1">
+<link rel="stylesheet" href="css/settings.css?v=20261003-3">
 
 <link rel="stylesheet" href="css/offline-fonts.css">
 
 
 
 <link rel="stylesheet" href="css/theme-white-gold.css?v=20261003-2">
-<link rel="stylesheet" href="css/tasks-ux.css?v=20261002-3">
+<link rel="stylesheet" href="css/tasks-ux.css?v=20261003-1">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 <link rel="stylesheet" href="css/friday.css?v=20261003-2">
@@ -123,7 +123,7 @@
     <div class="daily-adhkar-heading-row">
       <div class="daily-adhkar-mark" aria-hidden="true">ذ</div>
       <div class="daily-adhkar-heading-copy">
-        <div class="daily-adhkar-eyebrow">ورد يناسب وقت الصلاة</div>
+        <div class="daily-adhkar-eyebrow">وردك اليومي بحسب الوقت</div>
         <h2 class="daily-adhkar-title" id="dailyAdhkarHeading">أذكار الصباح</h2>
       </div>
       <span class="daily-adhkar-badge" id="dailyAdhkarBadge">الصباح</span>
@@ -1078,7 +1078,7 @@ type="button"
 </div>
 
 <div class="setting-description">
-تنبيه خاص بآية الكرسي
+اختر بين نصف ساعة قبل المغرب أو وقت يناسبك
 </div>
 
 </div>
@@ -1093,6 +1093,20 @@ type="button"
 </label>
 
 </div>
+
+<details class="reminder-time-panel" data-reminder-schedule-panel="notifyAyatKursi" hidden>
+  <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyAyatKursi">قبل المغرب بنصف ساعة</strong></summary>
+  <div class="reminder-time-panel-content">
+    <label for="ayatKursiScheduleMode">طريقة تحديد الموعد</label>
+    <select id="ayatKursiScheduleMode" class="select-control reminder-schedule-mode" data-reminder-schedule-mode="notifyAyatKursi">
+      <option value="beforeMaghrib">قبل أذان المغرب بنصف ساعة</option>
+      <option value="custom">وقت أختاره</option>
+    </select>
+    <label for="ayatKursiCustomTime" data-reminder-custom-label="notifyAyatKursi" hidden>الوقت المناسب لك</label>
+    <input id="ayatKursiCustomTime" class="reminder-schedule-time" data-reminder-schedule-time="notifyAyatKursi" type="time" min="00:00" max="23:59" value="18:00" hidden disabled>
+    <small class="reminder-schedule-hint">الموعد المخصص يعتمد على ساعة هاتفك المحلية.</small>
+  </div>
+</details>
 
 <div class="setting-row">
 
@@ -1127,11 +1141,54 @@ type="button"
 <div class="setting-row"><div class="setting-info"><div class="setting-title">سنة نزول المطر</div><div class="setting-description">يعمل تلقائيًا عند توقع المطر في موقعك</div></div><label class="switch"><input id="notifyRainSunnah" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 
 <div class="settings-subtitle">الورد اليومي</div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الاستيقاظ</div><div class="setting-description">تذكير عند بداية وقت الاستيقاظ — ٤:٣٠ ص</div></div><label class="switch"><input id="notifyWardAwakening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الصباح</div><div class="setting-description">تذكير لطيف ببدء ورد الصباح</div></div><label class="switch"><input id="notifyWardMorning" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الاستيقاظ</div><div class="setting-description">موعد مقترح أو وقت تختاره ضمن فترة الصباح</div></div><label class="switch"><input id="notifyWardAwakening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<details class="reminder-time-panel" data-reminder-schedule-panel="notifyWardAwakening" hidden>
+  <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyWardAwakening">المقترح · ٤:٣٠ ص</strong></summary>
+  <div class="reminder-time-panel-content">
+    <label for="notifyWardAwakeningScheduleMode">طريقة تحديد الموعد</label>
+    <select id="notifyWardAwakeningScheduleMode" class="select-control reminder-schedule-mode" data-reminder-schedule-mode="notifyWardAwakening"><option value="suggested">الموعد المقترح · ٤:٣٠ ص</option><option value="custom">وقت أختاره</option></select>
+    <label for="notifyWardAwakeningCustomTime" data-reminder-custom-label="notifyWardAwakening" hidden>وقت بين ٠٣:٠٠ ص و١١:٥٩ ص</label>
+    <input id="notifyWardAwakeningCustomTime" class="reminder-schedule-time" data-reminder-schedule-time="notifyWardAwakening" type="time" min="03:00" max="11:59" value="04:30" hidden disabled>
+    <small class="reminder-schedule-hint">يبقى الموعد ضمن وقت الاستيقاظ والصباح.</small>
+  </div>
+</details>
+
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الصباح</div><div class="setting-description">موعد مقترح أو وقت تختاره خلال الصباح</div></div><label class="switch"><input id="notifyWardMorning" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<details class="reminder-time-panel" data-reminder-schedule-panel="notifyWardMorning" hidden>
+  <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyWardMorning">المقترح · ٥:٣٠ ص</strong></summary>
+  <div class="reminder-time-panel-content">
+    <label for="notifyWardMorningScheduleMode">طريقة تحديد الموعد</label>
+    <select id="notifyWardMorningScheduleMode" class="select-control reminder-schedule-mode" data-reminder-schedule-mode="notifyWardMorning"><option value="suggested">الموعد المقترح · ٥:٣٠ ص</option><option value="custom">وقت أختاره</option></select>
+    <label for="notifyWardMorningCustomTime" data-reminder-custom-label="notifyWardMorning" hidden>وقت بين ٠٤:٠٠ ص و١١:٥٩ ص</label>
+    <input id="notifyWardMorningCustomTime" class="reminder-schedule-time" data-reminder-schedule-time="notifyWardMorning" type="time" min="04:00" max="11:59" value="05:30" hidden disabled>
+    <small class="reminder-schedule-hint">النطاق يضمن بقاء التنبيه ضمن وقت الصباح.</small>
+  </div>
+</details>
+
 <div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار اليوم</div><div class="setting-description">تذكير بالورد العام — ١٢:٠٠ ظ</div></div><label class="switch"><input id="notifyWardGeneral" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار المساء</div><div class="setting-description">تذكير بورد المساء دون إزعاج</div></div><label class="switch"><input id="notifyWardEvening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار النوم</div><div class="setting-description">تذكير هادئ قبل النوم</div></div><label class="switch"><input id="notifyWardSleep" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار المساء</div><div class="setting-description">موعد مقترح أو وقت تختاره ضمن المساء</div></div><label class="switch"><input id="notifyWardEvening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<details class="reminder-time-panel" data-reminder-schedule-panel="notifyWardEvening" hidden>
+  <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyWardEvening">المقترح · ٣:٣٠ م</strong></summary>
+  <div class="reminder-time-panel-content">
+    <label for="notifyWardEveningScheduleMode">طريقة تحديد الموعد</label>
+    <select id="notifyWardEveningScheduleMode" class="select-control reminder-schedule-mode" data-reminder-schedule-mode="notifyWardEvening"><option value="suggested">الموعد المقترح · ٣:٣٠ م</option><option value="custom">وقت أختاره</option></select>
+    <label for="notifyWardEveningCustomTime" data-reminder-custom-label="notifyWardEvening" hidden>وقت بين ١٢:٠٠ ظ و١١:٥٩ م</label>
+    <input id="notifyWardEveningCustomTime" class="reminder-schedule-time" data-reminder-schedule-time="notifyWardEvening" type="time" min="12:00" max="23:59" value="15:30" hidden disabled>
+    <small class="reminder-schedule-hint">اختر وقتًا من بعد الظهر حتى آخر المساء.</small>
+  </div>
+</details>
+
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار النوم</div><div class="setting-description">موعد مقترح أو وقت تختاره قبل منتصف الليل</div></div><label class="switch"><input id="notifyWardSleep" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<details class="reminder-time-panel" data-reminder-schedule-panel="notifyWardSleep" hidden>
+  <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyWardSleep">المقترح · ٨:٠٠ م</strong></summary>
+  <div class="reminder-time-panel-content">
+    <label for="notifyWardSleepScheduleMode">طريقة تحديد الموعد</label>
+    <select id="notifyWardSleepScheduleMode" class="select-control reminder-schedule-mode" data-reminder-schedule-mode="notifyWardSleep"><option value="suggested">الموعد المقترح · ٨:٠٠ م</option><option value="custom">وقت أختاره</option></select>
+    <label for="notifyWardSleepCustomTime" data-reminder-custom-label="notifyWardSleep" hidden>وقت بين ٦:٠٠ م و١١:٥٩ م</label>
+    <input id="notifyWardSleepCustomTime" class="reminder-schedule-time" data-reminder-schedule-time="notifyWardSleep" type="time" min="18:00" max="23:59" value="20:00" hidden disabled>
+    <small class="reminder-schedule-hint">حتى يبقى تذكير النوم ضمن وقت المساء.</small>
+  </div>
+</details>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">استغفار السحر</div><div class="setting-description">تذكير في وقت السحر — ٢:٠٠ ص</div></div><label class="switch"><input id="notifyWardSahar" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 
 <div class="settings-subtitle">يوم الجمعة</div>
@@ -1940,7 +1997,7 @@ type="button"
 <script src="js/favorites.js?v=20260926-3"></script>
 <script src="js/azkar.js?v=20261002-4"></script>
 <script src="js/wird.js?v=20261002-5"></script>
-<script src="js/settings.js?v=20261003-5"></script>
+<script src="js/settings.js?v=20261003-7"></script>
 <script src="js/qibla.js?v=20261001-2"></script>
 <script src="js/app-enhancements.js?v=20261003-2"></script>
 <script src="js/daily-devotions.js?v=20261003-1"></script>

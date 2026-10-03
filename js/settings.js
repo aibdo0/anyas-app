@@ -611,6 +611,69 @@ function recordAnyasNotification(title, body, tag) {
   }
 }
 
+const ANYAS_REMINDER_SCHEDULE_CONFIG = Object.freeze({
+  notifyAyatKursi: { defaultMode: "beforeMaghrib", defaultTime: "18:00", minTime: "00:00", maxTime: "23:59", suggestedSummary: "قبل المغرب بنصف ساعة" },
+  notifyWardAwakening: { defaultMode: "suggested", defaultTime: "04:30", minTime: "03:00", maxTime: "11:59", suggestedSummary: "المقترح · ٤:٣٠ ص" },
+  notifyWardMorning: { defaultMode: "suggested", defaultTime: "05:30", minTime: "04:00", maxTime: "11:59", suggestedSummary: "المقترح · ٥:٣٠ ص" },
+  notifyWardEvening: { defaultMode: "suggested", defaultTime: "15:30", minTime: "12:00", maxTime: "23:59", suggestedSummary: "المقترح · ٣:٣٠ م" },
+  notifyWardSleep: { defaultMode: "suggested", defaultTime: "20:00", minTime: "18:00", maxTime: "23:59", suggestedSummary: "المقترح · ٨:٠٠ م" }
+});
+
+function anyasParseClockMinutes(value) {
+  const match = String(value || "").match(/^(\d{1,2}):(\d{2})$/);
+  if (!match) return null;
+  const hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  return hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59 ? hours * 60 + minutes : null;
+}
+
+function anyasNormalizeClock(value) {
+  const minutes = anyasParseClockMinutes(value);
+  return minutes === null ? null : `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`;
+}
+
+function anyasIsReminderTimeValid(id, value) {
+  const config = ANYAS_REMINDER_SCHEDULE_CONFIG[id];
+  const minutes = anyasParseClockMinutes(value);
+  const minimum = config && anyasParseClockMinutes(config.minTime);
+  const maximum = config && anyasParseClockMinutes(config.maxTime);
+  return minutes !== null && minimum !== null && maximum !== null && minutes >= minimum && minutes <= maximum;
+}
+
+function anyasReminderScheduleKey(id, part) {
+  return `anyas_reminder_schedule_${id}_${part}`;
+}
+
+function anyasGetReminderSchedule(id) {
+  const config = ANYAS_REMINDER_SCHEDULE_CONFIG[id];
+  if (!config) return null;
+  const savedMode = localStorage.getItem(anyasReminderScheduleKey(id, "mode"));
+  const validModes = id === "notifyAyatKursi" ? ["beforeMaghrib", "custom"] : ["suggested", "custom"];
+  const mode = validModes.includes(savedMode) ? savedMode : config.defaultMode;
+  const savedTime = localStorage.getItem(anyasReminderScheduleKey(id, "time"));
+  const time = anyasIsReminderTimeValid(id, savedTime) ? anyasNormalizeClock(savedTime) : config.defaultTime;
+  return { mode, time };
+}
+
+function anyasReminderTargetMinute(id, maghribMinute = null) {
+  const config = ANYAS_REMINDER_SCHEDULE_CONFIG[id];
+  const selection = anyasGetReminderSchedule(id);
+  if (!config || !selection) return null;
+  if (id === "notifyAyatKursi" && selection.mode === "beforeMaghrib") {
+    return maghribMinute === null ? null : (maghribMinute - 30 + 1440) % 1440;
+  }
+  return anyasParseClockMinutes(selection.mode === "custom" ? selection.time : config.defaultTime);
+}
+
+function anyasFormatReminderTime(value) {
+  const minutes = anyasParseClockMinutes(value);
+  if (minutes === null) return value || "";
+  const hours = Math.floor(minutes / 60);
+  const format = new Intl.NumberFormat("ar-EG", { useGrouping: false });
+  const formatMinute = new Intl.NumberFormat("ar-EG", { useGrouping: false, minimumIntegerDigits: 2 });
+  return `${format.format(hours % 12 || 12)}:${formatMinute.format(minutes % 60)} ${hours < 12 ? "ص" : "م"}`;
+}
+
 function checkDailyAdhkarNotifications() {
   const schedule = [
     { id: "notifyWardSahar", key: "sahar", title: "أذكار السحر", body: "حان وقت الاستغفار والدعاء.", minute: 120, audioId: "qiyamReminderAudio" },
@@ -627,7 +690,8 @@ function checkDailyAdhkarNotifications() {
 
   schedule.forEach(item => {
     const enabled = localStorage.getItem(`anyas_${item.id}`) === "true";
-    if (!enabled || currentMinutes < item.minute || currentMinutes > item.minute + 1) return;
+    const targetMinute = ANYAS_REMINDER_SCHEDULE_CONFIG[item.id] ? anyasReminderTargetMinute(item.id) : item.minute;
+    if (!enabled || targetMinute === null || currentMinutes < targetMinute || currentMinutes > targetMinute + 1) return;
     const firedKey = `${dayKey}-${item.key}`;
     if (window.anyasDailyNotificationFired[firedKey]) return;
     window.anyasDailyNotificationFired[firedKey] = true;
@@ -741,7 +805,11 @@ function checkAdditionalReminders() {
   if (withinMinute(840)) fireOptionalReminder("notifyBaqiyat", "baqiyat", "الباقيات الصالحات", "سبحان الله والحمد لله ولا إله إلا الله والله أكبر.", "baqiyatReminderAudio");
   const sunrise = timeMinutes(timings.Sunrise);
   if (sunrise !== null && withinMinute(sunrise)) fireOptionalReminder("notifySunrise", "sunrise", "الشروق", "ابدأ صباحك بذكر الله.", "sunriseReminderAudio");
-  if (withinMinute(1260)) fireOptionalReminder("notifyAyatKursi", "ayat-kursi", "آية الكرسي", "تذكير بقراءة آية الكرسي.", "ayatKursiAudio");
+  const maghrib = timeMinutes(timings.Maghrib);
+  const ayatKursiMinute = anyasReminderTargetMinute("notifyAyatKursi", maghrib);
+  const ayatKursiMode = anyasGetReminderSchedule("notifyAyatKursi")?.mode;
+  const ayatKursiBody = ayatKursiMode === "custom" ? "حان موعد تذكيرك بقراءة آية الكرسي." : "تذكير بقراءة آية الكرسي قبل أذان المغرب بنصف ساعة.";
+  if (ayatKursiMinute !== null && withinMinute(ayatKursiMinute)) fireOptionalReminder("notifyAyatKursi", "ayat-kursi", "آية الكرسي", ayatKursiBody, "ayatKursiAudio");
   if (sunrise !== null && withinMinute((sunrise + 30) % 1440)) fireOptionalReminder("notifyDuha", "duha", "صلاة الضحى", "حان وقت صلاة الضحى.", "duhaReminderAudio");
 
   const weekday = now.getDay();
@@ -1363,7 +1431,56 @@ function setupNotifications() {
     );
 
   });
+  setupReminderScheduleSettings();
   syncAndroidNotificationSettings();
+}
+
+function setupReminderScheduleSettings() {
+  Object.entries(ANYAS_REMINDER_SCHEDULE_CONFIG).forEach(([id, config]) => {
+    const toggle = document.getElementById(id);
+    const panel = document.querySelector(`[data-reminder-schedule-panel="${id}"]`);
+    const modeControl = document.querySelector(`[data-reminder-schedule-mode="${id}"]`);
+    const timeControl = document.querySelector(`[data-reminder-schedule-time="${id}"]`);
+    const timeLabel = document.querySelector(`[data-reminder-custom-label="${id}"]`);
+    const summary = document.querySelector(`[data-reminder-schedule-summary="${id}"]`);
+    if (!panel || !modeControl || !timeControl) return;
+
+    const saved = anyasGetReminderSchedule(id);
+    modeControl.value = saved.mode;
+    timeControl.value = saved.time;
+
+    const updatePanel = () => {
+      const custom = modeControl.value === "custom";
+      panel.hidden = toggle?.checked !== true;
+      timeControl.hidden = !custom;
+      timeControl.disabled = !custom || toggle?.checked !== true;
+      if (timeLabel) timeLabel.hidden = !custom;
+      if (summary) summary.textContent = custom
+        ? `وقت مخصص · ${anyasFormatReminderTime(timeControl.value)}`
+        : config.suggestedSummary;
+    };
+
+    modeControl.addEventListener("change", () => {
+      const validModes = id === "notifyAyatKursi" ? ["beforeMaghrib", "custom"] : ["suggested", "custom"];
+      if (!validModes.includes(modeControl.value)) modeControl.value = config.defaultMode;
+      localStorage.setItem(anyasReminderScheduleKey(id, "mode"), modeControl.value);
+      updatePanel();
+      syncAndroidNotificationSettings();
+    });
+
+    timeControl.addEventListener("change", () => {
+      if (!anyasIsReminderTimeValid(id, timeControl.value)) {
+        timeControl.value = anyasGetReminderSchedule(id).time;
+        return;
+      }
+      localStorage.setItem(anyasReminderScheduleKey(id, "time"), anyasNormalizeClock(timeControl.value));
+      updatePanel();
+      syncAndroidNotificationSettings();
+    });
+
+    toggle?.addEventListener("change", updatePanel);
+    updatePanel();
+  });
 }
 
 function syncAndroidNotificationSettings() {
@@ -1386,9 +1503,19 @@ function syncAndroidNotificationSettings() {
   const storedVolume = localStorage.getItem("anyas_adhanVolume");
   const parsedVolume = storedVolume === null ? 100 : Number(storedVolume);
   const masterVolume = Number.isFinite(parsedVolume) ? Math.max(0, Math.min(100, parsedVolume)) : 100;
+  const schedules = {};
+  Object.entries(ANYAS_REMINDER_SCHEDULE_CONFIG).forEach(([id]) => {
+    const modeControl = document.querySelector(`[data-reminder-schedule-mode="${id}"]`);
+    const timeControl = document.querySelector(`[data-reminder-schedule-time="${id}"]`);
+    const saved = anyasGetReminderSchedule(id);
+    const mode = modeControl?.value || saved.mode;
+    const time = timeControl && anyasIsReminderTimeValid(id, timeControl.value) ? anyasNormalizeClock(timeControl.value) : saved.time;
+    schedules[id] = { mode, time };
+  });
   window.AnyasAndroid.syncSettings(JSON.stringify({
     enabled,
     prayers,
+    schedules,
     latitude: Number(window.currentLatitude),
     longitude: Number(window.currentLongitude),
     morningVoice: localStorage.getItem("anyas_morningWardVoice") || "mishary",
