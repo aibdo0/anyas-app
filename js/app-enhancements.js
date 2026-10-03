@@ -293,38 +293,51 @@
     const bell = byId("notificationBellButton");
     const badge = byId("notificationBadge");
     const back = byId("notificationsBackButton");
-    const activeCount = byId("notificationActiveCount");
-    const activeCountLabel = byId("notificationActiveLabel");
+    const unreadCount = byId("notificationUnreadCount");
+    const unreadLabel = byId("notificationUnreadLabel");
     const manage = byId("manageNotificationsButton");
-    const reminderIds = [
-      "notifyPrayerSoon", "notifySunrise", "notifyLastThird", "notifyAyatKursi", "notifyHadith", "notifyDuha",
-      "notifySalawat", "notifyBaqiyat", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday",
-      "notifyFastingFisabilillah", "notifyRainSunnah", "beforeFajrReminder", "notifyWardAwakening", "notifyWardMorning",
-      "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyFridayKahf",
-      "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat"
-    ];
     const bellSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>';
-    const categoryFor = id => {
-      if (["notifyPrayerSoon", "notifySunrise", "notifyDuha", "beforeFajrReminder"].includes(id)) return "prayer";
-      if (id.startsWith("notifyWard") || ["notifyHadith", "notifyAyatKursi", "notifySalawat", "notifyBaqiyat", "notifyLastThird"].includes(id)) return "adhkar";
-      return "weekly";
+    const readHistory = () => {
+      try {
+        const raw = window.AnyasAndroid && typeof window.AnyasAndroid.getNotificationHistory === "function"
+          ? window.AnyasAndroid.getNotificationHistory()
+          : localStorage.getItem("anyas_notification_history") || "[]";
+        const items = JSON.parse(raw);
+        return Array.isArray(items) ? items.filter(item => item && typeof item === "object").sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0)) : [];
+      } catch (error) {
+        console.warn("تعذر قراءة صندوق الإشعارات:", error);
+        return [];
+      }
     };
-    const render = () => {
-      const items = reminderIds.flatMap(id => {
-        const checkbox = byId(id);
-        const enabled = Boolean(checkbox?.checked) || localStorage.getItem(`anyas_${id}`) === "true";
-        if (!enabled) return [];
-        const row = checkbox?.closest(".setting-row");
-        return [{
-          id,
-          title: row?.querySelector(".setting-title")?.textContent.trim() || id,
-          description: row?.querySelector(".setting-description")?.textContent.trim() || "تذكير اختياري من أنياس.",
-          category: categoryFor(id)
-        }];
-      });
-      if (badge) { badge.textContent = toArabic(items.length); badge.hidden = !items.length; }
-      if (activeCount) activeCount.textContent = toArabic(items.length);
-      if (activeCountLabel) activeCountLabel.textContent = t(items.length === 1 ? "تنبيه مفعّل" : "تنبيهات مفعّلة");
+    const markAllRead = () => {
+      if (window.AnyasAndroid && typeof window.AnyasAndroid.markNotificationHistoryRead === "function") {
+        window.AnyasAndroid.markNotificationHistoryRead();
+        return;
+      }
+      const items = readHistory().map(item => ({ ...item, read: true }));
+      try { localStorage.setItem("anyas_notification_history", JSON.stringify(items)); } catch (error) { console.warn("تعذر تحديث حالة قراءة الإشعارات:", error); }
+    };
+    const formatTime = timestamp => {
+      const date = new Date(Number(timestamp));
+      if (!Number.isFinite(date.getTime())) return "";
+      let locale = "ar-EG";
+      try { if (localStorage.getItem("anyas_language") === "en") locale = "en-US"; } catch (error) { }
+      return new Intl.DateTimeFormat(locale, { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }).format(date);
+    };
+    const render = (markRead = false) => {
+      let items = readHistory();
+      if (markRead && items.some(item => !item.read)) {
+        markAllRead();
+        items = items.map(item => ({ ...item, read: true }));
+      }
+      const unread = items.filter(item => !item.read).length;
+      if (badge) {
+        badge.textContent = toArabic(unread);
+        badge.hidden = unread === 0;
+        badge.setAttribute("aria-label", `${toArabic(unread)} ${t(unread === 1 ? "إشعار غير مقروء" : "إشعارات غير مقروءة")}`);
+      }
+      if (unreadCount) unreadCount.textContent = toArabic(unread);
+      if (unreadLabel) unreadLabel.textContent = t(unread === 1 ? "إشعار غير مقروء" : "إشعارات غير مقروءة");
       list.replaceChildren();
       if (!items.length) {
         const empty = document.createElement("div");
@@ -333,36 +346,47 @@
         icon.className = "notification-empty-icon";
         icon.innerHTML = bellSvg;
         const title = document.createElement("strong");
-        title.textContent = t("لا توجد تنبيهات مفعّلة");
+        title.textContent = t("لا توجد إشعارات بعد");
         const hint = document.createElement("small");
-        hint.textContent = t("فعّل تذكيرًا من الإعدادات ليظهر هنا.");
+        hint.textContent = t("ستظهر هنا التنبيهات عند وصولها، لتراجعها متى شئت.");
         empty.append(icon, title, hint);
         list.append(empty);
       } else {
         items.forEach(item => {
           const card = document.createElement("article");
-          card.className = `notification-item ${item.category}`;
+          card.className = `notification-history-item${item.read ? "" : " unread"}`;
           const icon = document.createElement("span");
-          icon.className = `notification-item-icon ${item.category}`;
+          icon.className = "notification-history-icon";
           icon.innerHTML = bellSvg;
-          const copy = document.createElement("span");
-          copy.className = "notification-item-copy";
+          const copy = document.createElement("div");
+          copy.className = "notification-history-copy";
+          const heading = document.createElement("div");
+          heading.className = "notification-history-heading";
           const title = document.createElement("strong");
-          title.textContent = item.title;
-          const description = document.createElement("small");
-          description.textContent = item.description;
-          copy.append(title, description);
+          title.textContent = item.title || t("إشعار من أنياس");
           const status = document.createElement("span");
-          status.className = "notification-item-status";
-          status.textContent = t("نشط");
-          card.append(icon, copy, status);
+          status.className = `notification-history-status${item.read ? " read" : " unread"}`;
+          status.textContent = t(item.read ? "مقروء" : "جديد");
+          heading.append(title, status);
+          const body = document.createElement("p");
+          body.textContent = item.body || "";
+          const time = document.createElement("small");
+          time.className = "notification-history-time";
+          time.textContent = formatTime(item.timestamp);
+          copy.append(heading);
+          if (item.body) copy.append(body);
+          copy.append(time);
+          card.append(icon, copy);
           list.append(card);
         });
       }
     };
-    reminderIds.forEach(id => byId(id)?.addEventListener("change", render));
     render();
-    bell?.addEventListener("click", () => openPage("notifications"));
+    window.anyasNotificationInboxRefresh = () => render();
+    window.addEventListener("anyas-notification-recorded", () => render());
+    window.addEventListener("storage", event => { if (event.key === "anyas_notification_history") render(); });
+    window.setInterval(() => { if (!document.hidden) render(); }, 30_000);
+    bell?.addEventListener("click", () => { openPage("notifications"); render(true); });
     back?.addEventListener("click", () => openPage("home"));
     manage?.addEventListener("click", () => {
       openPage("settings");
