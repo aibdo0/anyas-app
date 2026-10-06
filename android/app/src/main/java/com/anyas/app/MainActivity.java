@@ -23,7 +23,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.webkit.WebViewAssetLoader;
-import com.google.firebase.messaging.FirebaseMessaging;
 import org.json.JSONObject;
 import java.util.Calendar;
 
@@ -80,8 +79,6 @@ public class MainActivity extends Activity {
         s.setJavaScriptCanOpenWindowsAutomatically(true);
         s.setSupportMultipleWindows(true);
         web.addJavascriptInterface(new NativeBridge(), "AnyasAndroid");
-        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token ->
-                getSharedPreferences("anyas_firebase", MODE_PRIVATE).edit().putString("fcm_token", token).apply());
         web.setWebViewClient(new WebViewClient() {
             @Override public void onPageFinished(WebView view, String url) {
                 mainHandler.postDelayed(showApp, 650);
@@ -174,9 +171,6 @@ public class MainActivity extends Activity {
     }
 
     public class NativeBridge {
-        @JavascriptInterface public String getFirebaseToken() {
-            return getSharedPreferences("anyas_firebase", MODE_PRIVATE).getString("fcm_token", "");
-        }
         @JavascriptInterface public String getNotificationHistory() {
             return NotificationHistory.getJson(MainActivity.this);
         }
