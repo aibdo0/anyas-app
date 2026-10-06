@@ -41,6 +41,7 @@ public class AnyasFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void showUpdateNotification(String title, String body) {
+        NotificationHistory.record(this, "firebase-update", title, body);
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (manager == null) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
