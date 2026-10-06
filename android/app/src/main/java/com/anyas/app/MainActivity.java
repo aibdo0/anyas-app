@@ -177,6 +177,11 @@ public class MainActivity extends Activity {
         @JavascriptInterface public String getFirebaseToken() {
             return getSharedPreferences("anyas_firebase", MODE_PRIVATE).getString("fcm_token", "");
         }
+        @JavascriptInterface public boolean isFirebaseConnected() { return !getFirebaseToken().isEmpty(); }
+        @JavascriptInterface public boolean areFirebaseUpdatesEnabled() { return getSharedPreferences("anyas_firebase", MODE_PRIVATE).getBoolean("updates_enabled", true); }
+        @JavascriptInterface public void setFirebaseUpdatesEnabled(boolean enabled) { getSharedPreferences("anyas_firebase", MODE_PRIVATE).edit().putBoolean("updates_enabled", enabled).apply(); }
+        @JavascriptInterface public String getAppVersionName() { try { return getPackageManager().getPackageInfo(getPackageName(), 0).versionName; } catch (Exception ignored) { return "unknown"; } }
+        @JavascriptInterface public void rescheduleRemindersNow() { ReminderScheduler.scheduleSaved(MainActivity.this); }
         @JavascriptInterface public String getNotificationHistory() {
             return NotificationHistory.getJson(MainActivity.this);
         }

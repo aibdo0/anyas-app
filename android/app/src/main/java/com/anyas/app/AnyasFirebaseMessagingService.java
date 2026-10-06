@@ -41,6 +41,7 @@ public class AnyasFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void showUpdateNotification(String title, String body) {
+        if (!getSharedPreferences("anyas_firebase", MODE_PRIVATE).getBoolean("updates_enabled", true)) return;
         NotificationHistory.record(this, "firebase-update", title, body);
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (manager == null) return;
