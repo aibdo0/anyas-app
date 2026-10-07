@@ -275,6 +275,7 @@ function goToPage(pageId) {
   const navPage = [
     "settings",
     "about",
+    "privacy",
     "prayer-report",
     "worship",
     "city-picker",
@@ -331,6 +332,16 @@ function setupQuickActions() {
       }
     });
   });
+  document.querySelectorAll("[data-back-about]").forEach(button => {
+    button.addEventListener("click", () => goToPage("about"));
+  });
+  const syncPrivacyLanguage = () => {
+    const isEnglish = document.documentElement.lang === "en";
+    document.querySelector(".privacy-ar")?.toggleAttribute("hidden", isEnglish);
+    document.querySelector(".privacy-en")?.toggleAttribute("hidden", !isEnglish);
+  };
+  syncPrivacyLanguage();
+  window.addEventListener("anyas:languagechange", syncPrivacyLanguage);
 }
 
 

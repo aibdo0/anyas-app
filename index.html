@@ -54,6 +54,7 @@
 <link rel="stylesheet" href="css/more-page.css?v=20261007-2">
 <link rel="stylesheet" href="css/app-design-system.css?v=20261007-2">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
+<link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 </head>
 <body>
 <div class="app">
@@ -1947,6 +1948,11 @@ data-audio="fajrAudio"
       <span class="more-menu-copy"><strong>عن التطبيق</strong><small>تعرّف على أنياس ومزاياه</small></span>
       <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
     </button>
+    <button type="button" class="more-menu-item" data-more-go="privacy">
+      <span class="more-menu-icon more-menu-icon--privacy" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.5-2.9 8.1-7 10-4.1-1.9-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg></span>
+      <span class="more-menu-copy"><strong>سياسة الخصوصية</strong><small>كيف يتعامل أنياس مع بياناتك</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
   </div>
 </section>
 </main>
@@ -2015,8 +2021,35 @@ data-audio="fajrAudio"
   </section>
   <section class="about-card about-policy-card" aria-labelledby="aboutPrivacyHeading">
     <h2 id="aboutPrivacyHeading">سياسة الخصوصية</h2>
-    <p>سياسة الخصوصية التفصيلية قيد الإعداد وستُضاف لاحقًا.</p>
-    <span class="about-coming-soon">قريبًا</span>
+    <p>تعرف على ما يحفظه أنياس على جهازك ومتى يستخدم الموقع والخدمات الخارجية.</p>
+    <button class="about-action" type="button" data-more-go="privacy"><span>قراءة سياسة الخصوصية</span><small>الخصوصية أولًا، والموقع اختياري</small></button>
+  </section>
+</main>
+<main class="page" id="page-privacy">
+  <header class="plain-header">
+    <button class="back-button" type="button" data-back-about>رجوع إلى عن التطبيق</button>
+    <div class="brand">سياسة الخصوصية</div>
+    <div class="date">آخر تحديث: 8 أكتوبر 2026</div>
+  </header>
+  <section class="privacy-document privacy-ar" lang="ar" dir="rtl" aria-labelledby="privacyArTitle">
+    <div class="privacy-intro"><span class="privacy-mark" aria-hidden="true">✓</span><div><h1 id="privacyArTitle">خصوصيتك أولوية</h1><p>يوضح هذا المستند كيف يتعامل تطبيق أنياس مع المعلومات عند استخدامه.</p></div></div>
+    <section class="privacy-section"><h2>ملخص سريع</h2><p>أنياس لا يحتاج إلى حساب أو تسجيل دخول. إعداداتك وتقدمك وسجل الإشعارات تُحفظ محليًا على جهازك. إذن الموقع اختياري، ويمكنك اختيار المدينة يدويًا.</p></section>
+    <section class="privacy-section"><h2>المعلومات التي يستخدمها التطبيق</h2><p><strong>الموقع الجغرافي:</strong> يُستخدم فقط عند موافقتك لحساب مواقيت الصلاة والقبلة والبحث عن المساجد القريبة. يمكنك إيقاف الإذن من إعدادات الجهاز أو استخدام مدينة يدوية.</p><p><strong>إعداداتك المحلية:</strong> مثل المدينة، طريقة الحساب، اللغة، المظهر، المفضلة، تقدم الأذكار، إعدادات الصوت والتذكيرات. تُحفظ هذه البيانات على الجهاز باستخدام التخزين المحلي.</p><p><strong>الإشعارات:</strong> يسجل التطبيق الإشعارات التي أرسلها داخل صندوق إشعارات محلي ليسهل عليك مراجعتها. لا يتم إرسال هذا السجل إلى خادم أنياس.</p></section>
+    <section class="privacy-section"><h2>الخدمات الخارجية</h2><p>عند الحاجة للاتصال بالإنترنت، قد يرسل التطبيق الإحداثيات أو اسم المدينة إلى خدمات خارجية لتقديم الوظيفة المطلوبة:</p><ul><li><strong>Aladhan:</strong> مواقيت الصلاة والتقويم الهجري.</li><li><strong>OpenStreetMap / Nominatim / Overpass:</strong> البحث عن المدن والمساجد.</li><li><strong>Open-Meteo:</strong> التحقق من حالة المطر عند تفعيل تذكير سنة المطر.</li><li><strong>HadeethEnc:</strong> جلب نص الحديث اليومي.</li><li><strong>Google Maps:</strong> عند اختيار فتح الاتجاهات أو نتائج المساجد.</li></ul><p>تخضع هذه الخدمات لسياساتها وشروطها الخاصة. تُستخدم آخر نتيجة محفوظة عندما يكون ذلك متاحًا، وقد لا تعمل بعض الوظائف دون اتصال.</p></section>
+    <section class="privacy-section"><h2>الصوت والملفات</h2><p>ملفات الصوت المرفقة بالتطبيق تعمل محليًا. إذا اخترت ملفًا صوتيًا مخصصًا، يبقى داخل مساحة التطبيق على جهازك ولا يُرفع تلقائيًا.</p></section>
+    <section class="privacy-section"><h2>الاحتفاظ والحذف</h2><p>تبقى البيانات المحلية حتى تحذفها من إعدادات التطبيق أو تمسح بيانات التطبيق أو تحذفه من جهازك. يمكنك إيقاف الأذونات والتذكيرات في أي وقت من إعدادات التطبيق أو الهاتف.</p></section>
+    <section class="privacy-section"><h2>الأطفال والدعم</h2><p>أنياس تطبيق عام ولا يطلب بيانات شخصية حساسة. لا توجد قناة دعم تلقائية داخل التطبيق؛ مشاركة الملاحظات تتم يدويًا من خلال قائمة مشاركة جهازك.</p></section>
+    <section class="privacy-section"><h2>التغييرات والتواصل</h2><p>قد نحدّث هذه السياسة عند إضافة وظيفة جديدة أو تغيير خدمة خارجية. سيظهر تاريخ آخر تحديث أعلى الصفحة. للاستفسارات، استخدم خيار الملاحظات في صفحة «عن التطبيق».</p></section>
+  </section>
+  <section class="privacy-document privacy-en" lang="en" dir="ltr" aria-labelledby="privacyEnTitle" hidden>
+    <div class="privacy-intro"><span class="privacy-mark" aria-hidden="true">✓</span><div><h1 id="privacyEnTitle">Your privacy comes first</h1><p>This notice explains how Anias handles information when you use the app.</p></div></div>
+    <section class="privacy-section"><h2>Quick summary</h2><p>Anias does not require an account or sign-in. Your settings, progress, and notification history are stored locally on your device. Location access is optional, and you can choose a city manually.</p></section>
+    <section class="privacy-section"><h2>Information the app uses</h2><p><strong>Location:</strong> Used only with your permission to calculate prayer times, find the Qibla, and search for nearby mosques. You can revoke access in device settings or use a manual city.</p><p><strong>Local settings:</strong> Your city, calculation method, language, appearance, favorites, adhkar progress, audio settings, and reminders are stored locally on your device.</p><p><strong>Notifications:</strong> Anias keeps a local inbox of notifications it delivered so you can review them. This history is not sent to an Anias server.</p></section>
+    <section class="privacy-section"><h2>Third-party services</h2><p>When internet access is needed, Anias may send coordinates or a city name to external services for the requested feature:</p><ul><li><strong>Aladhan:</strong> prayer times and Hijri calendar.</li><li><strong>OpenStreetMap / Nominatim / Overpass:</strong> city and mosque search.</li><li><strong>Open-Meteo:</strong> rain checks when the rain Sunnah reminder is enabled.</li><li><strong>HadeethEnc:</strong> the daily hadith.</li><li><strong>Google Maps:</strong> when you open directions or mosque results.</li></ul><p>These services have their own policies and terms. Where possible, Anias uses the last cached result while offline; some features may not work without a connection.</p></section>
+    <section class="privacy-section"><h2>Audio and files</h2><p>Bundled audio runs locally. If you choose a custom audio file, it remains in the app's storage on your device and is not uploaded automatically.</p></section>
+    <section class="privacy-section"><h2>Retention and deletion</h2><p>Local data remains until you remove it from the app, clear the app's data, or uninstall the app. You can disable permissions and reminders at any time from the app or device settings.</p></section>
+    <section class="privacy-section"><h2>Children and support</h2><p>Anias is a general-purpose app and does not request sensitive personal information. There is no automatic support channel; feedback is shared manually through your device's share sheet.</p></section>
+    <section class="privacy-section"><h2>Changes and contact</h2><p>We may update this notice when features or external services change. The latest update date appears at the top of this page. For questions, use the feedback option in About the app.</p></section>
   </section>
 </main>
 
