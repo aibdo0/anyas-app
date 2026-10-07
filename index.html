@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="css/azkar.css?v=20261003-1">
 <link rel="stylesheet" href="css/daily-adhkar.css?v=20261003-1">
 <link rel="stylesheet" href="css/settings.css?v=20261003-3">
+<link rel="stylesheet" href="css/audio-library.css?v=20261007-1">
 
 <link rel="stylesheet" href="css/offline-fonts.css">
 
@@ -1442,30 +1443,41 @@ type="button"
 </div>
 
 
-<div class="settings-section-title">
-مكتبة الأصوات
+<div class="audio-library-heading">
+  <span class="audio-library-kicker">الصوت والتجربة</span>
+  <h2>مكتبة الأصوات</h2>
+  <p>اختر أصواتك واضبطها واختبر التنبيهات من مكان واحد.</p>
 </div>
 
 
 <div class="audio-library-intro">
   <span class="audio-library-intro-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg></span>
-  <span class="audio-library-intro-copy"><small>أصوات أنياس</small><strong>أصواتك مرتبة حسب الاستخدام</strong><span>اضبط مستوى موحدًا لجميع المقاطع والتنبيهات.</span></span>
+  <span class="audio-library-intro-copy"><small>مكتبة أنياس الصوتية</small><strong>صوت يناسب يومك</strong><span>أذانك وأذكارك وتنبيهاتك في تجربة واحدة سهلة.</span></span>
 </div>
 
 <div class="settings-card audio-library-card">
 
 <div class="muezzin-volume-control master-audio-volume-control">
-  <div class="muezzin-volume-header"><span>مستوى الصوت لجميع الأصوات</span><output id="volumeValue">100%</output></div>
+  <div class="muezzin-volume-header audio-volume-header">
+    <span class="audio-volume-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg></span>
+    <span class="audio-volume-copy"><strong>مستوى الصوت الرئيسي</strong><small>يسري على المعاينات والتنبيهات</small></span>
+    <output id="volumeValue">100%</output>
+  </div>
   <input id="adhanVolume" type="range" min="0" max="100" step="1" value="100" aria-label="مستوى الصوت لجميع الأصوات">
+  <div class="audio-volume-scale" aria-hidden="true"><span>هادئ</span><span>مرتفع</span></div>
 </div>
 
 <div class="audio-test-panel" aria-label="اختبار الصوت والإشعارات">
-  <div class="audio-test-actions">
-    <button class="preview-button audio-test-button" id="testAdhanButton" type="button">اختبر الأذان</button>
-    <button class="preview-button audio-test-button" id="testAdhkarButton" type="button">اختبر الأذكار</button>
-    <button class="preview-button audio-test-button" id="testNotificationButton" type="button">اختبر الإشعار</button>
+  <div class="audio-test-heading">
+    <span class="audio-test-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+    <span><strong>اختبار سريع</strong><small>تأكد من الصوت قبل الاعتماد عليه</small></span>
   </div>
-  <p class="audio-test-help">تُشغَّل عينة قصيرة. ارفع صوت الوسائط في الهاتف، وتأكد أن مستوى التطبيق ليس صفرًا.</p>
+  <div class="audio-test-actions">
+    <button class="preview-button audio-test-button" id="testAdhanButton" type="button"><span class="audio-test-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg></span><span>الأذان</span></button>
+    <button class="preview-button audio-test-button" id="testAdhkarButton" type="button"><span class="audio-test-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h7"/></svg></span><span>الأذكار</span></button>
+    <button class="preview-button audio-test-button" id="testNotificationButton" type="button"><span class="audio-test-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></span><span>الإشعار</span></button>
+  </div>
+  <p class="audio-test-help">تُشغَّل عينة قصيرة. إذا لم تسمعها، ارفع صوت الوسائط في الهاتف.</p>
   <p class="audio-test-status" id="audioTestStatus" role="status" aria-live="polite"></p>
 </div>
 
@@ -1483,6 +1495,8 @@ class="setting-row expandable-row"
 id="normalMuezzinRow"
 role="button"
 tabindex="0"
+aria-controls="normalMuezzinOptions"
+aria-expanded="false"
 >
 
 <div class="setting-info">
@@ -1498,7 +1512,8 @@ tabindex="0"
 </div>
 
 <div class="settings-arrow">
-فتح
+اختيار
+<span class="audio-picker-arrow" aria-hidden="true"></span>
 </div>
 
 </div>
@@ -1578,6 +1593,8 @@ class="setting-row expandable-row"
 id="fajrMuezzinRow"
 role="button"
 tabindex="0"
+aria-controls="fajrMuezzinOptions"
+aria-expanded="false"
 >
 
 <div class="setting-info">
@@ -1593,7 +1610,8 @@ tabindex="0"
 </div>
 
 <div class="settings-arrow">
-فتح
+اختيار
+<span class="audio-picker-arrow" aria-hidden="true"></span>
 </div>
 
 </div>
@@ -1997,7 +2015,7 @@ type="button"
 <script src="js/favorites.js?v=20260926-3"></script>
 <script src="js/azkar.js?v=20261002-4"></script>
 <script src="js/wird.js?v=20261002-5"></script>
-<script src="js/settings.js?v=20261003-7"></script>
+<script src="js/settings.js?v=20261007-1"></script>
 <script src="js/qibla.js?v=20261001-2"></script>
 <script src="js/app-enhancements.js?v=20261003-2"></script>
 <script src="js/daily-devotions.js?v=20261003-1"></script>
