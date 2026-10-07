@@ -59,6 +59,10 @@
 </head>
 <body>
 <div class="app">
+<div class="pwa-status-banner" id="pwaStatusBanner" role="status" aria-live="polite" hidden>
+  <span id="pwaStatusText">أنت تعمل دون اتصال؛ المحتوى المحفوظ ما زال متاحًا.</span>
+  <button id="pwaInstallButton" type="button" hidden>تثبيت أنياس</button>
+</div>
 <div class="first-run-overlay" id="firstRunOverlay" hidden>
   <section class="first-run-card" role="dialog" aria-modal="true" aria-labelledby="firstRunTitle" tabindex="-1">
     <div class="first-run-brand-row">
@@ -2205,6 +2209,41 @@ type="button"
   if ("serviceWorker" in navigator && window.isSecureContext) {
     window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(error => console.info("Service Worker غير متاح:", error.message)));
   }
+  (() => {
+    const banner = document.getElementById("pwaStatusBanner");
+    const status = document.getElementById("pwaStatusText");
+    const installButton = document.getElementById("pwaInstallButton");
+    let installPrompt = null;
+    const standalone = () => window.matchMedia?.("(display-mode: standalone)").matches || window.navigator.standalone === true;
+    const refreshConnection = () => {
+      if (!banner || !status) return;
+      if (!navigator.onLine) {
+        status.textContent = "أنت تعمل دون اتصال؛ المحتوى المحفوظ ما زال متاحًا.";
+        banner.hidden = false;
+      } else if (!installPrompt) {
+        banner.hidden = true;
+      }
+    };
+    window.addEventListener("offline", refreshConnection);
+    window.addEventListener("online", refreshConnection);
+    window.addEventListener("beforeinstallprompt", event => {
+      event.preventDefault();
+      installPrompt = event;
+      if (installButton && !standalone()) {
+        installButton.hidden = false;
+        banner.hidden = false;
+      }
+    });
+    installButton?.addEventListener("click", async () => {
+      if (!installPrompt) return;
+      installPrompt.prompt();
+      await installPrompt.userChoice;
+      installPrompt = null;
+      installButton.hidden = true;
+      refreshConnection();
+    });
+    refreshConnection();
+  })();
 </script>
 
 </body>

@@ -67,6 +67,9 @@ check("PWA install and offline shell are configured", () => {
   assert.match(serviceWorker, /caches\.open\(CACHE_NAME\)/);
   assert.match(serviceWorker, /self\.addEventListener\("fetch"/);
   assert.match(serviceWorker, /caches\.match\("\.\/index\.html"\)/);
+  assert.match(index, /id="pwaStatusBanner"/);
+  assert.match(index, /beforeinstallprompt/);
+  assert.match(index, /addEventListener\("offline"/);
 });
 
 console.log(`Smoke tests passed: ${passed.length}`);
