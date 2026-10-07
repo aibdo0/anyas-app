@@ -247,6 +247,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       const match = clean.match(/^(\d{1,2}):(\d{2})/);
       if (!match) return clean;
       const hour = Number(match[1]);
+      if (window.getTimeFormat?.() === "24") return `${String(hour).padStart(2, "0")}:${match[2]}`;
       const hour12 = hour % 12 || 12;
       const period = hour >= 12 ? "م" : "ص";
       return `${String(hour12).padStart(2, "0")}:${match[2]} ${period}`;

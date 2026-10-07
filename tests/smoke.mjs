@@ -141,5 +141,16 @@ check("audio mute state is visible and persisted", () => {
   assert.match(read("css/audio-library.css"), /\.audio-mute-toggle/);
 });
 
+check("12 and 24 hour time formats are persisted and applied", () => {
+  assert.match(index, /id="timeFormatSelect"/);
+  assert.match(index, /option value="12"/);
+  assert.match(index, /option value="24"/);
+  assert.match(read("js/app.js"), /anyas_time_format/);
+  assert.match(prayer, /function getTimeFormat/);
+  assert.match(prayer, /function format24Hour/);
+  assert.match(prayer, /getTimeFormat\(\) === "24"/);
+  assert.match(enhancements, /window\.getTimeFormat\?\.\(\) === "24"/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);

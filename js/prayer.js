@@ -594,6 +594,10 @@ function addMinutesToRawTime(
 // عرض وقت الصلاة
 // =====================================================
 
+function getTimeFormat() {
+  return localStorage.getItem("anyas_time_format") === "24" ? "24" : "12";
+}
+
 function setPrayerTime(
   id,
   time
@@ -611,9 +615,17 @@ function setPrayerTime(
   }
 
 
-  element.textContent =
-    convertTo12Hour(time);
+  element.textContent = getTimeFormat() === "24"
+    ? format24Hour(time)
+    : convertTo12Hour(time);
 
+}
+
+function format24Hour(time) {
+  const parts = String(time || "").split(":");
+  const hour = Number.parseInt(parts[0], 10);
+  if (Number.isNaN(hour)) return time;
+  return `${formatNumber(String(hour).padStart(2, "0"))}:${formatNumber(parts[1] || "00")}`;
 }
 
 

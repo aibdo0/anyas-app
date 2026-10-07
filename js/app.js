@@ -1992,11 +1992,23 @@ function setupExtraSettings() {
 
   setupCalculationMethod();
   setupAsrMadhab();
+  setupTimeFormat();
   setupPrayerTrackingToggle();
   setupHijriAdjustment();
   setupManualPrayerSettings();
   setupDataManagement();
 
+}
+
+function setupTimeFormat() {
+  const select = document.getElementById("timeFormatSelect");
+  if (!select) return;
+  const saved = localStorage.getItem("anyas_time_format");
+  if (saved === "12" || saved === "24") select.value = saved;
+  select.addEventListener("change", () => {
+    localStorage.setItem("anyas_time_format", select.value);
+    window.location.reload();
+  });
 }
 
 function setupAsrMadhab() {
