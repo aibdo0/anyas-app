@@ -824,7 +824,7 @@ function checkAdditionalReminders() {
   if (window.anyasRainCheckAt && Date.now() < window.anyasRainCheckAt) return;
   window.anyasRainCheckAt = Date.now() + 30 * 60 * 1000;
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(window.currentLatitude)}&longitude=${encodeURIComponent(window.currentLongitude)}&current=rain,precipitation&timezone=auto`;
-  fetch(url).then(response => response.ok ? response.json() : null).then(data => {
+  (window.anyasFetch ? window.anyasFetch(url, {}, { timeoutMs: 8000, retries: 1 }) : fetch(url)).then(response => response.ok ? response.json() : null).then(data => {
     const current = data?.current;
     if (!current || !(Number(current.rain) > 0 || Number(current.precipitation) > 0)) return;
     fireOptionalReminder("notifyRainSunnah", "rain-sunnah", "سنة نزول المطر", "اللهم صيبًا نافعًا.", "rainSunnahAudio", `${now.toDateString()}-${now.getHours()}`);

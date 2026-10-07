@@ -51,6 +51,15 @@ check("common cities and recent city history work offline", () => {
   assert.match(index, /data\/common-cities\.js/);
 });
 
+check("external services use timeout and bounded retry handling", () => {
+  assert.match(enhancements, /window\.anyasFetch = async function/);
+  assert.match(enhancements, /AbortController/);
+  assert.match(enhancements, /retries = Math\.max/);
+  assert.match(prayer, /window\.anyasFetch\(url, \{\}, \{ timeoutMs: 9000, retries: 1 \}\)/);
+  assert.match(enhancements, /timeoutMs: 9000, retries: 1/);
+  assert.match(settings, /timeoutMs: 8000, retries: 1/);
+});
+
 check("prayer times have an offline local calculation path", () => {
   assert.match(prayer, /const calculateLocally = \(\) =>/);
   assert.match(prayer, /if \(!rawTimings\) rawTimings = calculateLocally\(\)/);

@@ -1,3 +1,25 @@
+window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
+  const timeoutMs = Number(config.timeoutMs || 10000);
+  const retries = Math.max(0, Number(config.retries ?? 1));
+  let lastError;
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const controller = typeof AbortController === "function" ? new AbortController() : null;
+    const timer = controller ? window.setTimeout(() => controller.abort(), timeoutMs) : null;
+    try {
+      const response = await fetch(url, { ...options, ...(controller ? { signal: controller.signal } : {}) });
+      if (timer) window.clearTimeout(timer);
+      if (response.ok || response.status < 500 || attempt === retries) return response;
+      lastError = new Error(`HTTP ${response.status}`);
+    } catch (error) {
+      if (timer) window.clearTimeout(timer);
+      lastError = error;
+      if (attempt === retries) break;
+    }
+    await new Promise(resolve => window.setTimeout(resolve, 250 * (attempt + 1)));
+  }
+  throw lastError || new Error("فشل طلب الشبكة");
+};
+
 (() => {
   "use strict";
 
@@ -127,7 +149,7 @@
           if (!localMatches.length) results.textContent = "لا توجد مدينة محفوظة بهذا الاسم دون اتصال.";
           return;
         }
-        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&accept-language=${language}&q=${encodeURIComponent(query)}`);
+        const response = await window.anyasFetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&accept-language=${language}&q=${encodeURIComponent(query)}`, {}, { timeoutMs: 9000, retries: 1 });
         const places = await response.json();
         results.replaceChildren();
         const seen = new Set();
@@ -182,20 +204,20 @@
         let data;
         if (view === "tomorrow") {
           const day = String(date.getDate()).padStart(2, "0");
-          const response = await fetch(`https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}`);
+          const response = await window.anyasFetch(`https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}`, {}, { timeoutMs: 9000, retries: 1 });
           if (!response.ok) throw new Error("Prayer time request failed");
           data = (await response.json()).data;
           if (!data) throw new Error("Prayer time data is missing");
           if (requestId !== latestScheduleRequest) return;
           renderDay(data, date);
         } else if (hijriMonth?.year && hijriMonth?.month) {
-          const response = await fetch(`https://api.aladhan.com/v1/hijriCalendar/${hijriMonth.year}/${hijriMonth.month}?latitude=${latitude}&longitude=${longitude}&method=${method}`);
+          const response = await window.anyasFetch(`https://api.aladhan.com/v1/hijriCalendar/${hijriMonth.year}/${hijriMonth.month}?latitude=${latitude}&longitude=${longitude}&method=${method}`, {}, { timeoutMs: 9000, retries: 1 });
           if (!response.ok) throw new Error("Hijri calendar request failed");
           data = (await response.json()).data || [];
           if (requestId !== latestScheduleRequest) return;
           renderMonth(data, hijriMonth);
         } else {
-          const response = await fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${latitude}&longitude=${longitude}&method=${method}`);
+          const response = await window.anyasFetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${latitude}&longitude=${longitude}&method=${method}`, {}, { timeoutMs: 9000, retries: 1 });
           if (!response.ok) throw new Error("Calendar request failed");
           data = (await response.json()).data || [];
           if (requestId !== latestScheduleRequest) return;

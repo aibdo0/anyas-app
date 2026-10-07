@@ -242,7 +242,7 @@ async function fetchCityName(
 
 
     const response =
-      await fetch(url);
+      await (window.anyasFetch ? window.anyasFetch(url, {}, { timeoutMs: 8000, retries: 1 }) : fetch(url));
 
 
     if (!response.ok) {
@@ -348,7 +348,7 @@ async function loadPrayerTimes(latitude, longitude) {
   // Refresh the local cache when connected; fully optional for the core screen.
   try {
     const url = `https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}`;
-    const response = await fetch(url);
+    const response = await (window.anyasFetch ? window.anyasFetch(url, {}, { timeoutMs: 9000, retries: 1 }) : fetch(url));
     if (!response.ok) throw new Error(`Aladhan HTTP ${response.status}`);
     const data = await response.json();
     if (!data?.data?.timings) throw new Error("بيانات المواقيت غير متاحة");

@@ -689,7 +689,7 @@ async function setupDailyHadith() {
     const url = new URL("https://hadeethenc.com/api/v1/hadeeths/one/");
     url.searchParams.set("id", id);
     url.searchParams.set("language", "ar");
-    const response = await fetch(url.toString(), { headers: { Accept: "application/json" } });
+    const response = await window.anyasFetch(url.toString(), { headers: { Accept: "application/json" } }, { timeoutMs: 9000, retries: 1 });
     if (!response.ok) throw new Error(`HadeethEnc HTTP ${response.status}`);
     const hadith = await response.json();
     if (!hadith || !hadith.hadeeth) throw new Error("HadeethEnc returned no Arabic text");
