@@ -302,6 +302,18 @@ async function loadPrayerTimes(latitude, longitude) {
   const dateKey = `${year}-${month}-${day}`;
   const method = getCalculationMethod();
   const cacheKey = `anyas_prayer_cache_${dateKey}_${Number(latitude).toFixed(3)}_${Number(longitude).toFixed(3)}_${method}`;
+  const cacheMetaKey = `${cacheKey}_meta`;
+  const statusElement = document.getElementById("prayerDataStatus");
+  const setDataStatus = (source, timestamp = Date.now()) => {
+    if (!statusElement) return;
+    const language = document.documentElement.lang === "en";
+    const time = new Intl.DateTimeFormat(language ? "en" : "ar-EG", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" }).format(new Date(timestamp));
+    statusElement.textContent = source === "online"
+      ? (language ? `Updated online at ${time}.` : `محدّثة من الإنترنت — آخر تحديث ${time}`)
+      : source === "cache"
+        ? (language ? `Showing saved times — last update ${time}.` : `مواقيت محفوظة على الجهاز — آخر تحديث ${time}`)
+        : (language ? "Calculated locally; no internet connection needed." : "مواقيت محسوبة محليًا — لا تحتاج اتصالًا بالإنترنت");
+  };
 
   const applyTimings = rawTimings => {
     window.originalPrayerTimings = { ...rawTimings };
@@ -342,7 +354,12 @@ async function loadPrayerTimes(latitude, longitude) {
     const cached = localStorage.getItem(cacheKey);
     if (cached) rawTimings = JSON.parse(cached);
   } catch (_) { }
-  if (!rawTimings) rawTimings = calculateLocally();
+  if (rawTimings) {
+    try { setDataStatus("cache", JSON.parse(localStorage.getItem(cacheMetaKey) || "{}").fetchedAt || Date.now()); } catch (_) { setDataStatus("cache"); }
+  } else {
+    rawTimings = calculateLocally();
+    setDataStatus("local");
+  }
   applyTimings(rawTimings);
 
   // Refresh the local cache when connected; fully optional for the core screen.
@@ -353,7 +370,11 @@ async function loadPrayerTimes(latitude, longitude) {
     const data = await response.json();
     if (!data?.data?.timings) throw new Error("بيانات المواقيت غير متاحة");
     rawTimings = data.data.timings;
-    try { localStorage.setItem(cacheKey, JSON.stringify(rawTimings)); } catch (_) { }
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify(rawTimings));
+      localStorage.setItem(cacheMetaKey, JSON.stringify({ fetchedAt: Date.now(), source: "online" }));
+    } catch (_) { }
+    setDataStatus("online");
     applyTimings(rawTimings);
   } catch (error) {
     console.info("استخدام حساب مواقيت الصلاة المحلي:", error.message);

@@ -62,7 +62,7 @@ check("external services use timeout and bounded retry handling", () => {
 
 check("prayer times have an offline local calculation path", () => {
   assert.match(prayer, /const calculateLocally = \(\) =>/);
-  assert.match(prayer, /if \(!rawTimings\) rawTimings = calculateLocally\(\)/);
+  assert.match(prayer, /rawTimings = calculateLocally\(\)/);
   assert.match(prayer, /localStorage\.getItem\(cacheKey\)/);
   assert.match(prayer, /catch \(error\) \{[\s\S]*?استخدام حساب مواقيت الصلاة المحلي/);
   assert.ok(exists("js/vendor/adhan.umd.min.js"), "local Adhan library is missing");
@@ -108,6 +108,15 @@ check("FAQ answers are available without JavaScript", () => {
   assert.match(index, /كيف أغيّر المدينة؟/);
   assert.match(index, /هل يعمل أنياس بدون إنترنت؟/);
   assert.match(read("css/theme-white-gold.css"), /\.faq-list details/);
+});
+
+check("prayer data freshness is visible and cached", () => {
+  assert.match(index, /id="prayerDataStatus" aria-live="polite"/);
+  assert.match(prayer, /cacheMetaKey/);
+  assert.match(prayer, /setDataStatus\("online"\)/);
+  assert.match(prayer, /setDataStatus\("cache"/);
+  assert.match(prayer, /setDataStatus\("local"\)/);
+  assert.match(read("css/theme-white-gold.css"), /\.prayer-data-status/);
 });
 
 console.log(`Smoke tests passed: ${passed.length}`);
