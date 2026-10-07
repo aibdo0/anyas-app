@@ -53,9 +53,47 @@
 <link rel="stylesheet" href="css/notification-settings.css?v=20261007-1">
 <link rel="stylesheet" href="css/more-page.css?v=20261007-2">
 <link rel="stylesheet" href="css/app-design-system.css?v=20261007-2">
+<link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 </head>
 <body>
 <div class="app">
+<div class="first-run-overlay" id="firstRunOverlay" hidden>
+  <section class="first-run-card" role="dialog" aria-modal="true" aria-labelledby="firstRunTitle" tabindex="-1">
+    <div class="first-run-brand-row">
+      <div class="first-run-brand">
+        <span class="first-run-brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5 14.4 9.6 20.5 12l-6.1 2.4L12 20.5l-2.4-6.1L3.5 12l6.1-2.4L12 3.5Z"/><path d="m19 3 .7 1.7 1.8.3-1.8.7L19 7.5l-.7-1.8-1.8-.7 1.8-.3L19 3Z"/></svg></span>
+        <span class="first-run-brand-name">أنياس</span>
+      </div>
+      <div class="first-run-progress" aria-hidden="true"><span class="first-run-progress-dot is-active"></span><span class="first-run-progress-dot"></span></div>
+    </div>
+    <section class="first-run-step" data-onboarding-step="1">
+      <span class="first-run-kicker">الخطوة ١ من ٢</span>
+      <h1 class="first-run-title" id="firstRunTitle">أهلًا بك في أنياس</h1>
+      <p class="first-run-description">رفيقك اليومي للعبادة — الصلاة والأذكار والقرآن في مكان واحد.</p>
+      <ul class="first-run-feature-list">
+        <li class="first-run-feature"><span class="first-run-feature-icon" aria-hidden="true">◷</span><span class="first-run-feature-copy"><strong>مواقيت صلاة تناسب مدينتك</strong><small>ومتابعة للصلاة القادمة خلال اليوم</small></span></li>
+        <li class="first-run-feature"><span class="first-run-feature-icon" aria-hidden="true">☾</span><span class="first-run-feature-copy"><strong>أذكار وورد يومي</strong><small>افتح ما يناسب وقتك وتابع من حيث وصلت</small></span></li>
+        <li class="first-run-feature"><span class="first-run-feature-icon" aria-hidden="true">✓</span><span class="first-run-feature-copy"><strong>تذكيرات تختارها بنفسك</strong><small>لن نفعّل أي تذكير دون اختيارك.</small></span></li>
+      </ul>
+      <div class="first-run-actions">
+        <button class="first-run-primary" type="button" data-onboarding-action="next">تابع الإعداد</button>
+        <button class="first-run-tertiary" type="button" data-onboarding-action="skip-intro">تخطي المقدمة</button>
+      </div>
+    </section>
+    <section class="first-run-step" data-onboarding-step="2" hidden>
+      <span class="first-run-kicker">الخطوة ٢ من ٢</span>
+      <h2 class="first-run-title" id="firstRunCityTitle">اختر مدينتك</h2>
+      <p class="first-run-description">تُستخدم مدينتك لحساب مواقيت الصلاة بدقة.</p>
+      <div class="first-run-privacy"><strong>الموقع اختياري</strong><p>لن نطلب إذن الموقع إلا عند اختيار استخدام موقعي الحالي. يمكنك اختيار المدينة يدويًا.</p></div>
+      <div class="first-run-actions">
+        <button class="first-run-primary" type="button" data-onboarding-action="choose-city">اختيار المدينة</button>
+        <button class="first-run-secondary" type="button" data-onboarding-action="start">استخدم القاهرة مؤقتًا</button>
+        <button class="first-run-tertiary" type="button" data-onboarding-action="back">رجوع</button>
+      </div>
+      <p class="first-run-note">يمكنك تغيير المدينة لاحقًا من أعلى مواقيت الصلاة.</p>
+    </section>
+  </section>
+</div>
 
 <div id="updateBanner" class="update-banner" hidden role="status">
 <div class="update-banner-text">تحديث جديد متاح</div>
@@ -2084,14 +2122,14 @@ type="button"
 <!-- =====================================================
      ملفات JavaScript
 ===================================================== -->
-<script src="js/i18n.js?v=20261003-3"></script>
+<script src="js/i18n.js?v=20261007-1"></script>
 <script src="data/azkar-topics.js?v=20260926-3"></script>
 <script src="data/azkar-benefits.js?v=20261001-1"></script>
 <script src="data/daily-quran.js?v=20260926-3"></script>
 <script src="data/daily-hadith-ids.js?v=20260926-3"></script>
 <script src="data/daily-devotions.js?v=20260926-3"></script>
 <script src="js/vendor/adhan.umd.min.js"></script>
-<script src="js/prayer.js?v=20261001-2"></script>
+<script src="js/prayer.js?v=20261007-1"></script>
 <script src="js/daily-adhkar.js?v=20260926-3"></script>
 <script src="js/friday.js?v=20261003-3"></script>
 <script src="js/favorites.js?v=20260926-3"></script>
@@ -2099,9 +2137,9 @@ type="button"
 <script src="js/wird.js?v=20261002-5"></script>
 <script src="js/settings.js?v=20261007-2"></script>
 <script src="js/qibla.js?v=20261001-2"></script>
-<script src="js/app-enhancements.js?v=20261003-2"></script>
+<script src="js/app-enhancements.js?v=20261007-1"></script>
 <script src="js/daily-devotions.js?v=20261003-1"></script>
-<script src="js/app.js?v=20261002-2"></script>
+<script src="js/app.js?v=20261007-1"></script>
 <script src="js/about.js?v=20261002-2"></script>
 
 </body>
