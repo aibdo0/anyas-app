@@ -10,6 +10,11 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ANYAS_KEYSTORE_BASE64: ${{ secrets.ANYAS_KEYSTORE_BASE64 }}
+      ANYAS_RELEASE_STORE_PASSWORD: ${{ secrets.ANYAS_RELEASE_STORE_PASSWORD }}
+      ANYAS_RELEASE_KEY_ALIAS: ${{ secrets.ANYAS_RELEASE_KEY_ALIAS }}
+      ANYAS_RELEASE_KEY_PASSWORD: ${{ secrets.ANYAS_RELEASE_KEY_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
       - name: Check JavaScript syntax
@@ -40,20 +45,15 @@ jobs:
           if-no-files-found: error
           retention-days: 14
       - name: Prepare release keystore
-        if: ${{ secrets.ANYAS_KEYSTORE_BASE64 != '' && secrets.ANYAS_RELEASE_STORE_PASSWORD != '' && secrets.ANYAS_RELEASE_KEY_ALIAS != '' && secrets.ANYAS_RELEASE_KEY_PASSWORD != '' }}
-        env:
-          ANYAS_KEYSTORE_BASE64: ${{ secrets.ANYAS_KEYSTORE_BASE64 }}
+        if: ${{ env.ANYAS_KEYSTORE_BASE64 != '' && env.ANYAS_RELEASE_STORE_PASSWORD != '' && env.ANYAS_RELEASE_KEY_ALIAS != '' && env.ANYAS_RELEASE_KEY_PASSWORD != '' }}
         run: echo "$ANYAS_KEYSTORE_BASE64" | base64 --decode > android/anyas-release.jks
       - name: Build signed release AAB
-        if: ${{ secrets.ANYAS_KEYSTORE_BASE64 != '' && secrets.ANYAS_RELEASE_STORE_PASSWORD != '' && secrets.ANYAS_RELEASE_KEY_ALIAS != '' && secrets.ANYAS_RELEASE_KEY_PASSWORD != '' }}
+        if: ${{ env.ANYAS_KEYSTORE_BASE64 != '' && env.ANYAS_RELEASE_STORE_PASSWORD != '' && env.ANYAS_RELEASE_KEY_ALIAS != '' && env.ANYAS_RELEASE_KEY_PASSWORD != '' }}
         env:
           ANYAS_RELEASE_STORE_FILE: ../anyas-release.jks
-          ANYAS_RELEASE_STORE_PASSWORD: ${{ secrets.ANYAS_RELEASE_STORE_PASSWORD }}
-          ANYAS_RELEASE_KEY_ALIAS: ${{ secrets.ANYAS_RELEASE_KEY_ALIAS }}
-          ANYAS_RELEASE_KEY_PASSWORD: ${{ secrets.ANYAS_RELEASE_KEY_PASSWORD }}
         run: gradle --no-daemon -p android bundleRelease
       - name: Upload signed release AAB
-        if: ${{ secrets.ANYAS_KEYSTORE_BASE64 != '' && secrets.ANYAS_RELEASE_STORE_PASSWORD != '' && secrets.ANYAS_RELEASE_KEY_ALIAS != '' && secrets.ANYAS_RELEASE_KEY_PASSWORD != '' }}
+        if: ${{ env.ANYAS_KEYSTORE_BASE64 != '' && env.ANYAS_RELEASE_STORE_PASSWORD != '' && env.ANYAS_RELEASE_KEY_ALIAS != '' && env.ANYAS_RELEASE_KEY_PASSWORD != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: anyas-android-release-aab
