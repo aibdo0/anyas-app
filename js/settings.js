@@ -91,6 +91,7 @@ function setupAdhanSettings() {
 
   const testAdhkarButton = document.getElementById("testAdhkarButton");
   const testNotificationButton = document.getElementById("testNotificationButton");
+  const testReminderButton = document.getElementById("testReminderButton");
   const audioTestStatus = document.getElementById("audioTestStatus");
 
   const adhan =
@@ -290,6 +291,36 @@ function setupAdhanSettings() {
       else Notification.requestPermission().then(showBrowserTest).catch(() => showBrowserTest("denied"));
     });
   }
+
+  testReminderButton?.addEventListener("click", async () => {
+    audioTestRun++;
+    stopOtherAudioPreviews(testReminderButton);
+    stopAllAudioExcept(null);
+    const audio = document.getElementById("morningWardAudio");
+    if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
+    const voice = localStorage.getItem("anyas_morningWardVoice") === "ahmed" ? "adhkar-morning-ahmed-al-nafis.mp3" : "adhkar-morning-mishary-alafasy.mp3";
+    if (window.AnyasAndroid && typeof window.AnyasAndroid.testNotificationAndSound === "function") {
+      const result = window.AnyasAndroid.testNotificationAndSound(voice, (volume ? Number(volume.value) : initialVolume) / 100);
+      if (audioTestStatus) audioTestStatus.textContent = result === "started" ? "تم اختبار التذكير كاملًا: الإشعار والصوت." : "تعذر اختبار التذكير؛ تحقق من الأذونات وإعدادات البطارية.";
+      return;
+    }
+    if (!("Notification" in window)) {
+      if (audioTestStatus) audioTestStatus.textContent = "تم اختبار الصوت؛ إشعار النظام متاح في نسخة Android.";
+      return;
+    }
+    const showTest = permission => {
+      if (permission === "granted") {
+        const title = "اختبار تذكير أنياس";
+        const body = "إذا ظهر هذا التنبيه وعمل الصوت، فالتذكيرات جاهزة.";
+        new Notification(title, { body, tag: "anyas-reminder-test", icon: "assets/anyas-app-icon.png" });
+        recordAnyasNotification(title, body, "anyas-reminder-test");
+        if (audioTestStatus) audioTestStatus.textContent = "تم اختبار التذكير كاملًا: الإشعار والصوت.";
+      } else if (audioTestStatus) audioTestStatus.textContent = "تم اختبار الصوت، لكن إذن الإشعارات غير مفعّل.";
+    };
+    if (Notification.permission === "granted") showTest("granted");
+    else if (Notification.permission === "denied") showTest("denied");
+    else Notification.requestPermission().then(showTest).catch(() => showTest("denied"));
+  });
 
   setupAudioLibrary();
 

@@ -160,5 +160,14 @@ check("daily prayer times can be shared or copied", () => {
   assert.match(enhancements, /initPrayerShare\(\)/);
 });
 
+check("full reminder test covers notification and sound", () => {
+  assert.match(index, /id="testReminderButton"/);
+  const settingsText = read("js/settings.js");
+  assert.match(settingsText, /testReminderButton/);
+  assert.match(settingsText, /testNotificationAndSound/);
+  assert.match(settingsText, /anyas-reminder-test/);
+  assert.match(settingsText, /recordAnyasNotification\(title, body, "anyas-reminder-test"\)/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);
