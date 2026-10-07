@@ -9,6 +9,11 @@ if (!appVersionMatch.find() || !appVersionCodeMatch.find()) {
 }
 def centralizedVersionName = appVersionMatch.group(1)
 def centralizedVersionCode = Integer.parseInt(appVersionCodeMatch.group(1))
+def releaseStoreFile = System.getenv('ANYAS_RELEASE_STORE_FILE')
+def releaseStorePassword = System.getenv('ANYAS_RELEASE_STORE_PASSWORD')
+def releaseKeyAlias = System.getenv('ANYAS_RELEASE_KEY_ALIAS')
+def releaseKeyPassword = System.getenv('ANYAS_RELEASE_KEY_PASSWORD')
+def hasReleaseSigning = [releaseStoreFile, releaseStorePassword, releaseKeyAlias, releaseKeyPassword].every { it != null && !it.trim().isEmpty() }
 
 android {
     namespace 'com.anyas.app'
@@ -20,6 +25,22 @@ android {
         targetSdk 34
         versionCode centralizedVersionCode
         versionName centralizedVersionName
+    }
+    signingConfigs {
+        if (hasReleaseSigning) {
+            release {
+                storeFile file(releaseStoreFile)
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
+    }
+    buildTypes {
+        release {
+            if (hasReleaseSigning) signingConfig signingConfigs.release
+            minifyEnabled false
+        }
     }
 }
 
