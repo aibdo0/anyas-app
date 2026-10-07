@@ -18,6 +18,33 @@
     box-shadow: var(--shadow-sm);
 }
 
+.reminder-test-entry { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 20px; background: linear-gradient(135deg, var(--card), var(--bg)); box-shadow: var(--shadow-sm); }
+.reminder-test-entry > div { display: grid; gap: 4px; min-width: 0; }
+.reminder-test-entry strong { font-size: 14px; }
+.reminder-test-entry small { color: var(--muted); font-size: 11px; line-height: 1.5; }
+.reminder-test-status-card { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; padding: 15px; border: 1px solid var(--border); border-radius: 20px; background: linear-gradient(135deg, var(--gold-pale), var(--card)); box-shadow: var(--shadow-sm); }
+.reminder-test-status-card > div:last-child { display: grid; gap: 3px; }
+.reminder-test-status-card strong { font-size: 14px; }
+.reminder-test-status-card small { color: var(--muted); font-size: 11px; }
+.reminder-test-status-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 15px; color: #237a4b; background: rgba(35,122,75,.12); font-size: 20px; font-weight: 900; }
+.reminder-test-all-button { width: 100%; margin: 0 0 14px; }
+.reminder-test-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.reminder-test-card { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 9px; min-height: 84px; padding: 11px; border: 1px solid var(--border); border-radius: 17px; color: var(--text); background: var(--card); box-shadow: var(--shadow-sm); text-align: start; cursor: pointer; }
+.reminder-test-card:active { transform: scale(.98); }
+.reminder-test-card > span:nth-child(2) { display: grid; gap: 3px; min-width: 0; }
+.reminder-test-card strong { overflow: hidden; font-size: 12px; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
+.reminder-test-card small { color: var(--muted); font-size: 10px; }
+.reminder-test-card b { grid-column: 1 / -1; justify-self: start; padding: 3px 7px; border-radius: 999px; color: var(--primary); background: var(--gold-pale); font-size: 9px; }
+.reminder-test-card-icon { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 12px; color: var(--primary); background: var(--gold-pale); font-size: 17px; font-weight: 800; }
+.reminder-test-card.testing { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(158,127,71,.12); }
+.reminder-test-card.tested { border-color: rgba(35,122,75,.55); }
+.reminder-test-result-card { display: grid; gap: 9px; margin-top: 14px; padding: 15px; border: 1px solid var(--border); border-radius: 20px; background: var(--card); box-shadow: var(--shadow-sm); }
+.reminder-test-result-card h2 { margin: 0; font-size: 15px; }
+.reminder-test-result-card p { margin: 0 0 3px; color: var(--muted); font-size: 11px; }
+.reminder-test-result-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 8px; border-top: 1px solid var(--border); color: var(--muted); font-size: 11px; }
+.reminder-test-result-row strong { color: var(--primary); font-size: 11px; }
+@media(max-width:390px) { .reminder-test-entry { align-items: flex-start; flex-direction: column; } .reminder-test-entry button { width: 100%; } .reminder-test-grid { grid-template-columns: 1fr; } }
+
 .setting-row,
 .worship-setting {
     display: flex;
