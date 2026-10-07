@@ -1853,6 +1853,23 @@ data-audio="fajrAudio"
 
 </div>
 
+<div class="settings-section-title">
+بياناتك
+</div>
+
+<div class="settings-card data-management-card">
+  <div class="setting-info">
+    <div class="setting-title">نسخة احتياطية محلية</div>
+    <div class="setting-description">احفظ إعداداتك ومفضلاتك وتقدمك، أو انقلها إلى جهاز آخر دون حساب.</div>
+  </div>
+  <div class="data-management-actions">
+    <button class="setting-action-button" id="exportDataButton" type="button">تصدير بياناتي</button>
+    <button class="setting-action-button" id="importDataButton" type="button">استيراد نسخة</button>
+    <input id="importDataInput" type="file" accept="application/json,.json" hidden>
+  </div>
+  <button class="setting-action-button danger-action-button" id="deleteDataButton" type="button">حذف بياناتي من هذا الجهاز</button>
+  <p class="data-management-status" id="dataManagementStatus" role="status" aria-live="polite"></p>
+</div>
 
 </section>
 

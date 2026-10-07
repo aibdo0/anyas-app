@@ -145,6 +145,11 @@
   box-shadow: 0 6px 16px rgba(83,66,38,.16);
 }
 .page :is(.daily-adhkar-button,.friday-feature-button,.qibla-start-button,.adhan-button,.tasbeeh-main-button,.permission-enable-button,.setting-action-button):active { transform: translateY(1px); box-shadow: none; }
+.data-management-card { gap: 12px; }
+.data-management-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.data-management-actions .setting-action-button { flex: 1 1 150px; }
+.danger-action-button { color: #9b4c4c !important; border-color: rgba(155, 76, 76, .28) !important; background: rgba(155, 76, 76, .06) !important; }
+.data-management-status { min-height: 1.4em; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .page :is(input[type="search"],input[type="text"],input[type="time"],select,textarea) {
   border-color: var(--line);
   border-radius: 13px;

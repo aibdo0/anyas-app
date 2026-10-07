@@ -1994,7 +1994,91 @@ function setupExtraSettings() {
   setupPrayerTrackingToggle();
   setupHijriAdjustment();
   setupManualPrayerSettings();
+  setupDataManagement();
 
+}
+
+function setupDataManagement() {
+  const exportButton = document.getElementById("exportDataButton");
+  const importButton = document.getElementById("importDataButton");
+  const importInput = document.getElementById("importDataInput");
+  const deleteButton = document.getElementById("deleteDataButton");
+  const status = document.getElementById("dataManagementStatus");
+  if (!exportButton || !importButton || !importInput || !deleteButton) return;
+
+  const setStatus = message => {
+    if (status) status.textContent = window.anyasTranslate ? window.anyasTranslate(message) : message;
+  };
+  const collectData = () => {
+    const data = {};
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index);
+      if (key?.startsWith("anyas_")) data[key] = localStorage.getItem(key);
+    }
+    return data;
+  };
+  const makeFileName = () => {
+    const date = new Date().toISOString().slice(0, 10);
+    return `anyas-backup-${date}.json`;
+  };
+
+  exportButton.addEventListener("click", () => {
+    try {
+      const payload = {
+        schema: 1,
+        app: "anyas",
+        appVersion: window.ANIAS_APP_VERSION || "1.1.5",
+        exportedAt: new Date().toISOString(),
+        data: collectData()
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = makeFileName();
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setStatus("تم تصدير نسخة بياناتك.");
+    } catch (error) {
+      console.error("تعذر تصدير بيانات أنياس:", error);
+      setStatus("تعذر تصدير البيانات على هذا الجهاز.");
+    }
+  });
+
+  importButton.addEventListener("click", () => importInput.click());
+  importInput.addEventListener("change", async () => {
+    const file = importInput.files?.[0];
+    importInput.value = "";
+    if (!file) return;
+    try {
+      const payload = JSON.parse(await file.text());
+      const importedData = payload?.data;
+      if (payload?.schema !== 1 || payload?.app !== "anyas" || !importedData || typeof importedData !== "object" || Array.isArray(importedData)) {
+        throw new Error("invalid backup");
+      }
+      const entries = Object.entries(importedData).filter(([key, value]) => key.startsWith("anyas_") && typeof value === "string");
+      if (!entries.length) throw new Error("empty backup");
+      const importConfirmation = "سيستبدل الاستيراد بيانات أنياس الحالية على هذا الجهاز. هل تريد المتابعة؟";
+      if (!window.confirm(window.anyasTranslate ? window.anyasTranslate(importConfirmation) : importConfirmation)) return;
+      Object.keys(localStorage).filter(key => key.startsWith("anyas_")).forEach(key => localStorage.removeItem(key));
+      entries.forEach(([key, value]) => localStorage.setItem(key, value));
+      setStatus("تم استيراد بياناتك. سيُعاد تشغيل أنياس الآن.");
+      window.setTimeout(() => window.location.reload(), 700);
+    } catch (error) {
+      console.error("تعذر استيراد نسخة أنياس:", error);
+      setStatus("الملف غير صالح أو لا يحتوي على نسخة أنياس.");
+    }
+  });
+
+  deleteButton.addEventListener("click", () => {
+    const deleteConfirmation = "سيحذف هذا جميع إعدادات أنياس ومفضلاتك وتقدمك من هذا الجهاز. لا يمكن التراجع عن ذلك. هل أنت متأكد؟";
+    if (!window.confirm(window.anyasTranslate ? window.anyasTranslate(deleteConfirmation) : deleteConfirmation)) return;
+    Object.keys(localStorage).filter(key => key.startsWith("anyas_")).forEach(key => localStorage.removeItem(key));
+    setStatus("تم حذف بيانات أنياس من هذا الجهاز. سيُعاد تشغيل التطبيق.");
+    window.setTimeout(() => window.location.reload(), 700);
+  });
 }
 
 
