@@ -1442,7 +1442,31 @@ function setupNotifications() {
 
   });
   setupReminderScheduleSettings();
+  setupNotificationGroupStatus();
   syncAndroidNotificationSettings();
+}
+
+function setupNotificationGroupStatus() {
+  const groups = document.querySelectorAll("[data-notification-settings-group]");
+  const formatNumber = new Intl.NumberFormat("ar-EG", { useGrouping: false });
+
+  groups.forEach(group => {
+    const status = group.querySelector("[data-notification-group-status]");
+    const toggles = [...group.querySelectorAll(".notification-settings-group-content input[type='checkbox']")];
+    if (!status || !toggles.length) return;
+
+    const refreshStatus = () => {
+      const enabledCount = toggles.filter(toggle => toggle.checked).length;
+      const enabledText = formatNumber.format(enabledCount);
+      const totalText = formatNumber.format(toggles.length);
+      status.textContent = `${enabledText} / ${totalText}`;
+      status.setAttribute("aria-label", `${enabledText} من ${totalText} تذكيرات مفعّلة`);
+      group.classList.toggle("has-enabled-reminders", enabledCount > 0);
+    };
+
+    toggles.forEach(toggle => toggle.addEventListener("change", refreshStatus));
+    refreshStatus();
+  });
 }
 
 function setupReminderScheduleSettings() {

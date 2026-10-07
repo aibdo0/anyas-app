@@ -177,7 +177,7 @@ function goToPage(pageId) {
     "city-picker",
     "prayer-schedule",
     "mosques"
-  ].includes(pageId) ? "more" : pageId === "tasbeeh" ? "tasks" : pageId === "qibla" ? "home" : pageId;
+  ].includes(pageId) ? "more" : pageId === "tasbeeh" ? "tasks" : pageId === "qibla" ? (document.getElementById("qiblaBackButton")?.dataset.returnTo === "more" ? "more" : "home") : pageId;
 
   document
     .querySelectorAll(".nav-item")
@@ -216,6 +216,10 @@ function setupQuickActions() {
         const tasbeehPage = document.getElementById("page-tasbeeh");
         if (tasbeehPage) goToPage("tasbeeh");
         else openTasbeehFallback();
+      } else if (destination === "qibla") {
+        const backButton = document.getElementById("qiblaBackButton");
+        if (backButton) backButton.dataset.returnTo = "more";
+        goToPage("qibla");
       } else if (destination === "prayer-report") {
         goToPage("prayer-report");
         updatePrayerReport("week");
@@ -1627,6 +1631,8 @@ function setupQibla() {
       "click",
       () => {
 
+        const backButton = document.getElementById("qiblaBackButton");
+        if (backButton) backButton.dataset.returnTo = "home";
         goToPage("qibla");
 
       }
@@ -1646,7 +1652,9 @@ function setupQibla() {
       "click",
       () => {
 
-        goToPage("home");
+        const returnTo = backButton.dataset.returnTo || "home";
+        backButton.dataset.returnTo = "home";
+        goToPage(returnTo);
 
       }
     );

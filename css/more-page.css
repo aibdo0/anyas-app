@@ -118,6 +118,7 @@
 .more-menu-icon--mosque { color: #526d9c; border-color: #dce4f2 !important; background: #edf1f9; }
 .more-menu-icon--settings { color: #765f98; border-color: #e8dff1 !important; background: #f1ebf6; }
 .more-menu-icon--about { color: #9a704a; border-color: #efdfcf !important; background: #f8eee4; }
+.more-menu-icon--qibla { color: #526d9c; border-color: #dce4f2 !important; background: #edf1f9; }
 #page-more .more-menu-copy { display: grid; min-width: 0; gap: 2px; text-align: right; }
 #page-more .more-menu-copy strong { overflow: hidden; color: var(--ink); font-size: 14px; font-weight: 900; line-height: 1.4; text-overflow: ellipsis; }
 #page-more .more-menu-copy small { color: var(--muted); font-size: 10px; line-height: 1.55; }
@@ -145,6 +146,7 @@
 :root[data-theme="dark"] body #page-more .more-menu-icon--mosque { color: #b7c8ed !important; border-color: #39445d !important; background: #2a3244 !important; }
 :root[data-theme="dark"] body #page-more .more-menu-icon--settings { color: #d0b8e8 !important; border-color: #4a3d58 !important; background: #352b40 !important; }
 :root[data-theme="dark"] body #page-more .more-menu-icon--about { color: #e2b991 !important; border-color: #534235 !important; background: #3d3025 !important; }
+:root[data-theme="dark"] body #page-more .more-menu-icon--qibla { color: #b7c8ed !important; border-color: #39445d !important; background: #2a3244 !important; }
 
 html[lang="en"] #page-more .more-page-header,
 html[lang="en"] #page-more .more-menu-item { text-align: left; }
