@@ -1573,9 +1573,11 @@ type="button"
     <span class="audio-volume-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg></span>
     <span class="audio-volume-copy"><strong>مستوى الصوت الرئيسي</strong><small>يسري على المعاينات والتنبيهات</small></span>
     <output id="volumeValue">100%</output>
+    <button id="audioMuteToggle" class="audio-mute-toggle" type="button" aria-pressed="false">كتم الصوت</button>
   </div>
   <input id="adhanVolume" type="range" min="0" max="100" step="1" value="100" aria-label="مستوى الصوت لجميع الأصوات">
   <div class="audio-volume-scale" aria-hidden="true"><span>هادئ</span><span>مرتفع</span></div>
+  <p id="audioVolumeStatus" class="audio-volume-status" aria-live="polite">الصوت يعمل</p>
 </div>
 
 <div class="audio-test-panel" aria-label="اختبار الصوت والإشعارات">

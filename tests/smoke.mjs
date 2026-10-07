@@ -131,5 +131,15 @@ check("Asr madhab selection is persisted and applied", () => {
   assert.match(enhancements, /const school = window\.getAsrMadhab/);
 });
 
+check("audio mute state is visible and persisted", () => {
+  assert.match(index, /id="audioMuteToggle"[^>]+aria-pressed="false"/);
+  assert.match(index, /id="audioVolumeStatus"[^>]+aria-live="polite"/);
+  const settingsText = read("js/settings.js");
+  assert.match(settingsText, /anyas_audio_muted/);
+  assert.match(settingsText, /audioMuteToggle/);
+  assert.match(settingsText, /effectiveVolume = window\.anyasAudioMuted/);
+  assert.match(read("css/audio-library.css"), /\.audio-mute-toggle/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);

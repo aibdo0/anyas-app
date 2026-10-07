@@ -78,6 +78,8 @@ function setupAdhanSettings() {
 
   const volumeValue =
     document.getElementById("volumeValue");
+  const muteToggle = document.getElementById("audioMuteToggle");
+  const volumeStatus = document.getElementById("audioVolumeStatus");
 
   const formatVolumeLabel = value => {
     const locale = document.documentElement.lang === "en" ? "en" : "ar";
@@ -102,6 +104,15 @@ function setupAdhanSettings() {
 
   const savedVolume =
     localStorage.getItem("anyas_adhanVolume");
+  window.anyasAudioMuted = localStorage.getItem("anyas_audio_muted") === "true";
+  const renderMuteState = () => {
+    const english = document.documentElement.lang === "en";
+    if (muteToggle) {
+      muteToggle.setAttribute("aria-pressed", String(window.anyasAudioMuted));
+      muteToggle.textContent = window.anyasAudioMuted ? (english ? "Unmute" : "إلغاء الكتم") : (english ? "Mute" : "كتم الصوت");
+    }
+    if (volumeStatus) volumeStatus.textContent = window.anyasAudioMuted ? (english ? "Sound is muted" : "الصوت مكتوم") : (english ? "Sound is on" : "الصوت يعمل");
+  };
 
   const volumeRecoveryKey = "anyas_audio_zero_volume_recovered_v1";
   const recoveredLegacySilentVolume = savedVolume !== null
@@ -143,6 +154,14 @@ function setupAdhanSettings() {
   }
 
   applyAudioVolume(initialVolume);
+  renderMuteState();
+
+  muteToggle?.addEventListener("click", () => {
+    window.anyasAudioMuted = !window.anyasAudioMuted;
+    localStorage.setItem("anyas_audio_muted", String(window.anyasAudioMuted));
+    applyAudioVolume(Number(volume?.value || initialVolume));
+    renderMuteState();
+  });
 
   if (auto) {
 
@@ -182,6 +201,7 @@ function setupAdhanSettings() {
 
     window.addEventListener("anyas:languagechange", () => {
       if (volumeValue) volumeValue.textContent = formatVolumeLabel(Number(volume.value));
+      renderMuteState();
     });
 
   }
@@ -277,12 +297,13 @@ function setupAdhanSettings() {
 
     const normalized =
       value / 100;
+    const effectiveVolume = window.anyasAudioMuted ? 0 : normalized;
 
     document.querySelectorAll("audio").forEach(audioElement => {
-      audioElement.volume = normalized;
+      audioElement.volume = effectiveVolume;
     });
     [window.anyasMuezzinPreview, window.anyasAyatPreview, window.anyasAdhkarPreview]
-      .forEach(preview => { if (preview) preview.volume = normalized; });
+      .forEach(preview => { if (preview) preview.volume = effectiveVolume; });
 
   }
 
