@@ -22,6 +22,10 @@
 .reminder-test-entry > div { display: grid; gap: 4px; min-width: 0; }
 .reminder-test-entry strong { font-size: 14px; }
 .reminder-test-entry small { color: var(--muted); font-size: 11px; line-height: 1.5; }
+.notification-test-entry { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 16px; background: var(--bg); }
+.notification-test-entry > div { display: grid; gap: 3px; min-width: 0; }
+.notification-test-entry strong { font-size: 12px; }
+.notification-test-entry small { color: var(--muted); font-size: 10px; }
 .reminder-test-status-card { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; padding: 15px; border: 1px solid var(--border); border-radius: 20px; background: linear-gradient(135deg, var(--gold-pale), var(--card)); box-shadow: var(--shadow-sm); }
 .reminder-test-status-card > div:last-child { display: grid; gap: 3px; }
 .reminder-test-status-card strong { font-size: 14px; }

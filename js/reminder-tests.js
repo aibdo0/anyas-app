@@ -1,6 +1,7 @@
 (() => {
   "use strict";
   const open = document.getElementById("openReminderTestsButton");
+  const openFromNotifications = document.getElementById("openReminderTestsFromNotifications");
   const page = document.getElementById("page-reminder-tests");
   if (!page) return;
   const back = document.getElementById("reminderTestsBackButton");
@@ -56,5 +57,6 @@
     testing = false; allButton.disabled = false;
   });
   open?.addEventListener("click", () => setPage("reminder-tests"));
+  openFromNotifications?.addEventListener("click", () => setPage("reminder-tests"));
   back?.addEventListener("click", () => setPage("settings"));
 })();
