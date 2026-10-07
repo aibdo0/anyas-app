@@ -64,6 +64,35 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     };
   }
 
+  function initPrayerShare() {
+    const button = byId("sharePrayerTimesButton");
+    const status = byId("prayerShareStatus");
+    if (!button) return;
+    const format = value => {
+      const match = String(value || "--").match(/^(\d{1,2}):(\d{2})/);
+      if (!match) return String(value || "--");
+      const hour = Number(match[1]);
+      if (window.getTimeFormat?.() === "24") return `${String(hour).padStart(2, "0")}:${match[2]}`;
+      return `${String(hour % 12 || 12).padStart(2, "0")}:${match[2]} ${hour >= 12 ? "م" : "ص"}`;
+    };
+    button.addEventListener("click", async () => {
+      const english = document.documentElement.lang === "en";
+      const timings = window.todayTimings || {};
+      const city = byId("prayerHeroCity")?.textContent || (english ? "My city" : "مدينتي");
+      const names = english ? { Fajr: "Fajr", Sunrise: "Sunrise", Dhuhr: "Dhuhr", Asr: "Asr", Maghrib: "Maghrib", Isha: "Isha" } : { Fajr: "الفجر", Sunrise: "الشروق", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" };
+      const lines = Object.keys(names).map(key => `${names[key]}: ${format(timings[key])}`);
+      const text = english ? `Prayer times for ${city}\n${lines.join("\n")}\n\nShared from Anias` : `مواقيت الصلاة في ${city}\n${lines.join("\n")}\n\nمشاركة من تطبيق أنياس`;
+      try {
+        if (navigator.share) await navigator.share({ title: english ? "Prayer times" : "مواقيت الصلاة", text });
+        else if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
+        else throw new Error("clipboard unavailable");
+        if (status) { status.hidden = false; status.textContent = navigator.share ? (english ? "Share sheet opened." : "تم فتح قائمة المشاركة.") : (english ? "Prayer times copied." : "تم نسخ المواقيت."); window.setTimeout(() => { status.hidden = true; }, 2800); }
+      } catch (error) {
+        if (error?.name !== "AbortError" && status) { status.hidden = false; status.textContent = english ? "Could not share. Try again." : "تعذر المشاركة. حاول مرة أخرى."; }
+      }
+    });
+  }
+
   function initCityPicker() {
     const open = byId("openCityPickerButton");
     const back = byId("cityPickerBackButton");
@@ -564,7 +593,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    initGreeting(); initCityPicker(); initPrayerSchedule(); initNotificationsList();
+    initGreeting(); initCityPicker(); initPrayerSchedule(); initPrayerShare(); initNotificationsList();
     byId("mosquesBackButton")?.addEventListener("click", () => openPage("home"));
     updateFridayPrayerLabel(); updatePrayerMoment(); setInterval(updatePrayerMoment, 5000);
   });

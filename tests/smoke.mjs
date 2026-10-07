@@ -152,5 +152,13 @@ check("12 and 24 hour time formats are persisted and applied", () => {
   assert.match(enhancements, /window\.getTimeFormat\?\.\(\) === "24"/);
 });
 
+check("daily prayer times can be shared or copied", () => {
+  assert.match(index, /id="sharePrayerTimesButton"/);
+  assert.match(index, /id="prayerShareStatus"[^>]+aria-live="polite"/);
+  assert.match(enhancements, /navigator\.share/);
+  assert.match(enhancements, /navigator\.clipboard\?\.writeText/);
+  assert.match(enhancements, /initPrayerShare\(\)/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);

@@ -97,6 +97,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .plain-header .back-button { width: auto; height: auto; min-height: 40px; padding: 7px 13px; }
 .section { margin: 15px 0; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 2px 11px; }
+.prayer-heading-actions { display: flex; align-items: center; gap: 6px; }
+.prayer-share-status { margin: -4px 2px 9px; color: var(--gold-dark); font-size: 10px; text-align: end; }
 .section-title { color: var(--ink); font-size: 18px; font-weight: 800; }
 .more-button { border: 0; border-radius: 999px; padding: 7px 13px; color: var(--gold-dark); background: var(--gold-pale); font-size: 13px; font-weight: 700; cursor: pointer; }
 .next-prayer {
