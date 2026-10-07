@@ -406,6 +406,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     const back = byId("notificationsBackButton");
     const unreadCount = byId("notificationUnreadCount");
     const unreadLabel = byId("notificationUnreadLabel");
+    const markAll = byId("markAllNotificationsReadButton");
     const manage = byId("manageNotificationsButton");
     const bellSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>';
     const readHistory = () => {
@@ -499,6 +500,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     window.setInterval(() => { if (!document.hidden) render(); }, 30_000);
     bell?.addEventListener("click", () => { openPage("notifications"); render(true); });
     back?.addEventListener("click", () => openPage("home"));
+    markAll?.addEventListener("click", () => render(true));
     manage?.addEventListener("click", () => {
       openPage("settings");
       window.setTimeout(() => byId("notificationSettingsHeading")?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);

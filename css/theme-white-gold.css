@@ -67,6 +67,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .notifications-overview-count small { font-size: 9px; font-weight: 700; white-space: nowrap; }
 .notifications-card { display: grid; gap: 13px; padding: 15px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
 .notification-list-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.notification-list-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
 .notification-list-header h2 { margin: 0; color: var(--ink); font-size: 16px; font-weight: 800; }
 .notification-list-header p { margin: 2px 0 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
 .notification-manage-button { min-height: 38px; padding: 6px 11px; white-space: nowrap; }

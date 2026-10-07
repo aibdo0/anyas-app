@@ -169,5 +169,13 @@ check("full reminder test covers notification and sound", () => {
   assert.match(settingsText, /recordAnyasNotification\(title, body, "anyas-reminder-test"\)/);
 });
 
+check("notification inbox supports marking all items read", () => {
+  assert.match(index, /id="markAllNotificationsReadButton"/);
+  assert.match(enhancements, /const markAll = byId\("markAllNotificationsReadButton"\)/);
+  assert.match(enhancements, /markAll\?\.addEventListener\("click", \(\) => render\(true\)\)/);
+  assert.match(enhancements, /localStorage\.setItem\("anyas_notification_history"/);
+  assert.match(enhancements, /markNotificationHistoryRead/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);
