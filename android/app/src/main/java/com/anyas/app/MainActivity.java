@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.TextView;
@@ -201,6 +202,23 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 intent.setData(Uri.fromParts("package", getPackageName(), null));
                 startActivity(intent);
+            });
+        }
+        @JavascriptInterface public String getBatteryOptimizationStatus() {
+            if (Build.VERSION.SDK_INT < 23) return "not_supported";
+            PowerManager manager = (PowerManager) getSystemService(POWER_SERVICE);
+            if (manager == null) return "unknown";
+            return manager.isIgnoringBatteryOptimizations(getPackageName()) ? "unrestricted" : "optimized";
+        }
+        @JavascriptInterface public void openBatteryOptimizationSettings() {
+            runOnUiThread(() -> {
+                try {
+                    Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                    intent.setData(Uri.parse("package:" + getPackageName()));
+                    startActivity(intent);
+                } catch (Exception ignored) {
+                    openAboutPermissionSettings();
+                }
             });
         }
         @JavascriptInterface public String testNotificationAndSound(String soundFile, double volume) {

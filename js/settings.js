@@ -1443,7 +1443,51 @@ function setupNotifications() {
   });
   setupReminderScheduleSettings();
   setupNotificationGroupStatus();
+  setupNotificationReadiness();
   syncAndroidNotificationSettings();
+}
+
+function setupNotificationReadiness() {
+  const status = document.getElementById("notificationReadinessStatus");
+  const openBatteryButton = document.getElementById("openBatterySettingsButton");
+  if (!status) return;
+
+  const text = message => window.anyasTranslate ? window.anyasTranslate(message) : message;
+  const refresh = () => {
+    openBatteryButton?.toggleAttribute("hidden", true);
+    if (window.AnyasAndroid && typeof window.AnyasAndroid.getBatteryOptimizationStatus === "function") {
+      const notificationReady = typeof window.AnyasAndroid.hasAboutPermission !== "function" || window.AnyasAndroid.hasAboutPermission("notifications");
+      const batteryStatus = window.AnyasAndroid.getBatteryOptimizationStatus();
+      if (!notificationReady) {
+        status.textContent = text("فعّل إذن الإشعارات أولًا من إعدادات الهاتف.");
+      } else if (batteryStatus === "optimized") {
+        status.textContent = text("قد يؤخر توفير البطارية التذكيرات؛ اسمح لأنياس بالعمل دون تقييد.");
+        openBatteryButton?.toggleAttribute("hidden", false);
+      } else if (batteryStatus === "unrestricted") {
+        status.textContent = text("الإشعارات مفعّلة وأنياس غير مقيّد من إعدادات البطارية.");
+      } else {
+        status.textContent = text("الإشعارات مفعّلة؛ اختبرها من زر الإشعار أدناه.");
+      }
+      return;
+    }
+
+    if (!("Notification" in window)) {
+      status.textContent = text("اختبار الإشعارات متاح في نسخة Android من أنياس.");
+    } else if (Notification.permission === "granted") {
+      status.textContent = text("إذن إشعارات المتصفح مفعّل؛ اختبر التنبيه من زر الإشعار أدناه.");
+    } else {
+      status.textContent = text("فعّل إذن الإشعارات ثم اختبر التنبيه من الزر أدناه.");
+    }
+  };
+
+  openBatteryButton?.addEventListener("click", () => {
+    if (typeof window.AnyasAndroid?.openBatteryOptimizationSettings === "function") {
+      window.AnyasAndroid.openBatteryOptimizationSettings();
+    }
+  });
+  window.addEventListener("focus", refresh);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
+  refresh();
 }
 
 function setupNotificationGroupStatus() {
