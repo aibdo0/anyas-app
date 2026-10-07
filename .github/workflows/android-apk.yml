@@ -1,7 +1,9 @@
 name: Android APK
 on:
   push:
-    branches: [android/apk-wrapper]
+    branches:
+      - main
+      - android/apk-wrapper
   workflow_dispatch:
 permissions:
   contents: read
