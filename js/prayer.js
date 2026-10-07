@@ -77,7 +77,9 @@ function getCalculationMethod() {
 // تحديد الموقع وتحميل المواقيت
 // =====================================================
 
-function detectLocationAndLoadTimes() {
+function detectLocationAndLoadTimes(options = {}) {
+
+  const allowPrompt = options.allowPrompt !== false;
 
   try {
     const saved = JSON.parse(localStorage.getItem("anyas_manual_location") || "null");
@@ -95,7 +97,7 @@ function detectLocationAndLoadTimes() {
     console.warn("تعذر قراءة المدينة المحفوظة:", error);
   }
 
-  if (!navigator.geolocation) {
+  if (!navigator.geolocation || !allowPrompt) {
 
     window.lastKnownLocation = {
       latitude: FALLBACK_LATITUDE,

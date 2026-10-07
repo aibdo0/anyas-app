@@ -5,6 +5,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
+  const isFirstRun = setupFirstRunOnboarding();
   updateDate();
   setupNavigation();
 
@@ -45,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupExtraSettings();
   setupLocationSettings();
 
-  detectLocationAndLoadTimes();
+  detectLocationAndLoadTimes({ allowPrompt: shouldPromptLocationOnStartup(isFirstRun) });
 
   setInterval(updateDate, 60 * 1000);
   setInterval(updateCountdown, 1000);
@@ -64,6 +65,108 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 60 * 1000);
 
 });
+
+
+function hasPriorAniasUse() {
+  try {
+    return Object.keys(localStorage).some(key => key.startsWith("anyas_") && key !== "anyas_onboarding_completed");
+  } catch (error) {
+    return false;
+  }
+}
+
+function setupFirstRunOnboarding() {
+  const overlay = document.getElementById("firstRunOverlay");
+  if (!overlay) return false;
+
+  try {
+    if (localStorage.getItem("anyas_onboarding_completed") === "true") return false;
+  } catch (error) { /* storage may be unavailable */ }
+
+  if (hasPriorAniasUse()) {
+    try { localStorage.setItem("anyas_onboarding_completed", "true"); } catch (error) { /* optional */ }
+    return false;
+  }
+
+  const dialog = overlay.querySelector(".first-run-card");
+  const pages = [...document.querySelectorAll(".page, .bottom-nav")];
+  const focusable = () => [...dialog.querySelectorAll("button:not([disabled]), a[href]")]
+    .filter(element => !element.closest("[hidden]"));
+  const finish = choice => {
+    try {
+      localStorage.setItem("anyas_onboarding_completed", "true");
+      localStorage.setItem("anyas_location_start_choice", choice);
+    } catch (error) { /* onboarding remains usable without storage */ }
+    overlay.hidden = true;
+    document.body.classList.remove("first-run-open");
+    pages.forEach(page => { page.inert = false; });
+    document.removeEventListener("keydown", trapKeys, true);
+  };
+  const showStep = step => {
+    dialog.setAttribute("aria-labelledby", step === 1 ? "firstRunTitle" : "firstRunCityTitle");
+    overlay.querySelectorAll("[data-onboarding-step]").forEach(section => {
+      section.hidden = section.dataset.onboardingStep !== String(step);
+    });
+    overlay.querySelectorAll(".first-run-progress-dot").forEach((dot, index) => {
+      dot.classList.toggle("is-active", index < step);
+    });
+    requestAnimationFrame(() => focusable()[0]?.focus());
+  };
+  const trapKeys = event => {
+    if (overlay.hidden) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      if (!overlay.querySelector('[data-onboarding-step="1"]').hidden) showStep(2);
+      else finish("later");
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const items = focusable();
+    if (!items.length) return;
+    if (event.shiftKey && document.activeElement === items[0]) {
+      event.preventDefault();
+      items[items.length - 1].focus();
+    } else if (!event.shiftKey && document.activeElement === items[items.length - 1]) {
+      event.preventDefault();
+      items[0].focus();
+    }
+  };
+
+  overlay.hidden = false;
+  document.body.classList.add("first-run-open");
+  pages.forEach(page => { page.inert = true; });
+  showStep(1);
+  document.addEventListener("keydown", trapKeys, true);
+
+  overlay.querySelectorAll("[data-onboarding-action]").forEach(button => {
+    button.addEventListener("click", () => {
+      switch (button.dataset.onboardingAction) {
+        case "next": showStep(2); break;
+        case "back": showStep(1); break;
+        case "skip-intro": showStep(2); break;
+        case "choose-city":
+          finish("later");
+          goToPage("city-picker");
+          break;
+        case "start":
+          finish("later");
+          goToPage("home");
+          break;
+      }
+    });
+  });
+  return true;
+}
+
+function shouldPromptLocationOnStartup(isFirstRun) {
+  if (isFirstRun) return false;
+  try {
+    const choice = localStorage.getItem("anyas_location_start_choice");
+    return choice !== "later" && choice !== "manual";
+  } catch (error) {
+    return true;
+  }
+}
 
 
 // =====================================================

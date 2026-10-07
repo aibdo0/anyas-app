@@ -53,6 +53,7 @@
     open.addEventListener("click", () => openPage("city-picker"));
     back?.addEventListener("click", () => openPage("home"));
     current?.addEventListener("click", () => {
+      try { localStorage.setItem("anyas_location_start_choice", "current"); } catch (error) { /* optional */ }
       localStorage.removeItem("anyas_manual_location");
       results.textContent = "جارٍ تحديد موقعك…";
       window.detectLocationAndLoadTimes?.();
@@ -76,6 +77,7 @@
           button.addEventListener("click", () => {
             const location = { latitude: Number(place.lat), longitude: Number(place.lon), city: place.name || query };
             localStorage.setItem("anyas_manual_location", JSON.stringify(location));
+            localStorage.setItem("anyas_location_start_choice", "manual");
             window.currentLatitude = location.latitude;
             window.currentLongitude = location.longitude;
             window.lastKnownLocation = location;

@@ -95,7 +95,20 @@
     "سورة الرعد — 28": "Surah Ar-Ra'd — 28", "مدينة الصلاة": "Prayer location",
     "غدًا": "Tomorrow", "الشهر الهجري": "Hijri month", "بدون تعديل": "No adjustment",
     "يوم سابق": "Previous day", "يوم لاحق": "Next day",
-    "تتبع المظهر في جهازك": "Follow your device appearance", "المظهر الفاتح مفعّل": "Light appearance enabled", "المظهر الداكن مفعّل": "Dark appearance enabled"
+    "تتبع المظهر في جهازك": "Follow your device appearance", "المظهر الفاتح مفعّل": "Light appearance enabled", "المظهر الداكن مفعّل": "Dark appearance enabled",
+    "أهلًا بك في أنياس": "Welcome to Anias", "رفيقك اليومي للعبادة": "Your daily companion for worship",
+    "الصلاة والأذكار والقرآن في مكان واحد": "Prayer, adhkar, and the Qur'an in one place",
+    "ومتابعة للصلاة القادمة خلال اليوم": "And see the next prayer throughout the day",
+    "افتح ما يناسب وقتك وتابع من حيث وصلت": "Open the adhkar for this time and continue where you left off",
+    "مواقيت صلاة تناسب مدينتك": "Prayer times for your city", "أذكار وورد يومي": "Daily adhkar and wird",
+    "تذكيرات تختارها بنفسك": "Reminders you choose", "لن نفعّل أي تذكير دون اختيارك.": "We won't enable any reminder unless you choose it.",
+    "الخطوة ١ من ٢": "Step 1 of 2", "الخطوة ٢ من ٢": "Step 2 of 2",
+    "تابع الإعداد": "Continue setup", "ابدأ الآن": "Start now", "تخطي المقدمة": "Skip introduction", "اختر مدينتك": "Choose your city",
+    "تُستخدم مدينتك لحساب مواقيت الصلاة بدقة.": "Your city is used to calculate accurate prayer times.",
+    "الموقع اختياري": "Location is optional",
+    "لن نطلب إذن الموقع إلا عند اختيار استخدام موقعي الحالي. يمكنك اختيار المدينة يدويًا.": "We won't ask for location permission unless you choose to use your current location. You can choose a city manually.",
+    "اختيار المدينة": "Choose a city", "استخدم القاهرة مؤقتًا": "Use Cairo for now", "رجوع": "Back",
+    "يمكنك تغيير المدينة لاحقًا من أعلى مواقيت الصلاة.": "You can change your city later from the prayer times screen."
   };
 
   const protectedSelector = [
