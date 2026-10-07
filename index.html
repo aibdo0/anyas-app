@@ -50,6 +50,7 @@
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 <link rel="stylesheet" href="css/friday.css?v=20261003-2">
+<link rel="stylesheet" href="css/more-page.css?v=20261007-1">
 </head>
 <body>
 <div class="app">
@@ -1801,32 +1802,65 @@ data-audio="fajrAudio"
     <div class="brand">العبادات والمواسم</div>
     <div class="date">التقويم الهجري ومواسم الطاعة</div>
   </header>
-  <section id="worshipContent" aria-label="التقويم الهجري والتذكيرات الموسمية"></section>
+<section id="worshipContent" aria-label="التقويم الهجري والتذكيرات الموسمية"></section>
 </main>
 
 <main class="page" id="page-more">
-<header class="plain-header">
-  <div class="brand">المزيد</div>
-  <div class="date">كل ما تحتاجه في مكان واحد</div>
+<header class="plain-header more-page-header">
+  <span class="more-header-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5 14.4 9.6 20.5 12l-6.1 2.4L12 20.5l-2.4-6.1L3.5 12l6.1-2.4L12 3.5Z"/><path d="m19 3 .7 1.7L21.5 5l-1.8.7L19 7.5l-.7-1.8-1.8-.7 1.8-.3L19 3Z"/></svg></span>
+  <span class="more-header-copy">
+    <span class="more-header-kicker">مساحة أنياس</span>
+    <span class="brand">المزيد</span>
+    <span class="date">أدواتك وإعداداتك في مكان واحد</span>
+  </span>
 </header>
 <section class="more-group" aria-labelledby="moreDailyHeading">
-  <h2 id="moreDailyHeading">يومك وعبادتك</h2>
+  <div class="more-group-heading">
+    <h2 id="moreDailyHeading">يومك وعبادتك</h2>
+    <p>عباداتك ومواسمك اليومية</p>
+  </div>
   <div class="more-menu">
-    <button type="button" class="more-menu-item" data-more-go="tasks"><span class="more-menu-icon" aria-hidden="true">✓</span><span class="more-menu-copy"><strong>يوم المسلم</strong><small>صلواتك وأذكارك وتنظيم يومك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
-    <button type="button" class="more-menu-item" data-more-go="worship"><span class="more-menu-icon" aria-hidden="true">☾</span><span class="more-menu-copy"><strong>العبادات والمواسم</strong><small>التاريخ الهجري والتذكيرات الموسمية</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="tasks">
+      <span class="more-menu-icon more-menu-icon--tasks" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5h6M8.5 11l1.7 1.7 3.8-3.8M8.5 17h7"/></svg></span>
+      <span class="more-menu-copy"><strong>يوم المسلم</strong><small>صلواتك وأذكارك وتنظيم يومك</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
+    <button type="button" class="more-menu-item" data-more-go="worship">
+      <span class="more-menu-icon more-menu-icon--worship" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.5 14.2A8.7 8.7 0 0 1 9.8 3.5 8.8 8.8 0 1 0 20.5 14.2Z"/><path d="m17.5 3 .8 2 2.2.8-2.2.7-.8 2.1-.7-2.1-2.1-.7 2.1-.8.7-2Z"/></svg></span>
+      <span class="more-menu-copy"><strong>العبادات والمواسم</strong><small>التاريخ الهجري والتذكيرات الموسمية</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
   </div>
 </section>
 <section class="more-group" aria-labelledby="moreToolsHeading">
-  <h2 id="moreToolsHeading">أدوات المسلم</h2>
+  <div class="more-group-heading">
+    <h2 id="moreToolsHeading">أدوات المسلم</h2>
+    <p>خدمات قريبة منك</p>
+  </div>
   <div class="more-menu">
-    <button type="button" class="more-menu-item" data-more-go="nearby-mosque"><span class="more-menu-icon" aria-hidden="true">م</span><span class="more-menu-copy"><strong>أقرب مسجد</strong><small>اعثر على مسجد قريب منك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="nearby-mosque">
+      <span class="more-menu-icon more-menu-icon--mosque" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 20v-8h14v8M8 12a4 4 0 0 1 8 0M12 8V5M4 12V8l2-2 2 2v4M16 12V8l2-2 2 2v4M10 16v4m4-4v4"/></svg></span>
+      <span class="more-menu-copy"><strong>أقرب مسجد</strong><small>اعثر على مسجد قريب منك</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
   </div>
 </section>
 <section class="more-group" aria-labelledby="moreSettingsHeading">
-  <h2 id="moreSettingsHeading">التطبيق</h2>
+  <div class="more-group-heading">
+    <h2 id="moreSettingsHeading">التطبيق</h2>
+    <p>خصص أنياس وتعرّف عليه</p>
+  </div>
   <div class="more-menu">
-    <button type="button" class="more-menu-item" data-more-go="settings"><span class="more-menu-icon" aria-hidden="true">⚙</span><span class="more-menu-copy"><strong>الإعدادات</strong><small>المظهر، التنبيهات، والمواقيت</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
-    <button type="button" class="more-menu-item" data-more-go="about"><span class="more-menu-icon" aria-hidden="true">☾</span><span class="more-menu-copy"><strong>عن التطبيق</strong><small>معلومات عن أنياس ومزاياه</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="settings">
+      <span class="more-menu-icon more-menu-icon--settings" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></span>
+      <span class="more-menu-copy"><strong>الإعدادات</strong><small>المظهر والتنبيهات ومواقيت الصلاة</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
+    <button type="button" class="more-menu-item" data-more-go="about">
+      <span class="more-menu-icon more-menu-icon--about" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>
+      <span class="more-menu-copy"><strong>عن التطبيق</strong><small>تعرّف على أنياس ومزاياه</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
   </div>
 </section>
 </main>
