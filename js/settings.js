@@ -895,6 +895,12 @@ function setupMuezzinPicker(
 
   updateSelectedName();
 
+  const togglePicker = () => {
+    const isOpen = options.classList.toggle("open");
+    row.classList.toggle("open", isOpen);
+    row.setAttribute("aria-expanded", String(isOpen));
+  };
+
   row.addEventListener("click", event => {
 
     if (
@@ -903,10 +909,14 @@ function setupMuezzinPicker(
       return;
     }
 
-    options.classList.toggle("open");
+    togglePicker();
 
-    row.classList.toggle("open");
+  });
 
+  row.addEventListener("keydown", event => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    togglePicker();
   });
 
   radios.forEach(radio => {
