@@ -16,13 +16,13 @@ jobs:
       ANYAS_RELEASE_KEY_ALIAS: ${{ secrets.ANYAS_RELEASE_KEY_ALIAS }}
       ANYAS_RELEASE_KEY_PASSWORD: ${{ secrets.ANYAS_RELEASE_KEY_PASSWORD }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check JavaScript syntax
         run: |
           for file in js/*.js data/*.js; do
             node --check "$file"
           done
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -38,7 +38,7 @@ jobs:
           "$SDKMANAGER" 'platforms;android-35' 'build-tools;35.0.0'
       - name: Build debug APK
         run: gradle --no-daemon -p android assembleDebug
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: anyas-android-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
@@ -54,7 +54,7 @@ jobs:
         run: gradle --no-daemon -p android bundleRelease
       - name: Upload signed release AAB
         if: ${{ env.ANYAS_KEYSTORE_BASE64 != '' && env.ANYAS_RELEASE_STORE_PASSWORD != '' && env.ANYAS_RELEASE_KEY_ALIAS != '' && env.ANYAS_RELEASE_KEY_PASSWORD != '' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: anyas-android-release-aab
           path: android/app/build/outputs/bundle/release/app-release.aab
