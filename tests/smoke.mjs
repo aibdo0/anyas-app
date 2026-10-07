@@ -92,5 +92,15 @@ check("PWA install and offline shell are configured", () => {
   assert.match(index, /addEventListener\("offline"/);
 });
 
+check("keyboard and screen-reader accessibility basics are present", () => {
+  assert.match(index, /class="skip-link" href="#page-home"/);
+  for (const match of index.matchAll(/<img\b([^>]*)>/gi)) assert.match(match[1], /\balt=/, "every image needs alt text");
+  for (const match of index.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/gi)) {
+    const visibleText = match[2].replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, "").trim();
+    if (!visibleText) assert.match(match[1], /(aria-label|title)=/, "icon-only buttons need an accessible name");
+  }
+  assert.match(read("css/theme-white-gold.css"), /prefers-reduced-motion/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);
