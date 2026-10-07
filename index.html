@@ -50,7 +50,9 @@
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 <link rel="stylesheet" href="css/friday.css?v=20261003-2">
-<link rel="stylesheet" href="css/more-page.css?v=20261007-1">
+<link rel="stylesheet" href="css/notification-settings.css?v=20261007-1">
+<link rel="stylesheet" href="css/more-page.css?v=20261007-2">
+<link rel="stylesheet" href="css/app-design-system.css?v=20261007-2">
 </head>
 <body>
 <div class="app">
@@ -997,6 +999,8 @@ type="button"
 <div class="settings-card">
 
 
+<p class="notification-settings-note">التذكيرات اختيارية؛ فعّل ما تحتاجه فقط، ويمكنك فتح المجموعات لضبط بقية الخيارات.</p>
+
 <div class="setting-row">
 
 <div class="setting-info">
@@ -1023,6 +1027,14 @@ type="button"
 </div>
 
 
+<details class="notification-settings-group" data-notification-settings-group="prayer">
+  <summary class="notification-settings-summary">
+    <span class="notification-settings-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v5M4.9 5.9l3.5 3.5M2 13h5M17 13h5M15.6 9.4l3.5-3.5"/><path d="M5 19h14M7 16a5 5 0 0 1 10 0"/></svg></span>
+    <span class="notification-settings-copy"><strong>تنبيهات صلاة إضافية</strong><small>الشروق، الثلث الأخير، وآية الكرسي</small></span>
+    <span class="notification-settings-count" data-notification-group-status aria-label="التذكيرات المفعّلة">٠ / ٣</span>
+    <span class="notification-settings-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span>
+  </summary>
+  <div class="notification-settings-group-content">
 <div class="setting-row">
 
 <div class="setting-info">
@@ -1110,6 +1122,9 @@ type="button"
   </div>
 </details>
 
+  </div>
+</details>
+
 <div class="setting-row">
 
 <div class="setting-info">
@@ -1131,7 +1146,15 @@ type="button"
 
 </div>
 
-<div class="settings-subtitle">تذكيرات إضافية</div>
+<details class="notification-settings-group" data-notification-settings-group="extra">
+  <summary class="notification-settings-summary">
+    <span class="notification-settings-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2M4.5 4.5l2 2"/></svg></span>
+    <span class="notification-settings-copy"><strong>تذكيرات إضافية</strong><small>أذكار متفرقة، الصيام، وسنة المطر</small></span>
+    <span class="notification-settings-count" data-notification-group-status aria-label="التذكيرات المفعّلة">٠ / ٩</span>
+    <span class="notification-settings-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span>
+  </summary>
+  <div class="notification-settings-group-content">
+
 <div class="setting-row"><div class="setting-info"><div class="setting-title">حديث اليوم</div><div class="setting-description">تذكير يومي بحديث اليوم — ١٢:٣٠ ظهرًا</div></div><label class="switch"><input id="notifyHadith" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">صلاة الضحى</div><div class="setting-description">تذكير بصلاة الضحى بعد الشروق</div></div><label class="switch"><input id="notifyDuha" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">الصلاة على النبي ﷺ</div><div class="setting-description">تذكيران يوميًا في أوقات متباعدة</div></div><label class="switch"><input id="notifySalawat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
@@ -1142,7 +1165,18 @@ type="button"
 <div class="setting-row"><div class="setting-info"><div class="setting-title">صيام في سبيل الله</div><div class="setting-description">تذكير أسبوعي اختياري يوم السبت</div></div><label class="switch"><input id="notifyFastingFisabilillah" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">سنة نزول المطر</div><div class="setting-description">يعمل تلقائيًا عند توقع المطر في موقعك</div></div><label class="switch"><input id="notifyRainSunnah" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 
-<div class="settings-subtitle">الورد اليومي</div>
+  </div>
+</details>
+
+<details class="notification-settings-group" data-notification-settings-group="adhkar">
+  <summary class="notification-settings-summary">
+    <span class="notification-settings-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 6c-2.2-2-5.4-2.3-8-1v14c2.6-1.3 5.8-1 8 1 2.2-2 5.4-2.3 8-1V5c-2.6-1.3-5.8-1-8 1Z"/><path d="M12 6v14M7 9h2m6 0h2m-10 4h2m6 0h2"/></svg></span>
+    <span class="notification-settings-copy"><strong>الورد اليومي</strong><small>الاستيقاظ، الصباح، المساء، والنوم</small></span>
+    <span class="notification-settings-count" data-notification-group-status aria-label="التذكيرات المفعّلة">٠ / ٦</span>
+    <span class="notification-settings-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span>
+  </summary>
+  <div class="notification-settings-group-content">
+
 <div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الاستيقاظ</div><div class="setting-description">موعد مقترح أو وقت تختاره ضمن فترة الصباح</div></div><label class="switch"><input id="notifyWardAwakening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <details class="reminder-time-panel" data-reminder-schedule-panel="notifyWardAwakening" hidden>
   <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyWardAwakening">المقترح · ٤:٣٠ ص</strong></summary>
@@ -1193,11 +1227,25 @@ type="button"
 </details>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">استغفار السحر</div><div class="setting-description">تذكير في وقت السحر — ٢:٠٠ ص</div></div><label class="switch"><input id="notifyWardSahar" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 
-<div class="settings-subtitle">يوم الجمعة</div>
+  </div>
+</details>
+
+<details class="notification-settings-group" data-notification-settings-group="friday">
+  <summary class="notification-settings-summary">
+    <span class="notification-settings-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.5 14.2A8.7 8.7 0 0 1 9.8 3.5 8.8 8.8 0 1 0 20.5 14.2Z"/><path d="m17.5 3 .8 2 2.2.8-2.2.7-.8 2.1-.7-2.1-2.1-.7 2.1-.8.7-2Z"/></svg></span>
+    <span class="notification-settings-copy"><strong>تذكيرات يوم الجمعة</strong><small>اختر ما يناسبك من أعمال الجمعة</small></span>
+    <span class="notification-settings-count" data-notification-group-status aria-label="التذكيرات المفعّلة">٠ / ٤</span>
+    <span class="notification-settings-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span>
+  </summary>
+  <div class="notification-settings-group-content">
+
 <div class="setting-row"><div class="setting-info"><div class="setting-title">سورة الكهف</div><div class="setting-description">لا تنس قراءتها يوم الجمعة</div></div><label class="switch"><input id="notifyFridayKahf" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">صلاة الجمعة</div><div class="setting-description">تذكير قبل وقت صلاة الجمعة</div></div><label class="switch"><input id="notifyFridayPrayer" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">ساعة الإجابة</div><div class="setting-description">من بعد العصر إلى المغرب</div></div><label class="switch"><input id="notifyFridayHour" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">الصلاة على النبي ﷺ</div><div class="setting-description">من مغرب الخميس إلى نهاية يوم الجمعة</div></div><label class="switch"><input id="notifyFridaySalawat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+
+  </div>
+</details>
 
 </div>
 
@@ -1816,15 +1864,10 @@ data-audio="fajrAudio"
 </header>
 <section class="more-group" aria-labelledby="moreDailyHeading">
   <div class="more-group-heading">
-    <h2 id="moreDailyHeading">يومك وعبادتك</h2>
-    <p>عباداتك ومواسمك اليومية</p>
+    <h2 id="moreDailyHeading">عباداتك</h2>
+    <p>المواسم والسنن في مكان واحد</p>
   </div>
   <div class="more-menu">
-    <button type="button" class="more-menu-item" data-more-go="tasks">
-      <span class="more-menu-icon more-menu-icon--tasks" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5h6M8.5 11l1.7 1.7 3.8-3.8M8.5 17h7"/></svg></span>
-      <span class="more-menu-copy"><strong>يوم المسلم</strong><small>صلواتك وأذكارك وتنظيم يومك</small></span>
-      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
-    </button>
     <button type="button" class="more-menu-item" data-more-go="worship">
       <span class="more-menu-icon more-menu-icon--worship" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.5 14.2A8.7 8.7 0 0 1 9.8 3.5 8.8 8.8 0 1 0 20.5 14.2Z"/><path d="m17.5 3 .8 2 2.2.8-2.2.7-.8 2.1-.7-2.1-2.1-.7 2.1-.8.7-2Z"/></svg></span>
       <span class="more-menu-copy"><strong>العبادات والمواسم</strong><small>التاريخ الهجري والتذكيرات الموسمية</small></span>
@@ -1835,12 +1878,17 @@ data-audio="fajrAudio"
 <section class="more-group" aria-labelledby="moreToolsHeading">
   <div class="more-group-heading">
     <h2 id="moreToolsHeading">أدوات المسلم</h2>
-    <p>خدمات قريبة منك</p>
+    <p>خدمات وأدوات يومية</p>
   </div>
   <div class="more-menu">
     <button type="button" class="more-menu-item" data-more-go="nearby-mosque">
       <span class="more-menu-icon more-menu-icon--mosque" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 20v-8h14v8M8 12a4 4 0 0 1 8 0M12 8V5M4 12V8l2-2 2 2v4M16 12V8l2-2 2 2v4M10 16v4m4-4v4"/></svg></span>
       <span class="more-menu-copy"><strong>أقرب مسجد</strong><small>اعثر على مسجد قريب منك</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
+    <button type="button" class="more-menu-item" data-more-go="qibla">
+      <span class="more-menu-icon more-menu-icon--qibla" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.7 8.3-2.4 5-5 2.4 2.4-5 5-2.4Z"/></svg></span>
+      <span class="more-menu-copy"><strong>اتجاه القبلة</strong><small>افتح البوصلة لتحديد اتجاه مكة</small></span>
       <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
     </button>
   </div>
@@ -2049,7 +2097,7 @@ type="button"
 <script src="js/favorites.js?v=20260926-3"></script>
 <script src="js/azkar.js?v=20261002-4"></script>
 <script src="js/wird.js?v=20261002-5"></script>
-<script src="js/settings.js?v=20261007-1"></script>
+<script src="js/settings.js?v=20261007-2"></script>
 <script src="js/qibla.js?v=20261001-2"></script>
 <script src="js/app-enhancements.js?v=20261003-2"></script>
 <script src="js/daily-devotions.js?v=20261003-1"></script>

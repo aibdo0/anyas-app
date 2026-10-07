@@ -1,0 +1,203 @@
+/* هوية أنياس الموحدة — مستوحاة من صفحة «المزيد» */
+:root {
+  --ania-hero-1: #29271f;
+  --ania-hero-2: #51432f;
+  --ania-hero-accent: #f0d18c;
+}
+
+/* ترويسة رئيسية وبطاقات عناوين متناسقة */
+#page-home .main-header,
+.page:not(#page-home):not(#page-more) .plain-header {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 24px;
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 7% 0%, rgba(196,154,85,.33), transparent 56%),
+    linear-gradient(135deg,var(--ania-hero-1),var(--ania-hero-2));
+  box-shadow: 0 14px 30px rgba(48,41,29,.14);
+}
+#page-home .main-header {
+  margin: 0 0 17px;
+  padding: 16px 18px 14px;
+}
+.page:not(#page-home):not(#page-more) .plain-header {
+  min-height: 116px;
+  align-items: flex-start;
+  gap: 3px;
+  margin: 0 0 18px;
+  padding: 14px 17px 16px;
+  text-align: right;
+}
+#page-home .main-header::after,
+.page:not(#page-home):not(#page-more) .plain-header::after {
+  position: absolute;
+  z-index: -1;
+  inset-inline-start: -45px;
+  bottom: -90px;
+  width: 190px;
+  height: 190px;
+  border: 1px solid rgba(240,215,164,.12);
+  border-radius: 50%;
+  box-shadow: 0 0 0 22px rgba(240,215,164,.035), 0 0 0 44px rgba(240,215,164,.025);
+  content: "";
+  pointer-events: none;
+}
+#page-home .home-greeting,
+#page-home .home-brand,
+#page-home .date-line,
+.page:not(#page-home):not(#page-more) .plain-header .brand,
+.page:not(#page-home):not(#page-more) .plain-header .date {
+  position: relative;
+  z-index: 1;
+  color: #fff !important;
+}
+#page-home .home-greeting { color: rgba(255,255,255,.78) !important; font-size: 11px; font-weight: 700; }
+#page-home .home-brand { margin-top: 2px; font-size: 28px; font-weight: 900; }
+#page-home .date-line { color: rgba(255,255,255,.76) !important; font-size: 11px; }
+#page-home .date-separator { color: var(--ania-hero-accent) !important; }
+.page:not(#page-home):not(#page-more) .plain-header .brand { font-size: 24px; font-weight: 900; line-height: 1.25; }
+.page:not(#page-home):not(#page-more) .plain-header .brand::before {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--ania-hero-accent);
+  content: "أنياس";
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.page:not(#page-home):not(#page-more) .plain-header .date { margin-top: 1px; color: rgba(255,255,255,.76) !important; font-size: 11px; }
+.page:not(#page-home):not(#page-more) .plain-header .back-button {
+  position: relative;
+  z-index: 1;
+  order: -1;
+  min-height: 36px;
+  margin: 0 0 8px;
+  padding: 6px 11px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  color: #fff;
+  background: rgba(255,255,255,.08);
+  box-shadow: none;
+}
+.page:not(#page-home):not(#page-more) .plain-header .back-button:hover { background: rgba(255,255,255,.15); }
+#page-home .theme-toggle,
+#page-home .notification-bell-button {
+  z-index: 2;
+  border-color: rgba(255,255,255,.17) !important;
+  color: var(--ania-hero-accent) !important;
+  background: rgba(255,255,255,.08) !important;
+  box-shadow: none !important;
+}
+#page-home .notification-bell-icon { stroke: var(--ania-hero-accent) !important; }
+#page-home .notification-badge { border-color: #342f26; }
+
+/* العناوين: نفس اللمسة الذهبية الهادئة المستخدمة في مجموعات «المزيد» */
+.page .section-heading { margin-inline: 3px; }
+.page .section-title { gap: 9px; font-size: 15px; font-weight: 900; }
+.page .section-title::before { width: 3px; height: 18px; border-radius: 8px; background: var(--gold); }
+.tasks-section-heading,
+.azkar-priority-heading,
+.daily-prayer-heading,
+.notification-list-header {
+  gap: 10px;
+}
+.tasks-section-heading h2,
+.azkar-priority-heading h2,
+.daily-prayer-heading h2,
+.notification-list-header h2 { font-size: 15px; font-weight: 900; }
+
+/* أسطح البطاقات والقوائم: حواف موحدة وظلال خفيفة */
+.page :is(.daily-overview-card,.daily-prayer-card,.daily-adhkar-card,.friday-feature-card,.prayer-section,.content-block,.upcoming-card,.nearby-mosque-card,.azkar-priority-section,.azkar-friday-card,.weekly-report-card,.qibla-card,.traveler-card,.tasbeeh-card,.worship-card,.about-card,.city-picker-card,.mosques-card,.notifications-card,.settings-card) {
+  border-color: var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+.page :is(.prayer-row,.prayer-track-item,.task-item,.quick-action,.category-card,.azkar-period-card,.tasbeeh-preset,.permission-accordion,.about-action-card) {
+  border-color: var(--line);
+  border-radius: 15px;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .16s ease;
+}
+.page :is(.prayer-row,.prayer-track-item,.task-item,.quick-action,.category-card,.azkar-period-card,.tasbeeh-preset):active { transform: scale(.99); }
+.page :is(.content-block,.upcoming-card,.prayer-section,.daily-prayer-card,.daily-overview-card,.qibla-card,.weekly-report-card,.tasbeeh-card,.worship-card,.about-card,.city-picker-card,.mosques-card,.notifications-card,.settings-card) {
+  background-color: var(--surface);
+}
+.page .nearby-mosque-card { border-radius: 18px; box-shadow: 0 7px 20px rgba(56,49,40,.045); }
+.page .quick-action { min-height: 82px; box-shadow: 0 6px 18px rgba(56,49,40,.045); }
+.page .quick-icon,
+.page .nearby-mosque-icon,
+.page .notification-history-icon,
+.page .notifications-overview-icon { border-radius: 14px; }
+
+/* الأزرار والحقول */
+.page :is(.back-button,.small-action-button,.more-button,.daily-adhkar-button,.friday-feature-button,.qibla-start-button,.adhan-button,.tasbeeh-main-button,.permission-enable-button,.permission-settings-button,.notification-manage-button,.setting-action-button) {
+  min-height: 40px;
+  border-radius: 13px;
+  font-weight: 800;
+  transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+.page :is(.daily-adhkar-button,.friday-feature-button,.qibla-start-button,.adhan-button,.tasbeeh-main-button,.permission-enable-button,.setting-action-button) {
+  border: 0;
+  color: #fff;
+  background: linear-gradient(135deg,#80653b,#9a7844);
+  box-shadow: 0 6px 16px rgba(83,66,38,.16);
+}
+.page :is(.daily-adhkar-button,.friday-feature-button,.qibla-start-button,.adhan-button,.tasbeeh-main-button,.permission-enable-button,.setting-action-button):active { transform: translateY(1px); box-shadow: none; }
+.page :is(input[type="search"],input[type="text"],input[type="time"],select,textarea) {
+  border-color: var(--line);
+  border-radius: 13px;
+  color: var(--ink);
+  background: var(--surface);
+}
+.page :is(input[type="search"],input[type="text"],input[type="time"],select,textarea):focus-visible { border-color: var(--gold); }
+
+/* أقسام الإعدادات مثل عناوين المجموعات في «المزيد» */
+#page-settings .settings-section-toggle {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 18px 2px 9px;
+  padding: 5px 12px 5px 4px;
+  border: 0;
+  border-inline-start: 3px solid var(--gold);
+  border-radius: 0 12px 12px 0;
+  color: var(--ink);
+  background: transparent;
+  font-size: 14px;
+  font-weight: 900;
+  text-align: right;
+  cursor: pointer;
+}
+#page-settings .settings-section-toggle::after { color: var(--gold-dark); content: "⌄"; font-size: 17px; transition: transform .18s ease; }
+#page-settings .settings-section-toggle[aria-expanded="true"]::after { transform: rotate(180deg); }
+#page-settings .settings-card { overflow: hidden; border-radius: 20px; }
+
+/* المحافظة على التباين في الوضع الداكن */
+:root[data-theme="dark"] .page :is(.content-block,.upcoming-card,.prayer-section,.daily-prayer-card,.daily-overview-card,.qibla-card,.weekly-report-card,.tasbeeh-card,.worship-card,.about-card,.city-picker-card,.mosques-card,.notifications-card,.settings-card) {
+  border-color: var(--line);
+  background-color: var(--surface);
+  box-shadow: var(--shadow);
+}
+:root[data-theme="dark"] #page-settings .settings-section-toggle { color: var(--ink); }
+:root[data-theme="dark"] body .page:not(#page-home):not(#page-more) .plain-header .back-button {
+  border-color: rgba(255,255,255,.18) !important;
+  color: #fff !important;
+  background: rgba(255,255,255,.08) !important;
+}
+html[lang="en"] #page-settings .settings-section-toggle { text-align: left; }
+
+@media (max-width: 390px) {
+  #page-home .main-header { padding: 14px 14px 12px; border-radius: 21px; }
+  .page:not(#page-home):not(#page-more) .plain-header { min-height: 108px; padding: 13px 14px 14px; border-radius: 21px; }
+  .page:not(#page-home):not(#page-more) .plain-header .brand { font-size: 22px; }
+  .page .section-title { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page :is(.prayer-row,.prayer-track-item,.task-item,.quick-action,.category-card,.azkar-period-card,.tasbeeh-preset,.daily-adhkar-button,.friday-feature-button,.qibla-start-button,.adhan-button,.tasbeeh-main-button,.permission-enable-button,.setting-action-button),
+  #page-settings .settings-section-toggle::after { transition: none; }
+}
