@@ -1,5 +1,15 @@
 plugins { id 'com.android.application' }
 
+def webRoot = rootProject.projectDir.parentFile
+def appVersionSource = new File(webRoot, 'data/app-version.js').text
+def appVersionMatch = appVersionSource =~ /window\.ANIAS_APP_VERSION\s*=\s*"([^"]+)"/
+def appVersionCodeMatch = appVersionSource =~ /window\.ANIAS_VERSION_CODE\s*=\s*(\d+)/
+if (!appVersionMatch.find() || !appVersionCodeMatch.find()) {
+    throw new GradleException('Missing centralized Anias version data in data/app-version.js')
+}
+def centralizedVersionName = appVersionMatch.group(1)
+def centralizedVersionCode = Integer.parseInt(appVersionCodeMatch.group(1))
+
 android {
     namespace 'com.anyas.app'
     compileSdk 35
@@ -8,8 +18,8 @@ android {
         applicationId 'com.anyas.app'
         minSdk 23
         targetSdk 34
-        versionCode 5
-        versionName '1.1.4'
+        versionCode centralizedVersionCode
+        versionName centralizedVersionName
     }
 }
 
@@ -17,7 +27,6 @@ dependencies {
     implementation 'androidx.webkit:webkit:1.12.1'
 }
 
-def webRoot = rootProject.projectDir.parentFile
 tasks.register('syncWebAssets', Copy) {
     from(webRoot) {
         include 'index.html', 'css/**', 'js/**', 'data/**', 'assets/**', 'audio/**'

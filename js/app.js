@@ -6,6 +6,8 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const isFirstRun = setupFirstRunOnboarding();
+  updateAppVersionLabels();
+  window.addEventListener("anyas:languagechange", updateAppVersionLabels);
   updateDate();
   setupNavigation();
 
@@ -65,6 +67,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 60 * 1000);
 
 });
+
+function updateAppVersionLabels() {
+  const version = window.ANIAS_APP_VERSION || "1.1.5";
+  const prefix = document.documentElement.lang === "en" ? "Latest official release: " : "آخر إصدار رسمي: ";
+  document.querySelectorAll("[data-app-version-label]").forEach(element => {
+    element.textContent = `${prefix}${version}`;
+  });
+}
 
 
 function hasPriorAniasUse() {

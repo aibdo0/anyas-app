@@ -21,7 +21,8 @@
   function makeFeedbackMessage() {
     const text = $("aboutFeedbackText")?.value.trim() || "";
     const title = $("aboutFeedbackTitle")?.textContent.trim() || "Anias feedback";
-    return `${title}\n${text}\n\nAnias ${document.documentElement.lang === "en" ? "version" : "الإصدار"} 1.1.5`;
+    const version = window.ANIAS_APP_VERSION || "1.1.5";
+    return `${title}\n${text}\n\nAnias ${document.documentElement.lang === "en" ? "version" : "الإصدار"} ${version}`;
   }
 
   function openFeedback(kind) {
