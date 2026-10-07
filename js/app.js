@@ -245,6 +245,12 @@ function setupNavigation() {
     });
 
   });
+  document.addEventListener("click", event => {
+    const backButton = event.target.closest("[data-back-about]");
+    if (!backButton) return;
+    event.preventDefault();
+    goToPage("about");
+  });
 
 }
 
@@ -331,9 +337,6 @@ function setupQuickActions() {
         goToPage(destination);
       }
     });
-  });
-  document.querySelectorAll("[data-back-about]").forEach(button => {
-    button.addEventListener("click", () => goToPage("about"));
   });
   const syncPrivacyLanguage = () => {
     const isEnglish = document.documentElement.lang === "en";
