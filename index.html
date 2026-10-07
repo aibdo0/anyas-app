@@ -2046,26 +2046,6 @@ data-audio="fajrAudio"
   <section class="mosques-card"><div id="mosquesList" class="mosques-list" aria-live="polite"><div class="schedule-loading">جارٍ البحث عن المساجد…</div></div><button id="openMosquesMapButton" class="secondary-action" type="button">فتح النتائج على الخريطة</button></section>
 </main>
 
-<main class="page" id="page-reminder-tests">
-  <header class="plain-header"><button class="back-button" id="reminderTestsBackButton" type="button">رجوع</button><div class="brand">اختبار التذكيرات والأصوات</div><div class="date">اختبر الإشعار والصوت قبل الاعتماد على الجدولة</div></header>
-  <section class="reminder-test-status-card"><div class="reminder-test-status-icon">✓</div><div><strong>جاهز للاختبار</strong><small>سيتم تشغيل عينة قصيرة وإرسال إشعار تجريبي.</small></div></section>
-  <button class="primary-action reminder-test-all-button" id="testAllRemindersButton" type="button">▶ اختبار الكل</button>
-  <section class="reminder-test-grid" aria-label="قائمة اختبارات التذكيرات">
-    <button class="reminder-test-card" type="button" data-reminder-test="الأذان العادي" data-audio="adhan.mp3"><span class="reminder-test-card-icon">◷</span><span><strong>الأذان العادي</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="أذان الفجر" data-audio="fajr.mp3"><span class="reminder-test-card-icon">☼</span><span><strong>أذان الفجر</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="أذكار الصباح" data-audio="adhkar-morning-mishary-alafasy.mp3"><span class="reminder-test-card-icon">☀</span><span><strong>أذكار الصباح</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="أذكار المساء" data-audio="adhkar-evening-mishary-alafasy.mp3"><span class="reminder-test-card-icon">☾</span><span><strong>أذكار المساء</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="أذكار النوم" data-audio="adhkar-sleep-mishary-alafasy.mp3"><span class="reminder-test-card-icon">☾</span><span><strong>أذكار النوم</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="أذكار الاستيقاظ" data-audio="adhkar-wakeup-mishary-alafasy.mp3"><span class="reminder-test-card-icon">↑</span><span><strong>أذكار الاستيقاظ</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="تنبيه قبل الفجر" data-audio="before-fajr-30min.mp3"><span class="reminder-test-card-icon">◴</span><span><strong>تنبيه قبل الفجر</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="تذكير المطر" data-audio="rain-sunnah-reminder.mp3"><span class="reminder-test-card-icon">◇</span><span><strong>تذكير المطر</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="الشروق" data-audio="sunrise-birds.mp3"><span class="reminder-test-card-icon">✦</span><span><strong>صوت الشروق</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="الحديث اليومي" data-audio="hadith-reminder.mp3"><span class="reminder-test-card-icon">✧</span><span><strong>الحديث اليومي</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="صلاة الضحى" data-audio="duha-prayer-reminder.mp3"><span class="reminder-test-card-icon">☼</span><span><strong>تذكير صلاة الضحى</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-    <button class="reminder-test-card" type="button" data-reminder-test="الصلاة على النبي" data-audio="salawat-reminder-1.mp3"><span class="reminder-test-card-icon">♡</span><span><strong>الصلاة على النبي</strong><small>إشعار + صوت</small></span><b>اختبر</b></button>
-  </section>
-  <section class="reminder-test-result-card"><h2>نتيجة آخر اختبار</h2><p id="reminderTestStatus" role="status" aria-live="polite">لم يبدأ اختبار بعد.</p><div class="reminder-test-result-row"><span>الإشعار</span><strong id="reminderNotificationResult">—</strong></div><div class="reminder-test-result-row"><span>الصوت</span><strong id="reminderAudioResult">—</strong></div><div class="reminder-test-result-row"><span>وقت الاختبار</span><strong id="reminderTestTime">—</strong></div></section>
-</main>
 <main class="page" id="page-notifications">
   <header class="plain-header notification-page-header"><button class="back-button" id="notificationsBackButton" type="button">رجوع</button><div class="brand">صندوق الإشعارات</div><div class="date">كل الإشعارات التي وصلتك محفوظة هنا</div></header>
   <section class="notifications-overview" aria-live="polite">
@@ -2076,7 +2056,6 @@ data-audio="fajrAudio"
   <section class="notifications-card">
     <div class="notification-list-header"><div><h2>آخر ما وصلك</h2><p>الأحدث أولًا؛ السجل محفوظ على هذا الجهاز.</p></div><button class="secondary-action notification-manage-button" id="manageNotificationsButton" type="button">إعدادات التذكيرات</button></div>
     <div id="notificationList" class="notification-list" aria-live="polite"><div class="notification-empty"><strong>لا توجد إشعارات بعد</strong><small>ستظهر هنا التنبيهات عند وصولها، لتراجعها متى شئت.</small></div></div>
-    <div class="notification-test-entry"><div><strong>اختبار التذكيرات والأصوات</strong><small>اختبر أي إشعار أو صوت وتابع نتيجته.</small></div><button class="secondary-action" id="openReminderTestsFromNotifications" type="button">فتح الاختبار</button></div>
   </section>
 </main>
 
@@ -2157,7 +2136,6 @@ type="button"
 <script src="js/azkar.js?v=20261002-4"></script>
 <script src="js/wird.js?v=20261002-5"></script>
 <script src="js/settings.js?v=20261007-2"></script>
-<script src="js/reminder-tests.js?v=20261007-1"></script>
 <script src="js/qibla.js?v=20261001-2"></script>
 <script src="js/app-enhancements.js?v=20261007-1"></script>
 <script src="js/daily-devotions.js?v=20261003-1"></script>
