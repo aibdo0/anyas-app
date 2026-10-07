@@ -12,6 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: |
+          for file in js/*.js data/*.js; do
+            node --check "$file"
+          done
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
