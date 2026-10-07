@@ -200,24 +200,25 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const hijriMonth = view === "month" ? window.getDisplayedHijriParts?.(date) : null;
       const method = window.getCalculationMethod?.() || 5;
+      const school = window.getAsrMadhab?.() === "hanafi" ? 1 : 0;
       try {
         let data;
         if (view === "tomorrow") {
           const day = String(date.getDate()).padStart(2, "0");
-          const response = await window.anyasFetch(`https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}`, {}, { timeoutMs: 9000, retries: 1 });
+          const response = await window.anyasFetch(`https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}&school=${school}`, {}, { timeoutMs: 9000, retries: 1 });
           if (!response.ok) throw new Error("Prayer time request failed");
           data = (await response.json()).data;
           if (!data) throw new Error("Prayer time data is missing");
           if (requestId !== latestScheduleRequest) return;
           renderDay(data, date);
         } else if (hijriMonth?.year && hijriMonth?.month) {
-          const response = await window.anyasFetch(`https://api.aladhan.com/v1/hijriCalendar/${hijriMonth.year}/${hijriMonth.month}?latitude=${latitude}&longitude=${longitude}&method=${method}`, {}, { timeoutMs: 9000, retries: 1 });
+          const response = await window.anyasFetch(`https://api.aladhan.com/v1/hijriCalendar/${hijriMonth.year}/${hijriMonth.month}?latitude=${latitude}&longitude=${longitude}&method=${method}&school=${school}`, {}, { timeoutMs: 9000, retries: 1 });
           if (!response.ok) throw new Error("Hijri calendar request failed");
           data = (await response.json()).data || [];
           if (requestId !== latestScheduleRequest) return;
           renderMonth(data, hijriMonth);
         } else {
-          const response = await window.anyasFetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${latitude}&longitude=${longitude}&method=${method}`, {}, { timeoutMs: 9000, retries: 1 });
+          const response = await window.anyasFetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${latitude}&longitude=${longitude}&method=${method}&school=${school}`, {}, { timeoutMs: 9000, retries: 1 });
           if (!response.ok) throw new Error("Calendar request failed");
           data = (await response.json()).data || [];
           if (requestId !== latestScheduleRequest) return;

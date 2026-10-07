@@ -1991,11 +1991,23 @@ function setupLocationSettings() {
 function setupExtraSettings() {
 
   setupCalculationMethod();
+  setupAsrMadhab();
   setupPrayerTrackingToggle();
   setupHijriAdjustment();
   setupManualPrayerSettings();
   setupDataManagement();
 
+}
+
+function setupAsrMadhab() {
+  const select = document.getElementById("asrMadhabSelect");
+  if (!select) return;
+  const saved = localStorage.getItem("anyas_asr_madhab");
+  if (saved === "hanafi" || saved === "shafi") select.value = saved;
+  select.addEventListener("change", () => {
+    localStorage.setItem("anyas_asr_madhab", select.value);
+    window.location.reload();
+  });
 }
 
 function setupDataManagement() {

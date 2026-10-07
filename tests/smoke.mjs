@@ -119,5 +119,17 @@ check("prayer data freshness is visible and cached", () => {
   assert.match(read("css/theme-white-gold.css"), /\.prayer-data-status/);
 });
 
+check("Asr madhab selection is persisted and applied", () => {
+  assert.match(index, /id="asrMadhabSelect"/);
+  assert.match(index, /value="shafi"/);
+  assert.match(index, /value="hanafi"/);
+  assert.match(read("js/app.js"), /anyas_asr_madhab/);
+  assert.match(prayer, /function getAsrMadhab/);
+  assert.match(prayer, /Madhab\.Hanafi/);
+  assert.match(prayer, /Madhab\.Shafi/);
+  assert.match(prayer, /school=\$\{school\}/);
+  assert.match(enhancements, /const school = window\.getAsrMadhab/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);

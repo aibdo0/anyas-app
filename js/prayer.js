@@ -74,6 +74,10 @@ function getCalculationMethod() {
 
 
 // =====================================================
+function getAsrMadhab() {
+  return localStorage.getItem("anyas_asr_madhab") === "hanafi" ? "hanafi" : "shafi";
+}
+
 // تحديد الموقع وتحميل المواقيت
 // =====================================================
 
@@ -301,7 +305,9 @@ async function loadPrayerTimes(latitude, longitude) {
   const year = now.getFullYear();
   const dateKey = `${year}-${month}-${day}`;
   const method = getCalculationMethod();
-  const cacheKey = `anyas_prayer_cache_${dateKey}_${Number(latitude).toFixed(3)}_${Number(longitude).toFixed(3)}_${method}`;
+  const madhab = getAsrMadhab();
+  const school = madhab === "hanafi" ? 1 : 0;
+  const cacheKey = `anyas_prayer_cache_${dateKey}_${Number(latitude).toFixed(3)}_${Number(longitude).toFixed(3)}_${method}_${madhab}`;
   const cacheMetaKey = `${cacheKey}_meta`;
   const statusElement = document.getElementById("prayerDataStatus");
   const setDataStatus = (source, timestamp = Date.now()) => {
@@ -337,6 +343,7 @@ async function loadPrayerTimes(latitude, longitude) {
     const parameters = method === 3
       ? window.adhan.CalculationMethod.MuslimWorldLeague()
       : window.adhan.CalculationMethod.Egyptian();
+    parameters.madhab = madhab === "hanafi" ? window.adhan.Madhab.Hanafi : window.adhan.Madhab.Shafi;
     const prayerTimes = new window.adhan.PrayerTimes(coordinates, now, parameters);
     const format = value => value.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
     return {
@@ -364,7 +371,7 @@ async function loadPrayerTimes(latitude, longitude) {
 
   // Refresh the local cache when connected; fully optional for the core screen.
   try {
-    const url = `https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}`;
+    const url = `https://api.aladhan.com/v1/timings/${day}-${month}-${year}?latitude=${latitude}&longitude=${longitude}&method=${method}&school=${school}`;
     const response = await (window.anyasFetch ? window.anyasFetch(url, {}, { timeoutMs: 9000, retries: 1 }) : fetch(url));
     if (!response.ok) throw new Error(`Aladhan HTTP ${response.status}`);
     const data = await response.json();
