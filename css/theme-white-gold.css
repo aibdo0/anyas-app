@@ -895,6 +895,14 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .city-local-section { display: grid; gap: 8px; }
 .city-local-section > strong { color: var(--muted); font-size: 11px; }
 .city-result { padding: 11px 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--ink); background: var(--surface-soft); font: inherit; text-align: right; cursor: pointer; }
+.faq-list { display: grid; gap: 8px; }
+.faq-list details { overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-soft); }
+.faq-list summary { padding: 11px 13px; color: var(--ink); font-size: 13px; font-weight: 800; cursor: pointer; list-style: none; }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { float: inline-end; color: var(--gold-dark); content: "+"; font-size: 18px; line-height: 1; }
+.faq-list details[open] summary::after { content: "−"; }
+.faq-list details p { margin: 0; padding: 0 13px 12px; color: var(--muted); font-size: 11px; line-height: 1.8; }
+.faq-list summary:focus-visible { outline: 3px solid rgba(196,154,85,.55); outline-offset: -3px; }
 .schedule-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
 .schedule-tab { min-height: 43px; border: 1px solid var(--line); border-radius: 13px; color: var(--muted); background: var(--surface); font: inherit; font-weight: 800; cursor: pointer; }
 .schedule-tab.active { color: #fff; border-color: var(--gold-dark); background: var(--gold-dark); }

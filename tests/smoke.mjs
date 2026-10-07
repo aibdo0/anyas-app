@@ -102,5 +102,13 @@ check("keyboard and screen-reader accessibility basics are present", () => {
   assert.match(read("css/theme-white-gold.css"), /prefers-reduced-motion/);
 });
 
+check("FAQ answers are available without JavaScript", () => {
+  assert.match(index, /id="aboutFaqHeading"/);
+  assert.ok((index.match(/<details>/g) || []).length >= 5, "FAQ should contain at least five answers");
+  assert.match(index, /كيف أغيّر المدينة؟/);
+  assert.match(index, /هل يعمل أنياس بدون إنترنت؟/);
+  assert.match(read("css/theme-white-gold.css"), /\.faq-list details/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);
