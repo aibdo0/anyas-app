@@ -16,6 +16,7 @@ const index = read("index.html");
 const settings = read("js/settings.js");
 const prayer = read("js/prayer.js");
 const enhancements = read("js/app-enhancements.js");
+const commonCities = read("data/common-cities.js");
 const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java");
 const serviceWorker = read("sw.js");
 
@@ -34,10 +35,20 @@ check("web reminder keys are represented in Android scheduling", () => {
 });
 
 check("manual city selection persists and is read on startup", () => {
-  assert.match(enhancements, /localStorage\.setItem\("anyas_manual_location", JSON\.stringify\(location\)\)/);
+  assert.match(enhancements, /localStorage\.setItem\("anyas_manual_location", JSON\.stringify\(safeLocation\)\)/);
   assert.match(prayer, /JSON\.parse\(localStorage\.getItem\("anyas_manual_location"/);
   assert.match(prayer, /window\.currentLatitude\s*=\s*Number\(saved\.latitude\)/);
   assert.match(prayer, /window\.currentLongitude\s*=\s*Number\(saved\.longitude\)/);
+});
+
+check("common cities and recent city history work offline", () => {
+  assert.match(commonCities, /القاهرة/);
+  assert.match(commonCities, /الرياض/);
+  assert.match(enhancements, /anyas_recent_cities/);
+  assert.match(enhancements, /navigator\.onLine/);
+  assert.match(enhancements, /commonCities\.filter/);
+  assert.match(enhancements, /slice\(0, 5\)/);
+  assert.match(index, /data\/common-cities\.js/);
 });
 
 check("prayer times have an offline local calculation path", () => {

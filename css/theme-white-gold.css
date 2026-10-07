@@ -890,6 +890,8 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .city-search-row input, .name-input { min-width: 0; min-height: 43px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--ink); background: var(--surface-soft); font: inherit; }
 .city-search-row button, .secondary-action { min-height: 43px; padding: 8px 14px; border: 1px solid #e4d5b5; border-radius: 12px; color: #fff; background: var(--gold-dark); font: inherit; font-weight: 800; cursor: pointer; }
 .city-search-results { display: grid; gap: 7px; }
+.city-local-section { display: grid; gap: 8px; }
+.city-local-section > strong { color: var(--muted); font-size: 11px; }
 .city-result { padding: 11px 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--ink); background: var(--surface-soft); font: inherit; text-align: right; cursor: pointer; }
 .schedule-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
 .schedule-tab { min-height: 43px; border: 1px solid var(--line); border-radius: 13px; color: var(--muted); background: var(--surface); font: inherit; font-weight: 800; cursor: pointer; }

@@ -48,10 +48,65 @@
     const search = byId("citySearchButton");
     const input = byId("citySearchInput");
     const results = byId("citySearchResults");
+    const recentResults = byId("recentCityResults");
+    const recentSection = byId("recentCitiesSection");
+    const commonResults = byId("commonCityResults");
     const current = byId("useCurrentLocationButton");
     if (!open || !search || !input || !results) return;
+    const recentKey = "anyas_recent_cities";
+    const commonCities = Array.isArray(window.ANYAS_COMMON_CITIES) ? window.ANYAS_COMMON_CITIES : [];
+    const normalize = value => String(value || "").trim().toLocaleLowerCase("ar");
+    const readRecent = () => {
+      try { return JSON.parse(localStorage.getItem(recentKey) || "[]").filter(item => Number.isFinite(Number(item.latitude)) && Number.isFinite(Number(item.longitude))); }
+      catch (_) { return []; }
+    };
+    const saveRecent = location => {
+      const key = `${Number(location.latitude).toFixed(3)},${Number(location.longitude).toFixed(3)}`;
+      const next = [location, ...readRecent().filter(item => `${Number(item.latitude).toFixed(3)},${Number(item.longitude).toFixed(3)}` !== key)].slice(0, 5);
+      try { localStorage.setItem(recentKey, JSON.stringify(next)); } catch (_) { /* optional */ }
+    };
+    const selectCity = location => {
+      const safeLocation = { latitude: Number(location.latitude), longitude: Number(location.longitude), city: location.city || "موقعك الحالي", country: location.country || "" };
+      localStorage.setItem("anyas_manual_location", JSON.stringify(safeLocation));
+      localStorage.setItem("anyas_city_name", safeLocation.country ? `${safeLocation.city}، ${safeLocation.country}` : safeLocation.city);
+      localStorage.setItem("anyas_location_start_choice", "manual");
+      saveRecent(safeLocation);
+      window.currentLatitude = safeLocation.latitude;
+      window.currentLongitude = safeLocation.longitude;
+      window.lastKnownLocation = safeLocation;
+      const city = byId("prayerHeroCity");
+      if (city) city.textContent = safeLocation.country ? `${safeLocation.city}، ${safeLocation.country}` : safeLocation.city;
+      window.loadPrayerTimes?.(safeLocation.latitude, safeLocation.longitude);
+      window.dispatchEvent(new CustomEvent("anyas:location-updated", { detail: safeLocation }));
+      renderLocalCities();
+      openPage("home");
+    };
+    const renderButtons = (container, cities) => {
+      if (!container) return;
+      container.replaceChildren();
+      cities.forEach(location => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "city-result";
+        button.textContent = location.country ? `${location.city}، ${location.country}` : location.city;
+        button.addEventListener("click", () => selectCity(location));
+        container.appendChild(button);
+      });
+    };
+    const renderLocalCities = (query = "") => {
+      const needle = normalize(query);
+      const matches = city => !needle || normalize(`${city.city} ${city.country}`).includes(needle);
+      const recent = readRecent().filter(matches);
+      const common = commonCities.filter(matches).filter(city => !recent.some(item => Number(item.latitude).toFixed(3) === Number(city.latitude).toFixed(3) && Number(item.longitude).toFixed(3) === Number(city.longitude).toFixed(3)));
+      if (recentSection) recentSection.hidden = recent.length === 0;
+      renderButtons(recentResults, recent);
+      renderButtons(commonResults, common.slice(0, 12));
+      return recent.length + common.length;
+    };
     open.addEventListener("click", () => openPage("city-picker"));
     back?.addEventListener("click", () => openPage("home"));
+    renderLocalCities();
+    input.addEventListener("input", () => renderLocalCities(input.value));
     current?.addEventListener("click", () => {
       try { localStorage.setItem("anyas_location_start_choice", "current"); } catch (error) { /* optional */ }
       localStorage.removeItem("anyas_manual_location");
@@ -65,32 +120,33 @@
       results.textContent = "جارٍ البحث…";
       try {
         const language = document.documentElement.lang === "en" ? "en" : "ar";
+        const localMatches = commonCities.filter(city => normalize(`${city.city} ${city.country}`).includes(normalize(query)));
+        if (!navigator.onLine) {
+          results.replaceChildren();
+          renderButtons(results, localMatches);
+          if (!localMatches.length) results.textContent = "لا توجد مدينة محفوظة بهذا الاسم دون اتصال.";
+          return;
+        }
         const response = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&accept-language=${language}&q=${encodeURIComponent(query)}`);
         const places = await response.json();
         results.replaceChildren();
-        if (!places.length) { results.textContent = "لم نجد المدينة. جرّب كتابة المدينة والدولة."; return; }
-        places.forEach(place => {
+        const seen = new Set();
+        [...localMatches.map(city => ({ ...city, display_name: `${city.city}، ${city.country}` })), ...places].forEach(place => {
+          const key = `${Number(place.lat ?? place.latitude).toFixed(3)},${Number(place.lon ?? place.longitude).toFixed(3)}`;
+          if (seen.has(key)) return;
+          seen.add(key);
           const button = document.createElement("button");
           button.type = "button";
           button.className = "city-result";
-          button.textContent = place.display_name;
-          button.addEventListener("click", () => {
-            const location = { latitude: Number(place.lat), longitude: Number(place.lon), city: place.name || query };
-            localStorage.setItem("anyas_manual_location", JSON.stringify(location));
-            localStorage.setItem("anyas_location_start_choice", "manual");
-            window.currentLatitude = location.latitude;
-            window.currentLongitude = location.longitude;
-            window.lastKnownLocation = location;
-            const city = byId("prayerHeroCity");
-            if (city) city.textContent = location.city;
-            window.loadPrayerTimes?.(location.latitude, location.longitude);
-            window.dispatchEvent(new CustomEvent("anyas:location-updated", { detail: location }));
-            openPage("home");
-          });
+          button.textContent = place.display_name || `${place.city}، ${place.country}`;
+          button.addEventListener("click", () => selectCity({ latitude: place.lat ?? place.latitude, longitude: place.lon ?? place.longitude, city: place.name || place.city || query, country: place.address?.country || place.country || "" }));
           results.appendChild(button);
         });
+        if (!results.children.length) results.textContent = "لم نجد المدينة. جرّب كتابة المدينة والدولة.";
       } catch (error) {
-        results.textContent = "تعذر البحث الآن. جرّب مرة أخرى أو استخدم موقعك الحالي.";
+        results.replaceChildren();
+        renderButtons(results, commonCities.filter(city => normalize(`${city.city} ${city.country}`).includes(normalize(query))));
+        if (!results.children.length) results.textContent = "تعذر البحث الآن. جرّب مرة أخرى أو استخدم مدينة شائعة.";
       }
     });
   }

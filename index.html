@@ -2095,7 +2095,7 @@ data-audio="fajrAudio"
 
 <main class="page" id="page-city-picker">
   <header class="plain-header"><button class="back-button" id="cityPickerBackButton" type="button">رجوع</button><div class="brand">مدينة الصلاة</div><div class="date">اكتب مدينتك يدويًا لحساب المواقيت</div></header>
-  <section class="city-picker-card"><label for="citySearchInput">المدينة أو الدولة</label><div class="city-search-row"><input id="citySearchInput" type="search" placeholder="مثال: القاهرة، مصر"><button id="citySearchButton" type="button">بحث</button></div><div id="citySearchResults" class="city-search-results" aria-live="polite"></div><button id="useCurrentLocationButton" class="secondary-action" type="button">استخدام موقعي الحالي</button></section>
+  <section class="city-picker-card"><label for="citySearchInput">المدينة أو الدولة</label><div class="city-search-row"><input id="citySearchInput" type="search" placeholder="مثال: القاهرة، مصر"><button id="citySearchButton" type="button">بحث</button></div><div class="city-local-section" id="recentCitiesSection" hidden><strong>مدنك الأخيرة</strong><div id="recentCityResults" class="city-search-results"></div></div><div class="city-local-section"><strong>مدن شائعة — تعمل دون إنترنت</strong><div id="commonCityResults" class="city-search-results"></div></div><div id="citySearchResults" class="city-search-results" aria-live="polite"></div><button id="useCurrentLocationButton" class="secondary-action" type="button">استخدام موقعي الحالي</button></section>
 </main>
 
 <main class="page" id="page-prayer-schedule">
@@ -2192,6 +2192,7 @@ type="button"
 <script src="data/daily-quran.js?v=20260926-3"></script>
 <script src="data/daily-hadith-ids.js?v=20260926-3"></script>
 <script src="data/daily-devotions.js?v=20260926-3"></script>
+<script src="data/common-cities.js?v=20261008-1"></script>
 <script src="js/vendor/adhan.umd.min.js"></script>
 <script src="js/prayer.js?v=20261007-1"></script>
 <script src="js/daily-adhkar.js?v=20260926-3"></script>
