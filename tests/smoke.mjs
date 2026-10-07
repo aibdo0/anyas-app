@@ -17,6 +17,7 @@ const settings = read("js/settings.js");
 const prayer = read("js/prayer.js");
 const enhancements = read("js/app-enhancements.js");
 const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java");
+const serviceWorker = read("sw.js");
 
 check("reminder settings expose a test notification button", () => {
   assert.match(index, /id="testNotificationButton"/);
@@ -56,6 +57,16 @@ check("core HTML dependencies are local and present", () => {
     .filter(ref => ref && !exists(ref));
   assert.deepEqual(missing, [], `missing local HTML dependencies: ${missing.join(", ")}`);
   assert.match(index, /js\/vendor\/adhan\.umd\.min\.js/);
+});
+
+check("PWA install and offline shell are configured", () => {
+  assert.ok(exists("manifest.webmanifest"), "PWA manifest is missing");
+  assert.ok(exists("sw.js"), "Service Worker is missing");
+  assert.match(index, /rel="manifest"/);
+  assert.match(index, /serviceWorker\.register\("\.\/sw\.js"\)/);
+  assert.match(serviceWorker, /caches\.open\(CACHE_NAME\)/);
+  assert.match(serviceWorker, /self\.addEventListener\("fetch"/);
+  assert.match(serviceWorker, /caches\.match\("\.\/index\.html"\)/);
 });
 
 console.log(`Smoke tests passed: ${passed.length}`);

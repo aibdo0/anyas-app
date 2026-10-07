@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta id="themeColorMeta" name="theme-color" content="#fbfaf7">
 <meta name="description" content="أنياس - رفيق يومي لمواقيت الصلاة والقرآن والأذكار">
+<link rel="manifest" href="manifest.webmanifest">
 <title>أنياس</title>
 
 <script>
@@ -2200,6 +2201,11 @@ type="button"
 <script src="js/daily-devotions.js?v=20261003-1"></script>
 <script src="js/app.js?v=20261007-1"></script>
 <script src="js/about.js?v=20261002-2"></script>
+<script>
+  if ("serviceWorker" in navigator && window.isSecureContext) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(error => console.info("Service Worker غير متاح:", error.message)));
+  }
+</script>
 
 </body>
   </html>

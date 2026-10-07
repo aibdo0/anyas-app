@@ -1,0 +1,20 @@
+{
+  "name": "أنياس — الصلاة والأذكار",
+  "short_name": "أنياس",
+  "description": "رفيق يومي لمواقيت الصلاة والقرآن والأذكار",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0d1b2a",
+  "theme_color": "#fbfaf7",
+  "icons": [
+    {
+      "src": "assets/anyas-app-icon.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
