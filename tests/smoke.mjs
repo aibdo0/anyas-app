@@ -177,5 +177,14 @@ check("notification inbox supports marking all items read", () => {
   assert.match(enhancements, /markNotificationHistoryRead/);
 });
 
+check("notification inbox can filter unread items only", () => {
+  assert.match(index, /id="filterUnreadNotificationsButton"[^>]+aria-pressed="false"/);
+  assert.match(enhancements, /let unreadOnly = false/);
+  assert.match(enhancements, /const visibleItems = unreadOnly \? items\.filter\(item => !item\.read\) : items/);
+  assert.match(enhancements, /filterUnread\?\.addEventListener\("click"/);
+  assert.match(enhancements, /لا توجد إشعارات غير مقروءة/);
+  assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);

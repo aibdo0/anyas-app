@@ -406,8 +406,10 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     const back = byId("notificationsBackButton");
     const unreadCount = byId("notificationUnreadCount");
     const unreadLabel = byId("notificationUnreadLabel");
+    const filterUnread = byId("filterUnreadNotificationsButton");
     const markAll = byId("markAllNotificationsReadButton");
     const manage = byId("manageNotificationsButton");
+    let unreadOnly = false;
     const bellSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>';
     const readHistory = () => {
       try {
@@ -450,21 +452,22 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       }
       if (unreadCount) unreadCount.textContent = toArabic(unread);
       if (unreadLabel) unreadLabel.textContent = t(unread === 1 ? "إشعار غير مقروء" : "إشعارات غير مقروءة");
+      const visibleItems = unreadOnly ? items.filter(item => !item.read) : items;
       list.replaceChildren();
-      if (!items.length) {
+      if (!visibleItems.length) {
         const empty = document.createElement("div");
         empty.className = "notification-empty";
         const icon = document.createElement("span");
         icon.className = "notification-empty-icon";
         icon.innerHTML = bellSvg;
         const title = document.createElement("strong");
-        title.textContent = t("لا توجد إشعارات بعد");
+        title.textContent = unreadOnly ? "لا توجد إشعارات غير مقروءة" : t("لا توجد إشعارات بعد");
         const hint = document.createElement("small");
-        hint.textContent = t("ستظهر هنا التنبيهات عند وصولها، لتراجعها متى شئت.");
+        hint.textContent = unreadOnly ? "اضغط الزر مرة أخرى لعرض كل الإشعارات." : t("ستظهر هنا التنبيهات عند وصولها، لتراجعها متى شئت.");
         empty.append(icon, title, hint);
         list.append(empty);
       } else {
-        items.forEach(item => {
+        visibleItems.forEach(item => {
           const card = document.createElement("article");
           card.className = `notification-history-item${item.read ? "" : " unread"}`;
           const icon = document.createElement("span");
@@ -500,6 +503,11 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     window.setInterval(() => { if (!document.hidden) render(); }, 30_000);
     bell?.addEventListener("click", () => { openPage("notifications"); render(true); });
     back?.addEventListener("click", () => openPage("home"));
+    filterUnread?.addEventListener("click", () => {
+      unreadOnly = !unreadOnly;
+      filterUnread.setAttribute("aria-pressed", String(unreadOnly));
+      render();
+    });
     markAll?.addEventListener("click", () => render(true));
     manage?.addEventListener("click", () => {
       openPage("settings");
