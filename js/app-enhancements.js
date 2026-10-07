@@ -501,7 +501,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     window.addEventListener("anyas-notification-recorded", () => render());
     window.addEventListener("storage", event => { if (event.key === "anyas_notification_history") render(); });
     window.setInterval(() => { if (!document.hidden) render(); }, 30_000);
-    bell?.addEventListener("click", () => { openPage("notifications"); render(true); });
+    bell?.addEventListener("click", () => { openPage("notifications"); render(); });
     back?.addEventListener("click", () => openPage("home"));
     filterUnread?.addEventListener("click", () => {
       unreadOnly = !unreadOnly;
