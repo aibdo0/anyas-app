@@ -24,7 +24,7 @@
     "فعّل إذن الإشعارات ثم اختبر التنبيه من الزر أدناه.": "Enable notification permission, then test the alert with the button below.",
     "معلومات عن أنياس ومزاياه": "About Anias and its features",
     "رفيقك اليومي للعبادة وتنظيم يومك": "Your daily companion for worship and an organized day",
-    "العربية": "Arabic",
+    "العربية": "Arabic", "إحصائيات العبادة": "Worship statistics", "أذكار مكتملة": "Completed adhkar", "تسبيحات": "Tasbeeh", "سنن منجزة": "Completed sunnah", "أيام نشطة": "Active days", "من بياناتك المحفوظة على هذا الجهاز": "From data saved on this device", "ابدأ بتسجيل عبادتك اليوم، وستظهر إحصائياتك هنا.": "Start recording your worship today and your statistics will appear here.",
     "أذونات التطبيق": "App permissions", "الموقع": "Location", "الموقع الجغرافي": "Location access",
     "اختر إذنًا لمعرفة فائدته وتفعيله عند الحاجة.": "Choose a permission to see why it is useful and enable it when needed.",
     "مواقيت الصلاة والقبلة والمساجد القريبة": "Prayer times, Qibla, and nearby mosques",

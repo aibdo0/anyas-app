@@ -1508,6 +1508,50 @@ function renderPrayerReportList(
 }
 
 
+function getWorshipStats(days = 7) {
+  let dhikr = 0;
+  let tasbeeh = 0;
+  let sunnah = 0;
+  let activeDays = 0;
+  for (let i = 0; i < days; i++) {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() - i);
+    const gregorianKey = date.toLocaleDateString("en-CA");
+    let dayActive = false;
+    try {
+      const wird = JSON.parse(localStorage.getItem(`anyas_wird_progress_${gregorianKey}`) || "{}");
+      const completedWird = Object.values(wird).filter(value => value === true).length;
+      dhikr += completedWird;
+      dayActive ||= completedWird > 0;
+      const hijriKey = typeof window.getCurrentHijriDateKey === "function" ? window.getCurrentHijriDateKey(date) : "";
+      const devotion = JSON.parse(localStorage.getItem(`anyas_devotions_hijri_${hijriKey}`) || "{}");
+      const counts = devotion?.counts && typeof devotion.counts === "object" ? devotion.counts : {};
+      const dayTasbeeh = Object.values(counts).reduce((sum, value) => sum + Math.max(0, Number(value) || 0), 0);
+      tasbeeh += dayTasbeeh;
+      dayActive ||= dayTasbeeh > 0;
+      const daySunnah = devotion?.sunnah && typeof devotion.sunnah === "object" ? Object.values(devotion.sunnah).filter(Boolean).length : 0;
+      sunnah += daySunnah;
+      dayActive ||= daySunnah > 0;
+    } catch (error) { /* بيانات محلية تالفة لا تمنع عرض باقي الإحصائيات */ }
+    if (dayActive) activeDays++;
+  }
+  return { dhikr, tasbeeh, sunnah, activeDays };
+}
+
+function updateWorshipStats(days = 7) {
+  const stats = getWorshipStats(days);
+  const format = value => Number(value).toLocaleString("ar-EG");
+  Object.entries(stats).forEach(([key, value]) => {
+    const element = document.getElementById(`worshipStats${key[0].toUpperCase()}${key.slice(1)}`);
+    if (element) element.textContent = format(value);
+  });
+  const period = document.getElementById("worshipStatsPeriod");
+  if (period) period.textContent = `آخر ${days === 30 ? "٣٠" : "٧"} يومًا — محفوظة على هذا الجهاز`;
+  const highlight = document.getElementById("worshipStatsHighlight");
+  if (highlight) highlight.textContent = stats.activeDays ? `أحسنت، حافظت على تسجيل عبادتك في ${format(stats.activeDays)} أيام.` : "ابدأ بتسجيل عبادتك اليوم، وستظهر إحصائياتك هنا.";
+}
+
 function setReportStatValue(
   id,
   value
@@ -1593,6 +1637,7 @@ function updatePrayerReport(
 
   const stats =
     computePrayerRangeStats(days);
+  updateWorshipStats(days);
 
   const streaks =
     computePrayerStreaks();

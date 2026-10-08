@@ -15,6 +15,7 @@ const check = (name, fn) => {
 const index = read("index.html");
 const settings = read("js/settings.js");
 const prayer = read("js/prayer.js");
+const appjs = read("js/app.js");
 const enhancements = read("js/app-enhancements.js");
 const qibla = read("js/qibla.js");
 const commonCities = read("data/common-cities.js");
@@ -197,6 +198,17 @@ check("notification inbox can filter unread items only", () => {
   assert.match(enhancements, /filterUnread\?\.addEventListener\("click"/);
   assert.match(enhancements, /لا توجد إشعارات غير مقروءة/);
   assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
+});
+
+check("worship statistics use local prayer, wird, and devotion data", () => {
+  assert.match(index, /id="worshipStatsHeading"/);
+  assert.match(index, /id="worshipStatsDhikr"/);
+  assert.match(index, /id="worshipStatsTasbeeh"/);
+  assert.match(appjs, /function getWorshipStats\(days = 7\)/);
+  assert.match(appjs, /anyas_wird_progress_/);
+  assert.match(appjs, /anyas_devotions_hijri_/);
+  assert.match(appjs, /updateWorshipStats\(days\)/);
+  assert.match(read("css/home.css"), /\.worship-stats-grid/);
 });
 
 check("Android prayer widget shows the next prayer and refreshes", () => {

@@ -1245,3 +1245,13 @@ body.dark .date-card {
         gap: 6px;
     }
 }
+
+
+.worship-stats-card { margin-top: 14px; }
+.worship-stats-note { margin: -7px 0 14px; color: var(--muted); font-size: .86rem; }
+.worship-stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.worship-stat { padding: 12px 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-soft); text-align: center; }
+.worship-stat strong { display: block; color: var(--gold-dark); font-size: 1.25rem; }
+.worship-stat span { display: block; margin-top: 4px; color: var(--muted); font-size: .74rem; }
+.worship-stats-highlight { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: rgba(183, 148, 73, .1); color: var(--ink); font-size: .84rem; }
+@media (max-width: 520px) { .worship-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
