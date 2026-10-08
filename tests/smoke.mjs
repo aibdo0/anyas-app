@@ -200,6 +200,13 @@ check("notification inbox can filter unread items only", () => {
   assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
 });
 
+check("mosque search shows distance, walking time, and directions", () => {
+  assert.match(enhancements, /walkingMinutes = Math\.max\(1, Math\.round\(distance \/ 80\)\)/);
+  assert.match(enhancements, /walkingMinutes/);
+  assert.match(enhancements, /maps\/dir\/\?api=1&destination=/);
+  assert.match(enhancements, /openMosquesMapButton/);
+});
+
 check("worship statistics use local prayer, wird, and devotion data", () => {
   assert.match(index, /id="worshipStatsHeading"/);
   assert.match(index, /id="worshipStatsDhikr"/);

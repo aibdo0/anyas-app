@@ -553,6 +553,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       return;
     }
     const mapButton = byId("openMosquesMapButton");
+    if (mapButton) mapButton.textContent = "فتح كل المساجد على الخريطة";
     const mosqueMapUrl = `https://www.google.com/maps/search/${encodeURIComponent("مسجد")}/@${latitude},${longitude},15z`;
     if (mapButton) mapButton.onclick = () => window.open(mosqueMapUrl, "_blank");
     list.textContent = `جارٍ البحث عن مساجد قرب ${cityName}…`;
@@ -617,7 +618,13 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
         const title = document.createElement("strong"); title.textContent = name;
         const details = document.createElement("small");
         const distanceText = distance < 1000 ? `${toArabic(Math.max(10, Math.round(distance / 10) * 10))} م` : `${toArabic((distance / 1000).toFixed(1))} كم`;
-        details.textContent = `يبعد تقريبًا ${distanceText} · فتح الاتجاهات`;
+        const walkingMinutes = Math.max(1, Math.round(distance / 80));
+        const walkingText = walkingMinutes < 60
+          ? `${toArabic(walkingMinutes)} دقيقة مشيًا`
+          : `${toArabic(Math.floor(walkingMinutes / 60))} س و${toArabic(walkingMinutes % 60)} د مشيًا`;
+        details.textContent = `يبعد تقريبًا ${distanceText} · ${walkingText} · فتح الاتجاهات`;
+        item.dataset.distanceMeters = String(Math.round(distance));
+        item.dataset.walkingMinutes = String(walkingMinutes);
         info.append(title, details);
         const arrow = document.createElement("span"); arrow.setAttribute("aria-hidden", "true"); arrow.textContent = "‹";
         item.append(icon, info, arrow);
