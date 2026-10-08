@@ -200,6 +200,17 @@ check("notification inbox can filter unread items only", () => {
   assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
 });
 
+check("encrypted backups use local AES-GCM with password-protected import", () => {
+  assert.match(index, /id="exportEncryptedDataButton"/);
+  assert.match(index, /id="backupPasswordInput"[^>]+type="password"/);
+  assert.match(appjs, /PBKDF2-SHA-256/);
+  assert.match(appjs, /name: "AES-GCM"/);
+  assert.match(appjs, /crypto\.subtle\.encrypt/);
+  assert.match(appjs, /crypto\.subtle\.decrypt/);
+  assert.match(appjs, /payload\?\.encrypted === true/);
+  assert.match(appjs, /schema: 2/);
+});
+
 check("English and accessibility states cover the new audio and mosque controls", () => {
   const optionalAudio = read("js/optional-audio.js");
   assert.match(optionalAudio, /document\.documentElement\.lang === "en"/);

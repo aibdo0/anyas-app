@@ -2073,6 +2073,8 @@ function setupAsrMadhab() {
 
 function setupDataManagement() {
   const exportButton = document.getElementById("exportDataButton");
+  const encryptedExportButton = document.getElementById("exportEncryptedDataButton");
+  const passwordInput = document.getElementById("backupPasswordInput");
   const importButton = document.getElementById("importDataButton");
   const importInput = document.getElementById("importDataInput");
   const deleteButton = document.getElementById("deleteDataButton");
@@ -2090,33 +2092,67 @@ function setupDataManagement() {
     }
     return data;
   };
-  const makeFileName = () => {
+  const makeFileName = (encrypted = false) => {
     const date = new Date().toISOString().slice(0, 10);
-    return `anyas-backup-${date}.json`;
+    return `anyas-backup-${date}${encrypted ? "-encrypted" : ""}.json`;
+  };
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+  const bytesToBase64 = bytes => {
+    let binary = "";
+    new Uint8Array(bytes).forEach(byte => { binary += String.fromCharCode(byte); });
+    return btoa(binary);
+  };
+  const base64ToBytes = value => Uint8Array.from(atob(value), character => character.charCodeAt(0));
+  const deriveBackupKey = async (password, salt, iterations) => {
+    if (!window.crypto?.subtle) throw new Error("crypto unavailable");
+    const material = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations, hash: "SHA-256" }, material, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+  };
+  const encryptBackup = async payload => {
+    const password = passwordInput?.value || "";
+    if (password.length < 8) throw new Error("short password");
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const iterations = 250000;
+    const key = await deriveBackupKey(password, salt, iterations);
+    const ciphertext = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, encoder.encode(JSON.stringify(payload)));
+    return { schema: 2, app: "anyas", encrypted: true, kdf: "PBKDF2-SHA-256", iterations, salt: bytesToBase64(salt), iv: bytesToBase64(iv), ciphertext: bytesToBase64(ciphertext) };
+  };
+  const decryptBackup = async envelope => {
+    const password = passwordInput?.value || window.prompt(window.anyasTranslate ? window.anyasTranslate("أدخل كلمة مرور النسخة المشفّرة") : "Enter the encrypted backup password") || "";
+    if (password.length < 8) throw new Error("short password");
+    const salt = base64ToBytes(envelope.salt);
+    const iv = base64ToBytes(envelope.iv);
+    const key = await deriveBackupKey(password, salt, Number(envelope.iterations) || 250000);
+    const plaintext = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, base64ToBytes(envelope.ciphertext));
+    return JSON.parse(decoder.decode(plaintext));
+  };
+  const downloadJson = (payload, encrypted = false) => {
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = makeFileName(encrypted);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
+  const createPayload = () => ({ schema: 1, app: "anyas", appVersion: window.ANIAS_APP_VERSION || "1.1.5", exportedAt: new Date().toISOString(), data: collectData() });
   exportButton.addEventListener("click", () => {
+    try { downloadJson(createPayload()); setStatus("تم تصدير نسخة بياناتك."); }
+    catch (error) { console.error("تعذر تصدير بيانات أنياس:", error); setStatus("تعذر تصدير البيانات على هذا الجهاز."); }
+  });
+  encryptedExportButton?.addEventListener("click", async () => {
     try {
-      const payload = {
-        schema: 1,
-        app: "anyas",
-        appVersion: window.ANIAS_APP_VERSION || "1.1.5",
-        exportedAt: new Date().toISOString(),
-        data: collectData()
-      };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = makeFileName();
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-      setStatus("تم تصدير نسخة بياناتك.");
+      const payload = await encryptBackup(createPayload());
+      downloadJson(payload, true);
+      setStatus("تم تصدير نسخة مشفّرة. احتفظ بكلمة المرور، فلا يمكن استعادتها دونها.");
     } catch (error) {
-      console.error("تعذر تصدير بيانات أنياس:", error);
-      setStatus("تعذر تصدير البيانات على هذا الجهاز.");
+      console.error("تعذر تشفير نسخة أنياس:", error);
+      setStatus(error.message === "short password" ? "استخدم كلمة مرور من ٨ أحرف على الأقل." : "تعذر إنشاء النسخة المشفّرة على هذا الجهاز.");
     }
   });
 
@@ -2126,7 +2162,8 @@ function setupDataManagement() {
     importInput.value = "";
     if (!file) return;
     try {
-      const payload = JSON.parse(await file.text());
+      let payload = JSON.parse(await file.text());
+      if (payload?.encrypted === true && payload?.schema === 2) payload = await decryptBackup(payload);
       const importedData = payload?.data;
       if (payload?.schema !== 1 || payload?.app !== "anyas" || !importedData || typeof importedData !== "object" || Array.isArray(importedData)) {
         throw new Error("invalid backup");
@@ -2141,7 +2178,7 @@ function setupDataManagement() {
       window.setTimeout(() => window.location.reload(), 700);
     } catch (error) {
       console.error("تعذر استيراد نسخة أنياس:", error);
-      setStatus("الملف غير صالح أو لا يحتوي على نسخة أنياس.");
+      setStatus(error.message === "short password" ? "كلمة المرور قصيرة أو مفقودة." : "الملف غير صالح أو كلمة المرور غير صحيحة.");
     }
   });
 

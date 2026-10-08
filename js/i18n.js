@@ -8,7 +8,7 @@
     "رجوع إلى عن التطبيق": "Back to About the App", "آخر تحديث: 8 أكتوبر 2026": "Last updated: October 8, 2026",
     "بياناتك": "Your data", "نسخة احتياطية محلية": "Local backup",
     "احفظ إعداداتك ومفضلاتك وتقدمك، أو انقلها إلى جهاز آخر دون حساب.": "Save your settings, favorites, and progress, or move them to another device without an account.",
-    "تصدير بياناتي": "Export my data", "استيراد نسخة": "Import a backup", "حذف بياناتي من هذا الجهاز": "Delete my data from this device",
+    "تصدير بياناتي": "Export my data", "تصدير نسخة مشفّرة": "Export encrypted backup", "استيراد نسخة": "Import a backup", "كلمة مرور النسخة المشفّرة": "Encrypted backup password", "أدخل كلمة مرور النسخة المشفّرة": "Enter the encrypted backup password", "٨ أحرف على الأقل": "At least 8 characters", "تم تصدير نسخة مشفّرة. احتفظ بكلمة المرور، فلا يمكن استعادتها دونها.": "Encrypted backup exported. Keep the password; it cannot be recovered without it.", "استخدم كلمة مرور من ٨ أحرف على الأقل.": "Use a password of at least 8 characters.", "كلمة المرور قصيرة أو مفقودة.": "The password is missing or too short.", "الملف غير صالح أو كلمة المرور غير صحيحة.": "The file is invalid or the password is incorrect.", "حذف بياناتي من هذا الجهاز": "Delete my data from this device",
     "تم تصدير نسخة بياناتك.": "Your data backup was exported.", "تعذر تصدير البيانات على هذا الجهاز.": "Could not export data on this device.",
     "سيستبدل الاستيراد بيانات أنياس الحالية على هذا الجهاز. هل تريد المتابعة؟": "Importing will replace your current Anias data on this device. Continue?",
     "تم استيراد بياناتك. سيُعاد تشغيل أنياس الآن.": "Your data was imported. Anias will restart now.",

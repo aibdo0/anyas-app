@@ -1935,7 +1935,9 @@ data-audio="fajrAudio"
   </div>
   <div class="data-management-actions">
     <button class="setting-action-button" id="exportDataButton" type="button">تصدير بياناتي</button>
+    <button class="setting-action-button" id="exportEncryptedDataButton" type="button">تصدير نسخة مشفّرة</button>
     <button class="setting-action-button" id="importDataButton" type="button">استيراد نسخة</button>
+    <label class="backup-password-field" for="backupPasswordInput"><span>كلمة مرور النسخة المشفّرة</span><input id="backupPasswordInput" type="password" minlength="8" autocomplete="new-password" placeholder="٨ أحرف على الأقل"></label>
     <input id="importDataInput" type="file" accept="application/json,.json" hidden>
   </div>
   <button class="setting-action-button danger-action-button" id="deleteDataButton" type="button">حذف بياناتي من هذا الجهاز</button>
