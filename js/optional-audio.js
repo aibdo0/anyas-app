@@ -4,6 +4,7 @@
   const CACHE_NAME = "anyas-optional-audio-v1";
   const REMOTE_BASE = "https://raw.githubusercontent.com/aibdo0/anyas-app/main/";
   const isAndroid = () => Boolean(window.AnyasAndroid);
+  const text = (arabic, english) => document.documentElement.lang === "en" ? english : arabic;
   const cacheUrl = source => new URL(String(source).split("?")[0], window.location.href).href;
   const remoteUrl = source => `${REMOTE_BASE}${String(source).replace(/^\.\//, "").split("?")[0]}`;
   const source = relative => isAndroid() ? remoteUrl(relative) : relative;
@@ -43,9 +44,10 @@
     return Boolean(await cache.match(cacheUrl(relative)) || await cache.match(remoteUrl(relative)));
   }
   const formatBytes = bytes => {
-    if (!bytes) return "٠ ك.ب";
-    if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024)).toLocaleString("ar-EG")} ك.ب`;
-    return `${(bytes / 1024 / 1024).toFixed(1).replace(".", "٫").replace(/\d/g, digit => "٠١٢٣٤٥٦٧٨٩"[digit])} م.ب`;
+    if (!bytes) return text("٠ ك.ب", "0 KB");
+    if (bytes < 1024 * 1024) return document.documentElement.lang === "en" ? `${Math.max(1, Math.round(bytes / 1024)).toLocaleString("en-US")} KB` : `${Math.max(1, Math.round(bytes / 1024)).toLocaleString("ar-EG")} ك.ب`;
+    const megabytes = (bytes / 1024 / 1024).toFixed(1);
+    return document.documentElement.lang === "en" ? `${megabytes} MB` : `${megabytes.replace(".", "٫").replace(/\d/g, digit => "٠١٢٣٤٥٦٧٨٩"[digit])} م.ب`;
   };
   async function cacheUsage() {
     if (!window.caches) return 0;
@@ -105,10 +107,10 @@
       const status = document.querySelector(`[data-audio-status="${relative}"]`);
       const render = async () => {
         const ready = await isDownloaded(relative);
-        button.textContent = ready ? "حذف التنزيل" : "تنزيل الصوت";
+        button.textContent = ready ? text("حذف التنزيل", "Delete download") : text("تنزيل الصوت", "Download audio");
         button.setAttribute("aria-pressed", String(ready));
-        if (status && !ready) status.textContent = "يُنزل عند الطلب؛ لا يُحمل مع التثبيت";
-        if (status && ready) status.textContent = "محفوظ على هذا الجهاز";
+        if (status && !ready) status.textContent = text("يُنزل عند الطلب؛ لا يُحمل مع التثبيت", "Downloaded on demand; not bundled with the install");
+        if (status && ready) status.textContent = text("محفوظ على هذا الجهاز", "Saved on this device");
       };
       button.addEventListener("click", async () => {
         button.disabled = true;
@@ -116,7 +118,7 @@
           if (await isDownloaded(relative)) await remove(relative);
           else await download(relative);
           await render();
-          document.getElementById("optionalAudioUsage")?.replaceChildren(`المساحة المحفوظة: ${formatBytes(await cacheUsage())}`);
+          document.getElementById("optionalAudioUsage")?.replaceChildren(text("المساحة المحفوظة: ", "Saved space: ") + formatBytes(await cacheUsage()));
         } catch (error) {
           if (status) status.textContent = "تعذر التنزيل؛ تحقق من الاتصال وحاول مرة أخرى.";
         } finally { button.disabled = false; }
@@ -124,16 +126,16 @@
       render();
     });
     const usage = document.getElementById("optionalAudioUsage");
-    const refreshUsage = async () => { if (usage) usage.textContent = `المساحة المحفوظة: ${formatBytes(await cacheUsage())}`; };
+    const refreshUsage = async () => { if (usage) usage.textContent = text("المساحة المحفوظة: ", "Saved space: ") + formatBytes(await cacheUsage()); };
     document.getElementById("clearOptionalAudioButton")?.addEventListener("click", async () => {
       const total = await cacheUsage();
-      if (!total || !window.confirm("هل تريد حذف كل التسجيلات المحفوظة؟")) return;
+      if (!total || !window.confirm(text("هل تريد حذف كل التسجيلات المحفوظة؟", "Delete all saved recordings?"))) return;
       await clearAll();
       document.querySelectorAll("[data-download-audio]").forEach(button => {
-        button.textContent = "تنزيل الصوت";
+        button.textContent = text("تنزيل الصوت", "Download audio");
         button.setAttribute("aria-pressed", "false");
       });
-      document.querySelectorAll("[data-audio-status]").forEach(status => { status.textContent = "يُنزل عند الطلب"; });
+      document.querySelectorAll("[data-audio-status]").forEach(status => { status.textContent = text("يُنزل عند الطلب", "Downloaded on demand"); });
       refreshUsage();
     });
     refreshUsage();

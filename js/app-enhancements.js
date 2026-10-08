@@ -553,7 +553,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       return;
     }
     const mapButton = byId("openMosquesMapButton");
-    if (mapButton) mapButton.textContent = "فتح كل المساجد على الخريطة";
+    if (mapButton) mapButton.textContent = document.documentElement.lang === "en" ? "Open all mosques on the map" : "فتح كل المساجد على الخريطة";
     const mosqueMapUrl = `https://www.google.com/maps/search/${encodeURIComponent("مسجد")}/@${latitude},${longitude},15z`;
     if (mapButton) mapButton.onclick = () => window.open(mosqueMapUrl, "_blank");
     list.textContent = `جارٍ البحث عن مساجد قرب ${cityName}…`;
@@ -620,9 +620,11 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
         const distanceText = distance < 1000 ? `${toArabic(Math.max(10, Math.round(distance / 10) * 10))} م` : `${toArabic((distance / 1000).toFixed(1))} كم`;
         const walkingMinutes = Math.max(1, Math.round(distance / 80));
         const walkingText = walkingMinutes < 60
-          ? `${toArabic(walkingMinutes)} دقيقة مشيًا`
-          : `${toArabic(Math.floor(walkingMinutes / 60))} س و${toArabic(walkingMinutes % 60)} د مشيًا`;
-        details.textContent = `يبعد تقريبًا ${distanceText} · ${walkingText} · فتح الاتجاهات`;
+          ? (document.documentElement.lang === "en" ? `${walkingMinutes} min walking` : `${toArabic(walkingMinutes)} دقيقة مشيًا`)
+          : (document.documentElement.lang === "en" ? `${Math.floor(walkingMinutes / 60)}h ${walkingMinutes % 60}m walking` : `${toArabic(Math.floor(walkingMinutes / 60))} س و${toArabic(walkingMinutes % 60)} د مشيًا`);
+        details.textContent = document.documentElement.lang === "en"
+          ? `About ${distance < 1000 ? `${Math.max(10, Math.round(distance / 10) * 10)} m` : `${(distance / 1000).toFixed(1)} km`} · ${walkingText} · Open directions`
+          : `يبعد تقريبًا ${distanceText} · ${walkingText} · فتح الاتجاهات`;
         item.dataset.distanceMeters = String(Math.round(distance));
         item.dataset.walkingMinutes = String(walkingMinutes);
         info.append(title, details);

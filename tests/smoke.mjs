@@ -200,6 +200,14 @@ check("notification inbox can filter unread items only", () => {
   assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
 });
 
+check("English and accessibility states cover the new audio and mosque controls", () => {
+  const optionalAudio = read("js/optional-audio.js");
+  assert.match(optionalAudio, /document\.documentElement\.lang === "en"/);
+  assert.match(enhancements, /Open directions/);
+  assert.match(index, /id="clearOptionalAudioButton"/);
+  assert.match(index, /aria-pressed="false"/);
+});
+
 check("optional audio manager shows sizes and can clear all downloads", () => {
   const optionalAudio = read("js/optional-audio.js");
   assert.match(index, /id="optionalAudioUsage"/);

@@ -1547,9 +1547,13 @@ function updateWorshipStats(days = 7) {
     if (element) element.textContent = format(value);
   });
   const period = document.getElementById("worshipStatsPeriod");
-  if (period) period.textContent = `آخر ${days === 30 ? "٣٠" : "٧"} يومًا — محفوظة على هذا الجهاز`;
+  if (period) period.textContent = document.documentElement.lang === "en"
+    ? `Last ${days} days — saved on this device`
+    : `آخر ${days === 30 ? "٣٠" : "٧"} يومًا — محفوظة على هذا الجهاز`;
   const highlight = document.getElementById("worshipStatsHighlight");
-  if (highlight) highlight.textContent = stats.activeDays ? `أحسنت، حافظت على تسجيل عبادتك في ${format(stats.activeDays)} أيام.` : "ابدأ بتسجيل عبادتك اليوم، وستظهر إحصائياتك هنا.";
+  if (highlight) highlight.textContent = stats.activeDays
+    ? (document.documentElement.lang === "en" ? `Well done — you recorded worship on ${stats.activeDays} days.` : `أحسنت، حافظت على تسجيل عبادتك في ${format(stats.activeDays)} أيام.`)
+    : (document.documentElement.lang === "en" ? "Start recording your worship today and your statistics will appear here." : "ابدأ بتسجيل عبادتك اليوم، وستظهر إحصائياتك هنا.");
 }
 
 function setReportStatValue(
