@@ -329,10 +329,10 @@
 <audio id="rainSunnahAudio" preload="auto"><source src="audio/rain-sunnah-reminder.mp3" type="audio/mpeg"></audio>
 
 <audio id="ayatKursiAudio" preload="auto"></audio>
-<audio id="morningWardAudio" preload="auto"><source src="audio/adhkar-morning-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
-<audio id="eveningWardAudio" preload="auto"><source src="audio/adhkar-evening-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
-<audio id="wakeupWardAudio" preload="auto"><source src="audio/adhkar-wakeup-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
-<audio id="sleepWardAudio" preload="auto"><source src="audio/adhkar-sleep-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
+<audio id="morningWardAudio" preload="none" data-optional-audio="true" data-audio-source="audio/adhkar-morning-mishary-alafasy.mp3"><source src="audio/adhkar-morning-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
+<audio id="eveningWardAudio" preload="none" data-optional-audio="true" data-audio-source="audio/adhkar-evening-mishary-alafasy.mp3"><source src="audio/adhkar-evening-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
+<audio id="wakeupWardAudio" preload="none" data-optional-audio="true" data-audio-source="audio/adhkar-wakeup-mishary-alafasy.mp3"><source src="audio/adhkar-wakeup-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
+<audio id="sleepWardAudio" preload="none" data-optional-audio="true" data-audio-source="audio/adhkar-sleep-mishary-alafasy.mp3"><source src="audio/adhkar-sleep-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
 
 </div>
 
@@ -1600,6 +1600,15 @@ type="button"
   <span class="audio-library-intro-copy"><small>مكتبة أنياس الصوتية</small><strong>صوت يناسب يومك</strong><span>أذانك وأذكارك وتنبيهاتك في تجربة واحدة سهلة.</span></span>
 </div>
 
+<section class="optional-audio-manager" id="optionalAudioManager" aria-labelledby="optionalAudioHeading">
+  <div class="optional-audio-heading"><strong id="optionalAudioHeading">الأصوات الاختيارية</strong><span>لا تُحمّل مكتبة الأذكار الكبيرة مع التثبيت؛ نزّل ما تحتاجه ليعمل دون اتصال.</span></div>
+  <div class="optional-audio-list">
+    <div class="optional-audio-row"><span><strong>أذكار الصباح — مشاري</strong><small data-audio-status="audio/adhkar-morning-mishary-alafasy.mp3">يُنزل عند الطلب</small></span><button type="button" data-download-audio="audio/adhkar-morning-mishary-alafasy.mp3" aria-pressed="false">تنزيل الصوت</button></div>
+    <div class="optional-audio-row"><span><strong>أذكار المساء — مشاري</strong><small data-audio-status="audio/adhkar-evening-mishary-alafasy.mp3">يُنزل عند الطلب</small></span><button type="button" data-download-audio="audio/adhkar-evening-mishary-alafasy.mp3" aria-pressed="false">تنزيل الصوت</button></div>
+    <div class="optional-audio-row"><span><strong>أذكار الاستيقاظ والنوم</strong><small>يمكن تنزيلها عند الحاجة</small></span><span class="optional-audio-compact">تلقائي عند التشغيل</span></div>
+  </div>
+</section>
+
 <div class="settings-card audio-library-card">
 
 <div class="muezzin-volume-control master-audio-volume-control">
@@ -2257,6 +2266,7 @@ type="button"
 <script src="js/favorites.js?v=20260926-3"></script>
 <script src="js/azkar.js?v=20261002-4"></script>
 <script src="js/wird.js?v=20261002-5"></script>
+<script src="js/optional-audio.js?v=20261008-1"></script>
 <script src="js/settings.js?v=20261007-2"></script>
 <script src="js/qibla.js?v=20261008-1"></script>
 <script src="js/app-enhancements.js?v=20261007-1"></script>

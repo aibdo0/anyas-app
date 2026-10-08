@@ -200,6 +200,17 @@ check("notification inbox can filter unread items only", () => {
   assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
 });
 
+check("optional audio downloads are cached and excluded from Android web assets", () => {
+  const optionalAudio = read("js/optional-audio.js");
+  const gradle = read("android/app/build.gradle");
+  assert.match(index, /id="optionalAudioManager"/);
+  assert.match(index, /data-download-audio=/);
+  assert.match(index, /js\/optional-audio\.js/);
+  assert.match(optionalAudio, /caches\.open\(CACHE_NAME\)/);
+  assert.match(optionalAudio, /raw\.githubusercontent\.com/);
+  assert.doesNotMatch(gradle, /include 'audio\/\*\*'/);
+});
+
 check("compressed audio stays playable and within the app size budget", () => {
   const audioDir = path.join(root, "audio");
   const audioFiles = fs.readdirSync(audioDir).filter(file => /\.(mp3|m4a)$/i.test(file));

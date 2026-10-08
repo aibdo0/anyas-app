@@ -630,7 +630,9 @@ function setupAdhkarVoiceChoices() {
     const apply = value => {
       const source = audio.querySelector("source");
       if (!source) return;
-      source.src = value === "ahmed" ? choice.ahmed : choice.mishary;
+      const selectedSource = value === "ahmed" ? choice.ahmed : choice.mishary;
+      source.src = window.AnyasAudio?.source(selectedSource) || selectedSource;
+      audio.dataset.audioSource = selectedSource.split("?")[0];
       audio.load();
     };
     apply(saved);
