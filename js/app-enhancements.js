@@ -31,6 +31,32 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
   const prayerKeys = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
   const prayerLabel = (key, date = new Date()) => key === "Dhuhr" && date.getDay() === 5 ? "الجمعة" : prayerNames[key];
 
+  function initOfflineMode() {
+    const status = byId("offlineConnectionStatus");
+    const retry = byId("retryOfflineDataButton");
+    if (!status && !retry) return;
+    const render = () => {
+      const english = document.documentElement.lang === "en";
+      if (status) status.textContent = navigator.onLine
+        ? (english ? "Online — fresh data can be loaded." : "متصل — يمكن تحميل بيانات حديثة.")
+        : (english ? "Offline — using local data." : "غير متصل — يتم استخدام البيانات المحلية.");
+      if (retry) retry.textContent = english ? "Refresh prayer times" : "إعادة تحديث المواقيت";
+    };
+    retry?.addEventListener("click", async () => {
+      retry.disabled = true;
+      retry.textContent = document.documentElement.lang === "en" ? "Refreshing…" : "جارٍ التحديث…";
+      try {
+        const latitude = Number(window.currentLatitude);
+        const longitude = Number(window.currentLongitude);
+        if (Number.isFinite(latitude) && Number.isFinite(longitude) && typeof window.loadPrayerTimes === "function") await window.loadPrayerTimes(latitude, longitude);
+        else window.detectLocationAndLoadTimes?.({ allowPrompt: false });
+      } finally { retry.disabled = false; render(); }
+    });
+    window.addEventListener("online", render);
+    window.addEventListener("offline", render);
+    render();
+  }
+
   function initGreeting() {
     const input = byId("userNameInput");
     const greeting = byId("homeGreeting");
@@ -654,7 +680,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    initGreeting(); initCityPicker(); initPrayerSchedule(); initPrayerShare(); initNotificationsList();
+    initGreeting(); initOfflineMode(); initCityPicker(); initPrayerSchedule(); initPrayerShare(); initNotificationsList();
     byId("mosquesBackButton")?.addEventListener("click", () => openPage("home"));
     updateFridayPrayerLabel(); updatePrayerMoment(); setInterval(updatePrayerMoment, 5000);
   });

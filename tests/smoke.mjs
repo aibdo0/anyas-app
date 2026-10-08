@@ -112,6 +112,15 @@ check("FAQ answers are available without JavaScript", () => {
   assert.match(read("css/theme-white-gold.css"), /\.faq-list details/);
 });
 
+check("offline mode explains local capabilities and provides a retry action", () => {
+  assert.match(index, /id="offlineStatusCard"/);
+  assert.match(index, /id="offlineConnectionStatus"[^>]+aria-live="polite"/);
+  assert.match(index, /id="retryOfflineDataButton"/);
+  assert.match(enhancements, /function initOfflineMode\(\)/);
+  assert.match(enhancements, /addEventListener\("offline"/);
+  assert.match(enhancements, /loadPrayerTimes/);
+});
+
 check("prayer data freshness is visible and cached", () => {
   assert.match(index, /id="prayerDataStatus" aria-live="polite"/);
   assert.match(prayer, /cacheMetaKey/);
