@@ -285,6 +285,17 @@ check("worship statistics use local prayer, wird, and devotion data", () => {
   assert.match(read("css/home.css"), /\.worship-stats-grid/);
 });
 
+check("Android app shortcuts open prayer, Qibla, tasbeeh, and adhkar", () => {
+  const manifest = read("android/app/src/main/AndroidManifest.xml");
+  const shortcuts = read("android/app/src/main/res/xml/shortcuts.xml");
+  const activity = read("android/app/src/main/java/com/anyas/app/MainActivity.java");
+  assert.match(manifest, /android\.app\.shortcuts/);
+  for (const page of ["home", "qibla", "tasbeeh", "azkar"]) assert.match(shortcuts, new RegExp(`android:value="${page}"`));
+  assert.match(activity, /shortcutPage\(Intent intent\)/);
+  assert.match(activity, /openPendingShortcut/);
+  assert.match(activity, /onNewIntent/);
+});
+
 check("Android prayer widget shows the next prayer and refreshes", () => {
   const widget = read("android/app/src/main/java/com/anyas/app/PrayerWidgetProvider.java");
   const manifest = read("android/app/src/main/AndroidManifest.xml");

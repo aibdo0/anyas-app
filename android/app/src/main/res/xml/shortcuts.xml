@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="prayer" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="أوقات الصلاة" android:shortcutLongLabel="فتح أوقات الصلاة">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.anyas.app" android:targetClass="com.anyas.app.MainActivity">
+            <extra android:name="anyas_page" android:value="home" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="qibla" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="القبلة" android:shortcutLongLabel="فتح اتجاه القبلة">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.anyas.app" android:targetClass="com.anyas.app.MainActivity">
+            <extra android:name="anyas_page" android:value="qibla" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="tasbeeh" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="المسبحة" android:shortcutLongLabel="فتح المسبحة الإلكترونية">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.anyas.app" android:targetClass="com.anyas.app.MainActivity">
+            <extra android:name="anyas_page" android:value="tasbeeh" />
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="adhkar" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="الأذكار" android:shortcutLongLabel="فتح الأذكار اليومية">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.anyas.app" android:targetClass="com.anyas.app.MainActivity">
+            <extra android:name="anyas_page" android:value="azkar" />
+        </intent>
+    </shortcut>
+</shortcuts>

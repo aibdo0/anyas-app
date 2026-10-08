@@ -33,9 +33,11 @@ public class MainActivity extends Activity {
     WebViewAssetLoader assetLoader;
     GeolocationPermissions.Callback geoCallback;
     String geoOrigin;
+    String pendingShortcutPage;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        pendingShortcutPage = shortcutPage(getIntent());
         View splash = getLayoutInflater().inflate(R.layout.activity_splash, null);
         View splashTint = splash.findViewById(R.id.splashTint);
         TextView splashQuote = splash.findViewById(R.id.splashQuote);
@@ -63,7 +65,10 @@ public class MainActivity extends Activity {
         Runnable showApp = () -> {
             if (appShown[0]) return;
             appShown[0] = true;
-            splash.animate().alpha(0f).setDuration(220).withEndAction(() -> setContentView(web)).start();
+            splash.animate().alpha(0f).setDuration(220).withEndAction(() -> {
+                setContentView(web);
+                openPendingShortcut();
+            }).start();
         };
         assetLoader = new WebViewAssetLoader.Builder()
                 .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
@@ -126,6 +131,26 @@ public class MainActivity extends Activity {
             mainHandler.postDelayed(showApp, 650);
         }
         mainHandler.postDelayed(showApp, 2200);
+    }
+
+    private String shortcutPage(Intent intent) {
+        if (intent == null) return null;
+        String page = intent.getStringExtra("anyas_page");
+        return "qibla".equals(page) || "tasbeeh".equals(page) || "azkar".equals(page) || "home".equals(page) ? page : null;
+    }
+
+    private void openPendingShortcut() {
+        if (web == null || pendingShortcutPage == null) return;
+        final String page = pendingShortcutPage;
+        pendingShortcutPage = null;
+        web.postDelayed(() -> web.evaluateJavascript("if (window.goToPage) window.goToPage('" + page + "');", null), 120);
+    }
+
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        pendingShortcutPage = shortcutPage(intent);
+        if (web != null && web.getUrl() != null) openPendingShortcut();
     }
 
     @Override public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
