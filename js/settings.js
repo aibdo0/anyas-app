@@ -1645,6 +1645,7 @@ function syncAndroidNotificationSettings() {
   window.AnyasAndroid.syncSettings(JSON.stringify({
     enabled,
     prayers,
+    city: document.getElementById("prayerHeroCity")?.textContent || localStorage.getItem("anyas_cityName") || "مدينتك",
     schedules,
     latitude: Number(window.currentLatitude),
     longitude: Number(window.currentLongitude),

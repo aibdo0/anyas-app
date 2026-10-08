@@ -254,6 +254,7 @@ public class MainActivity extends Activity {
         @JavascriptInterface public void syncSettings(String json) {
             runOnUiThread(() -> {
                 getSharedPreferences(ReminderScheduler.PREFS, MODE_PRIVATE).edit().putString("settings", json).apply();
+                PrayerWidgetProvider.updateAll(MainActivity.this);
                 boolean anyEnabled = false;
                 try {
                     JSONObject root = new JSONObject(json), enabled = root.optJSONObject("enabled");

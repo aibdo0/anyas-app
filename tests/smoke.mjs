@@ -199,5 +199,17 @@ check("notification inbox can filter unread items only", () => {
   assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
 });
 
+check("Android prayer widget shows the next prayer and refreshes", () => {
+  const widget = read("android/app/src/main/java/com/anyas/app/PrayerWidgetProvider.java");
+  const manifest = read("android/app/src/main/AndroidManifest.xml");
+  assert.match(manifest, /PrayerWidgetProvider/);
+  assert.match(read("android/app/src/main/res/layout/widget_prayer.xml"), /widgetPrayerName/);
+  assert.match(read("android/app/src/main/res/xml/prayer_widget_info.xml"), /updatePeriodMillis/);
+  assert.match(widget, /ReminderScheduler\.PREFS/);
+  assert.match(widget, /manager\.updateAppWidget/);
+  assert.match(read("android/app/src/main/java/com/anyas/app/MainActivity.java"), /PrayerWidgetProvider\.updateAll/);
+  assert.match(read("js/settings.js"), /city: document\.getElementById\("prayerHeroCity"\)/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);
