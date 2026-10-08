@@ -214,7 +214,7 @@ check("encrypted backups use local AES-GCM with password-protected import", () =
 check("English and accessibility states cover the new audio and mosque controls", () => {
   const optionalAudio = read("js/optional-audio.js");
   assert.match(optionalAudio, /document\.documentElement\.lang === "en"/);
-  assert.match(enhancements, /Open directions/);
+  assert.match(enhancements, /Directions/);
   assert.match(index, /id="clearOptionalAudioButton"/);
   assert.match(index, /aria-pressed="false"/);
 });
@@ -248,6 +248,14 @@ check("compressed audio stays playable and within the app size budget", () => {
     assert.ok(fs.statSync(path.join(audioDir, file)).size <= 16_000_000, `${file} exceeds audio size budget`);
   }
   assert.match(index, /audio\/(?:[^"' ]+\.(?:mp3|m4a))/);
+});
+
+check("mosque search supports local favorites and contact actions", () => {
+  assert.match(enhancements, /anyas_favorite_mosque/);
+  assert.match(enhancements, /mosque-favorite-button/);
+  assert.match(enhancements, /aria-pressed/);
+  assert.match(enhancements, /tel:\$\{phone\}/);
+  assert.match(read("css/theme-white-gold.css"), /\.mosque-result-actions/);
 });
 
 check("mosque search shows distance, walking time, and directions", () => {

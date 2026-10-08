@@ -609,10 +609,15 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       }).sort((a, b) => a.distance - b.distance).slice(0, 12);
       list.replaceChildren();
       if (!places.length) { list.textContent = `لم نجد مسجدًا مسجّلًا قرب ${cityName}. جرّب الخريطة أو اختر المدينة مرة أخرى.`; return; }
+      const favoriteKey = "anyas_favorite_mosque";
+      const readFavorite = () => { try { return JSON.parse(localStorage.getItem(favoriteKey) || "null"); } catch (error) { return null; } };
+      const writeFavorite = value => value ? localStorage.setItem(favoriteKey, JSON.stringify(value)) : localStorage.removeItem(favoriteKey);
       places.forEach(({ place, lat, lon, distance }) => {
-        const name = place.tags?.["name:ar"] || place.tags?.name || "مسجد قريب";
-        const item = document.createElement("a"); item.className = "mosque-result"; item.target = "_blank"; item.rel = "noopener";
-        item.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`;
+        const tags = place.tags || {};
+        const name = tags["name:ar"] || tags.name || "مسجد قريب";
+        const phone = tags.phone || tags["contact:phone"] || "";
+        const key = place.id ? `${place.type || "place"}/${place.id}` : `${lat},${lon}`;
+        const item = document.createElement("div"); item.className = "mosque-result"; item.dataset.mosqueKey = key;
         const icon = document.createElement("span"); icon.className = "mosque-result-icon"; icon.textContent = "م";
         const info = document.createElement("span");
         const title = document.createElement("strong"); title.textContent = name;
@@ -623,13 +628,24 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
           ? (document.documentElement.lang === "en" ? `${walkingMinutes} min walking` : `${toArabic(walkingMinutes)} دقيقة مشيًا`)
           : (document.documentElement.lang === "en" ? `${Math.floor(walkingMinutes / 60)}h ${walkingMinutes % 60}m walking` : `${toArabic(Math.floor(walkingMinutes / 60))} س و${toArabic(walkingMinutes % 60)} د مشيًا`);
         details.textContent = document.documentElement.lang === "en"
-          ? `About ${distance < 1000 ? `${Math.max(10, Math.round(distance / 10) * 10)} m` : `${(distance / 1000).toFixed(1)} km`} · ${walkingText} · Open directions`
-          : `يبعد تقريبًا ${distanceText} · ${walkingText} · فتح الاتجاهات`;
+          ? `About ${distance < 1000 ? `${Math.max(10, Math.round(distance / 10) * 10)} m` : `${(distance / 1000).toFixed(1)} km`} · ${walkingText}`
+          : `يبعد تقريبًا ${distanceText} · ${walkingText}`;
         item.dataset.distanceMeters = String(Math.round(distance));
         item.dataset.walkingMinutes = String(walkingMinutes);
         info.append(title, details);
-        const arrow = document.createElement("span"); arrow.setAttribute("aria-hidden", "true"); arrow.textContent = "‹";
-        item.append(icon, info, arrow);
+        const actions = document.createElement("span"); actions.className = "mosque-result-actions";
+        const directions = document.createElement("a"); directions.className = "mosque-result-link"; directions.target = "_blank"; directions.rel = "noopener"; directions.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`; directions.textContent = document.documentElement.lang === "en" ? "Directions" : "الاتجاهات"; directions.setAttribute("aria-label", `${directions.textContent}: ${name}`);
+        const favorite = document.createElement("button"); favorite.type = "button"; favorite.className = "mosque-favorite-button"; favorite.setAttribute("aria-label", name); favorite.setAttribute("aria-pressed", String(readFavorite()?.key === key));
+        const renderFavorite = () => { const active = readFavorite()?.key === key; favorite.textContent = active ? "★" : "☆"; favorite.setAttribute("aria-pressed", String(active)); favorite.title = active ? (document.documentElement.lang === "en" ? "Remove favorite" : "إزالة من المفضلة") : (document.documentElement.lang === "en" ? "Save favorite" : "حفظ كمفضل"); };
+        favorite.addEventListener("click", () => {
+          const active = readFavorite()?.key === key;
+          writeFavorite(active ? null : { key, name, lat, lon, phone });
+          document.querySelectorAll(".mosque-favorite-button").forEach(button => { button.setAttribute("aria-pressed", "false"); if (button !== favorite) button.textContent = "☆"; });
+          renderFavorite();
+        });
+        renderFavorite(); actions.append(directions, favorite);
+        if (phone) { const call = document.createElement("a"); call.className = "mosque-result-link"; call.href = `tel:${phone}`; call.textContent = document.documentElement.lang === "en" ? "Call" : "اتصال"; call.setAttribute("aria-label", `${call.textContent}: ${name}`); actions.append(call); }
+        item.append(icon, info, actions);
         list.appendChild(item);
       });
     } catch (error) {
