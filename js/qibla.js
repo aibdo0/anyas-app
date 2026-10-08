@@ -87,6 +87,34 @@ function normalizeDegree(degree) {
   return ((degree % 360) + 360) % 360;
 }
 
+// لا تعرض تقديرًا رقميًا إلا إذا أرسله الجهاز صراحةً عبر واجهة WebKit.
+function updateCompassAccuracy(event) {
+  const indicator = document.getElementById("qiblaAccuracy");
+  if (!indicator) return;
+
+  const accuracy = event?.webkitCompassAccuracy;
+  if (typeof accuracy !== "number" || !Number.isFinite(accuracy) || accuracy < 0) {
+    indicator.dataset.accuracy = "unknown";
+    delete indicator.dataset.accuracyDegrees;
+    const message = "لا يوفّر هذا المتصفح تقديرًا رقميًا لدقة البوصلة؛ راجع إرشادات المعايرة.";
+    if (indicator.textContent !== message) indicator.textContent = message;
+    return;
+  }
+
+  // التصنيفات وصفية تقريبية؛ تظل قيمة الانحراف التي يرسلها الحساس ظاهرة للمستخدم.
+  const level = accuracy <= 15 ? "good" : accuracy <= 30 ? "medium" : "low";
+  const previousDegrees = Number(indicator.dataset.accuracyDegrees);
+  const shouldUpdate = indicator.dataset.accuracy !== level ||
+    !Number.isFinite(previousDegrees) || Math.abs(accuracy - previousDegrees) >= 5;
+  if (!shouldUpdate) return;
+
+  const degrees = Math.round(accuracy);
+  const quality = level === "good" ? "جيدة" : level === "medium" ? "متوسطة" : "منخفضة";
+  indicator.dataset.accuracy = level;
+  indicator.dataset.accuracyDegrees = String(accuracy);
+  indicator.textContent = `دقة البوصلة ${quality} · انحراف تقريبي ±${degrees}°`;
+}
+
 // إسقاط اتجاه على مستوى الشاشة باستخدام مصفوفة Device Orientation القياسية.
 function projectBearingToScreen(bearing, alpha, beta, gamma) {
   if (![bearing, alpha, beta, gamma].every(Number.isFinite)) return null;
@@ -141,6 +169,7 @@ function getHeading(event) {
 
   if (hasAbsoluteOrientation) {
     orientationDataReceived = true;
+    updateCompassAccuracy(event);
     const northAngle = projectBearingToScreen(0, event.alpha, event.beta, event.gamma);
     const qiblaAngle = projectBearingToScreen(qiblaBearing, event.alpha, event.beta, event.gamma);
     if (qiblaAngle === null) {
@@ -162,14 +191,15 @@ function getHeading(event) {
     updateArrow();
     const status = document.getElementById("qiblaStatus");
     const message = document.getElementById("qiblaMessage");
-    if (status) status.textContent = "البوصلة مضبوطة";
-    if (message) message.textContent = "اتبع السهم نحو القبلة. إذا تذبذب، حرّك الهاتف على شكل ٨ بعيدًا عن المعادن.";
+    if (status) status.textContent = "اتجاه القبلة متاح";
+    if (message) message.textContent = "اتبع السهم؛ يظهر تقدير الدقة إذا كان جهازك يوفّره.";
     return;
   }
 
   // Safari على iPhone يوفّر اتجاه البوصلة مباشرة.
   if (typeof event.webkitCompassHeading === "number" && event.webkitCompassHeading >= 0) {
     orientationDataReceived = true;
+    updateCompassAccuracy(event);
     currentHeading = normalizeDegree(event.webkitCompassHeading);
     northProjectionAvailable = true;
     compassCardRotation = normalizeDegree(-currentHeading);
@@ -178,8 +208,8 @@ function getHeading(event) {
     updateArrow();
     const status = document.getElementById("qiblaStatus");
     const message = document.getElementById("qiblaMessage");
-    if (status) status.textContent = "البوصلة مضبوطة";
-    if (message) message.textContent = "اتبع السهم نحو القبلة. أبقِ الهاتف ثابتًا وأبعده عن المعادن والمغناطيس.";
+    if (status) status.textContent = "اتجاه القبلة متاح";
+    if (message) message.textContent = "اتبع السهم؛ إذا ظهر تقدير الدقة منخفضًا فجرّب إرشادات المعايرة.";
     return;
   }
 
@@ -188,6 +218,7 @@ function getHeading(event) {
   // لا نستخدم alpha النسبي كأنه شمال حقيقي؛ فهذا قد يجعل السهم معكوسًا.
   if (!orientationWarningShown) {
     orientationWarningShown = true;
+    updateCompassAccuracy(event);
     const status = document.getElementById("qiblaStatus");
     const message = document.getElementById("qiblaMessage");
     if (status) status.textContent = "مستشعر الشمال غير متاح";
@@ -206,6 +237,7 @@ function activateOrientation() {
   window.setTimeout(() => {
     if (orientationDataReceived || orientationWarningShown) return;
     orientationWarningShown = true;
+    updateCompassAccuracy(null);
     const status = document.getElementById("qiblaStatus");
     const message = document.getElementById("qiblaMessage");
     if (status) status.textContent = "مستشعر الشمال غير متاح";
@@ -235,6 +267,7 @@ async function startOrientation() {
       if (permission === "granted") {
         activateOrientation();
       } else {
+        updateCompassAccuracy(null);
         const message =
           document.getElementById("qiblaMessage");
 
@@ -247,6 +280,7 @@ async function startOrientation() {
       activateOrientation();
     }
   } catch (error) {
+    updateCompassAccuracy(null);
     console.error(
       "حدث خطأ أثناء تشغيل البوصلة:",
       error

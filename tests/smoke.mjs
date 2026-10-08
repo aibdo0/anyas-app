@@ -16,6 +16,7 @@ const index = read("index.html");
 const settings = read("js/settings.js");
 const prayer = read("js/prayer.js");
 const enhancements = read("js/app-enhancements.js");
+const qibla = read("js/qibla.js");
 const commonCities = read("data/common-cities.js");
 const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java");
 const serviceWorker = read("sw.js");
@@ -158,6 +159,18 @@ check("daily prayer times can be shared or copied", () => {
   assert.match(enhancements, /navigator\.share/);
   assert.match(enhancements, /navigator\.clipboard\?\.writeText/);
   assert.match(enhancements, /initPrayerShare\(\)/);
+});
+
+check("qibla shows sensor accuracy when available and offers calibration help", () => {
+  assert.match(index, /id="qiblaAccuracy"[^>]+aria-live="polite"/);
+  assert.match(index, /<details class="qibla-calibration">/);
+  assert.match(qibla, /webkitCompassAccuracy/);
+  assert.match(qibla, /dataset\.accuracyDegrees/);
+  assert.match(qibla, /لا يوفّر هذا المتصفح تقديرًا رقميًا لدقة البوصلة/);
+  const theme = read("css/theme-white-gold.css");
+  assert.match(theme, /\.qibla-accuracy\[data-accuracy="good"\]/);
+  assert.match(theme, /\.qibla-calibration summary/);
+  assert.match(theme, /prefers-reduced-motion/);
 });
 
 check("full reminder test covers notification and sound", () => {
