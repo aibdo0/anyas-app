@@ -737,6 +737,19 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .qibla-direction { margin-bottom: 17px; color: var(--muted); font-size: 14px; }
 .qibla-start-button { width: 100%; min-height: 49px; border: 0; border-radius: 14px; color: #fff; background: var(--gold-dark); font-weight: 800; cursor: pointer; }
 .qibla-message { margin: 12px 2px 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+.qibla-accuracy { display: flex; width: fit-content; max-width: 100%; align-items: center; justify-content: center; gap: 7px; min-height: 36px; margin: 9px auto 0; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: var(--surface-soft); font-size: 12px; font-weight: 800; line-height: 1.5; text-align: center; }
+.qibla-accuracy::before { content: ""; width: 8px; height: 8px; flex: 0 0 8px; border-radius: 50%; background: currentColor; }
+.qibla-accuracy[data-accuracy="good"] { border-color: #b9d6c2; color: #315f43; background: #edf6ef; }
+.qibla-accuracy[data-accuracy="medium"] { border-color: #e1d0a6; color: #755623; background: #f8f1e1; }
+.qibla-accuracy[data-accuracy="low"] { border-color: #e2c0b9; color: #873f36; background: #fbefec; }
+.qibla-calibration { margin-top: 16px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--surface-soft); text-align: start; }
+.qibla-calibration summary { display: flex; min-height: 46px; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 13px; color: var(--gold-dark); font-size: 13px; font-weight: 800; cursor: pointer; list-style: none; }
+.qibla-calibration summary::-webkit-details-marker { display: none; }
+.qibla-calibration summary::after { content: "+"; display: grid; width: 24px; height: 24px; flex: 0 0 24px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); font-size: 16px; line-height: 1; }
+.qibla-calibration[open] summary::after { content: "−"; }
+.qibla-calibration ol { display: grid; gap: 6px; margin: 0; padding-block: 0 8px; padding-inline: 34px 14px; color: var(--ink); font-size: 12px; line-height: 1.8; }
+.qibla-calibration p { margin: 0; padding: 0 13px 13px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+@media (prefers-reduced-motion: reduce) { .qibla-arrow { transition: none; } }
 
 /* نافذة تعديل المواقيت بمكان واضح وثابت */
 #manualPrayerModal { position: fixed; z-index: 10020; inset: 0; align-items: center; justify-content: center; overflow: auto; padding: 18px; background: rgba(18,17,15,.58); backdrop-filter: blur(4px); }
@@ -771,6 +784,12 @@ html[data-theme="dark"] { background: var(--page) !important; }
 :root[data-theme="dark"] .hijri-day-pill,
 :root[data-theme="dark"] .sunnah-total,
 :root[data-theme="dark"] .qibla-status { border-color: #37363a; color: var(--muted); background: var(--surface-soft); }
+:root[data-theme="dark"] .qibla-accuracy[data-accuracy="good"] { border-color: #466451; color: #b9dfc0; background: #202b24; }
+:root[data-theme="dark"] .qibla-accuracy[data-accuracy="medium"] { border-color: #665735; color: #e8cf96; background: #302b20; }
+:root[data-theme="dark"] .qibla-accuracy[data-accuracy="low"] { border-color: #704740; color: #f0b7ac; background: #302321; }
+:root[data-theme="dark"] .qibla-calibration { border-color: #37363a; background: var(--surface-soft); }
+:root[data-theme="dark"] .qibla-calibration summary { color: #e2cb97; }
+:root[data-theme="dark"] .qibla-calibration summary::after { border-color: #45434a; background: var(--surface); }
 :root[data-theme="dark"] .sunnah-task.is-done,
 :root[data-theme="dark"] .tasbeeh-preset.is-active { border-color: #746342; color: #ead5a6; background: #2a2823; }
 :root[data-theme="dark"] .tasbeeh-reset-button,
