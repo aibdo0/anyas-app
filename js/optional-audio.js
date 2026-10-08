@@ -42,6 +42,25 @@
     const cache = await caches.open(CACHE_NAME);
     return Boolean(await cache.match(cacheUrl(relative)) || await cache.match(remoteUrl(relative)));
   }
+  const formatBytes = bytes => {
+    if (!bytes) return "٠ ك.ب";
+    if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024)).toLocaleString("ar-EG")} ك.ب`;
+    return `${(bytes / 1024 / 1024).toFixed(1).replace(".", "٫").replace(/\d/g, digit => "٠١٢٣٤٥٦٧٨٩"[digit])} م.ب`;
+  };
+  async function cacheUsage() {
+    if (!window.caches) return 0;
+    const cache = await caches.open(CACHE_NAME);
+    const requests = await cache.keys();
+    let total = 0;
+    for (const request of requests) {
+      const response = await cache.match(request);
+      if (response) total += (await response.blob()).size;
+    }
+    return total;
+  }
+  async function clearAll() {
+    if (window.caches) await caches.delete(CACHE_NAME);
+  }
 
   async function useCachedAudio(audio, relative) {
     if (!audio || !relative) return false;
@@ -88,7 +107,8 @@
         const ready = await isDownloaded(relative);
         button.textContent = ready ? "حذف التنزيل" : "تنزيل الصوت";
         button.setAttribute("aria-pressed", String(ready));
-        if (status) status.textContent = ready ? "محفوظ على هذا الجهاز" : "يُنزل عند الطلب؛ لا يُحمل مع التثبيت";
+        if (status && !ready) status.textContent = "يُنزل عند الطلب؛ لا يُحمل مع التثبيت";
+        if (status && ready) status.textContent = "محفوظ على هذا الجهاز";
       };
       button.addEventListener("click", async () => {
         button.disabled = true;
@@ -96,12 +116,27 @@
           if (await isDownloaded(relative)) await remove(relative);
           else await download(relative);
           await render();
+          document.getElementById("optionalAudioUsage")?.replaceChildren(`المساحة المحفوظة: ${formatBytes(await cacheUsage())}`);
         } catch (error) {
           if (status) status.textContent = "تعذر التنزيل؛ تحقق من الاتصال وحاول مرة أخرى.";
         } finally { button.disabled = false; }
       });
       render();
     });
+    const usage = document.getElementById("optionalAudioUsage");
+    const refreshUsage = async () => { if (usage) usage.textContent = `المساحة المحفوظة: ${formatBytes(await cacheUsage())}`; };
+    document.getElementById("clearOptionalAudioButton")?.addEventListener("click", async () => {
+      const total = await cacheUsage();
+      if (!total || !window.confirm("هل تريد حذف كل التسجيلات المحفوظة؟")) return;
+      await clearAll();
+      document.querySelectorAll("[data-download-audio]").forEach(button => {
+        button.textContent = "تنزيل الصوت";
+        button.setAttribute("aria-pressed", "false");
+      });
+      document.querySelectorAll("[data-audio-status]").forEach(status => { status.textContent = "يُنزل عند الطلب"; });
+      refreshUsage();
+    });
+    refreshUsage();
   }
 
   window.AnyasAudio = { source, download, remove, isDownloaded, useCachedAudio };

@@ -200,6 +200,16 @@ check("notification inbox can filter unread items only", () => {
   assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
 });
 
+check("optional audio manager shows sizes and can clear all downloads", () => {
+  const optionalAudio = read("js/optional-audio.js");
+  assert.match(index, /id="optionalAudioUsage"/);
+  assert.match(index, /id="clearOptionalAudioButton"/);
+  assert.match(index, /١٢٫١ م\.ب/);
+  assert.match(optionalAudio, /async function cacheUsage\(\)/);
+  assert.match(optionalAudio, /async function clearAll\(\)/);
+  assert.match(optionalAudio, /caches\.delete\(CACHE_NAME\)/);
+});
+
 check("optional audio downloads are cached and excluded from Android web assets", () => {
   const optionalAudio = read("js/optional-audio.js");
   const gradle = read("android/app/build.gradle");
