@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
-    <shortcut android:shortcutId="prayer" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="أوقات الصلاة" android:shortcutLongLabel="فتح أوقات الصلاة">
+    <shortcut android:shortcutId="prayer" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/shortcut_prayer_short" android:shortcutLongLabel="@string/shortcut_prayer_long">
         <intent android:action="android.intent.action.VIEW" android:targetPackage="com.anyas.app" android:targetClass="com.anyas.app.MainActivity">
             <extra android:name="anyas_page" android:value="home" />
         </intent>
     </shortcut>
-    <shortcut android:shortcutId="qibla" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="القبلة" android:shortcutLongLabel="فتح اتجاه القبلة">
+    <shortcut android:shortcutId="qibla" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/shortcut_qibla_short" android:shortcutLongLabel="@string/shortcut_qibla_long">
         <intent android:action="android.intent.action.VIEW" android:targetPackage="com.anyas.app" android:targetClass="com.anyas.app.MainActivity">
             <extra android:name="anyas_page" android:value="qibla" />
         </intent>
     </shortcut>
-    <shortcut android:shortcutId="tasbeeh" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="المسبحة" android:shortcutLongLabel="فتح المسبحة الإلكترونية">
+    <shortcut android:shortcutId="tasbeeh" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/shortcut_tasbeeh_short" android:shortcutLongLabel="@string/shortcut_tasbeeh_long">
         <intent android:action="android.intent.action.VIEW" android:targetPackage="com.anyas.app" android:targetClass="com.anyas.app.MainActivity">
             <extra android:name="anyas_page" android:value="tasbeeh" />
         </intent>
     </shortcut>
-    <shortcut android:shortcutId="adhkar" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="الأذكار" android:shortcutLongLabel="فتح الأذكار اليومية">
+    <shortcut android:shortcutId="adhkar" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/shortcut_adhkar_short" android:shortcutLongLabel="@string/shortcut_adhkar_long">
         <intent android:action="android.intent.action.VIEW" android:targetPackage="com.anyas.app" android:targetClass="com.anyas.app.MainActivity">
             <extra android:name="anyas_page" android:value="azkar" />
         </intent>

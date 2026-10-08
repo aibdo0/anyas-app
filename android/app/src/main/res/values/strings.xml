@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">أنياس</string>
+    <string name="shortcut_prayer_short">أوقات الصلاة</string>
+    <string name="shortcut_prayer_long">فتح أوقات الصلاة</string>
+    <string name="shortcut_qibla_short">القبلة</string>
+    <string name="shortcut_qibla_long">فتح اتجاه القبلة</string>
+    <string name="shortcut_tasbeeh_short">المسبحة</string>
+    <string name="shortcut_tasbeeh_long">فتح المسبحة الإلكترونية</string>
+    <string name="shortcut_adhkar_short">الأذكار</string>
+    <string name="shortcut_adhkar_long">فتح الأذكار اليومية</string>
+</resources>
