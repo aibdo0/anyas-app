@@ -117,3 +117,8 @@ html[lang="en"] #page-settings .notification-settings-copy { text-align: left; }
 @media (prefers-reduced-motion: reduce) {
   #page-settings .notification-settings-chevron svg { transition: none; }
 }
+
+.notification-history-item { position: relative; }
+.notification-item-delete { flex: 0 0 auto; align-self: center; border: 1px solid rgba(150, 60, 45, .28); border-radius: 8px; background: transparent; color: #9b4d3d; padding: 6px 9px; cursor: pointer; }
+.notification-item-delete:hover, .notification-item-delete:focus-visible { background: rgba(150, 60, 45, .10); }
+.notification-danger-button { color: #9b4d3d; border-color: rgba(150, 60, 45, .28); }

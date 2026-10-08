@@ -408,6 +408,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     const unreadLabel = byId("notificationUnreadLabel");
     const filterUnread = byId("filterUnreadNotificationsButton");
     const markAll = byId("markAllNotificationsReadButton");
+    const clearAll = byId("clearNotificationsButton");
     const manage = byId("manageNotificationsButton");
     let unreadOnly = false;
     const bellSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>';
@@ -430,6 +431,21 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       }
       const items = readHistory().map(item => ({ ...item, read: true }));
       try { localStorage.setItem("anyas_notification_history", JSON.stringify(items)); } catch (error) { console.warn("تعذر تحديث حالة قراءة الإشعارات:", error); }
+    };
+    const deleteItem = id => {
+      if (!id) return;
+      if (window.AnyasAndroid && typeof window.AnyasAndroid.deleteNotificationHistoryItem === "function") {
+        window.AnyasAndroid.deleteNotificationHistoryItem(String(id));
+        return;
+      }
+      try { localStorage.setItem("anyas_notification_history", JSON.stringify(readHistory().filter(item => item.id !== id))); } catch (error) { console.warn("تعذر حذف الإشعار:", error); }
+    };
+    const clearHistory = () => {
+      if (window.AnyasAndroid && typeof window.AnyasAndroid.clearNotificationHistory === "function") {
+        window.AnyasAndroid.clearNotificationHistory();
+        return;
+      }
+      try { localStorage.removeItem("anyas_notification_history"); } catch (error) { console.warn("تعذر مسح سجل الإشعارات:", error); }
     };
     const formatTime = timestamp => {
       const date = new Date(Number(timestamp));
@@ -491,7 +507,13 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
           copy.append(heading);
           if (item.body) copy.append(body);
           copy.append(time);
-          card.append(icon, copy);
+          const remove = document.createElement("button");
+          remove.type = "button";
+          remove.className = "notification-item-delete";
+          remove.textContent = t("حذف");
+          remove.setAttribute("aria-label", `${t("حذف الإشعار")}: ${title.textContent}`);
+          remove.addEventListener("click", () => { deleteItem(item.id); render(); });
+          card.append(icon, copy, remove);
           list.append(card);
         });
       }
@@ -509,6 +531,10 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       render();
     });
     markAll?.addEventListener("click", () => render(true));
+    clearAll?.addEventListener("click", () => {
+      if (!readHistory().length) return;
+      if (window.confirm(t("هل تريد مسح سجل الإشعارات بالكامل؟"))) { clearHistory(); render(); }
+    });
     manage?.addEventListener("click", () => {
       openPage("settings");
       window.setTimeout(() => byId("notificationSettingsHeading")?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);

@@ -55,6 +55,24 @@ final class NotificationHistory {
         }
     }
 
+    static void delete(Context context, String id) {
+        if (id == null || id.trim().isEmpty()) return;
+        synchronized (NotificationHistory.class) {
+            SharedPreferences preferences = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+            JSONArray previous = readArray(preferences.getString(ITEMS, "[]"));
+            JSONArray updated = new JSONArray();
+            for (int i = 0; i < previous.length(); i++) {
+                JSONObject item = previous.optJSONObject(i);
+                if (item != null && !id.equals(item.optString("id"))) updated.put(item);
+            }
+            preferences.edit().putString(ITEMS, updated.toString()).commit();
+        }
+    }
+    static void clear(Context context) {
+        synchronized (NotificationHistory.class) {
+            context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().remove(ITEMS).commit();
+        }
+    }
     static void markAllRead(Context context) {
         synchronized (NotificationHistory.class) {
             SharedPreferences preferences = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);

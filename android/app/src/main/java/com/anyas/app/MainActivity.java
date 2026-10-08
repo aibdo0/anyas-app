@@ -178,6 +178,12 @@ public class MainActivity extends Activity {
         @JavascriptInterface public void markNotificationHistoryRead() {
             NotificationHistory.markAllRead(MainActivity.this);
         }
+        @JavascriptInterface public void deleteNotificationHistoryItem(String id) {
+            NotificationHistory.delete(MainActivity.this, id);
+        }
+        @JavascriptInterface public void clearNotificationHistory() {
+            NotificationHistory.clear(MainActivity.this);
+        }
         @JavascriptInterface public void recordNotification(String tag, String title, String body) {
             NotificationHistory.record(MainActivity.this, tag, title, body);
         }
