@@ -200,6 +200,16 @@ check("notification inbox can filter unread items only", () => {
   assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
 });
 
+check("compressed audio stays playable and within the app size budget", () => {
+  const audioDir = path.join(root, "audio");
+  const audioFiles = fs.readdirSync(audioDir).filter(file => /\.(mp3|m4a)$/i.test(file));
+  assert.ok(audioFiles.length >= 30);
+  for (const file of audioFiles) {
+    assert.ok(fs.statSync(path.join(audioDir, file)).size <= 16_000_000, `${file} exceeds audio size budget`);
+  }
+  assert.match(index, /audio\/(?:[^"' ]+\.(?:mp3|m4a))/);
+});
+
 check("mosque search shows distance, walking time, and directions", () => {
   assert.match(enhancements, /walkingMinutes = Math\.max\(1, Math\.round\(distance \/ 80\)\)/);
   assert.match(enhancements, /walkingMinutes/);
