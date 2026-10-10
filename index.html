@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta id="themeColorMeta" name="theme-color" content="#fbfaf7">
 <meta name="description" content="أنياس - رفيق يومي لمواقيت الصلاة والقرآن والأذكار">
+<link rel="manifest" href="manifest.webmanifest">
 <title>أنياس</title>
 
 <script>
   (function () {
     var mode = "light";
     var locale = "ar";
-    var autoBackground = false;
+    var autoBackground = true;
     try {
       mode = localStorage.getItem("anyas_themeMode") || "";
       locale = localStorage.getItem("anyas_language") === "en" ? "en" : "ar";
@@ -29,29 +30,77 @@
     document.documentElement.dir = locale === "en" ? "ltr" : "rtl";
     document.documentElement.dataset.autoBackground = String(autoBackground);
     var hour = new Date().getHours();
-    document.documentElement.dataset.timeScene = hour >= 4 && hour < 8 ? "dawn" : hour >= 8 && hour < 16 ? "day" : hour >= 16 && hour < 19 ? "sunset" : "night";
+    document.documentElement.dataset.timeScene = hour >= 6 && hour < 18 ? "morning" : "night";
   })();
 </script>
 
 <link rel="stylesheet" href="css/style.css?v=20260927-2">
 <link rel="stylesheet" href="css/home.css?v=20260927-2">
 <link rel="stylesheet" href="css/prayer.css?v=20260927-2">
-<link rel="stylesheet" href="css/azkar.css?v=20260927-2">
-<link rel="stylesheet" href="css/daily-adhkar.css?v=20260927-2">
-<link rel="stylesheet" href="css/settings.css?v=20260927-2">
+<link rel="stylesheet" href="css/azkar.css?v=20261003-1">
+<link rel="stylesheet" href="css/daily-adhkar.css?v=20261003-1">
+<link rel="stylesheet" href="css/settings.css?v=20261003-3">
+<link rel="stylesheet" href="css/audio-library.css?v=20261007-1">
 
 <link rel="stylesheet" href="css/offline-fonts.css">
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261002-3">
-<link rel="stylesheet" href="css/tasks-ux.css?v=20261002-3">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261008-1">
+<link rel="stylesheet" href="css/tasks-ux.css?v=20261003-1">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
-<link rel="stylesheet" href="css/friday.css?v=20261001-1">
+<link rel="stylesheet" href="css/friday.css?v=20261003-2">
+<link rel="stylesheet" href="css/notification-settings.css?v=20261007-1">
+<link rel="stylesheet" href="css/more-page.css?v=20261007-2">
+<link rel="stylesheet" href="css/app-design-system.css?v=20261007-2">
+<link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
+<link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 </head>
 <body>
+<a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
 <div class="app">
+<div class="pwa-status-banner" id="pwaStatusBanner" role="status" aria-live="polite" hidden>
+  <span id="pwaStatusText">أنت تعمل دون اتصال؛ المحتوى المحفوظ ما زال متاحًا.</span>
+  <button id="pwaInstallButton" type="button" hidden>تثبيت أنياس</button>
+</div>
+<div class="first-run-overlay" id="firstRunOverlay" hidden>
+  <section class="first-run-card" role="dialog" aria-modal="true" aria-labelledby="firstRunTitle" tabindex="-1">
+    <div class="first-run-brand-row">
+      <div class="first-run-brand">
+        <span class="first-run-brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5 14.4 9.6 20.5 12l-6.1 2.4L12 20.5l-2.4-6.1L3.5 12l6.1-2.4L12 3.5Z"/><path d="m19 3 .7 1.7 1.8.3-1.8.7L19 7.5l-.7-1.8-1.8-.7 1.8-.3L19 3Z"/></svg></span>
+        <span class="first-run-brand-name">أنياس</span>
+      </div>
+      <div class="first-run-progress" aria-hidden="true"><span class="first-run-progress-dot is-active"></span><span class="first-run-progress-dot"></span></div>
+    </div>
+    <section class="first-run-step" data-onboarding-step="1">
+      <span class="first-run-kicker">الخطوة ١ من ٢</span>
+      <h1 class="first-run-title" id="firstRunTitle">أهلًا بك في أنياس</h1>
+      <p class="first-run-description">رفيقك اليومي للعبادة — الصلاة والأذكار والقرآن في مكان واحد.</p>
+      <ul class="first-run-feature-list">
+        <li class="first-run-feature"><span class="first-run-feature-icon" aria-hidden="true">◷</span><span class="first-run-feature-copy"><strong>مواقيت صلاة تناسب مدينتك</strong><small>ومتابعة للصلاة القادمة خلال اليوم</small></span></li>
+        <li class="first-run-feature"><span class="first-run-feature-icon" aria-hidden="true">☾</span><span class="first-run-feature-copy"><strong>أذكار وورد يومي</strong><small>افتح ما يناسب وقتك وتابع من حيث وصلت</small></span></li>
+        <li class="first-run-feature"><span class="first-run-feature-icon" aria-hidden="true">✓</span><span class="first-run-feature-copy"><strong>تذكيرات تختارها بنفسك</strong><small>لن نفعّل أي تذكير دون اختيارك.</small></span></li>
+      </ul>
+      <div class="first-run-actions">
+        <button class="first-run-primary" type="button" data-onboarding-action="next">تابع الإعداد</button>
+        <button class="first-run-tertiary" type="button" data-onboarding-action="skip-intro">تخطي المقدمة</button>
+      </div>
+    </section>
+    <section class="first-run-step" data-onboarding-step="2" hidden>
+      <span class="first-run-kicker">الخطوة ٢ من ٢</span>
+      <h2 class="first-run-title" id="firstRunCityTitle">اختر مدينتك</h2>
+      <p class="first-run-description">تُستخدم مدينتك لحساب مواقيت الصلاة بدقة.</p>
+      <div class="first-run-privacy"><strong>الموقع اختياري</strong><p>لن نطلب إذن الموقع إلا عند اختيار استخدام موقعي الحالي. يمكنك اختيار المدينة يدويًا.</p></div>
+      <div class="first-run-actions">
+        <button class="first-run-primary" type="button" data-onboarding-action="choose-city">اختيار المدينة</button>
+        <button class="first-run-secondary" type="button" data-onboarding-action="start">استخدم القاهرة مؤقتًا</button>
+        <button class="first-run-tertiary" type="button" data-onboarding-action="back">رجوع</button>
+      </div>
+      <p class="first-run-note">يمكنك تغيير المدينة لاحقًا من أعلى مواقيت الصلاة.</p>
+    </section>
+  </section>
+</div>
 
 <div id="updateBanner" class="update-banner" hidden role="status">
 <div class="update-banner-text">تحديث جديد متاح</div>
@@ -123,7 +172,7 @@
     <div class="daily-adhkar-heading-row">
       <div class="daily-adhkar-mark" aria-hidden="true">ذ</div>
       <div class="daily-adhkar-heading-copy">
-        <div class="daily-adhkar-eyebrow">ورد يناسب وقت الصلاة</div>
+        <div class="daily-adhkar-eyebrow">وردك اليومي بحسب الوقت</div>
         <h2 class="daily-adhkar-title" id="dailyAdhkarHeading">أذكار الصباح</h2>
       </div>
       <span class="daily-adhkar-badge" id="dailyAdhkarBadge">الصباح</span>
@@ -136,11 +185,11 @@
   </div>
 </section>
 
-<section class="section friday-feature-section" aria-labelledby="homeFridayHeading">
+<section class="section friday-feature-section" aria-labelledby="homeFridayHeading" hidden>
   <div class="friday-feature-card" id="homeFridayCard" data-friday-phase="upcoming">
     <div class="friday-feature-heading"><div><span class="friday-feature-eyebrow">تذكير أسبوعي</span><h2 id="homeFridayHeading">جمعة مباركة</h2></div><span class="friday-feature-badge" id="homeFridayBadge">الجمعة</span></div>
     <p id="homeFridayText">تظهر هنا تذكيرات سورة الكهف وصلاة الجمعة والصلاة على النبي ﷺ.</p>
-    <div class="friday-feature-meta" id="homeFridayMeta">من مغرب الخميس إلى مغرب الجمعة</div>
+    <div class="friday-feature-meta" id="homeFridayMeta">من مغرب الخميس إلى نهاية يوم الجمعة</div>
     <button class="friday-feature-button" id="homeFridayAction" type="button">افتح مهام الجمعة</button>
   </div>
 </section>
@@ -149,8 +198,9 @@
 
 <div class="section-heading">
 <button class="section-title section-title-button" id="openPrayerScheduleButton" type="button">مواقيت الصلاة</button>
-<button class="more-button prayer-adjust-button" id="openManualPrayerSettings" type="button">ضبط المواقيت</button>
+<div class="prayer-heading-actions"><button class="more-button prayer-share-button" id="sharePrayerTimesButton" type="button">مشاركة</button><button class="more-button prayer-adjust-button" id="openManualPrayerSettings" type="button">ضبط المواقيت</button></div>
 </div>
+<p class="prayer-share-status" id="prayerShareStatus" aria-live="polite" hidden></p>
 
 <div class="prayer-list" id="prayerList">
 
@@ -185,6 +235,16 @@
 </button>
 
 </div>
+<p class="prayer-data-status" id="prayerDataStatus" aria-live="polite">جارٍ تجهيز المواقيت…</p>
+<section class="offline-status-card" id="offlineStatusCard" aria-labelledby="offlineStatusHeading">
+  <div class="offline-status-heading"><strong id="offlineStatusHeading">حالة الاتصال</strong><span id="offlineConnectionStatus" role="status" aria-live="polite">جارٍ التحقق…</span></div>
+  <ul class="offline-capabilities-list">
+    <li>مواقيت الصلاة المحسوبة محليًا</li>
+    <li>القبلة والأذكار والمسبحة</li>
+    <li>المدينة والإعدادات والنسخ الاحتياطية</li>
+  </ul>
+  <button class="secondary-action offline-retry-button" id="retryOfflineDataButton" type="button">إعادة تحديث المواقيت</button>
+</section>
 </section>
 
 <section class="section">
@@ -247,16 +307,41 @@
 </button>
 
 <audio id="adhanAudio" preload="auto">
-<source src="audio/adhan.mp3" type="audio/mpeg">
+<source src="audio/adhan.mp3?v=20261002-1" type="audio/mpeg">
 </audio>
 
 <audio id="fajrAudio" preload="auto">
 <source src="audio/fajr.mp3" type="audio/mpeg">
 </audio>
 
+<audio id="beforeFajrAudio" preload="auto">
+<source src="audio/before-fajr-30min.mp3?v=20261002-1" type="audio/mpeg">
+</audio>
+
+<audio id="qiyamReminderAudio" preload="auto"><source src="audio/qiyam-al-layl-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="beforePrayerFajrAudio" preload="auto"><source src="audio/before-prayer-fajr.mp3" type="audio/mpeg"></audio>
+<audio id="beforePrayerDhuhrAudio" preload="auto"><source src="audio/before-prayer-dhuhr.mp3" type="audio/mpeg"></audio>
+<audio id="beforePrayerAsrAudio" preload="auto"><source src="audio/before-prayer-asr.mp3" type="audio/mpeg"></audio>
+<audio id="beforePrayerMaghribAudio" preload="auto"><source src="audio/before-prayer-maghrib.mp3" type="audio/mpeg"></audio>
+<audio id="beforePrayerIshaAudio" preload="auto"><source src="audio/before-prayer-isha.mp3" type="audio/mpeg"></audio>
+<audio id="fridayReminderAudio" preload="auto"><source src="audio/friday-prayer-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="sunriseReminderAudio" preload="auto"><source src="audio/sunrise-birds.mp3" type="audio/mpeg"></audio>
+<audio id="hadithReminderAudio" preload="auto"><source src="audio/hadith-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="duhaReminderAudio" preload="auto"><source src="audio/duha-prayer-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="salawatReminderOneAudio" preload="auto"><source src="audio/salawat-reminder-1.mp3" type="audio/mpeg"></audio>
+<audio id="salawatReminderTwoAudio" preload="auto"><source src="audio/salawat-reminder-2.mp3" type="audio/mpeg"></audio>
+<audio id="baqiyatReminderAudio" preload="auto"><source src="audio/baqiyat-as-salihat-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="fastingThursdayOneAudio" preload="auto"><source src="audio/fasting-thursday-reminder-1.mp3" type="audio/mpeg"></audio>
+<audio id="fastingThursdayTwoAudio" preload="auto"><source src="audio/fasting-thursday-reminder-2.mp3" type="audio/mpeg"></audio>
+<audio id="fastingMondayAudio" preload="auto"><source src="audio/fasting-monday-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="fastingFisabilillahAudio" preload="auto"><source src="audio/fasting-fisabilillah-reminder.mp3" type="audio/mpeg"></audio>
+<audio id="rainSunnahAudio" preload="auto"><source src="audio/rain-sunnah-reminder.mp3" type="audio/mpeg"></audio>
+
 <audio id="ayatKursiAudio" preload="auto"></audio>
-<audio id="morningWardAudio" preload="auto"></audio>
-<audio id="eveningWardAudio" preload="auto"></audio>
+<audio id="morningWardAudio" preload="none" data-optional-audio="true" data-audio-source="audio/adhkar-morning-mishary-alafasy.mp3"><source src="audio/adhkar-morning-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
+<audio id="eveningWardAudio" preload="none" data-optional-audio="true" data-audio-source="audio/adhkar-evening-mishary-alafasy.mp3"><source src="audio/adhkar-evening-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
+<audio id="wakeupWardAudio" preload="none" data-optional-audio="true" data-audio-source="audio/adhkar-wakeup-mishary-alafasy.mp3"><source src="audio/adhkar-wakeup-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
+<audio id="sleepWardAudio" preload="none" data-optional-audio="true" data-audio-source="audio/adhkar-sleep-mishary-alafasy.mp3"><source src="audio/adhkar-sleep-mishary-alafasy.mp3?v=20261003-1" type="audio/mpeg"></audio>
 
 </div>
 
@@ -387,7 +472,7 @@
     <p>المحافظة على اثنتي عشرة ركعة من السنن الرواتب في اليوم والليلة ورد فيها وعد ببيت في الجنة. ابدأ بما تستطيع، وتدرّج برفق.</p>
   </div>
 </section>
-<section class="friday-tasks-card" aria-labelledby="fridayTasksHeading">
+<section class="friday-tasks-card" id="fridayTasksCard" aria-labelledby="fridayTasksHeading" hidden>
   <div class="friday-tasks-heading">
     <div>
       <span class="friday-tasks-eyebrow">تذكيرات أسبوعية</span>
@@ -404,7 +489,7 @@
       <span class="friday-task-icon" aria-hidden="true">ص</span><span><strong>صلاة الجمعة</strong><small>تذكير بموعد الصلاة بحسب توقيت المسجد</small></span><span class="friday-task-check" aria-hidden="true">○</span>
     </button>
     <button class="friday-task-item" type="button" data-friday-task="salawat" aria-pressed="false">
-      <span class="friday-task-icon" aria-hidden="true">ﷺ</span><span><strong>الصلاة على النبي ﷺ</strong><small>من مغرب الخميس إلى مغرب الجمعة</small></span><span class="friday-task-check" aria-hidden="true">○</span>
+      <span class="friday-task-icon" aria-hidden="true">ﷺ</span><span><strong>الصلاة على النبي ﷺ</strong><small>من مغرب الخميس إلى نهاية يوم الجمعة</small></span><span class="friday-task-check" aria-hidden="true">○</span>
     </button>
   </div>
   <div class="friday-answer-hour"><span aria-hidden="true">⌛</span><span><strong>ساعة الإجابة</strong><small>من بعد العصر إلى المغرب، أكثر من الدعاء فيها</small></span></div>
@@ -447,7 +532,7 @@
       <span class="azkar-period-time">ابدأ ورد المساء</span>
     </button>
   </div>
-  <div class="azkar-friday-card" id="azkarFridayCard" data-friday-phase="upcoming">
+  <div class="azkar-friday-card" id="azkarFridayCard" data-friday-phase="upcoming" hidden>
     <div class="azkar-friday-heading"><span class="azkar-friday-icon" aria-hidden="true">ج</span><div><strong id="azkarFridayTitle">تذكيرات الجمعة</strong><small id="azkarFridayText">سورة الكهف، صلاة الجمعة، والصلاة على النبي ﷺ</small></div></div>
     <button type="button" id="azkarFridayAction">افتح مهام الجمعة</button>
   </div>
@@ -522,10 +607,13 @@ id="qiblaBackButton"
 
 <div class="qibla-card card">
 
-<div class="qibla-status" id="qiblaStatus">
+<div class="qibla-status" id="qiblaStatus" role="status" aria-live="polite" aria-atomic="true">
 جاري تجهيز البوصلة...
 </div>
 
+<p class="qibla-accuracy" id="qiblaAccuracy" data-accuracy="unknown" aria-live="polite" aria-atomic="true">
+دقة البوصلة: بانتظار بيانات المستشعر.
+</p>
 
 <div class="qibla-compass">
 
@@ -589,6 +677,16 @@ id="qiblaMessage"
 >
 اسمح للتطبيق باستخدام موقعك واتجاه الجهاز لتحديد القبلة.
 </div>
+
+<details class="qibla-calibration">
+  <summary>إرشادات تحسين دقة البوصلة</summary>
+  <ol>
+    <li>أبعد الهاتف عن المعادن والمغناطيس ومكبرات الصوت.</li>
+    <li>حرّك الهاتف ببطء على شكل رقم ٨ عدة مرات.</li>
+    <li>انتظر استقرار الاتجاه، ثم وجّه الهاتف نحو السهم.</li>
+  </ol>
+  <p>قد لا يوفّر المتصفح تقديرًا رقميًا للدقة؛ لا يعني ذلك انعدام البوصلة. راقب تذبذب السهم واستعن بهذه الإرشادات.</p>
+</details>
 
 </div>
 
@@ -696,6 +794,18 @@ aria-selected="false"
 </div>
 
 
+<div class="card worship-stats-card" aria-labelledby="worshipStatsHeading">
+<div class="card-title" id="worshipStatsHeading">إحصائيات العبادة</div>
+<p class="worship-stats-note" id="worshipStatsPeriod">من بياناتك المحفوظة على هذا الجهاز</p>
+<div class="worship-stats-grid">
+  <div class="worship-stat"><strong id="worshipStatsDhikr">٠</strong><span>أذكار مكتملة</span></div>
+  <div class="worship-stat"><strong id="worshipStatsTasbeeh">٠</strong><span>تسبيحات</span></div>
+  <div class="worship-stat"><strong id="worshipStatsSunnah">٠</strong><span>سنن منجزة</span></div>
+  <div class="worship-stat"><strong id="worshipStatsActiveDays">٠</strong><span>أيام نشطة</span></div>
+</div>
+<div class="worship-stats-highlight" id="worshipStatsHighlight">ابدأ بتسجيل عبادتك اليوم، وستظهر إحصائياتك هنا.</div>
+</div>
+
 <div class="card weekly-report-card">
 
 <div class="card-title">
@@ -759,11 +869,11 @@ aria-selected="false"
 
 <div class="setting-row time-background-setting">
   <div class="setting-info">
-    <div class="setting-title">خلفية حسب وقت اليوم</div>
-    <div class="setting-description" id="timeBackgroundDescription">تتغير تلقائيًا بين الفجر والنهار والغروب والليل</div>
+    <div class="setting-title">خلفيات العدادات حسب الوقت</div>
+    <div class="setting-description" id="timeBackgroundDescription">خلفية صباحية أو ليلية هادئة للعدادات ويمكنك إيقافها متى شئت</div>
   </div>
   <label class="switch" aria-label="تفعيل الخلفيات حسب وقت اليوم">
-    <input id="timeBackgroundToggle" type="checkbox">
+    <input id="timeBackgroundToggle" type="checkbox" checked>
     <span class="switch-track"></span><span class="switch-knob"></span>
   </label>
 </div>
@@ -795,6 +905,14 @@ English
 
 </select>
 
+</div>
+
+<div class="setting-row">
+<div class="setting-info"><div class="setting-title">تنسيق الوقت</div><div class="setting-description">اختر طريقة عرض مواقيت الصلاة</div></div>
+<select id="timeFormatSelect" class="select-control" aria-label="تنسيق الوقت">
+<option value="12">١٢ ساعة — ص / م</option>
+<option value="24">٢٤ ساعة</option>
+</select>
 </div>
 
 
@@ -861,6 +979,14 @@ English
 
 </select>
 
+</div>
+
+<div class="setting-row">
+<div class="setting-info"><div class="setting-title">طريقة حساب العصر</div><div class="setting-description">اختر وقت العصر الشافعي أو الحنفي</div></div>
+<select id="asrMadhabSelect" class="select-control" aria-label="طريقة حساب العصر">
+<option value="shafi">شافعي</option>
+<option value="hanafi">حنفي</option>
+</select>
 </div>
 
 
@@ -962,13 +1088,23 @@ type="button"
 </div>
 
 
-<div class="settings-section-title">
+<div class="settings-section-title" id="notificationSettingsHeading">
 الإشعارات
 </div>
 
 
 <div class="settings-card">
 
+
+<p class="notification-settings-note">التذكيرات اختيارية؛ فعّل ما تحتاجه فقط، ويمكنك فتح المجموعات لضبط بقية الخيارات.</p>
+
+<div class="notification-readiness" id="notificationReadiness" role="status" aria-live="polite">
+  <div class="notification-readiness-copy">
+    <strong>جاهزية التذكيرات</strong>
+    <span id="notificationReadinessStatus">جارٍ التحقق من الإذن والبطارية...</span>
+  </div>
+  <button class="secondary-action" id="openBatterySettingsButton" type="button" hidden>فتح إعدادات البطارية</button>
+</div>
 
 <div class="setting-row">
 
@@ -996,6 +1132,14 @@ type="button"
 </div>
 
 
+<details class="notification-settings-group" data-notification-settings-group="prayer">
+  <summary class="notification-settings-summary">
+    <span class="notification-settings-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v5M4.9 5.9l3.5 3.5M2 13h5M17 13h5M15.6 9.4l3.5-3.5"/><path d="M5 19h14M7 16a5 5 0 0 1 10 0"/></svg></span>
+    <span class="notification-settings-copy"><strong>تنبيهات صلاة إضافية</strong><small>الشروق، الثلث الأخير، وآية الكرسي</small></span>
+    <span class="notification-settings-count" data-notification-group-status aria-label="التذكيرات المفعّلة">٠ / ٣</span>
+    <span class="notification-settings-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span>
+  </summary>
+  <div class="notification-settings-group-content">
 <div class="setting-row">
 
 <div class="setting-info">
@@ -1013,50 +1157,6 @@ type="button"
 <label class="switch">
 
 <input id="notifySunrise" type="checkbox">
-
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-
-</label>
-
-</div>
-
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-الثلث الأول من الليل
-</div>
-
-</div>
-
-<label class="switch">
-
-<input id="notifyFirstThird" type="checkbox">
-
-<span class="switch-track"></span>
-<span class="switch-knob"></span>
-
-</label>
-
-</div>
-
-
-<div class="setting-row">
-
-<div class="setting-info">
-
-<div class="setting-title">
-الثلث الثاني من الليل
-</div>
-
-</div>
-
-<label class="switch">
-
-<input id="notifySecondThird" type="checkbox">
 
 <span class="switch-track"></span>
 <span class="switch-knob"></span>
@@ -1097,7 +1197,7 @@ type="button"
 </div>
 
 <div class="setting-description">
-تنبيه خاص بآية الكرسي
+اختر بين نصف ساعة قبل المغرب أو وقت يناسبك
 </div>
 
 </div>
@@ -1113,6 +1213,22 @@ type="button"
 
 </div>
 
+<details class="reminder-time-panel" data-reminder-schedule-panel="notifyAyatKursi" hidden>
+  <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyAyatKursi">قبل المغرب بنصف ساعة</strong></summary>
+  <div class="reminder-time-panel-content">
+    <label for="ayatKursiScheduleMode">طريقة تحديد الموعد</label>
+    <select id="ayatKursiScheduleMode" class="select-control reminder-schedule-mode" data-reminder-schedule-mode="notifyAyatKursi">
+      <option value="beforeMaghrib">قبل أذان المغرب بنصف ساعة</option>
+      <option value="custom">وقت أختاره</option>
+    </select>
+    <label for="ayatKursiCustomTime" data-reminder-custom-label="notifyAyatKursi" hidden>الوقت المناسب لك</label>
+    <input id="ayatKursiCustomTime" class="reminder-schedule-time" data-reminder-schedule-time="notifyAyatKursi" type="time" min="00:00" max="23:59" value="18:00" hidden disabled>
+    <small class="reminder-schedule-hint">الموعد المخصص يعتمد على ساعة هاتفك المحلية.</small>
+  </div>
+</details>
+
+  </div>
+</details>
 
 <div class="setting-row">
 
@@ -1126,7 +1242,7 @@ type="button"
 
 <label class="switch">
 
-<input id="notificationSound" type="checkbox">
+<input id="notificationSound" type="checkbox" checked>
 
 <span class="switch-track"></span>
 <span class="switch-knob"></span>
@@ -1135,19 +1251,106 @@ type="button"
 
 </div>
 
-<div class="settings-subtitle">الورد اليومي</div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الاستيقاظ</div><div class="setting-description">تذكير عند بداية وقت الاستيقاظ — ٤:٣٠ ص</div></div><label class="switch"><input id="notifyWardAwakening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الصباح</div><div class="setting-description">تذكير لطيف ببدء ورد الصباح</div></div><label class="switch"><input id="notifyWardMorning" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<details class="notification-settings-group" data-notification-settings-group="extra">
+  <summary class="notification-settings-summary">
+    <span class="notification-settings-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2M4.5 4.5l2 2"/></svg></span>
+    <span class="notification-settings-copy"><strong>تذكيرات إضافية</strong><small>أذكار متفرقة، الصيام، وسنة المطر</small></span>
+    <span class="notification-settings-count" data-notification-group-status aria-label="التذكيرات المفعّلة">٠ / ٩</span>
+    <span class="notification-settings-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span>
+  </summary>
+  <div class="notification-settings-group-content">
+
+<div class="setting-row"><div class="setting-info"><div class="setting-title">حديث اليوم</div><div class="setting-description">تذكير يومي بحديث اليوم — ١٢:٣٠ ظهرًا</div></div><label class="switch"><input id="notifyHadith" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صلاة الضحى</div><div class="setting-description">تذكير بصلاة الضحى بعد الشروق</div></div><label class="switch"><input id="notifyDuha" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">الصلاة على النبي ﷺ</div><div class="setting-description">تذكيران يوميًا في أوقات متباعدة</div></div><label class="switch"><input id="notifySalawat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">الباقيات الصالحات</div><div class="setting-description">تذكير بالذكر خلال اليوم</div></div><label class="switch"><input id="notifyBaqiyat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صيام الخميس — تذكير ١</div><div class="setting-description">يظهر مساء الأربعاء</div></div><label class="switch"><input id="notifyFastingThursday1" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صيام الخميس — تذكير ٢</div><div class="setting-description">يظهر مساء الأربعاء</div></div><label class="switch"><input id="notifyFastingThursday2" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صيام الاثنين</div><div class="setting-description">يظهر مساء الأحد</div></div><label class="switch"><input id="notifyFastingMonday" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">صيام في سبيل الله</div><div class="setting-description">تذكير أسبوعي اختياري يوم السبت</div></div><label class="switch"><input id="notifyFastingFisabilillah" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">سنة نزول المطر</div><div class="setting-description">يعمل تلقائيًا عند توقع المطر في موقعك</div></div><label class="switch"><input id="notifyRainSunnah" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+
+  </div>
+</details>
+
+<details class="notification-settings-group" data-notification-settings-group="adhkar">
+  <summary class="notification-settings-summary">
+    <span class="notification-settings-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 6c-2.2-2-5.4-2.3-8-1v14c2.6-1.3 5.8-1 8 1 2.2-2 5.4-2.3 8-1V5c-2.6-1.3-5.8-1-8 1Z"/><path d="M12 6v14M7 9h2m6 0h2m-10 4h2m6 0h2"/></svg></span>
+    <span class="notification-settings-copy"><strong>الورد اليومي</strong><small>الاستيقاظ، الصباح، المساء، والنوم</small></span>
+    <span class="notification-settings-count" data-notification-group-status aria-label="التذكيرات المفعّلة">٠ / ٦</span>
+    <span class="notification-settings-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span>
+  </summary>
+  <div class="notification-settings-group-content">
+
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الاستيقاظ</div><div class="setting-description">موعد مقترح أو وقت تختاره ضمن فترة الصباح</div></div><label class="switch"><input id="notifyWardAwakening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<details class="reminder-time-panel" data-reminder-schedule-panel="notifyWardAwakening" hidden>
+  <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyWardAwakening">المقترح · ٤:٣٠ ص</strong></summary>
+  <div class="reminder-time-panel-content">
+    <label for="notifyWardAwakeningScheduleMode">طريقة تحديد الموعد</label>
+    <select id="notifyWardAwakeningScheduleMode" class="select-control reminder-schedule-mode" data-reminder-schedule-mode="notifyWardAwakening"><option value="suggested">الموعد المقترح · ٤:٣٠ ص</option><option value="custom">وقت أختاره</option></select>
+    <label for="notifyWardAwakeningCustomTime" data-reminder-custom-label="notifyWardAwakening" hidden>وقت بين ٠٣:٠٠ ص و١١:٥٩ ص</label>
+    <input id="notifyWardAwakeningCustomTime" class="reminder-schedule-time" data-reminder-schedule-time="notifyWardAwakening" type="time" min="03:00" max="11:59" value="04:30" hidden disabled>
+    <small class="reminder-schedule-hint">يبقى الموعد ضمن وقت الاستيقاظ والصباح.</small>
+  </div>
+</details>
+
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار الصباح</div><div class="setting-description">موعد مقترح أو وقت تختاره خلال الصباح</div></div><label class="switch"><input id="notifyWardMorning" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<details class="reminder-time-panel" data-reminder-schedule-panel="notifyWardMorning" hidden>
+  <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyWardMorning">المقترح · ٥:٣٠ ص</strong></summary>
+  <div class="reminder-time-panel-content">
+    <label for="notifyWardMorningScheduleMode">طريقة تحديد الموعد</label>
+    <select id="notifyWardMorningScheduleMode" class="select-control reminder-schedule-mode" data-reminder-schedule-mode="notifyWardMorning"><option value="suggested">الموعد المقترح · ٥:٣٠ ص</option><option value="custom">وقت أختاره</option></select>
+    <label for="notifyWardMorningCustomTime" data-reminder-custom-label="notifyWardMorning" hidden>وقت بين ٠٤:٠٠ ص و١١:٥٩ ص</label>
+    <input id="notifyWardMorningCustomTime" class="reminder-schedule-time" data-reminder-schedule-time="notifyWardMorning" type="time" min="04:00" max="11:59" value="05:30" hidden disabled>
+    <small class="reminder-schedule-hint">النطاق يضمن بقاء التنبيه ضمن وقت الصباح.</small>
+  </div>
+</details>
+
 <div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار اليوم</div><div class="setting-description">تذكير بالورد العام — ١٢:٠٠ ظ</div></div><label class="switch"><input id="notifyWardGeneral" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار المساء</div><div class="setting-description">تذكير بورد المساء دون إزعاج</div></div><label class="switch"><input id="notifyWardEvening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار النوم</div><div class="setting-description">تذكير هادئ قبل النوم</div></div><label class="switch"><input id="notifyWardSleep" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار المساء</div><div class="setting-description">موعد مقترح أو وقت تختاره ضمن المساء</div></div><label class="switch"><input id="notifyWardEvening" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<details class="reminder-time-panel" data-reminder-schedule-panel="notifyWardEvening" hidden>
+  <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyWardEvening">المقترح · ٣:٣٠ م</strong></summary>
+  <div class="reminder-time-panel-content">
+    <label for="notifyWardEveningScheduleMode">طريقة تحديد الموعد</label>
+    <select id="notifyWardEveningScheduleMode" class="select-control reminder-schedule-mode" data-reminder-schedule-mode="notifyWardEvening"><option value="suggested">الموعد المقترح · ٣:٣٠ م</option><option value="custom">وقت أختاره</option></select>
+    <label for="notifyWardEveningCustomTime" data-reminder-custom-label="notifyWardEvening" hidden>وقت بين ١٢:٠٠ ظ و١١:٥٩ م</label>
+    <input id="notifyWardEveningCustomTime" class="reminder-schedule-time" data-reminder-schedule-time="notifyWardEvening" type="time" min="12:00" max="23:59" value="15:30" hidden disabled>
+    <small class="reminder-schedule-hint">اختر وقتًا من بعد الظهر حتى آخر المساء.</small>
+  </div>
+</details>
+
+<div class="setting-row"><div class="setting-info"><div class="setting-title">أذكار النوم</div><div class="setting-description">موعد مقترح أو وقت تختاره قبل منتصف الليل</div></div><label class="switch"><input id="notifyWardSleep" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<details class="reminder-time-panel" data-reminder-schedule-panel="notifyWardSleep" hidden>
+  <summary><span>موعد التذكير</span><strong data-reminder-schedule-summary="notifyWardSleep">المقترح · ٨:٠٠ م</strong></summary>
+  <div class="reminder-time-panel-content">
+    <label for="notifyWardSleepScheduleMode">طريقة تحديد الموعد</label>
+    <select id="notifyWardSleepScheduleMode" class="select-control reminder-schedule-mode" data-reminder-schedule-mode="notifyWardSleep"><option value="suggested">الموعد المقترح · ٨:٠٠ م</option><option value="custom">وقت أختاره</option></select>
+    <label for="notifyWardSleepCustomTime" data-reminder-custom-label="notifyWardSleep" hidden>وقت بين ٦:٠٠ م و١١:٥٩ م</label>
+    <input id="notifyWardSleepCustomTime" class="reminder-schedule-time" data-reminder-schedule-time="notifyWardSleep" type="time" min="18:00" max="23:59" value="20:00" hidden disabled>
+    <small class="reminder-schedule-hint">حتى يبقى تذكير النوم ضمن وقت المساء.</small>
+  </div>
+</details>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">استغفار السحر</div><div class="setting-description">تذكير في وقت السحر — ٢:٠٠ ص</div></div><label class="switch"><input id="notifyWardSahar" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 
-<div class="settings-subtitle">يوم الجمعة</div>
+  </div>
+</details>
+
+<details class="notification-settings-group" data-notification-settings-group="friday">
+  <summary class="notification-settings-summary">
+    <span class="notification-settings-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.5 14.2A8.7 8.7 0 0 1 9.8 3.5 8.8 8.8 0 1 0 20.5 14.2Z"/><path d="m17.5 3 .8 2 2.2.8-2.2.7-.8 2.1-.7-2.1-2.1-.7 2.1-.8.7-2Z"/></svg></span>
+    <span class="notification-settings-copy"><strong>تذكيرات يوم الجمعة</strong><small>اختر ما يناسبك من أعمال الجمعة</small></span>
+    <span class="notification-settings-count" data-notification-group-status aria-label="التذكيرات المفعّلة">٠ / ٤</span>
+    <span class="notification-settings-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></span>
+  </summary>
+  <div class="notification-settings-group-content">
+
 <div class="setting-row"><div class="setting-info"><div class="setting-title">سورة الكهف</div><div class="setting-description">لا تنس قراءتها يوم الجمعة</div></div><label class="switch"><input id="notifyFridayKahf" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">صلاة الجمعة</div><div class="setting-description">تذكير قبل وقت صلاة الجمعة</div></div><label class="switch"><input id="notifyFridayPrayer" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
 <div class="setting-row"><div class="setting-info"><div class="setting-title">ساعة الإجابة</div><div class="setting-description">من بعد العصر إلى المغرب</div></div><label class="switch"><input id="notifyFridayHour" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
-<div class="setting-row"><div class="setting-info"><div class="setting-title">الصلاة على النبي ﷺ</div><div class="setting-description">من مغرب الخميس إلى مغرب الجمعة</div></div><label class="switch"><input id="notifyFridaySalawat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-title">الصلاة على النبي ﷺ</div><div class="setting-description">من مغرب الخميس إلى نهاية يوم الجمعة</div></div><label class="switch"><input id="notifyFridaySalawat" type="checkbox"><span class="switch-track"></span><span class="switch-knob"></span></label></div>
+
+  </div>
+</details>
 
 </div>
 
@@ -1394,12 +1597,65 @@ type="button"
 </div>
 
 
-<div class="settings-section-title">
-الأذان
+<div class="audio-library-heading">
+  <span class="audio-library-kicker">الصوت والتجربة</span>
+  <h2>مكتبة الأصوات</h2>
+  <p>اختر أصواتك واضبطها واختبر التنبيهات من مكان واحد.</p>
 </div>
 
 
-<div class="settings-card">
+<div class="audio-library-intro">
+  <span class="audio-library-intro-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg></span>
+  <span class="audio-library-intro-copy"><small>مكتبة أنياس الصوتية</small><strong>صوت يناسب يومك</strong><span>أذانك وأذكارك وتنبيهاتك في تجربة واحدة سهلة.</span></span>
+</div>
+
+<section class="optional-audio-manager" id="optionalAudioManager" aria-labelledby="optionalAudioHeading">
+  <div class="optional-audio-heading"><strong id="optionalAudioHeading">الأصوات الاختيارية</strong><span>لا تُحمّل مكتبة الأذكار الكبيرة مع التثبيت؛ نزّل ما تحتاجه ليعمل دون اتصال.</span></div>
+  <div class="optional-audio-storage"><span id="optionalAudioUsage">المساحة المحفوظة: ٠ ك.ب</span><button type="button" id="clearOptionalAudioButton">حذف كل التنزيلات</button></div>
+  <div class="optional-audio-list">
+    <div class="optional-audio-row"><span><strong>أذكار الصباح — مشاري</strong><small data-audio-status="audio/adhkar-morning-mishary-alafasy.mp3">يُنزل عند الطلب · ١٢٫١ م.ب</small></span><button type="button" data-download-audio="audio/adhkar-morning-mishary-alafasy.mp3" aria-pressed="false">تنزيل الصوت</button></div>
+    <div class="optional-audio-row"><span><strong>أذكار المساء — مشاري</strong><small data-audio-status="audio/adhkar-evening-mishary-alafasy.mp3">يُنزل عند الطلب · ١٢٫٧ م.ب</small></span><button type="button" data-download-audio="audio/adhkar-evening-mishary-alafasy.mp3" aria-pressed="false">تنزيل الصوت</button></div>
+    <div class="optional-audio-row"><span><strong>أذكار الاستيقاظ — مشاري</strong><small data-audio-status="audio/adhkar-wakeup-mishary-alafasy.mp3">يُنزل عند التشغيل · ٣٫٤ م.ب</small></span><button type="button" data-download-audio="audio/adhkar-wakeup-mishary-alafasy.mp3" aria-pressed="false">تنزيل الصوت</button></div>
+    <div class="optional-audio-row"><span><strong>أذكار النوم — مشاري</strong><small data-audio-status="audio/adhkar-sleep-mishary-alafasy.mp3">يُنزل عند التشغيل · ١٣٫٣ م.ب</small></span><button type="button" data-download-audio="audio/adhkar-sleep-mishary-alafasy.mp3" aria-pressed="false">تنزيل الصوت</button></div>
+  </div>
+</section>
+
+<div class="settings-card audio-library-card">
+
+<div class="muezzin-volume-control master-audio-volume-control">
+  <div class="muezzin-volume-header audio-volume-header">
+    <span class="audio-volume-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M18.5 6a9 9 0 0 1 0 12"/></svg></span>
+    <span class="audio-volume-copy"><strong>مستوى الصوت الرئيسي</strong><small>يسري على المعاينات والتنبيهات</small></span>
+    <output id="volumeValue">100%</output>
+    <button id="audioMuteToggle" class="audio-mute-toggle" type="button" aria-pressed="false">كتم الصوت</button>
+  </div>
+  <input id="adhanVolume" type="range" min="0" max="100" step="1" value="100" aria-label="مستوى الصوت لجميع الأصوات">
+  <div class="audio-volume-scale" aria-hidden="true"><span>هادئ</span><span>مرتفع</span></div>
+  <p id="audioVolumeStatus" class="audio-volume-status" aria-live="polite">الصوت يعمل</p>
+</div>
+
+<div class="audio-test-panel" aria-label="اختبار الصوت والإشعارات">
+  <div class="audio-test-heading">
+    <span class="audio-test-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+    <span><strong>اختبار سريع</strong><small>تأكد من الصوت قبل الاعتماد عليه</small></span>
+  </div>
+  <div class="audio-test-actions">
+    <button class="preview-button audio-test-button" id="testAdhanButton" type="button"><span class="audio-test-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg></span><span>الأذان</span></button>
+    <button class="preview-button audio-test-button" id="testAdhkarButton" type="button"><span class="audio-test-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h7"/></svg></span><span>الأذكار</span></button>
+    <button class="preview-button audio-test-button" id="testNotificationButton" type="button"><span class="audio-test-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></span><span>الإشعار</span></button>
+    <button class="preview-button audio-test-button" id="testReminderButton" type="button"><span class="audio-test-button-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg></span><span>تذكير كامل</span></button>
+  </div>
+  <p class="audio-test-help">تُشغَّل عينة قصيرة. إذا لم تسمعها، ارفع صوت الوسائط في الهاتف.</p>
+  <p class="audio-test-status" id="audioTestStatus" role="status" aria-live="polite"></p>
+</div>
+
+<details class="audio-library-group" open>
+<summary class="audio-library-summary">
+  <span class="audio-category-icon adhan" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg></span>
+  <span class="audio-category-copy"><strong>الأذان</strong><small>اختر صوت أذان الصلوات أو أذان الفجر.</small></span>
+  <span class="audio-category-chevron" aria-hidden="true"></span>
+</summary>
+<div class="audio-group-content">
 
 
 <div
@@ -1407,6 +1663,8 @@ class="setting-row expandable-row"
 id="normalMuezzinRow"
 role="button"
 tabindex="0"
+aria-controls="normalMuezzinOptions"
+aria-expanded="false"
 >
 
 <div class="setting-info">
@@ -1416,13 +1674,14 @@ tabindex="0"
 </div>
 
 <div class="setting-description" id="normalMuezzinSelected">
-مشاري العفاسي — جاهز للرفع
+مشاري العفاسي
 </div>
 
 </div>
 
 <div class="settings-arrow">
-فتح
+اختيار
+<span class="audio-picker-arrow" aria-hidden="true"></span>
 </div>
 
 </div>
@@ -1430,22 +1689,57 @@ tabindex="0"
 
 <div class="audio-picker" id="normalMuezzinOptions">
 
-<div class="muezzin-row">
+<div class="muezzin-row muezzin-card">
 
 <label class="muezzin-select">
-
-<input
-type="radio"
-name="normalMuezzin"
-value="current"
-checked
->
-
-<span class="muezzin-name">
-مشاري العفاسي — ملف مخصص
-</span>
-
+  <input type="radio" name="normalMuezzin" value="default" data-audio-id="adhanAudio" checked>
+  <span class="muezzin-name">مشاري العفاسي</span>
 </label>
+
+<button class="preview-button" type="button" data-audio="adhanAudio">تشغيل</button>
+
+</div>
+
+<div class="muezzin-row muezzin-card">
+
+<label class="muezzin-select">
+  <input type="radio" name="normalMuezzin" value="ahmedAlNafis" data-audio-id="adhanAudio" data-audio-source="audio/ahmed-al-nafis-normal.mp3">
+  <span class="muezzin-name">أحمد النفيس — أذان جديد</span>
+</label>
+
+<button class="preview-button" type="button" data-audio="adhanAudio">تشغيل</button>
+
+</div>
+
+<div class="muezzin-row muezzin-card">
+
+<label class="muezzin-select">
+  <input type="radio" name="normalMuezzin" value="ahmedAlNafisOld" data-audio-id="adhanAudio" data-audio-source="audio/ahmed-al-nafis-old-normal.mp3">
+  <span class="muezzin-name">أحمد النفيس — الأذان القديم</span>
+</label>
+
+<button class="preview-button" type="button" data-audio="adhanAudio">تشغيل</button>
+
+</div>
+
+<div class="muezzin-row muezzin-card">
+
+<div class="muezzin-select">
+  <input id="normalMuezzinCustom" type="radio" name="normalMuezzin" value="custom" data-audio-id="adhanAudio" data-muezzin-name="normalMuezzin">
+  <div>
+    <span class="muezzin-name">أذان آخر — صوت مخصص</span>
+    <small class="audio-file-name" id="adhanAudioName">لم يتم اختيار ملف</small>
+  </div>
+</div>
+
+<label class="audio-upload-button">
+تغيير الصوت
+<input type="file" accept="audio/*" data-audio-upload="adhanAudio" data-audio-name="adhanAudioName" data-muezzin-radio="normalMuezzinCustom" data-muezzin-name="normalMuezzin" hidden>
+</label>
+
+<button class="audio-apply-button" type="button" data-audio-apply="adhanAudio" hidden>اعتماد الصوت</button>
+
+<button class="audio-delete-button" type="button" data-audio-delete="adhanAudio" hidden>حذف</button>
 
 <button
 class="preview-button"
@@ -1459,12 +1753,16 @@ data-audio="adhanAudio"
 
 </div>
 
+<small class="audio-upload-status" id="adhanAudioStatus" aria-live="polite">MP3 أو M4A أو WAV — حتى 15 ميجابايت</small>
+
 
 <div
 class="setting-row expandable-row"
 id="fajrMuezzinRow"
 role="button"
 tabindex="0"
+aria-controls="fajrMuezzinOptions"
+aria-expanded="false"
 >
 
 <div class="setting-info">
@@ -1474,13 +1772,14 @@ tabindex="0"
 </div>
 
 <div class="setting-description" id="fajrMuezzinSelected">
-مشاري العفاسي — جاهز للرفع
+مشاري العفاسي
 </div>
 
 </div>
 
 <div class="settings-arrow">
-فتح
+اختيار
+<span class="audio-picker-arrow" aria-hidden="true"></span>
 </div>
 
 </div>
@@ -1488,22 +1787,35 @@ tabindex="0"
 
 <div class="audio-picker" id="fajrMuezzinOptions">
 
-<div class="muezzin-row">
+<div class="muezzin-row muezzin-card">
 
 <label class="muezzin-select">
-
-<input
-type="radio"
-name="fajrMuezzin"
-value="current"
-checked
->
-
-<span class="muezzin-name">
-مشاري العفاسي — أذان الفجر
-</span>
-
+  <input type="radio" name="fajrMuezzin" value="default" data-audio-id="fajrAudio" checked>
+  <span class="muezzin-name">مشاري العفاسي — أذان الفجر</span>
 </label>
+
+<button class="preview-button" type="button" data-audio="fajrAudio">تشغيل</button>
+
+</div>
+
+<div class="muezzin-row muezzin-card">
+
+<div class="muezzin-select">
+  <input id="fajrMuezzinCustom" type="radio" name="fajrMuezzin" value="custom" data-audio-id="fajrAudio" data-muezzin-name="fajrMuezzin">
+  <div>
+    <span class="muezzin-name">أذان آخر — صوت فجر مخصص</span>
+    <small class="audio-file-name" id="fajrAudioName">لم يتم اختيار ملف</small>
+  </div>
+</div>
+
+<label class="audio-upload-button">
+تغيير الصوت
+<input type="file" accept="audio/*" data-audio-upload="fajrAudio" data-audio-name="fajrAudioName" data-muezzin-radio="fajrMuezzinCustom" data-muezzin-name="fajrMuezzin" hidden>
+</label>
+
+<button class="audio-apply-button" type="button" data-audio-apply="fajrAudio" hidden>اعتماد الصوت</button>
+
+<button class="audio-delete-button" type="button" data-audio-delete="fajrAudio" hidden>حذف</button>
 
 <button
 class="preview-button"
@@ -1517,26 +1829,8 @@ data-audio="fajrAudio"
 
 </div>
 
+<small class="audio-upload-status" id="fajrAudioStatus" aria-live="polite">MP3 أو M4A أو WAV — حتى 15 ميجابايت</small>
 
-<div class="audio-library-panel" aria-labelledby="audioLibraryTitle">
-  <div class="settings-subtitle" id="audioLibraryTitle">مكتبة الأصوات</div>
-  <p class="setting-description audio-library-note">ارفع ملفاتك الصوتية من الجهاز لتجربتها وحفظ اختيارها محليًا. يمكن إضافة آية الكرسي وأصوات أخرى لاحقًا.</p>
-  <div class="audio-upload-row">
-    <div><strong>الأذان العادي</strong><small id="adhanAudioName">ملف مشاري العفاسي</small></div>
-    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="adhanAudio" data-audio-name="adhanAudioName" hidden></label>
-    <button class="preview-button" type="button" data-audio="adhanAudio">تشغيل</button>
-  </div>
-  <div class="audio-upload-row">
-    <div><strong>أذان الفجر</strong><small id="fajrAudioName">ملف مشاري العفاسي</small></div>
-    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="fajrAudio" data-audio-name="fajrAudioName" hidden></label>
-    <button class="preview-button" type="button" data-audio="fajrAudio">تشغيل</button>
-  </div>
-  <div class="audio-upload-row">
-    <div><strong>آية الكرسي</strong><small id="ayatKursiAudioName">جاهز لإضافة الملف</small></div>
-    <label class="audio-upload-button">رفع ملف<input type="file" accept="audio/*" data-audio-upload="ayatKursiAudio" data-audio-name="ayatKursiAudioName" hidden></label>
-    <button class="preview-button" type="button" data-audio="ayatKursiAudio">تشغيل</button>
-  </div>
-</div>
 
 <div class="setting-row">
 
@@ -1563,34 +1857,101 @@ data-audio="fajrAudio"
 
 </div>
 
+  </div>
+</details>
 
-<div class="volume-container">
+<details class="audio-library-group">
+<summary class="audio-library-summary">
+  <span class="audio-category-icon prayer" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></span>
+  <span class="audio-category-copy"><strong>تنبيهات الصلاة</strong><small>صوت التذكير قبل موعد الفجر.</small></span>
+  <span class="audio-category-chevron" aria-hidden="true"></span>
+</summary>
+<div class="audio-group-content">
 
-<div class="volume-header">
+<div class="setting-row">
 
-<span class="volume-title">
-مستوى صوت الأذان
-</span>
+<div class="setting-info">
+<div class="setting-title">تنبيه قبل الفجر بنصف ساعة</div>
+<div class="setting-description">تشغيل الصوت تلقائيًا قبل موعد الفجر بـ 30 دقيقة</div>
+</div>
 
-<span class="volume-value" id="volumeValue">
-100%
-</span>
+<div class="setting-actions">
+<button class="preview-button" id="beforeFajrPreviewButton" type="button">تشغيل</button>
+<label class="switch">
+<input id="beforeFajrReminder" type="checkbox">
+<span class="switch-track"></span>
+<span class="switch-knob"></span>
+</label>
+</div>
 
 </div>
 
-<input
-id="adhanVolume"
-type="range"
-min="0"
-max="100"
-value="100"
->
+  </div>
+</details>
+
+<details class="audio-library-group">
+<summary class="audio-library-summary">
+  <span class="audio-category-icon adhkar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h7"/></svg></span>
+  <span class="audio-category-copy"><strong>القرآن والأذكار</strong><small>اختَر القارئ وعاين أصوات الأذكار اليومية.</small></span>
+  <span class="audio-category-chevron" aria-hidden="true"></span>
+</summary>
+<div class="audio-group-content">
+
+<div class="setting-row ayat-kursi-voice-setting">
+<div class="setting-info"><div class="setting-title">قارئ آية الكرسي</div><div class="setting-description">اختر الصوت المستخدم مع تنبيه آية الكرسي</div></div>
+</div>
+<div class="audio-picker ayat-kursi-options" id="ayatKursiOptions">
+<div class="muezzin-row muezzin-card"><label class="muezzin-select"><input type="radio" name="ayatKursiVoice" value="mishary" data-audio-source="audio/ayat-al-kursi-mishary-alafasy.mp3"><span class="muezzin-name">مشاري العفاسي</span></label><button class="preview-button" type="button" data-ayat-preview="audio/ayat-al-kursi-mishary-alafasy.mp3">تشغيل</button></div>
+<div class="muezzin-row muezzin-card"><label class="muezzin-select"><input type="radio" name="ayatKursiVoice" value="abdulBasit" data-audio-source="audio/ayat-al-kursi-abdul-basit-abdus-samad.mp3"><span class="muezzin-name">عبد الباسط عبد الصمد</span></label><button class="preview-button" type="button" data-ayat-preview="audio/ayat-al-kursi-abdul-basit-abdus-samad.mp3">تشغيل</button></div>
+<div class="muezzin-row muezzin-card"><label class="muezzin-select"><input type="radio" name="ayatKursiVoice" value="minshawi" data-audio-source="audio/ayat-al-kursi-muhammad-siddiq-al-minshawi.mp3"><span class="muezzin-name">محمد صديق المنشاوي</span></label><button class="preview-button" type="button" data-ayat-preview="audio/ayat-al-kursi-muhammad-siddiq-al-minshawi.mp3">تشغيل</button></div>
+<div class="muezzin-row muezzin-card"><label class="muezzin-select"><input type="radio" name="ayatKursiVoice" value="hussary" data-audio-source="audio/ayat-al-kursi-mahmoud-khalil-al-hussary.mp3"><span class="muezzin-name">محمود خليل الحصري</span></label><button class="preview-button" type="button" data-ayat-preview="audio/ayat-al-kursi-mahmoud-khalil-al-hussary.mp3">تشغيل</button></div>
+<div class="muezzin-row muezzin-card"><label class="muezzin-select"><input type="radio" name="ayatKursiVoice" value="ahmedAlNafis" data-audio-source="audio/ayat-al-kursi-ahmed-al-nafis.mp3"><span class="muezzin-name">أحمد النفيس</span></label><button class="preview-button" type="button" data-ayat-preview="audio/ayat-al-kursi-ahmed-al-nafis.mp3">تشغيل</button></div>
+</div>
+
+<div class="setting-row sound-card">
+<div class="setting-info"><div class="setting-title">أذكار الاستيقاظ — مشاري العفاسي</div><div class="setting-description">صوت التنبيه عند بداية وقت الاستيقاظ</div></div>
+<button class="preview-button" type="button" data-adhkar-preview="wakeupWardAudio">تشغيل</button>
+</div>
+
+<div class="setting-row sound-card">
+<div class="setting-info"><div class="setting-title">أذكار الصباح</div><div class="setting-description">اختر القارئ المستخدم مع تنبيه أذكار الصباح</div><select class="adhkar-voice-select" id="morningWardVoice" data-adhkar-voice="morning"><option value="mishary">مشاري العفاسي</option><option value="ahmed">أحمد النفيس</option></select></div>
+<button class="preview-button" type="button" data-adhkar-preview="morningWardAudio">تشغيل</button>
+</div>
+
+<div class="setting-row sound-card">
+<div class="setting-info"><div class="setting-title">أذكار المساء</div><div class="setting-description">اختر القارئ المستخدم مع تنبيه أذكار المساء</div><select class="adhkar-voice-select" id="eveningWardVoice" data-adhkar-voice="evening"><option value="mishary">مشاري العفاسي</option><option value="ahmed">أحمد النفيس</option></select></div>
+<button class="preview-button" type="button" data-adhkar-preview="eveningWardAudio">تشغيل</button>
+</div>
+
+<div class="setting-row sound-card">
+<div class="setting-info"><div class="setting-title">أذكار النوم — مشاري العفاسي</div><div class="setting-description">صوت التنبيه الهادئ قبل النوم</div></div>
+<button class="preview-button" type="button" data-adhkar-preview="sleepWardAudio">تشغيل</button>
+</div>
+
+  </div>
+</details>
 
 </div>
 
-
+<div class="settings-section-title">
+بياناتك
 </div>
 
+<div class="settings-card data-management-card">
+  <div class="setting-info">
+    <div class="setting-title">نسخة احتياطية محلية</div>
+    <div class="setting-description">احفظ إعداداتك ومفضلاتك وتقدمك، أو انقلها إلى جهاز آخر دون حساب.</div>
+  </div>
+  <div class="data-management-actions">
+    <button class="setting-action-button" id="exportDataButton" type="button">تصدير بياناتي</button>
+    <button class="setting-action-button" id="exportEncryptedDataButton" type="button">تصدير نسخة مشفّرة</button>
+    <button class="setting-action-button" id="importDataButton" type="button">استيراد نسخة</button>
+    <label class="backup-password-field" for="backupPasswordInput"><span>كلمة مرور النسخة المشفّرة</span><input id="backupPasswordInput" type="password" minlength="8" autocomplete="new-password" placeholder="٨ أحرف على الأقل"></label>
+    <input id="importDataInput" type="file" accept="application/json,.json" hidden>
+  </div>
+  <button class="setting-action-button danger-action-button" id="deleteDataButton" type="button">حذف بياناتي من هذا الجهاز</button>
+  <p class="data-management-status" id="dataManagementStatus" role="status" aria-live="polite"></p>
+</div>
 
 </section>
 
@@ -1627,32 +1988,70 @@ value="100"
     <div class="brand">العبادات والمواسم</div>
     <div class="date">التقويم الهجري ومواسم الطاعة</div>
   </header>
-  <section id="worshipContent" aria-label="التقويم الهجري والتذكيرات الموسمية"></section>
+<section id="worshipContent" aria-label="التقويم الهجري والتذكيرات الموسمية"></section>
 </main>
 
 <main class="page" id="page-more">
-<header class="plain-header">
-  <div class="brand">المزيد</div>
-  <div class="date">كل ما تحتاجه في مكان واحد</div>
+<header class="plain-header more-page-header">
+  <span class="more-header-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.5 14.4 9.6 20.5 12l-6.1 2.4L12 20.5l-2.4-6.1L3.5 12l6.1-2.4L12 3.5Z"/><path d="m19 3 .7 1.7L21.5 5l-1.8.7L19 7.5l-.7-1.8-1.8-.7 1.8-.3L19 3Z"/></svg></span>
+  <span class="more-header-copy">
+    <span class="more-header-kicker">مساحة أنياس</span>
+    <span class="brand">المزيد</span>
+    <span class="date">أدواتك وإعداداتك في مكان واحد</span>
+  </span>
 </header>
 <section class="more-group" aria-labelledby="moreDailyHeading">
-  <h2 id="moreDailyHeading">يومك وعبادتك</h2>
+  <div class="more-group-heading">
+    <h2 id="moreDailyHeading">عباداتك</h2>
+    <p>المواسم والسنن في مكان واحد</p>
+  </div>
   <div class="more-menu">
-    <button type="button" class="more-menu-item" data-more-go="tasks"><span class="more-menu-icon" aria-hidden="true">✓</span><span class="more-menu-copy"><strong>يوم المسلم</strong><small>صلواتك وأذكارك وتنظيم يومك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
-    <button type="button" class="more-menu-item" data-more-go="worship"><span class="more-menu-icon" aria-hidden="true">☾</span><span class="more-menu-copy"><strong>العبادات والمواسم</strong><small>التاريخ الهجري والتذكيرات الموسمية</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="worship">
+      <span class="more-menu-icon more-menu-icon--worship" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.5 14.2A8.7 8.7 0 0 1 9.8 3.5 8.8 8.8 0 1 0 20.5 14.2Z"/><path d="m17.5 3 .8 2 2.2.8-2.2.7-.8 2.1-.7-2.1-2.1-.7 2.1-.8.7-2Z"/></svg></span>
+      <span class="more-menu-copy"><strong>العبادات والمواسم</strong><small>التاريخ الهجري والتذكيرات الموسمية</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
   </div>
 </section>
 <section class="more-group" aria-labelledby="moreToolsHeading">
-  <h2 id="moreToolsHeading">أدوات المسلم</h2>
+  <div class="more-group-heading">
+    <h2 id="moreToolsHeading">أدوات المسلم</h2>
+    <p>خدمات وأدوات يومية</p>
+  </div>
   <div class="more-menu">
-    <button type="button" class="more-menu-item" data-more-go="nearby-mosque"><span class="more-menu-icon" aria-hidden="true">م</span><span class="more-menu-copy"><strong>أقرب مسجد</strong><small>اعثر على مسجد قريب منك</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="nearby-mosque">
+      <span class="more-menu-icon more-menu-icon--mosque" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 20v-8h14v8M8 12a4 4 0 0 1 8 0M12 8V5M4 12V8l2-2 2 2v4M16 12V8l2-2 2 2v4M10 16v4m4-4v4"/></svg></span>
+      <span class="more-menu-copy"><strong>أقرب مسجد</strong><small>اعثر على مسجد قريب منك</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
+    <button type="button" class="more-menu-item" data-more-go="qibla">
+      <span class="more-menu-icon more-menu-icon--qibla" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.7 8.3-2.4 5-5 2.4 2.4-5 5-2.4Z"/></svg></span>
+      <span class="more-menu-copy"><strong>اتجاه القبلة</strong><small>افتح البوصلة لتحديد اتجاه مكة</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
   </div>
 </section>
 <section class="more-group" aria-labelledby="moreSettingsHeading">
-  <h2 id="moreSettingsHeading">التطبيق</h2>
+  <div class="more-group-heading">
+    <h2 id="moreSettingsHeading">التطبيق</h2>
+    <p>خصص أنياس وتعرّف عليه</p>
+  </div>
   <div class="more-menu">
-    <button type="button" class="more-menu-item" data-more-go="settings"><span class="more-menu-icon" aria-hidden="true">⚙</span><span class="more-menu-copy"><strong>الإعدادات</strong><small>المظهر، التنبيهات، والمواقيت</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
-    <button type="button" class="more-menu-item" data-more-go="about"><span class="more-menu-icon" aria-hidden="true">☾</span><span class="more-menu-copy"><strong>عن التطبيق</strong><small>معلومات عن أنياس ومزاياه</small></span><span class="more-menu-arrow" aria-hidden="true">‹</span></button>
+    <button type="button" class="more-menu-item" data-more-go="settings">
+      <span class="more-menu-icon more-menu-icon--settings" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg></span>
+      <span class="more-menu-copy"><strong>الإعدادات</strong><small>المظهر والتنبيهات ومواقيت الصلاة</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
+    <button type="button" class="more-menu-item" data-more-go="about">
+      <span class="more-menu-icon more-menu-icon--about" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span>
+      <span class="more-menu-copy"><strong>عن التطبيق</strong><small>تعرّف على أنياس ومزاياه</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
+    <button type="button" class="more-menu-item" data-more-go="privacy">
+      <span class="more-menu-icon more-menu-icon--privacy" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.5-2.9 8.1-7 10-4.1-1.9-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg></span>
+      <span class="more-menu-copy"><strong>سياسة الخصوصية</strong><small>كيف يتعامل أنياس مع بياناتك</small></span>
+      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
+    </button>
   </div>
 </section>
 </main>
@@ -1666,7 +2065,7 @@ value="100"
   <section class="about-hero" aria-labelledby="aboutAppName">
     <img src="assets/anyas-app-icon.png" alt="" class="about-app-icon">
     <div><h2 id="aboutAppName">أنياس</h2><p>رفيقك اليومي للعبادة وتنظيم يومك</p></div>
-    <span class="about-version">آخر إصدار رسمي: 1.1.5</span>
+    <span class="about-version" data-app-version-label>آخر إصدار رسمي: —</span>
   </section>
   <section class="about-card" aria-labelledby="aboutPermissionsHeading">
     <h2 id="aboutPermissionsHeading">أذونات التطبيق</h2>
@@ -1719,10 +2118,47 @@ value="100"
     <button class="about-action" id="aboutPlayStoreRatingButton" type="button" data-google-play-url=""><span>قيّم أنياس على Google Play</span><small>سيفتح صفحة التطبيق على Google Play بعد إضافة الرابط</small></button>
     <p id="aboutRatingStatus" class="about-note" aria-live="polite">رابط Google Play سيُضاف قريبًا.</p>
   </section>
+  <section class="about-card faq-card" aria-labelledby="aboutFaqHeading">
+    <h2 id="aboutFaqHeading">الأسئلة الشائعة</h2>
+    <div class="faq-list">
+      <details><summary>كيف أغيّر المدينة؟</summary><p>اضغط على اسم المدينة أعلى مواقيت الصلاة، ثم اختر مدينة شائعة أو ابحث عن مدينة ودولة. يمكنك أيضًا اختيار استخدام موقعك الحالي.</p></details>
+      <details><summary>هل يعمل أنياس بدون إنترنت؟</summary><p>نعم. مواقيت الصلاة تُحسب محليًا، والمدن الشائعة والمحتوى المحفوظ يظلان متاحين. تحتاج خدمات البحث والحديث وبعض التحديثات إلى اتصال.</p></details>
+      <details><summary>لماذا تأخر التذكير؟</summary><p>تأكد من إذن الإشعارات، ثم افتح إعدادات البطارية واسمح لأنياس بالعمل دون تقييد. يمكنك استخدام زر اختبار الإشعار من إعدادات التطبيق.</p></details>
+      <details><summary>هل يرسل التطبيق بياناتي؟</summary><p>لا يحتاج أنياس إلى حساب. إعداداتك وتقدمك محفوظة محليًا. تُرسل الإحداثيات أو اسم المدينة فقط عند طلب خدمات مثل المواقيت أو البحث، وبإمكانك اختيار المدينة يدويًا.</p></details>
+      <details><summary>كيف أحذف بياناتي؟</summary><p>من الإعدادات افتح قسم «بياناتك»، ثم اختر حذف بياناتي من هذا الجهاز. يمكنك أيضًا تصدير نسخة احتياطية قبل الحذف.</p></details>
+    </div>
+  </section>
   <section class="about-card about-policy-card" aria-labelledby="aboutPrivacyHeading">
     <h2 id="aboutPrivacyHeading">سياسة الخصوصية</h2>
-    <p>سياسة الخصوصية التفصيلية قيد الإعداد وستُضاف لاحقًا.</p>
-    <span class="about-coming-soon">قريبًا</span>
+    <p>تعرف على ما يحفظه أنياس على جهازك ومتى يستخدم الموقع والخدمات الخارجية.</p>
+    <button class="about-action" type="button" data-more-go="privacy"><span>قراءة سياسة الخصوصية</span><small>الخصوصية أولًا، والموقع اختياري</small></button>
+  </section>
+</main>
+<main class="page" id="page-privacy">
+  <header class="plain-header">
+    <button class="back-button" type="button" data-back-about>رجوع إلى عن التطبيق</button>
+    <div class="brand">سياسة الخصوصية</div>
+    <div class="date">آخر تحديث: 8 أكتوبر 2026</div>
+  </header>
+  <section class="privacy-document privacy-ar" lang="ar" dir="rtl" aria-labelledby="privacyArTitle">
+    <div class="privacy-intro"><span class="privacy-mark" aria-hidden="true">✓</span><div><h1 id="privacyArTitle">خصوصيتك أولوية</h1><p>يوضح هذا المستند كيف يتعامل تطبيق أنياس مع المعلومات عند استخدامه.</p></div></div>
+    <section class="privacy-section"><h2>ملخص سريع</h2><p>أنياس لا يحتاج إلى حساب أو تسجيل دخول. إعداداتك وتقدمك وسجل الإشعارات تُحفظ محليًا على جهازك. إذن الموقع اختياري، ويمكنك اختيار المدينة يدويًا.</p></section>
+    <section class="privacy-section"><h2>المعلومات التي يستخدمها التطبيق</h2><p><strong>الموقع الجغرافي:</strong> يُستخدم فقط عند موافقتك لحساب مواقيت الصلاة والقبلة والبحث عن المساجد القريبة. يمكنك إيقاف الإذن من إعدادات الجهاز أو استخدام مدينة يدوية.</p><p><strong>إعداداتك المحلية:</strong> مثل المدينة، طريقة الحساب، اللغة، المظهر، المفضلة، تقدم الأذكار، إعدادات الصوت والتذكيرات. تُحفظ هذه البيانات على الجهاز باستخدام التخزين المحلي.</p><p><strong>الإشعارات:</strong> يسجل التطبيق الإشعارات التي أرسلها داخل صندوق إشعارات محلي ليسهل عليك مراجعتها. لا يتم إرسال هذا السجل إلى خادم أنياس.</p></section>
+    <section class="privacy-section"><h2>الخدمات الخارجية</h2><p>عند الحاجة للاتصال بالإنترنت، قد يرسل التطبيق الإحداثيات أو اسم المدينة إلى خدمات خارجية لتقديم الوظيفة المطلوبة:</p><ul><li><strong>Aladhan:</strong> مواقيت الصلاة والتقويم الهجري.</li><li><strong>OpenStreetMap / Nominatim / Overpass:</strong> البحث عن المدن والمساجد.</li><li><strong>Open-Meteo:</strong> التحقق من حالة المطر عند تفعيل تذكير سنة المطر.</li><li><strong>HadeethEnc:</strong> جلب نص الحديث اليومي.</li><li><strong>Google Maps:</strong> عند اختيار فتح الاتجاهات أو نتائج المساجد.</li></ul><p>تخضع هذه الخدمات لسياساتها وشروطها الخاصة. تُستخدم آخر نتيجة محفوظة عندما يكون ذلك متاحًا، وقد لا تعمل بعض الوظائف دون اتصال.</p></section>
+    <section class="privacy-section"><h2>الصوت والملفات</h2><p>ملفات الصوت المرفقة بالتطبيق تعمل محليًا. إذا اخترت ملفًا صوتيًا مخصصًا، يبقى داخل مساحة التطبيق على جهازك ولا يُرفع تلقائيًا.</p></section>
+    <section class="privacy-section"><h2>الاحتفاظ والحذف</h2><p>تبقى البيانات المحلية حتى تحذفها من إعدادات التطبيق أو تمسح بيانات التطبيق أو تحذفه من جهازك. يمكنك إيقاف الأذونات والتذكيرات في أي وقت من إعدادات التطبيق أو الهاتف.</p></section>
+    <section class="privacy-section"><h2>الأطفال والدعم</h2><p>أنياس تطبيق عام ولا يطلب بيانات شخصية حساسة. لا توجد قناة دعم تلقائية داخل التطبيق؛ مشاركة الملاحظات تتم يدويًا من خلال قائمة مشاركة جهازك.</p></section>
+    <section class="privacy-section"><h2>التغييرات والتواصل</h2><p>قد نحدّث هذه السياسة عند إضافة وظيفة جديدة أو تغيير خدمة خارجية. سيظهر تاريخ آخر تحديث أعلى الصفحة. للاستفسارات، استخدم خيار الملاحظات في صفحة «عن التطبيق».</p></section>
+  </section>
+  <section class="privacy-document privacy-en" lang="en" dir="ltr" aria-labelledby="privacyEnTitle" hidden>
+    <div class="privacy-intro"><span class="privacy-mark" aria-hidden="true">✓</span><div><h1 id="privacyEnTitle">Your privacy comes first</h1><p>This notice explains how Anias handles information when you use the app.</p></div></div>
+    <section class="privacy-section"><h2>Quick summary</h2><p>Anias does not require an account or sign-in. Your settings, progress, and notification history are stored locally on your device. Location access is optional, and you can choose a city manually.</p></section>
+    <section class="privacy-section"><h2>Information the app uses</h2><p><strong>Location:</strong> Used only with your permission to calculate prayer times, find the Qibla, and search for nearby mosques. You can revoke access in device settings or use a manual city.</p><p><strong>Local settings:</strong> Your city, calculation method, language, appearance, favorites, adhkar progress, audio settings, and reminders are stored locally on your device.</p><p><strong>Notifications:</strong> Anias keeps a local inbox of notifications it delivered so you can review them. This history is not sent to an Anias server.</p></section>
+    <section class="privacy-section"><h2>Third-party services</h2><p>When internet access is needed, Anias may send coordinates or a city name to external services for the requested feature:</p><ul><li><strong>Aladhan:</strong> prayer times and Hijri calendar.</li><li><strong>OpenStreetMap / Nominatim / Overpass:</strong> city and mosque search.</li><li><strong>Open-Meteo:</strong> rain checks when the rain Sunnah reminder is enabled.</li><li><strong>HadeethEnc:</strong> the daily hadith.</li><li><strong>Google Maps:</strong> when you open directions or mosque results.</li></ul><p>These services have their own policies and terms. Where possible, Anias uses the last cached result while offline; some features may not work without a connection.</p></section>
+    <section class="privacy-section"><h2>Audio and files</h2><p>Bundled audio runs locally. If you choose a custom audio file, it remains in the app's storage on your device and is not uploaded automatically.</p></section>
+    <section class="privacy-section"><h2>Retention and deletion</h2><p>Local data remains until you remove it from the app, clear the app's data, or uninstall the app. You can disable permissions and reminders at any time from the app or device settings.</p></section>
+    <section class="privacy-section"><h2>Children and support</h2><p>Anias is a general-purpose app and does not request sensitive personal information. There is no automatic support channel; feedback is shared manually through your device's share sheet.</p></section>
+    <section class="privacy-section"><h2>Changes and contact</h2><p>We may update this notice when features or external services change. The latest update date appears at the top of this page. For questions, use the feedback option in About the app.</p></section>
   </section>
 </main>
 
@@ -1738,7 +2174,7 @@ value="100"
 
 <main class="page" id="page-city-picker">
   <header class="plain-header"><button class="back-button" id="cityPickerBackButton" type="button">رجوع</button><div class="brand">مدينة الصلاة</div><div class="date">اكتب مدينتك يدويًا لحساب المواقيت</div></header>
-  <section class="city-picker-card"><label for="citySearchInput">المدينة أو الدولة</label><div class="city-search-row"><input id="citySearchInput" type="search" placeholder="مثال: القاهرة، مصر"><button id="citySearchButton" type="button">بحث</button></div><div id="citySearchResults" class="city-search-results" aria-live="polite"></div><button id="useCurrentLocationButton" class="secondary-action" type="button">استخدام موقعي الحالي</button></section>
+  <section class="city-picker-card"><label for="citySearchInput">المدينة أو الدولة</label><div class="city-search-row"><input id="citySearchInput" type="search" placeholder="مثال: القاهرة، مصر"><button id="citySearchButton" type="button">بحث</button></div><div class="city-local-section" id="recentCitiesSection" hidden><strong>مدنك الأخيرة</strong><div id="recentCityResults" class="city-search-results"></div></div><div class="city-local-section"><strong>مدن شائعة — تعمل دون إنترنت</strong><div id="commonCityResults" class="city-search-results"></div></div><div id="citySearchResults" class="city-search-results" aria-live="polite"></div><button id="useCurrentLocationButton" class="secondary-action" type="button">استخدام موقعي الحالي</button></section>
 </main>
 
 <main class="page" id="page-prayer-schedule">
@@ -1753,8 +2189,16 @@ value="100"
 </main>
 
 <main class="page" id="page-notifications">
-  <header class="plain-header"><button class="back-button" id="notificationsBackButton" type="button">رجوع</button><div class="brand">الإشعارات</div><div class="date">تنبيهات الصلاة والأذكار</div></header>
-  <section class="notifications-card"><div id="notificationList" class="notification-list" aria-live="polite"><div class="notification-empty">لا توجد إشعارات الآن</div></div></section>
+  <header class="plain-header notification-page-header"><button class="back-button" id="notificationsBackButton" type="button">رجوع</button><div class="brand">صندوق الإشعارات</div><div class="date">كل الإشعارات التي وصلتك محفوظة هنا</div></header>
+  <section class="notifications-overview" aria-live="polite">
+    <span class="notifications-overview-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></span>
+    <span class="notifications-overview-copy"><small>سجل محفوظ على هذا الجهاز</small><strong>التنبيهات التي وصلتك فعلًا</strong><span>تبقى هنا لتراجعها حتى بعد إغلاق أنياس.</span></span>
+    <span class="notifications-overview-count"><strong id="notificationUnreadCount">٠</strong><small id="notificationUnreadLabel">إشعارات غير مقروءة</small></span>
+  </section>
+  <section class="notifications-card">
+    <div class="notification-list-header"><div><h2>آخر ما وصلك</h2><p>الأحدث أولًا؛ السجل محفوظ على هذا الجهاز.</p></div><div class="notification-list-actions"><button class="secondary-action notification-manage-button" id="filterUnreadNotificationsButton" type="button" aria-pressed="false">غير المقروءة فقط</button><button class="secondary-action notification-manage-button" id="markAllNotificationsReadButton" type="button">تحديد الكل كمقروء</button><button class="secondary-action notification-manage-button notification-danger-button" id="clearNotificationsButton" type="button">مسح السجل</button><button class="secondary-action notification-manage-button" id="manageNotificationsButton" type="button">إعدادات التذكيرات</button></div></div>
+    <div id="notificationList" class="notification-list" aria-live="polite"><div class="notification-empty"><strong>لا توجد إشعارات بعد</strong><small>ستظهر هنا التنبيهات عند وصولها، لتراجعها متى شئت.</small></div></div>
+  </section>
 </main>
 
 <!-- =====================================================
@@ -1820,25 +2264,68 @@ type="button"
 <!-- =====================================================
      ملفات JavaScript
 ===================================================== -->
-<script src="js/i18n.js?v=20261002-2"></script>
+<script src="data/app-version.js?v=20261008-1"></script>
+<script src="js/i18n.js?v=20261007-1"></script>
 <script src="data/azkar-topics.js?v=20260926-3"></script>
 <script src="data/azkar-benefits.js?v=20261001-1"></script>
 <script src="data/daily-quran.js?v=20260926-3"></script>
 <script src="data/daily-hadith-ids.js?v=20260926-3"></script>
 <script src="data/daily-devotions.js?v=20260926-3"></script>
+<script src="data/common-cities.js?v=20261008-1"></script>
 <script src="js/vendor/adhan.umd.min.js"></script>
-<script src="js/prayer.js?v=20261001-2"></script>
+<script src="js/prayer.js?v=20261007-1"></script>
 <script src="js/daily-adhkar.js?v=20260926-3"></script>
-<script src="js/friday.js?v=20261001-1"></script>
+<script src="js/friday.js?v=20261003-3"></script>
 <script src="js/favorites.js?v=20260926-3"></script>
 <script src="js/azkar.js?v=20261002-4"></script>
 <script src="js/wird.js?v=20261002-5"></script>
-<script src="js/settings.js?v=20261010-1"></script>
-<script src="js/qibla.js?v=20261001-2"></script>
-<script src="js/app-enhancements.js?v=20261001-9"></script>
-<script src="js/daily-devotions.js?v=20260926-3"></script>
-<script src="js/app.js?v=20261002-2"></script>
+<script src="js/optional-audio.js?v=20261008-1"></script>
+<script src="js/settings.js?v=20261007-2"></script>
+<script src="js/qibla.js?v=20261008-1"></script>
+<script src="js/app-enhancements.js?v=20261007-1"></script>
+<script src="js/daily-devotions.js?v=20261003-1"></script>
+<script src="js/app.js?v=20261007-1"></script>
 <script src="js/about.js?v=20261002-2"></script>
+<script>
+  if ("serviceWorker" in navigator && window.isSecureContext) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(error => console.info("Service Worker غير متاح:", error.message)));
+  }
+  (() => {
+    const banner = document.getElementById("pwaStatusBanner");
+    const status = document.getElementById("pwaStatusText");
+    const installButton = document.getElementById("pwaInstallButton");
+    let installPrompt = null;
+    const standalone = () => window.matchMedia?.("(display-mode: standalone)").matches || window.navigator.standalone === true;
+    const refreshConnection = () => {
+      if (!banner || !status) return;
+      if (!navigator.onLine) {
+        status.textContent = "أنت تعمل دون اتصال؛ المحتوى المحفوظ ما زال متاحًا.";
+        banner.hidden = false;
+      } else if (!installPrompt) {
+        banner.hidden = true;
+      }
+    };
+    window.addEventListener("offline", refreshConnection);
+    window.addEventListener("online", refreshConnection);
+    window.addEventListener("beforeinstallprompt", event => {
+      event.preventDefault();
+      installPrompt = event;
+      if (installButton && !standalone()) {
+        installButton.hidden = false;
+        banner.hidden = false;
+      }
+    });
+    installButton?.addEventListener("click", async () => {
+      if (!installPrompt) return;
+      installPrompt.prompt();
+      await installPrompt.userChoice;
+      installPrompt = null;
+      installButton.hidden = true;
+      refreshConnection();
+    });
+    refreshConnection();
+  })();
+</script>
 
 </body>
   </html>

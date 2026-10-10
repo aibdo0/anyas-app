@@ -23,6 +23,8 @@ body {
 }
 button, input, select { font: inherit; }
 button { color: inherit; -webkit-tap-highlight-color: transparent; }
+.skip-link { position: fixed; z-index: 100; top: 8px; inset-inline-start: 8px; padding: 9px 13px; border-radius: 10px; color: #fff; background: var(--gold-dark); transform: translateY(-160%); transition: transform .18s ease; }
+.skip-link:focus { transform: translateY(0); }
 button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
   outline: 3px solid rgba(196, 154, 85, .65); outline-offset: 3px;
 }
@@ -53,14 +55,43 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .notification-bell-icon { display: block; width: 22px; height: 22px; fill: none; stroke: var(--gold-dark); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .notification-badge { position: absolute; top: -7px; inset-inline-end: -7px; display: grid; min-width: 22px; height: 22px; padding-inline: 5px; place-items: center; border: 2px solid var(--surface); border-radius: 99px; color: #fff; background: #d9272e; font-size: 11px; font-weight: 800; line-height: 1; }
 .notification-badge[hidden] { display: none; }
-.notifications-card { display: grid; gap: 9px; padding: 14px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
+.notifications-overview { display: grid; grid-template-columns: 50px minmax(0,1fr) auto; align-items: center; gap: 12px; margin: 0 0 12px; padding: 15px; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(135deg,var(--gold-pale),var(--surface) 78%); box-shadow: var(--shadow); }
+.notifications-overview-icon { display: grid; width: 48px; height: 48px; place-items: center; border: 1px solid var(--line); border-radius: 16px; color: var(--gold-dark); background: var(--surface); box-shadow: 0 5px 14px rgba(65,52,27,.08); }
+.notifications-overview-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.notifications-overview-copy { display: grid; min-width: 0; gap: 2px; }
+.notifications-overview-copy small { color: var(--gold-dark); font-size: 10px; font-weight: 800; }
+.notifications-overview-copy strong { color: var(--ink); font-size: 15px; line-height: 1.35; }
+.notifications-overview-copy span { color: var(--muted); font-size: 11px; line-height: 1.4; }
+.notifications-overview-count { display: grid; min-width: 66px; justify-items: center; gap: 1px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 15px; color: var(--gold-dark); background: var(--surface); }
+.notifications-overview-count strong { font-size: 19px; line-height: 1.1; }
+.notifications-overview-count small { font-size: 9px; font-weight: 700; white-space: nowrap; }
+.notifications-card { display: grid; gap: 13px; padding: 15px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
+.notification-list-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.notification-list-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.notification-list-actions button[aria-pressed="true"] { color: #fff; background: var(--gold-dark); }
+.notification-list-header h2 { margin: 0; color: var(--ink); font-size: 16px; font-weight: 800; }
+.notification-list-header p { margin: 2px 0 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
+.notification-manage-button { min-height: 38px; padding: 6px 11px; white-space: nowrap; }
 .notification-list { display: grid; gap: 9px; }
-.notification-item { display: flex; align-items: center; gap: 11px; min-height: 67px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface-soft); }
-.notification-item-icon { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; border-radius: 12px; color: var(--gold-dark); background: var(--gold-pale); font-weight: 800; }
-.notification-item strong, .notification-item small { display: block; }
-.notification-item strong { color: var(--ink); font-size: 14px; }
-.notification-item small { margin-top: 2px; color: var(--muted); font-size: 11px; }
-.notification-empty { padding: 24px 14px; color: var(--muted); text-align: center; font-size: 13px; font-weight: 700; }
+.notification-history-item { display: grid; grid-template-columns: 42px minmax(0,1fr); align-items: start; gap: 11px; min-height: 76px; padding: 13px; border: 1px solid var(--line); border-radius: 17px; background: var(--surface-soft); transition: border-color .18s ease, transform .18s ease; }
+.notification-history-item:hover { border-color: var(--gold); transform: translateY(-1px); }
+.notification-history-item.unread { border-color: color-mix(in srgb,var(--gold) 55%,var(--line)); background: linear-gradient(120deg,var(--gold-pale),var(--surface-soft) 48%); }
+.notification-history-icon { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid var(--line); border-radius: 14px; color: var(--gold-dark); background: var(--surface); }
+.notification-history-icon svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.notification-history-copy { display: grid; min-width: 0; gap: 5px; }
+.notification-history-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 9px; }
+.notification-history-heading strong { min-width: 0; color: var(--ink); font-size: 13px; line-height: 1.45; }
+.notification-history-copy p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.65; }
+.notification-history-time { color: var(--muted); font-size: 10px; line-height: 1.4; }
+.notification-history-status { flex: 0 0 auto; padding: 4px 8px; border-radius: 999px; font-size: 9px; font-weight: 800; white-space: nowrap; }
+.notification-history-status.unread { color: #725a2d; background: var(--gold-pale); }
+.notification-history-status.read { color: var(--muted); background: var(--surface); }
+.notification-empty { display: grid; justify-items: center; gap: 7px; padding: 28px 16px; border: 1px dashed var(--line); border-radius: 17px; color: var(--muted); background: var(--surface-soft); text-align: center; }
+.notification-empty-icon { display: grid; width: 46px; height: 46px; place-items: center; border-radius: 15px; color: var(--gold-dark); background: var(--gold-pale); }
+.notification-empty-icon svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.notification-empty strong { color: var(--ink); font-size: 13px; }
+.notification-empty small { font-size: 11px; }
+@media(max-width:390px) { .notifications-overview { grid-template-columns: 42px minmax(0,1fr); gap: 9px; padding: 12px; } .notifications-overview-icon { width: 42px; height: 42px; } .notifications-overview-count { grid-column: 2; display: flex; justify-self: start; align-items: baseline; gap: 5px; padding: 4px 8px; } .notification-list-header { align-items: flex-start; } }
 .plain-header { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin: 0 0 22px; padding: 8px 2px 12px; }
 .plain-header .date { color: var(--muted); font-size: 14px; }
 .plain-header .back-button { order: -1; margin: 0 0 8px; }
@@ -68,6 +99,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .plain-header .back-button { width: auto; height: auto; min-height: 40px; padding: 7px 13px; }
 .section { margin: 15px 0; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 2px 11px; }
+.prayer-heading-actions { display: flex; align-items: center; gap: 6px; }
+.prayer-share-status { margin: -4px 2px 9px; color: var(--gold-dark); font-size: 10px; text-align: end; }
 .section-title { color: var(--ink); font-size: 18px; font-weight: 800; }
 .more-button { border: 0; border-radius: 999px; padding: 7px 13px; color: var(--gold-dark); background: var(--gold-pale); font-size: 13px; font-weight: 700; cursor: pointer; }
 .next-prayer {
@@ -85,6 +118,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .prayer-progress-bar { height: 100%; border-radius: inherit; background: #e5c684; transition: width .35s ease; }
 .prayer-section { padding: 15px; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255,255,255,.82); box-shadow: var(--shadow); }
 .prayer-list { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
+.prayer-data-status { margin: 10px 2px 0; color: var(--muted); font-size: 10px; line-height: 1.5; text-align: center; }
 .prayer-row {
   display: flex; min-width: 0; min-height: 62px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 1px;
   padding: 9px 11px; border: 1px solid var(--line); border-radius: 15px; background: #fff; text-align: right;
@@ -703,6 +737,19 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .qibla-direction { margin-bottom: 17px; color: var(--muted); font-size: 14px; }
 .qibla-start-button { width: 100%; min-height: 49px; border: 0; border-radius: 14px; color: #fff; background: var(--gold-dark); font-weight: 800; cursor: pointer; }
 .qibla-message { margin: 12px 2px 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+.qibla-accuracy { display: flex; width: fit-content; max-width: 100%; align-items: center; justify-content: center; gap: 7px; min-height: 36px; margin: 9px auto 0; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: var(--surface-soft); font-size: 12px; font-weight: 800; line-height: 1.5; text-align: center; }
+.qibla-accuracy::before { content: ""; width: 8px; height: 8px; flex: 0 0 8px; border-radius: 50%; background: currentColor; }
+.qibla-accuracy[data-accuracy="good"] { border-color: #b9d6c2; color: #315f43; background: #edf6ef; }
+.qibla-accuracy[data-accuracy="medium"] { border-color: #e1d0a6; color: #755623; background: #f8f1e1; }
+.qibla-accuracy[data-accuracy="low"] { border-color: #e2c0b9; color: #873f36; background: #fbefec; }
+.qibla-calibration { margin-top: 16px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--surface-soft); text-align: start; }
+.qibla-calibration summary { display: flex; min-height: 46px; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 13px; color: var(--gold-dark); font-size: 13px; font-weight: 800; cursor: pointer; list-style: none; }
+.qibla-calibration summary::-webkit-details-marker { display: none; }
+.qibla-calibration summary::after { content: "+"; display: grid; width: 24px; height: 24px; flex: 0 0 24px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); font-size: 16px; line-height: 1; }
+.qibla-calibration[open] summary::after { content: "−"; }
+.qibla-calibration ol { display: grid; gap: 6px; margin: 0; padding-block: 0 8px; padding-inline: 34px 14px; color: var(--ink); font-size: 12px; line-height: 1.8; }
+.qibla-calibration p { margin: 0; padding: 0 13px 13px; color: var(--muted); font-size: 11px; line-height: 1.7; }
+@media (prefers-reduced-motion: reduce) { .qibla-arrow { transition: none; } }
 
 /* نافذة تعديل المواقيت بمكان واضح وثابت */
 #manualPrayerModal { position: fixed; z-index: 10020; inset: 0; align-items: center; justify-content: center; overflow: auto; padding: 18px; background: rgba(18,17,15,.58); backdrop-filter: blur(4px); }
@@ -737,6 +784,12 @@ html[data-theme="dark"] { background: var(--page) !important; }
 :root[data-theme="dark"] .hijri-day-pill,
 :root[data-theme="dark"] .sunnah-total,
 :root[data-theme="dark"] .qibla-status { border-color: #37363a; color: var(--muted); background: var(--surface-soft); }
+:root[data-theme="dark"] .qibla-accuracy[data-accuracy="good"] { border-color: #466451; color: #b9dfc0; background: #202b24; }
+:root[data-theme="dark"] .qibla-accuracy[data-accuracy="medium"] { border-color: #665735; color: #e8cf96; background: #302b20; }
+:root[data-theme="dark"] .qibla-accuracy[data-accuracy="low"] { border-color: #704740; color: #f0b7ac; background: #302321; }
+:root[data-theme="dark"] .qibla-calibration { border-color: #37363a; background: var(--surface-soft); }
+:root[data-theme="dark"] .qibla-calibration summary { color: #e2cb97; }
+:root[data-theme="dark"] .qibla-calibration summary::after { border-color: #45434a; background: var(--surface); }
 :root[data-theme="dark"] .sunnah-task.is-done,
 :root[data-theme="dark"] .tasbeeh-preset.is-active { border-color: #746342; color: #ead5a6; background: #2a2823; }
 :root[data-theme="dark"] .tasbeeh-reset-button,
@@ -863,7 +916,17 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .city-search-row input, .name-input { min-width: 0; min-height: 43px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--ink); background: var(--surface-soft); font: inherit; }
 .city-search-row button, .secondary-action { min-height: 43px; padding: 8px 14px; border: 1px solid #e4d5b5; border-radius: 12px; color: #fff; background: var(--gold-dark); font: inherit; font-weight: 800; cursor: pointer; }
 .city-search-results { display: grid; gap: 7px; }
+.city-local-section { display: grid; gap: 8px; }
+.city-local-section > strong { color: var(--muted); font-size: 11px; }
 .city-result { padding: 11px 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--ink); background: var(--surface-soft); font: inherit; text-align: right; cursor: pointer; }
+.faq-list { display: grid; gap: 8px; }
+.faq-list details { overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-soft); }
+.faq-list summary { padding: 11px 13px; color: var(--ink); font-size: 13px; font-weight: 800; cursor: pointer; list-style: none; }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { float: inline-end; color: var(--gold-dark); content: "+"; font-size: 18px; line-height: 1; }
+.faq-list details[open] summary::after { content: "−"; }
+.faq-list details p { margin: 0; padding: 0 13px 12px; color: var(--muted); font-size: 11px; line-height: 1.8; }
+.faq-list summary:focus-visible { outline: 3px solid rgba(196,154,85,.55); outline-offset: -3px; }
 .schedule-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
 .schedule-tab { min-height: 43px; border: 1px solid var(--line); border-radius: 13px; color: var(--muted); background: var(--surface); font: inherit; font-weight: 800; cursor: pointer; }
 .schedule-tab.active { color: #fff; border-color: var(--gold-dark); background: var(--gold-dark); }
@@ -992,13 +1055,21 @@ html[data-theme="dark"] { background: var(--page) !important; }
 html[lang="en"] .more-menu-copy, html[lang="en"] .setting-info, html[lang="en"] .about-card, html[lang="en"] .about-hero { text-align: left; }
 html[lang="en"] .location-setting-actions { justify-content: flex-start; }
 
-/* خلفيات أنياس الاختيارية: صورة صباحية وصورة ليلية فقط. */
-:root[data-auto-background="true"] body { transition: background-color .7s ease, background-image .7s ease; background-size: cover; background-attachment: fixed; }
-:root[data-theme="light"][data-auto-background="true"][data-time-scene="dawn"] body,
-:root[data-theme="light"][data-auto-background="true"][data-time-scene="day"] body { background-image: linear-gradient(rgba(255,252,245,.18),rgba(255,252,245,.18)),url("../assets/anyas-morning-background.jpg"); background-position: center top; }
-:root[data-theme="light"][data-auto-background="true"][data-time-scene="sunset"] body,
-:root[data-theme="light"][data-auto-background="true"][data-time-scene="night"] body { background-image: linear-gradient(rgba(8,17,29,.12),rgba(8,17,29,.12)),url("../assets/anyas-night-background.jpg"); background-position: center top; }
-:root[data-theme="dark"][data-auto-background="true"][data-time-scene="night"] body { background-image: linear-gradient(rgba(8,13,22,.22),rgba(8,13,22,.22)),url("../assets/anyas-night-background.jpg"); background-position: center top; }
+/* Optional professional morning/night artwork for the countdown surfaces. */
+:root[data-auto-background="true"] body {
+  min-height: 100%;
+  background-color: #f3eee4;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center top;
+  background-size: cover;
+  background-image: linear-gradient(rgba(255,255,255,.16), rgba(255,255,255,.16)), url("../assets/anyas-morning-background.webp");
+  transition: background-color .7s ease, background-image .7s ease;
+}
+:root[data-auto-background="true"][data-time-scene="night"] body {
+  background-color: #0e1824;
+  background-image: linear-gradient(rgba(5,12,22,.12), rgba(5,12,22,.12)), url("../assets/anyas-night-background.webp");
+}
 .setting-info { min-width: 0; }
 @media(max-width:420px) { .about-hero { gap: 10px; padding: 13px; } .about-app-icon { width: 48px; height: 48px; flex-basis: 48px; } .about-version { padding-inline: 7px; font-size: 10px; } }
 
@@ -1009,4 +1080,15 @@ html[lang="en"] .plain-header { align-items: flex-start; }
 html[lang="en"] .date-line, html[lang="en"] .location-line { direction: ltr; }
 html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 
-:root[data-theme="light"][data-auto-background="true"][data-time-scene="night"] body { background: radial-gradient(ellipse at 82% 0%,rgba(89,113,150,.18),transparent 35rem),linear-gradient(145deg,#eef0f2,#f0efec 64%,#ecebe8); }
+.mosque-result-actions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 5px; }
+.mosque-result-link, .mosque-favorite-button { border: 1px solid var(--line); border-radius: 8px; padding: 5px 7px; color: var(--gold-dark); background: var(--surface); text-decoration: none; cursor: pointer; font: inherit; font-size: 11px; }
+.mosque-favorite-button { min-width: 28px; font-size: 16px; line-height: 1; }
+.mosque-favorite-button[aria-pressed="true"] { color: #b27b00; background: var(--gold-pale); }
+
+.offline-status-card { display: grid; gap: 9px; margin-top: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface-soft); }
+.offline-status-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.offline-status-heading strong { color: var(--ink); font-size: 13px; }
+.offline-status-heading span { color: var(--muted); font-size: 11px; }
+.offline-capabilities-list { display: grid; gap: 3px; margin: 0; padding-inline-start: 18px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+.offline-retry-button { justify-self: start; padding: 7px 10px; font-size: 11px; }
+.offline-retry-button:disabled { opacity: .55; cursor: wait; }
