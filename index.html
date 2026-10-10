@@ -12,7 +12,7 @@
   (function () {
     var mode = "light";
     var locale = "ar";
-    var autoBackground = true;
+    var autoBackground = false;
     try {
       mode = localStorage.getItem("anyas_themeMode") || "";
       locale = localStorage.getItem("anyas_language") === "en" ? "en" : "ar";
@@ -46,7 +46,7 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261008-1">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261010-2">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20261003-1">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
@@ -873,7 +873,7 @@ aria-selected="false"
     <div class="setting-description" id="timeBackgroundDescription">خلفية صباحية أو ليلية هادئة للعدادات ويمكنك إيقافها متى شئت</div>
   </div>
   <label class="switch" aria-label="تفعيل الخلفيات حسب وقت اليوم">
-    <input id="timeBackgroundToggle" type="checkbox" checked>
+    <input id="timeBackgroundToggle" type="checkbox">
     <span class="switch-track"></span><span class="switch-knob"></span>
   </label>
 </div>

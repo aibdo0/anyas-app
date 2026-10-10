@@ -1358,7 +1358,7 @@ function setupThemeAndLanguage() {
     }
   }
 
-  let timeBackgroundEnabled = true;
+  let timeBackgroundEnabled = false;
   try {
     const savedTimeBackground = localStorage.getItem("anyas_autoBackground");
     if (savedTimeBackground === "false") timeBackgroundEnabled = false;
