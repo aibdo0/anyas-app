@@ -1678,12 +1678,7 @@ function setupVibration() {
       "anyas_vibration"
     );
 
-  if (saved !== null) {
-
-    toggle.checked =
-      saved === "true";
-
-  }
+  toggle.checked = saved !== "false";
 
   toggle.addEventListener(
     "change",

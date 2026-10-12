@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkLastThirdNotification();
   checkAdditionalReminders();
   setupVibration();
+  setupGlobalTouchFeedback();
   setupMuezzinSettings();
 
   setupAzkarTopics();
@@ -67,6 +68,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 60 * 1000);
 
 });
+
+function setupGlobalTouchFeedback() {
+  let lastFeedbackAt = 0;
+  document.addEventListener("pointerdown", event => {
+    const target = event.target.closest("button, a[role='button'], .nav-item");
+    if (!target || target.disabled || target.getAttribute("aria-disabled") === "true") return;
+    if (target.matches("[data-increment-dhikr], #tasbeehIncrement, #tasksTasbeehIncrement, .zikr-repeat-button")) return;
+    if (localStorage.getItem("anyas_vibration") === "false") return;
+    const now = Date.now();
+    if (now - lastFeedbackAt < 70 || !navigator.vibrate) return;
+    lastFeedbackAt = now;
+    navigator.vibrate(9);
+  }, { passive: true });
+}
 
 function updateAppVersionLabels() {
   const version = window.ANIAS_APP_VERSION || "1.1.5";
