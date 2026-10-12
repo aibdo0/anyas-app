@@ -436,6 +436,10 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     const markAll = byId("markAllNotificationsReadButton");
     const clearAll = byId("clearNotificationsButton");
     const manage = byId("manageNotificationsButton");
+    const openSettingsFromEmpty = () => {
+      openPage("settings");
+      window.setTimeout(() => byId("notificationSettingsHeading")?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+    };
     let unreadOnly = false;
     const bellSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>';
     const readHistory = () => {
@@ -507,6 +511,14 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
         const hint = document.createElement("small");
         hint.textContent = unreadOnly ? "اضغط الزر مرة أخرى لعرض كل الإشعارات." : t("ستظهر هنا التنبيهات عند وصولها، لتراجعها متى شئت.");
         empty.append(icon, title, hint);
+        if (!unreadOnly) {
+          const settingsButton = document.createElement("button");
+          settingsButton.type = "button";
+          settingsButton.className = "notification-empty-action";
+          settingsButton.textContent = "فتح إعدادات التذكيرات";
+          settingsButton.addEventListener("click", openSettingsFromEmpty);
+          empty.append(settingsButton);
+        }
         list.append(empty);
       } else {
         visibleItems.forEach(item => {
@@ -561,10 +573,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       if (!readHistory().length) return;
       if (window.confirm(t("هل تريد مسح سجل الإشعارات بالكامل؟"))) { clearHistory(); render(); }
     });
-    manage?.addEventListener("click", () => {
-      openPage("settings");
-      window.setTimeout(() => byId("notificationSettingsHeading")?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
-    });
+    manage?.addEventListener("click", openSettingsFromEmpty);
   }
 
   async function openMosqueDirectory() {

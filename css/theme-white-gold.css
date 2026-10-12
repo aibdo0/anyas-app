@@ -91,6 +91,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focu
 .notification-empty-icon svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .notification-empty strong { color: var(--ink); font-size: 13px; }
 .notification-empty small { font-size: 11px; }
+.notification-empty-action { margin-top: 5px; padding: 8px 12px; border: 1px solid var(--gold); border-radius: 10px; color: var(--gold-dark); background: var(--surface); cursor: pointer; font: inherit; font-size: 11px; font-weight: 800; }
+.notification-empty-action:hover { background: var(--gold-pale); }
 @media(max-width:390px) { .notifications-overview { grid-template-columns: 42px minmax(0,1fr); gap: 9px; padding: 12px; } .notifications-overview-icon { width: 42px; height: 42px; } .notifications-overview-count { grid-column: 2; display: flex; justify-self: start; align-items: baseline; gap: 5px; padding: 4px 8px; } .notification-list-header { align-items: flex-start; } }
 .plain-header { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin: 0 0 22px; padding: 8px 2px 12px; }
 .plain-header .date { color: var(--muted); font-size: 14px; }
@@ -1035,7 +1037,7 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .permission-enable-button:disabled { opacity: .72; cursor: default; }
 .permission-message { min-height: 0; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .permission-settings-button[hidden] { display: none; }
-.about-action { display: grid; gap: 2px; width: 100%; padding: 12px 13px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); background: var(--surface-soft); text-align: start; cursor: pointer; transition: border-color .18s,transform .18s; }
+.about-action { display: grid; gap: 2px; width: 100%; padding: 12px 13px; border: 1px solid var(--line); border-radius: 14px; color: var(--ink); background: var(--surface-soft); text-align: start; cursor: pointer; text-decoration: none; transition: border-color .18s,transform .18s; }
 .about-action:hover { border-color: var(--gold); transform: translateY(-1px); }
 .about-action span { font-size: 14px; font-weight: 800; }
 .about-action small { color: var(--muted); font-size: 11px; line-height: 1.5; }
