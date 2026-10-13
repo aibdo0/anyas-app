@@ -1468,3 +1468,21 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-home .daily-adhkar-card[data-adhkar-period="sleep"] {
   background: radial-gradient(circle at 13% 20%,rgba(255,255,255,.48) 0 1px,transparent 1.8px), radial-gradient(circle at 42% 12%,rgba(255,255,255,.34) 0 1px,transparent 1.8px), radial-gradient(circle at 72% 30%,rgba(255,255,255,.4) 0 1px,transparent 1.8px), radial-gradient(ellipse at 84% 0%,rgba(103,123,166,.28),transparent 42%), linear-gradient(145deg,#111a2b,#20283d 65%,#292e3b) !important;
 }
+
+
+/* Keep phone cards broad, and use more of landscape/tablet space without stretching text indefinitely. */
+@media (min-width: 900px) {
+  .app { max-width: 900px; }
+  .page { max-width: 860px; }
+}
+@media (max-width: 420px) {
+  .page { padding-inline: 14px; }
+  #page-azkar-detail .zikr-card { padding: 14px 12px; }
+  #page-azkar-detail .zikr-text {
+    font-size: clamp(18px, 5vw, 20px);
+    line-height: 1.8;
+    margin-bottom: 10px;
+  }
+  #page-azkar-detail .zikr-meaning-wrap { padding: 9px 10px; }
+  #page-azkar-detail .zikr-footer { gap: 6px; margin-top: 10px; }
+}
