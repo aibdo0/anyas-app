@@ -1318,3 +1318,20 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-home .next-prayer .prayer-time { font-size: clamp(28px, 8vw, 39px) !important; line-height: 1.08; }
 #page-home .next-prayer .countdown { font-size: 12px; }
 #page-home .next-prayer .prayer-progress { height: 4px; margin-top: 10px; }
+
+
+/* بطاقة الورد اليومي — أقل ارتفاعًا وأكثر وضوحًا */
+#page-home .daily-adhkar-card {
+  padding: 14px 15px !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 24px rgba(57, 46, 27, .075) !important;
+}
+#page-home .daily-adhkar-mark { width: 39px; height: 39px; flex-basis: 39px; border-radius: 13px; font-size: 18px; }
+#page-home .daily-adhkar-heading-row { gap: 9px; }
+#page-home .daily-adhkar-eyebrow { font-size: 10px; }
+#page-home .daily-adhkar-title { margin-top: 1px; font-size: 17px; }
+#page-home .daily-adhkar-badge { padding: 5px 8px; font-size: 10px; }
+#page-home .daily-adhkar-text { margin-top: 10px; padding: 8px 10px; font-size: 12px; line-height: 1.65; }
+#page-home .daily-adhkar-footer { margin-top: 9px; padding-top: 9px; }
+#page-home .daily-adhkar-hint { font-size: 10px; }
+#page-home .daily-adhkar-button { min-height: 36px; padding: 7px 11px; border-radius: 11px; font-size: 11px; }
