@@ -189,6 +189,17 @@ check("full reminder test covers notification and sound", () => {
   assert.match(settingsText, /recordAnyasNotification\(title, body, "anyas-reminder-test"\)/);
 });
 
+check("Android reminders use one compact card with a remove-and-stop action", () => {
+  const receiver = read("android/app/src/main/java/com/anyas/app/ReminderReceiver.java");
+  const player = read("android/app/src/main/java/com/anyas/app/ReminderPlayerService.java");
+  assert.match(receiver, /manager\.notify\(ReminderScheduler\.requestCode\(id\), buildNotification/);
+  assert.doesNotMatch(receiver, /setLargeIcon|setSubText\("أنياس"\)/);
+  assert.match(receiver, /addAction\([^\n]+إزالة وإيقاف الصوت/);
+  assert.match(receiver, /ReminderScheduler\.scheduleSaved\(context\)/);
+  assert.match(player, /ACTION_DISMISS\.equals\(intent\.getAction\(\)\)/);
+  assert.match(player, /if \(key\.equals\(notificationKey\)\)[\s\S]*?releasePlayer\(\)[\s\S]*?stopForeground\(true\)/);
+});
+
 check("notification inbox supports marking all items read", () => {
   assert.match(index, /id="markAllNotificationsReadButton"/);
   assert.match(enhancements, /const markAll = byId\("markAllNotificationsReadButton"\)/);

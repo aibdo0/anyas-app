@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Icon;
 import android.os.Build;
 
 public class ReminderReceiver extends BroadcastReceiver {
@@ -21,7 +20,12 @@ public class ReminderReceiver extends BroadcastReceiver {
         String soundFile = intent.getStringExtra("soundFile");
         showNotification(context, id, title, body);
         if (sound && soundFile != null && !soundFile.isEmpty()) {
-            Intent player = new Intent(context, ReminderPlayerService.class).putExtra("soundFile", soundFile).putExtra("title", title).putExtra("volume", intent.getFloatExtra("volume", 1f));
+            Intent player = new Intent(context, ReminderPlayerService.class)
+                    .putExtra("soundFile", soundFile)
+                    .putExtra("title", title)
+                    .putExtra("body", body)
+                    .putExtra("notificationKey", id)
+                    .putExtra("volume", intent.getFloatExtra("volume", 1f));
             try {
                 if (Build.VERSION.SDK_INT >= 26) context.startForegroundService(player);
                 else context.startService(player);
@@ -40,28 +44,44 @@ public class ReminderReceiver extends BroadcastReceiver {
 
     private static void showNotification(Context context, String id, String title, String body, boolean recordHistory) {
         ReminderScheduler.createChannels(context);
-        Intent open = new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pending = PendingIntent.getActivity(context, ReminderScheduler.requestCode(id), open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         String safeTitle = title == null || title.trim().isEmpty() ? "أنياس" : title.trim();
         String safeBody = body == null || body.trim().isEmpty() ? "حان وقت تذكيرك. افتح أنياس للتفاصيل." : body.trim();
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (manager == null) return;
         if (Build.VERSION.SDK_INT >= 24 && !manager.areNotificationsEnabled()) return;
         if (Build.VERSION.SDK_INT >= 33 && context.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return;
-        Notification.Builder builder = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(context, "reminders") : new Notification.Builder(context).setDefaults(Notification.DEFAULT_VIBRATE);
-        builder.setSmallIcon(R.drawable.ic_notification)
-                .setLargeIcon(Icon.createWithResource(context, R.mipmap.ic_launcher))
+        manager.notify(ReminderScheduler.requestCode(id), buildNotification(context, id, safeTitle, safeBody, false));
+        if (recordHistory) NotificationHistory.record(context, id, safeTitle, safeBody);
+    }
+
+    static Notification buildNotification(Context context, String id, String title, String body, boolean ongoing) {
+        Intent open = new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pending = PendingIntent.getActivity(context, ReminderScheduler.requestCode(id), open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        Intent dismiss = new Intent(context, ReminderPlayerService.class)
+                .setAction(ReminderPlayerService.ACTION_DISMISS)
+                .putExtra("notificationKey", id);
+        PendingIntent dismissPending = PendingIntent.getService(context, ReminderScheduler.requestCode(id) ^ 0x4a31, dismiss, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        Notification.Builder builder = Build.VERSION.SDK_INT >= 26
+                ? new Notification.Builder(context, ongoing ? "reminder_playback" : "reminders")
+                : new Notification.Builder(context).setDefaults(ongoing ? 0 : Notification.DEFAULT_VIBRATE);
+        return builder.setSmallIcon(R.drawable.ic_notification)
                 .setColor(Color.rgb(196, 154, 85))
-                .setSubText("أنياس")
-                .setContentTitle(safeTitle)
-                .setContentText(safeBody)
-                .setStyle(new Notification.BigTextStyle().setBigContentTitle(safeTitle).bigText(safeBody))
+                .setContentTitle(title)
+                .setContentText(body)
+                .setStyle(new Notification.BigTextStyle().setBigContentTitle(title).bigText(body))
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setVisibility(Notification.VISIBILITY_PRIVATE)
-                .setAutoCancel(true)
+                .setOngoing(ongoing)
+                .setAutoCancel(!ongoing)
                 .setContentIntent(pending)
-                .setCategory(Notification.CATEGORY_REMINDER);
-        manager.notify(ReminderScheduler.requestCode(id), builder.build());
-        if (recordHistory) NotificationHistory.record(context, id, safeTitle, safeBody);
+                .addAction(android.R.drawable.ic_menu_close_clear_cancel, "إزالة وإيقاف الصوت", dismissPending)
+                .setCategory(ongoing ? Notification.CATEGORY_SERVICE : Notification.CATEGORY_REMINDER)
+                .build();
+    }
+
+    static void restoreReminderNotification(Context context, String id, String title, String body) {
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager == null) return;
+        manager.notify(ReminderScheduler.requestCode(id), buildNotification(context, id, title, body, false));
     }
 }
