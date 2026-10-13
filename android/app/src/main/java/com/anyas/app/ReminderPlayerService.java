@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
@@ -36,7 +37,11 @@ public class ReminderPlayerService extends Service {
         releasePlayer();
         int resource = getResources().getIdentifier(rawName(file), "raw", getPackageName());
         if (resource == 0) { stopSelf(startId); return START_NOT_STICKY; }
-        player = MediaPlayer.create(this, resource);
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+        player = MediaPlayer.create(this, resource, audioAttributes, 0);
         if (player == null) { stopSelf(startId); return START_NOT_STICKY; }
         player.setVolume(volume, volume);
         player.setOnCompletionListener(done -> stopSelf(startId));

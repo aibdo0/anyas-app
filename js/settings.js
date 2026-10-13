@@ -160,8 +160,9 @@ function setupAdhanSettings() {
   muteToggle?.addEventListener("click", () => {
     window.anyasAudioMuted = !window.anyasAudioMuted;
     localStorage.setItem("anyas_audio_muted", String(window.anyasAudioMuted));
-    applyAudioVolume(Number(volume?.value || initialVolume));
+    applyAudioVolume(Number(volume ? volume.value : initialVolume));
     renderMuteState();
+    syncAndroidNotificationSettings();
   });
 
   if (auto) {
@@ -212,7 +213,7 @@ function setupAdhanSettings() {
   const playAudioTest = (button, audio, label, audioId) => {
     if (!button || !audio) return;
     button.addEventListener("click", () => {
-      const masterVolume = volume ? Number(volume.value) : initialVolume;
+      const masterVolume = window.anyasAudioMuted ? 0 : (volume ? Number(volume.value) : initialVolume);
       if (masterVolume <= 0) {
         if (audioTestStatus) audioTestStatus.textContent = "مستوى الصوت الموحد صفر؛ ارفعه أولًا لتسمع الاختبار.";
         return;
@@ -254,7 +255,7 @@ function setupAdhanSettings() {
       if (audioTestStopTimer) window.clearTimeout(audioTestStopTimer);
       stopOtherAudioPreviews(testNotificationButton);
       stopAllAudioExcept(null);
-      const masterVolume = volume ? Number(volume.value) : initialVolume;
+      const masterVolume = window.anyasAudioMuted ? 0 : (volume ? Number(volume.value) : initialVolume);
       if (masterVolume <= 0) {
         if (audioTestStatus) audioTestStatus.textContent = "مستوى الصوت الموحد صفر؛ ارفعه أولًا.";
         return;
@@ -296,11 +297,16 @@ function setupAdhanSettings() {
     audioTestRun++;
     stopOtherAudioPreviews(testReminderButton);
     stopAllAudioExcept(null);
+    const testVolume = window.anyasAudioMuted ? 0 : (volume ? Number(volume.value) : initialVolume);
+    if (testVolume <= 0) {
+      if (audioTestStatus) audioTestStatus.textContent = "الصوت مكتوم أو مستواه صفر؛ ألغِ الكتم وارفع الصوت أولًا.";
+      return;
+    }
     const audio = document.getElementById("morningWardAudio");
     if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
     const voice = localStorage.getItem("anyas_morningWardVoice") === "ahmed" ? "adhkar-morning-ahmed-al-nafis.mp3" : "adhkar-morning-mishary-alafasy.mp3";
     if (window.AnyasAndroid && typeof window.AnyasAndroid.testNotificationAndSound === "function") {
-      const result = window.AnyasAndroid.testNotificationAndSound(voice, (volume ? Number(volume.value) : initialVolume) / 100);
+      const result = window.AnyasAndroid.testNotificationAndSound(voice, testVolume / 100);
       if (audioTestStatus) audioTestStatus.textContent = result === "started" ? "تم اختبار التذكير كاملًا: الإشعار والصوت." : "تعذر اختبار التذكير؛ تحقق من الأذونات وإعدادات البطارية.";
       return;
     }
@@ -1654,7 +1660,7 @@ function syncAndroidNotificationSettings() {
     morningVoice: localStorage.getItem("anyas_morningWardVoice") || "mishary",
     eveningVoice: localStorage.getItem("anyas_eveningWardVoice") || "mishary",
     ayatVoice: localStorage.getItem("anyas_ayatKursiVoice") || "mishary",
-    sound: document.getElementById("notificationSound")?.checked === true,
+    sound: document.getElementById("notificationSound")?.checked === true && !window.anyasAudioMuted,
     volume: masterVolume
   }));
 }
