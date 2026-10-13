@@ -1351,3 +1351,27 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-home .prayer-title { font-size: 12px; }
 #page-home .prayer-value { font-size: 15px; }
 #page-home .prayer-data-status { margin-top: 8px; font-size: 9px; }
+
+/* صور بطاقة الورد — تحافظ على الهوية البصرية في الفاتح والداكن */
+#page-home .daily-adhkar-card[data-adhkar-period="morning"] {
+  color: #fff !important;
+  border-color: rgba(255, 220, 137, .72) !important;
+  background-image: linear-gradient(90deg, rgba(18, 33, 43, .25), rgba(18, 24, 31, .82)), url("../assets/anyas-morning-background.webp") !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="evening"] {
+  color: #fff !important;
+  border-color: rgba(250, 177, 108, .72) !important;
+  background-image: linear-gradient(90deg, rgba(38, 24, 32, .28), rgba(26, 22, 29, .85)), url("../assets/prayer-hero.jpg") !important;
+  background-size: cover !important;
+  background-position: center 48% !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="morning"] :is(.daily-adhkar-title,.daily-adhkar-text),
+#page-home .daily-adhkar-card[data-adhkar-period="evening"] :is(.daily-adhkar-title,.daily-adhkar-text) { color: #fff !important; }
+#page-home .daily-adhkar-card[data-adhkar-period="morning"] .daily-adhkar-text,
+#page-home .daily-adhkar-card[data-adhkar-period="evening"] .daily-adhkar-text { background: rgba(15, 20, 28, .34) !important; border-inline-start-color: #f1d27b !important; }
+#page-home .daily-adhkar-card[data-adhkar-period="morning"] :is(.daily-adhkar-eyebrow,.daily-adhkar-hint),
+#page-home .daily-adhkar-card[data-adhkar-period="evening"] :is(.daily-adhkar-eyebrow,.daily-adhkar-hint) { color: rgba(255,255,255,.8) !important; }
+#page-home .daily-adhkar-card[data-adhkar-period="morning"] .daily-adhkar-button,
+#page-home .daily-adhkar-card[data-adhkar-period="evening"] .daily-adhkar-button { color: #302718 !important; background: linear-gradient(135deg, #ffe39a, #e7bd61) !important; border-color: rgba(255,255,255,.3) !important; }
