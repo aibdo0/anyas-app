@@ -1375,3 +1375,85 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-home .daily-adhkar-card[data-adhkar-period="evening"] :is(.daily-adhkar-eyebrow,.daily-adhkar-hint) { color: rgba(255,255,255,.8) !important; }
 #page-home .daily-adhkar-card[data-adhkar-period="morning"] .daily-adhkar-button,
 #page-home .daily-adhkar-card[data-adhkar-period="evening"] .daily-adhkar-button { color: #302718 !important; background: linear-gradient(135deg, #ffe39a, #e7bd61) !important; border-color: rgba(255,255,255,.3) !important; }
+
+
+/* Period-aware adhkar card scenes — atmospheric gradients, restrained stars, Anias gold. */
+#page-home .daily-adhkar-card[data-adhkar-period] {
+  isolation: isolate;
+  color: #fbf8ef !important;
+  border-color: rgba(225,204,151,.34) !important;
+  box-shadow: 0 14px 30px rgba(20,25,36,.18), inset 0 1px rgba(255,255,255,.07) !important;
+  transition: background .65s ease, border-color .45s ease, box-shadow .45s ease;
+}
+#page-home .daily-adhkar-card[data-adhkar-period]::before {
+  z-index: 2;
+  width: 4px;
+  background: linear-gradient(180deg,#f1d89f,#b89552 60%,rgba(241,216,159,.12));
+}
+#page-home .daily-adhkar-card[data-adhkar-period]::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: .7;
+  background: radial-gradient(circle at 86% 18%,rgba(255,255,255,.42) 0 1px,transparent 1.8px), radial-gradient(circle at 72% 32%,rgba(255,255,255,.3) 0 1px,transparent 1.8px), radial-gradient(circle at 92% 66%,rgba(255,255,255,.25) 0 1px,transparent 1.8px);
+}
+#page-home .daily-adhkar-card[data-adhkar-period] > * { position: relative; z-index: 1; }
+#page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-title,.daily-adhkar-text,.daily-adhkar-eyebrow,.daily-adhkar-hint) { color: #fbf8ef !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-eyebrow,
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-hint { color: rgba(250,246,232,.74) !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-mark,
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-badge {
+  color: #f5dfa8 !important;
+  border-color: rgba(240,219,164,.32) !important;
+  background: rgba(28,31,37,.48) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.08);
+}
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-text {
+  padding: 9px 12px;
+  border-inline-start: 2px solid #dfc17c;
+  border-radius: 12px;
+  background: rgba(255,255,255,.075);
+}
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-footer { border-color: rgba(255,255,255,.18) !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button {
+  color: #2b261b !important;
+  border-color: #eed39a !important;
+  background: linear-gradient(135deg,#f4dfad,#d4b46e) !important;
+  box-shadow: 0 4px 13px rgba(17,19,24,.14);
+}
+#page-home .daily-adhkar-card[data-adhkar-period="sahar"] {
+  border-color: rgba(169,183,214,.4) !important;
+  background: radial-gradient(ellipse at 86% 12%,rgba(131,157,197,.24),transparent 28%), radial-gradient(ellipse at 20% 100%,rgba(54,79,111,.5),transparent 54%), radial-gradient(circle at 12% 18%,rgba(255,255,255,.55) 0 1px,transparent 1.8px), radial-gradient(circle at 38% 28%,rgba(255,255,255,.35) 0 1px,transparent 1.8px), radial-gradient(circle at 65% 16%,rgba(255,255,255,.42) 0 1px,transparent 1.8px), linear-gradient(145deg,#101a2d,#202c43 62%,#2b3547) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="after-fajr"] {
+  background: radial-gradient(ellipse at 82% 100%,rgba(230,183,107,.58),transparent 38%), linear-gradient(155deg,#26374a 0%,#405469 47%,#927b5f 100%) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="sunrise"] {
+  background: radial-gradient(ellipse at 86% 95%,rgba(247,198,117,.68),transparent 35%), radial-gradient(ellipse at 14% 5%,rgba(207,224,190,.2),transparent 40%), linear-gradient(145deg,#4b625f,#54665a 51%,#827353) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="morning"] {
+  background: radial-gradient(ellipse at 88% 8%,rgba(204,181,111,.42),transparent 34%), radial-gradient(ellipse at 6% 100%,rgba(77,112,83,.36),transparent 47%), linear-gradient(145deg,#344b45,#435a4b 58%,#59634d) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="after-dhuhr"] {
+  background: radial-gradient(ellipse at 10% 0%,rgba(202,185,119,.34),transparent 42%), linear-gradient(145deg,#394e49,#455647 58%,#5c6047) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="after-asr"] {
+  background: radial-gradient(ellipse at 88% 100%,rgba(222,162,96,.55),transparent 39%), linear-gradient(145deg,#35454a,#575746 56%,#786247) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="evening"],
+#page-home .daily-adhkar-card[data-adhkar-period="after-maghrib"] {
+  background: radial-gradient(ellipse at 82% 100%,rgba(231,158,97,.58),transparent 36%), radial-gradient(ellipse at 10% 0%,rgba(143,103,126,.2),transparent 45%), linear-gradient(145deg,#342c3a,#5b4142 56%,#77553d) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="after-isha"] {
+  background: radial-gradient(circle at 11% 18%,rgba(255,255,255,.45) 0 1px,transparent 1.8px), radial-gradient(circle at 39% 11%,rgba(255,255,255,.35) 0 1px,transparent 1.8px), radial-gradient(circle at 70% 30%,rgba(255,255,255,.38) 0 1px,transparent 1.8px), radial-gradient(ellipse at 85% 0%,rgba(92,116,157,.31),transparent 39%), linear-gradient(145deg,#121a2a,#202b42 65%,#292f3b) !important;
+}
+:root[data-theme="dark"] #page-home .daily-adhkar-card[data-adhkar-period] {
+  border-color: rgba(225,204,151,.34) !important;
+  box-shadow: 0 14px 30px rgba(0,0,0,.25), inset 0 1px rgba(255,255,255,.07) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  #page-home .daily-adhkar-card[data-adhkar-period] { transition: none !important; }
+}

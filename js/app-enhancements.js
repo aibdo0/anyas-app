@@ -416,12 +416,14 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     let after = null;
     for (const key of prayerKeys) { const time = getTime(key); if (!time) continue; const diff = Math.floor((now - time) / 60000); if (diff >= 0 && diff < 10) after = key; }
     const sunrise = getTime("Sunrise") || (() => { const t = byId("sunriseTime")?.textContent.match(/(\d{1,2}):(\d{2})/); if (!t) return null; const d = new Date(); d.setHours(+t[1], +t[2], 0, 0); return d; })();
-    let state = after ? { title: `أذكار ما بعد صلاة ${prayerLabel(after)}`, badge: "بعد الصلاة", text: "ورد قصير بعد السلام؛ اغتنم الدقائق الأولى بعد الصلاة.", hint: "متاح ١٠ دقائق", action: "afterPrayer" } : null;
-    if (!state && sunrise && now < sunrise) state = { title: "أذكار السحر والاستغفار", badge: "قبل الفجر", text: "وقت هادئ للاستغفار والدعاء وقيام الليل.", hint: "حتى دخول الفجر", action: "sahar" };
-    if (!state && sunrise && now < new Date(sunrise.getTime() + 20 * 60000)) state = { title: "أذكار عامة", badge: "بعد الشروق", text: "أكثر من ذكر الله بما تيسر لك حتى يبدأ ورد الصباح.", hint: "ورد مطلق", action: "general" };
-    if (!state) state = { title: now.getHours() >= 16 ? "أذكار المساء" : "أذكار الصباح", badge: now.getHours() >= 16 ? "المساء" : "الصباح", text: "ورد مناسب لوقتك، افتحه واقرأه بهدوء.", hint: "افتح الورد", action: now.getHours() >= 16 ? "evening" : "morning" };
+    let state = after ? { title: `أذكار ما بعد صلاة ${prayerLabel(after)}`, badge: "بعد الصلاة", text: "ورد قصير بعد السلام؛ اغتنم الدقائق الأولى بعد الصلاة.", hint: "متاح ١٠ دقائق", action: "afterPrayer", period: `after-${after.toLowerCase()}` } : null;
+    if (!state && sunrise && now < sunrise) state = { title: "أذكار السحر والاستغفار", badge: "قبل الفجر", text: "وقت هادئ للاستغفار والدعاء وقيام الليل.", hint: "حتى دخول الفجر", action: "sahar", period: "sahar" };
+    if (!state && sunrise && now < new Date(sunrise.getTime() + 20 * 60000)) state = { title: "أذكار عامة", badge: "بعد الشروق", text: "أكثر من ذكر الله بما تيسر لك حتى يبدأ ورد الصباح.", hint: "ورد مطلق", action: "general", period: "sunrise" };
+    if (!state) state = now.getHours() >= 16
+      ? { title: "أذكار المساء", badge: "المساء", text: "ورد مناسب لوقتك، افتحه واقرأه بهدوء.", hint: "افتح الورد", action: "evening", period: "evening" }
+      : { title: "أذكار الصباح", badge: "الصباح", text: "ورد مناسب لوقتك، افتحه واقرأه بهدوء.", hint: "افتح الورد", action: "morning", period: "morning" };
     title.textContent = state.title; badge && (badge.textContent = state.badge); text.textContent = state.text; hint && (hint.textContent = state.hint); button.textContent = "افتح الأذكار"; button.dataset.adhkarAction = state.action;
-    if (card) card.dataset.adhkarPeriod = state.action;
+    if (card) card.dataset.adhkarPeriod = state.period || state.action;
   }
 
   function initNotificationsList() {
