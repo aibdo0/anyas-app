@@ -76,6 +76,7 @@ public class MainActivity extends Activity {
         web = new WebView(this);
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
+        s.setMediaPlaybackRequiresUserGesture(false);
         s.setDomStorageEnabled(true);
         s.setDatabaseEnabled(true);
         s.setGeolocationEnabled(true);
@@ -272,6 +273,8 @@ public class MainActivity extends Activity {
             Intent player = new Intent(MainActivity.this, ReminderPlayerService.class)
                     .putExtra("soundFile", safeSound)
                     .putExtra("title", "اختبار صوت الأذكار")
+                    .putExtra("body", "إذا ظهر هذا التنبيه وسمعت الصوت فالإعدادات تعمل.")
+                    .putExtra("notificationKey", id)
                     .putExtra("volume", (float) Math.max(0d, Math.min(1d, volume)))
                     .putExtra("testDurationMs", 3000);
             try {

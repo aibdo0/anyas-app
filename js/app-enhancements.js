@@ -432,6 +432,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     const back = byId("notificationsBackButton");
     const unreadCount = byId("notificationUnreadCount");
     const unreadLabel = byId("notificationUnreadLabel");
+    const filterAll = byId("filterAllNotificationsButton");
     const filterUnread = byId("filterUnreadNotificationsButton");
     const markAll = byId("markAllNotificationsReadButton");
     const clearAll = byId("clearNotificationsButton");
@@ -498,6 +499,8 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       }
       if (unreadCount) unreadCount.textContent = toArabic(unread);
       if (unreadLabel) unreadLabel.textContent = t(unread === 1 ? "إشعار غير مقروء" : "إشعارات غير مقروءة");
+      filterAll?.setAttribute("aria-pressed", String(!unreadOnly));
+      filterUnread?.setAttribute("aria-pressed", String(unreadOnly));
       const visibleItems = unreadOnly ? items.filter(item => !item.read) : items;
       list.replaceChildren();
       if (!visibleItems.length) {
@@ -509,7 +512,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
         const title = document.createElement("strong");
         title.textContent = unreadOnly ? "لا توجد إشعارات غير مقروءة" : t("لا توجد إشعارات بعد");
         const hint = document.createElement("small");
-        hint.textContent = unreadOnly ? "اضغط الزر مرة أخرى لعرض كل الإشعارات." : t("ستظهر هنا التنبيهات عند وصولها، لتراجعها متى شئت.");
+        hint.textContent = unreadOnly ? "انتقل إلى «الكل» لعرض سجل الإشعارات." : t("ستظهر هنا التنبيهات عند وصولها، لتراجعها متى شئت.");
         empty.append(icon, title, hint);
         if (!unreadOnly) {
           const settingsButton = document.createElement("button");
@@ -563,11 +566,8 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     window.setInterval(() => { if (!document.hidden) render(); }, 30_000);
     bell?.addEventListener("click", () => { openPage("notifications"); render(); });
     back?.addEventListener("click", () => openPage("home"));
-    filterUnread?.addEventListener("click", () => {
-      unreadOnly = !unreadOnly;
-      filterUnread.setAttribute("aria-pressed", String(unreadOnly));
-      render();
-    });
+    filterAll?.addEventListener("click", () => { unreadOnly = false; render(); });
+    filterUnread?.addEventListener("click", () => { unreadOnly = true; render(); });
     markAll?.addEventListener("click", () => render(true));
     clearAll?.addEventListener("click", () => {
       if (!readHistory().length) return;

@@ -53,7 +53,7 @@
 <link rel="stylesheet" href="css/friday.css?v=20261003-2">
 <link rel="stylesheet" href="css/notification-settings.css?v=20261007-1">
 <link rel="stylesheet" href="css/more-page.css?v=20261007-2">
-<link rel="stylesheet" href="css/app-design-system.css?v=20261007-2">
+<link rel="stylesheet" href="css/app-design-system.css?v=20261013-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 </head>
@@ -2191,7 +2191,20 @@ data-audio="fajrAudio"
     <span class="notifications-overview-count"><strong id="notificationUnreadCount">٠</strong><small id="notificationUnreadLabel">إشعارات غير مقروءة</small></span>
   </section>
   <section class="notifications-card">
-    <div class="notification-list-header"><div><h2>آخر ما وصلك</h2><p>الأحدث أولًا؛ السجل محفوظ على هذا الجهاز.</p></div><div class="notification-list-actions"><button class="secondary-action notification-manage-button" id="filterUnreadNotificationsButton" type="button" aria-pressed="false">غير المقروءة فقط</button><button class="secondary-action notification-manage-button" id="markAllNotificationsReadButton" type="button">تحديد الكل كمقروء</button><button class="secondary-action notification-manage-button notification-danger-button" id="clearNotificationsButton" type="button">مسح السجل</button><button class="secondary-action notification-manage-button" id="manageNotificationsButton" type="button">إعدادات التذكيرات</button></div></div>
+    <div class="notification-list-header">
+      <div class="notification-list-title"><h2>آخر ما وصلك</h2><p>الأحدث أولًا؛ السجل محفوظ على هذا الجهاز.</p></div>
+      <div class="notification-list-toolbar">
+        <div class="notification-filter-group" role="group" aria-label="تصفية الإشعارات">
+          <button class="notification-filter-button" id="filterAllNotificationsButton" type="button" aria-pressed="true">الكل</button>
+          <button class="notification-filter-button" id="filterUnreadNotificationsButton" type="button" aria-pressed="false">غير المقروءة</button>
+        </div>
+        <div class="notification-list-actions">
+          <button class="secondary-action notification-manage-button" id="markAllNotificationsReadButton" type="button">تحديد الكل كمقروء</button>
+          <button class="secondary-action notification-manage-button" id="manageNotificationsButton" type="button">إعدادات التذكيرات</button>
+          <button class="secondary-action notification-manage-button notification-danger-button" id="clearNotificationsButton" type="button">مسح السجل</button>
+        </div>
+      </div>
+    </div>
     <div id="notificationList" class="notification-list" aria-live="polite"><div class="notification-empty"><strong>لا توجد إشعارات بعد</strong><small>ستظهر هنا التنبيهات عند وصولها، لتراجعها متى شئت.</small></div></div>
   </section>
 </main>
@@ -2274,8 +2287,8 @@ type="button"
 <script src="js/favorites.js?v=20260926-3"></script>
 <script src="js/azkar.js?v=20261002-4"></script>
 <script src="js/wird.js?v=20261002-5"></script>
-<script src="js/optional-audio.js?v=20261008-1"></script>
-<script src="js/settings.js?v=20261012-3"></script>
+<script src="js/optional-audio.js?v=20261013-1"></script>
+<script src="js/settings.js?v=20261013-1"></script>
 <script src="js/qibla.js?v=20261008-1"></script>
 <script src="js/app-enhancements.js?v=20261012-1"></script>
 <script src="js/daily-devotions.js?v=20261003-1"></script>

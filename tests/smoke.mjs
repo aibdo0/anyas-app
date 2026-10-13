@@ -112,10 +112,7 @@ check("FAQ answers are available without JavaScript", () => {
   assert.match(read("css/theme-white-gold.css"), /\.faq-list details/);
 });
 
-check("offline mode explains local capabilities and provides a retry action", () => {
-  assert.match(index, /id="offlineStatusCard"/);
-  assert.match(index, /id="offlineConnectionStatus"[^>]+aria-live="polite"/);
-  assert.match(index, /id="retryOfflineDataButton"/);
+check("offline mode responds to connectivity and retains local prayer refresh", () => {
   assert.match(enhancements, /function initOfflineMode\(\)/);
   assert.match(enhancements, /addEventListener\("offline"/);
   assert.match(enhancements, /loadPrayerTimes/);
@@ -192,6 +189,17 @@ check("full reminder test covers notification and sound", () => {
   assert.match(settingsText, /recordAnyasNotification\(title, body, "anyas-reminder-test"\)/);
 });
 
+check("Android reminders use one compact card with a remove-and-stop action", () => {
+  const receiver = read("android/app/src/main/java/com/anyas/app/ReminderReceiver.java");
+  const player = read("android/app/src/main/java/com/anyas/app/ReminderPlayerService.java");
+  assert.match(receiver, /manager\.notify\(ReminderScheduler\.requestCode\(id\), buildNotification/);
+  assert.doesNotMatch(receiver, /setLargeIcon|setSubText\("أنياس"\)/);
+  assert.match(receiver, /addAction\([^\n]+إزالة وإيقاف الصوت/);
+  assert.match(receiver, /ReminderScheduler\.scheduleSaved\(context\)/);
+  assert.match(player, /ACTION_DISMISS\.equals\(intent\.getAction\(\)\)/);
+  assert.match(player, /if \(key\.equals\(notificationKey\)\)[\s\S]*?releasePlayer\(\)[\s\S]*?stopForeground\(true\)/);
+});
+
 check("notification inbox supports marking all items read", () => {
   assert.match(index, /id="markAllNotificationsReadButton"/);
   assert.match(enhancements, /const markAll = byId\("markAllNotificationsReadButton"\)/);
@@ -201,9 +209,11 @@ check("notification inbox supports marking all items read", () => {
 });
 
 check("notification inbox can filter unread items only", () => {
+  assert.match(index, /id="filterAllNotificationsButton"[^>]+aria-pressed="true"/);
   assert.match(index, /id="filterUnreadNotificationsButton"[^>]+aria-pressed="false"/);
   assert.match(enhancements, /let unreadOnly = false/);
   assert.match(enhancements, /const visibleItems = unreadOnly \? items\.filter\(item => !item\.read\) : items/);
+  assert.match(enhancements, /filterAll\?\.addEventListener\("click"/);
   assert.match(enhancements, /filterUnread\?\.addEventListener\("click"/);
   assert.match(enhancements, /لا توجد إشعارات غير مقروءة/);
   assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);

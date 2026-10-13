@@ -7,7 +7,7 @@
   const text = (arabic, english) => document.documentElement.lang === "en" ? english : arabic;
   const cacheUrl = source => new URL(String(source).split("?")[0], window.location.href).href;
   const remoteUrl = source => `${REMOTE_BASE}${String(source).replace(/^\.\//, "").split("?")[0]}`;
-  const source = relative => isAndroid() ? remoteUrl(relative) : relative;
+  const source = relative => String(relative).replace(/^\.\//, "").split("?")[0];
 
   async function cached(relative) {
     if (!window.caches) return null;
