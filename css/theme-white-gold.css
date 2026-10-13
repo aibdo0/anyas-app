@@ -1457,3 +1457,14 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 @media (prefers-reduced-motion: reduce) {
   #page-home .daily-adhkar-card[data-adhkar-period] { transition: none !important; }
 }
+
+/* Additional scenes used by the live six-period adhkar schedule. */
+#page-home .daily-adhkar-card[data-adhkar-period="awakening"] {
+  background: radial-gradient(ellipse at 82% 95%,rgba(240,190,111,.58),transparent 35%), radial-gradient(ellipse at 10% 0%,rgba(122,151,181,.26),transparent 45%), linear-gradient(145deg,#202b3e,#475568 58%,#846c55) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="day"] {
+  background: radial-gradient(ellipse at 88% 0%,rgba(220,195,117,.52),transparent 38%), radial-gradient(ellipse at 8% 100%,rgba(102,136,96,.35),transparent 46%), linear-gradient(145deg,#40544a,#586448 58%,#756d4e) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="sleep"] {
+  background: radial-gradient(circle at 13% 20%,rgba(255,255,255,.48) 0 1px,transparent 1.8px), radial-gradient(circle at 42% 12%,rgba(255,255,255,.34) 0 1px,transparent 1.8px), radial-gradient(circle at 72% 30%,rgba(255,255,255,.4) 0 1px,transparent 1.8px), radial-gradient(ellipse at 84% 0%,rgba(103,123,166,.28),transparent 42%), linear-gradient(145deg,#111a2b,#20283d 65%,#292e3b) !important;
+}
