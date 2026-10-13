@@ -1486,3 +1486,25 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   #page-azkar-detail .zikr-meaning-wrap { padding: 9px 10px; }
   #page-azkar-detail .zikr-footer { gap: 6px; margin-top: 10px; }
 }
+
+
+/* City picker: compact only the preset/recent choices; keep search controls and live results full-width. */
+#page-city-picker #commonCityResults,
+#page-city-picker #recentCityResults {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+#page-city-picker #commonCityResults .city-result,
+#page-city-picker #recentCityResults .city-result {
+  display: flex;
+  min-width: 0;
+  min-height: 48px;
+  align-items: center;
+  line-height: 1.45;
+}
+#page-city-picker #citySearchResults { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) {
+  #page-city-picker #commonCityResults,
+  #page-city-picker #recentCityResults {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
