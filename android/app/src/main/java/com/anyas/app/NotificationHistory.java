@@ -88,6 +88,29 @@ final class NotificationHistory {
         }
     }
 
+    static void markLatestRead(Context context, String tag) {
+        if (tag == null || tag.trim().isEmpty()) return;
+        synchronized (NotificationHistory.class) {
+            SharedPreferences preferences = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+            JSONArray previous = readArray(preferences.getString(ITEMS, "[]"));
+            String normalizedTag = normalizeTag(tag);
+            int latestIndex = -1;
+            long latestTimestamp = Long.MIN_VALUE;
+            for (int i = 0; i < previous.length(); i++) {
+                JSONObject item = previous.optJSONObject(i);
+                if (item == null || item.optBoolean("read", false) || !normalizedTag.equals(normalizeTag(item.optString("tag")))) continue;
+                long timestamp = item.optLong("timestamp");
+                if (timestamp > latestTimestamp) {
+                    latestTimestamp = timestamp;
+                    latestIndex = i;
+                }
+            }
+            if (latestIndex < 0) return;
+            try { previous.getJSONObject(latestIndex).put("read", true); } catch (Exception ignored) { return; }
+            preferences.edit().putString(ITEMS, previous.toString()).commit();
+        }
+    }
+
     private static JSONArray readArray(String raw) {
         try { return new JSONArray(raw); } catch (Exception ignored) { return new JSONArray(); }
     }

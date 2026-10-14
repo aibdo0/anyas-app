@@ -137,7 +137,7 @@ public class MainActivity extends Activity {
     private String shortcutPage(Intent intent) {
         if (intent == null) return null;
         String page = intent.getStringExtra("anyas_page");
-        return "qibla".equals(page) || "tasbeeh".equals(page) || "azkar".equals(page) || "home".equals(page) ? page : null;
+        return "qibla".equals(page) || "tasbeeh".equals(page) || "azkar".equals(page) || "tasks".equals(page) || "home".equals(page) ? page : null;
     }
 
     private void openPendingShortcut() {
