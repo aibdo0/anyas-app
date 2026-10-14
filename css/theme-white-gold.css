@@ -1804,3 +1804,17 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-tasbeeh .tasbeeh-preset { min-height: 44px; border-radius: 12px; font-size: 12px; transition: border-color .16s ease, background .16s ease, transform .16s ease; }
 #page-tasbeeh .tasbeeh-preset:active { transform: scale(.98); }
 #page-tasbeeh .tasbeeh-note { margin: 9px 3px; font-size: 11px; }
+
+/* الخصوصية — أقسام أهدأ ونص أسهل للقراءة */
+#page-privacy .privacy-document { gap: 9px !important; }
+#page-privacy .privacy-intro,
+#page-privacy .privacy-section { padding: 13px 14px !important; border-radius: 17px !important; }
+#page-privacy .privacy-intro { gap: 10px !important; }
+#page-privacy .privacy-mark { width: 38px; height: 38px; flex-basis: 38px; border-radius: 12px; font-size: 19px; }
+#page-privacy .privacy-intro h1 { font-size: 18px; }
+#page-privacy .privacy-intro p,
+#page-privacy .privacy-section p { font-size: 11px; line-height: 1.75; }
+#page-privacy .privacy-section { gap: 5px !important; }
+#page-privacy .privacy-section h2 { color: var(--gold-dark); font-size: 14px; }
+#page-privacy .privacy-section ul { gap: 4px; margin-top: 1px; font-size: 11px; line-height: 1.65; }
+#page-privacy .privacy-section strong { color: var(--gold-dark); }
