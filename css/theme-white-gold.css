@@ -1536,3 +1536,21 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-home .prayer-city-chip::after { content: "‹"; color: #e5c684; font-size: 18px; line-height: 1; }
 #page-home .prayer-city-chip:hover { border-color: #f1d89f !important; background: rgba(16, 15, 13, .88) !important; }
 #page-home .prayer-city-chip:active { transform: scale(.97); }
+
+/* شاشة المزيد — بطاقات موحدة ومسافات أهدأ */
+#page-more .more-group { margin: 14px 0 18px !important; }
+#page-more .more-group > h2 { margin-bottom: 8px !important; font-size: 12px; }
+#page-more .more-menu { gap: 7px !important; }
+#page-more .more-menu-item {
+  min-height: 68px !important;
+  grid-template-columns: 38px minmax(0, 1fr) 16px !important;
+  gap: 10px !important;
+  padding: 11px 12px !important;
+  border-radius: 17px !important;
+  box-shadow: 0 6px 16px rgba(56, 49, 40, .045) !important;
+}
+#page-more .more-menu-icon { width: 38px; height: 38px; border-radius: 12px; font-size: 16px; }
+#page-more .more-menu-copy { gap: 2px; }
+#page-more .more-menu-copy strong { font-size: 14px; }
+#page-more .more-menu-copy small { font-size: 11px; line-height: 1.45; }
+#page-more .more-menu-arrow { font-size: 20px; }
