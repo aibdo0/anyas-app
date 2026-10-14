@@ -1664,3 +1664,34 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 }
 #page-tasks .task-item[data-complete="true"] .task-text { color: var(--gold-dark); }
 #page-tasks .task-item:active { transform: scale(.985); }
+
+/* أقرب مسجد — بطاقة أوضح وزر اتجاهات أنسب */
+#page-home #nearbyMosqueButton {
+  min-height: 68px !important;
+  gap: 10px !important;
+  padding: 11px 13px !important;
+  border-radius: 17px !important;
+  border-color: #e5d9bf !important;
+  background: linear-gradient(135deg, #fbf8f0, #f2eadb) !important;
+  transition: border-color .16s ease, transform .16s ease, box-shadow .16s ease;
+}
+#page-home #nearbyMosqueButton::before {
+  content: "⌖";
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  place-items: center;
+  border: 1px solid #e5d9bf;
+  border-radius: 12px;
+  color: var(--gold-dark);
+  background: #fff;
+  font-size: 18px;
+}
+#page-home #nearbyMosqueButton::after { content: "‹"; margin-inline-start: auto; color: var(--gold-dark); font-size: 21px; }
+#page-home #nearbyMosqueButton .nearby-mosque-title { font-size: 14px; }
+#page-home #nearbyMosqueButton:hover { border-color: var(--gold) !important; box-shadow: 0 7px 18px rgba(128, 101, 59, .1); }
+#page-home #nearbyMosqueButton:active { transform: scale(.985); }
+#page-mosques .mosques-card { padding: 13px !important; border-radius: 19px !important; }
+#page-mosques .mosque-result { min-height: 58px !important; padding: 8px !important; border-radius: 13px !important; }
+#page-mosques .mosque-result-link { border-color: #decda8; color: var(--gold-dark); background: var(--gold-pale); }
