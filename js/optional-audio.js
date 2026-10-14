@@ -114,13 +114,16 @@
       };
       button.addEventListener("click", async () => {
         button.disabled = true;
+        button.textContent = text("جارٍ التجهيز…", "Preparing…");
+        if (status) status.textContent = text("جارٍ حفظ الصوت على هذا الجهاز…", "Saving audio on this device…");
         try {
           if (await isDownloaded(relative)) await remove(relative);
           else await download(relative);
           await render();
           document.getElementById("optionalAudioUsage")?.replaceChildren(text("المساحة المحفوظة: ", "Saved space: ") + formatBytes(await cacheUsage()));
         } catch (error) {
-          if (status) status.textContent = "تعذر التنزيل؛ تحقق من الاتصال وحاول مرة أخرى.";
+          if (status) status.textContent = text("تعذر التنزيل؛ تحقق من الاتصال وحاول مرة أخرى.", "Download failed; check your connection and try again.");
+          await render();
         } finally { button.disabled = false; }
       });
       render();
