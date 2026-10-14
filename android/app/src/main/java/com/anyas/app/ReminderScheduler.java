@@ -188,6 +188,21 @@ final class ReminderScheduler {
 
     static int requestCode(String id) { return id.hashCode() & 0x7fffffff; }
     static boolean enabled(JSONObject enabled, String key) { return enabled != null && enabled.optBoolean(key, false); }
+    static boolean quietHoursActive(Context context) {
+        try {
+            String raw = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("settings", "{}");
+            JSONObject quiet = new JSONObject(raw).optJSONObject("quietHours");
+            if (quiet == null || !quiet.optBoolean("enabled", false)) return false;
+            String start = normalizeClockTime(quiet.optString("start", "22:00"));
+            String end = normalizeClockTime(quiet.optString("end", "06:00"));
+            if (start == null || end == null || start.equals(end)) return false;
+            Calendar now = Calendar.getInstance();
+            int current = now.get(Calendar.HOUR_OF_DAY) * 60 + now.get(Calendar.MINUTE);
+            int startMinute = Integer.parseInt(start.substring(0, 2)) * 60 + Integer.parseInt(start.substring(3, 5));
+            int endMinute = Integer.parseInt(end.substring(0, 2)) * 60 + Integer.parseInt(end.substring(3, 5));
+            return startMinute < endMinute ? current >= startMinute && current < endMinute : current >= startMinute || current < endMinute;
+        } catch (Exception ignored) { return false; }
+    }
     static String time(JSONObject object, String key) { if (object == null) return null; String value = object.optString(key, ""); return value.matches("\\d{1,2}:\\d{2}(:\\d{2})?") ? value.substring(0, 5) : null; }
     static String normalizeClockTime(String value) {
         try {

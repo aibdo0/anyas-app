@@ -41,6 +41,7 @@ public class RainReceiver extends BroadcastReceiver {
                 String raw = context.getSharedPreferences(ReminderScheduler.PREFS, Context.MODE_PRIVATE).getString("settings", "{}");
                 JSONObject root = new JSONObject(raw);
                 JSONObject enabled = root.optJSONObject("enabled");
+                if (ReminderScheduler.quietHoursActive(context)) return;
                 float masterVolume = (float) Math.max(0d, Math.min(100d, root.optDouble("volume", 100d))) / 100f;
                 double latitude = root.optDouble("latitude", Double.NaN);
                 double longitude = root.optDouble("longitude", Double.NaN);

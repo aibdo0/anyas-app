@@ -14,6 +14,10 @@ public class ReminderReceiver extends BroadcastReceiver {
     @Override public void onReceive(Context context, Intent intent) {
         String id = intent.getStringExtra("id");
         if (id == null) return;
+        if (ReminderScheduler.quietHoursActive(context)) {
+            ReminderScheduler.scheduleSaved(context);
+            return;
+        }
         String title = intent.getStringExtra("title");
         String body = intent.getStringExtra("body");
         boolean sound = intent.getBooleanExtra("sound", true);

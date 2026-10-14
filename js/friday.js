@@ -89,6 +89,7 @@
   }
 
   function sendNotification(id, title, body, target) {
+    if (window.anyasIsQuietHours?.()) return;
     if (!isEnabled(id) || !("Notification" in window) || Notification.permission !== "granted") return;
     const key = `anyas_friday_notice_${id}_${dateKey(target)}`;
     if (localStorage.getItem(key) === "true") return;
