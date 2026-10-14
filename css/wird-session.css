@@ -1,0 +1,23 @@
+/* جلسة الورد — قراءة ذكر واحد بهدوء */
+.category-detail-header { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; }
+.azkar-session-open-button { min-height: 38px; padding: 7px 11px; border: 1px solid rgba(198,163,99,.35); border-radius: 12px; color: #fff; background: linear-gradient(135deg,#927443,#70552d); font-family: inherit; font-size: 11px; font-weight: 800; cursor: pointer; }
+.wird-session-modal[hidden] { display: none; }
+.wird-session-modal { position: fixed; z-index: 100; inset: 0; display: grid; place-items: center; padding: 18px; }
+.wird-session-backdrop { position: absolute; inset: 0; background: rgba(12,16,25,.72); backdrop-filter: blur(7px); }
+.wird-session-dialog { position: relative; width: min(100%, 520px); padding: 24px 20px 20px; border: 1px solid rgba(224,197,137,.35); border-radius: 25px; color: #f7f1e4; background: linear-gradient(145deg,#202d44,#111a2a 88%); box-shadow: 0 24px 70px rgba(0,0,0,.4); }
+.wird-session-close { position: absolute; inset-block-start: 12px; inset-inline-start: 12px; width: 34px; height: 34px; border: 1px solid rgba(255,255,255,.18); border-radius: 11px; color: #e7d5ac; background: rgba(255,255,255,.06); font-size: 23px; line-height: 1; cursor: pointer; }
+.wird-session-kicker { color: #d7b976; font-size: 12px; font-weight: 800; }
+.wird-session-dialog h2 { margin: 3px 0 15px; font-size: 24px; }
+.wird-session-progress-row { display: flex; justify-content: space-between; color: #bdc7d8; font-size: 12px; font-weight: 700; }
+.wird-session-progress-track { height: 8px; margin-top: 9px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.12); }
+.wird-session-progress-track span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#e9c978,#a9874d); transition: width .25s ease; }
+.wird-session-card { min-height: 220px; display: grid; align-content: center; gap: 18px; margin-top: 20px; padding: 25px 20px; border: 1px solid rgba(255,255,255,.1); border-radius: 20px; background: rgba(255,255,255,.07); }
+.wird-session-text { color: #fff; font-family: "Amiri", serif; font-size: clamp(22px,5.2vw,30px); font-weight: 700; line-height: 2; text-align: center; }
+.wird-session-count { color: #d9c69e; font-size: 12px; text-align: center; }
+.wird-session-actions { display: grid; gap: 8px; margin-top: 17px; }
+.wird-session-next { min-height: 48px; border: 1px solid #f2d58d; border-radius: 14px; color: #2a2419; background: linear-gradient(135deg,#ffe39a,#e7bd61); font-family: inherit; font-weight: 900; cursor: pointer; }
+.wird-session-skip { min-height: 38px; border: 0; color: #bcc6d8; background: transparent; font-family: inherit; font-size: 12px; cursor: pointer; }
+.wird-session-note { margin: 12px 0 0; color: #9daac0; font-size: 11px; text-align: center; }
+body.wird-session-open { overflow: hidden; }
+@media (max-width: 420px) { .category-detail-header { grid-template-columns: auto minmax(0,1fr); } .azkar-session-open-button { grid-column: 1 / -1; width: 100%; } .wird-session-dialog { padding-inline: 15px; } }
+@media (prefers-reduced-motion: reduce) { .wird-session-progress-track span { transition: none; } }

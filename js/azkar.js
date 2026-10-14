@@ -210,6 +210,13 @@ function openAzkarTopic(number, focusIndex = null, options = null) {
       || `${topic.number}. ${topic.title || "باب الأذكار"}`;
   }
 
+  const sessionButton = document.getElementById("openWirdSessionButton");
+  if (sessionButton) {
+    sessionButton.dataset.topicNumber = String(topic.number);
+    sessionButton.dataset.itemIndexes = JSON.stringify(options?.itemIndexes || null);
+    sessionButton.dataset.title = options?.title || topic.title || "الورد اليومي";
+  }
+
   renderAzkarTopic(topic.number, options?.itemIndexes || null, options?.title || null);
 
   if (Number.isInteger(focusIndex)) {
@@ -222,6 +229,89 @@ function openAzkarTopic(number, focusIndex = null, options = null) {
 }
 
 window.openAzkarTopic = openAzkarTopic;
+
+// =====================================================
+// جلسة الورد — ذكر واحد في كل مرة
+// =====================================================
+let wirdSession = null;
+
+function arabicNumber(value) {
+  return String(value).replace(/\d/g, digit => "٠١٢٣٤٥٦٧٨٩"[digit]);
+}
+
+function getWirdSessionKey(number) {
+  return `anyas_wird_session_${number}_${new Date().toLocaleDateString("en-CA")}`;
+}
+
+function openWirdSession(number, itemIndexes = null, titleOverride = null) {
+  const topic = (window.azkarTopics || []).find(item => Number(item.number) === Number(number));
+  const modal = document.getElementById("wirdSessionModal");
+  if (!topic || !modal) return;
+  const allItems = Array.isArray(topic.items) ? topic.items : [];
+  const items = allItems.map((item, sourceIndex) => ({ item, sourceIndex }))
+    .filter(entry => !itemIndexes || itemIndexes.includes(entry.sourceIndex));
+  if (!items.length) return;
+
+  const progress = loadTopicProgress(number);
+  let savedIndex = 0;
+  try { savedIndex = Number(localStorage.getItem(getWirdSessionKey(number))) || 0; } catch (_) {}
+  const firstPending = items.findIndex(({ item, sourceIndex }) => (Number(progress[sourceIndex]) || 0) < (Number(item.count) || 1));
+  wirdSession = { number, title: titleOverride || topic.title || "الورد اليومي", items, progress, index: Math.min(Math.max(savedIndex, 0), items.length - 1) };
+  if (firstPending >= 0 && savedIndex >= items.length) wirdSession.index = firstPending;
+  modal.hidden = false;
+  document.body.classList.add("wird-session-open");
+  renderWirdSession();
+}
+
+function closeWirdSession() {
+  const modal = document.getElementById("wirdSessionModal");
+  if (modal) modal.hidden = true;
+  document.body.classList.remove("wird-session-open");
+  wirdSession = null;
+}
+
+function renderWirdSession() {
+  if (!wirdSession) return;
+  const { number, title, items, progress } = wirdSession;
+  const entry = items[wirdSession.index];
+  const item = entry.item;
+  const count = Number(item.count) || 1;
+  const current = Math.min(Number(progress[entry.sourceIndex]) || 0, count);
+  let completed = 0;
+  items.forEach(({ item: currentItem, sourceIndex }) => {
+    completed += Math.min(Number(progress[sourceIndex]) || 0, Number(currentItem.count) || 1);
+  });
+  const total = items.reduce((sum, currentItem) => sum + (Number(currentItem.item.count) || 1), 0);
+  const percent = total ? Math.round(completed / total * 100) : 0;
+  document.getElementById("wirdSessionTitle").textContent = title;
+  document.getElementById("wirdSessionText").textContent = item.text || "";
+  document.getElementById("wirdSessionStep").textContent = `الذكر ${arabicNumber(wirdSession.index + 1)} من ${arabicNumber(items.length)}`;
+  document.getElementById("wirdSessionPercent").textContent = `${arabicNumber(percent)}٪`;
+  document.getElementById("wirdSessionProgress").style.width = `${percent}%`;
+  document.getElementById("wirdSessionCount").textContent = count > 1 ? `التكرار ${arabicNumber(current + 1)} من ${arabicNumber(count)}` : "اقرأ الذكر بهدوء";
+  const next = document.getElementById("wirdSessionNext");
+  next.textContent = current + 1 >= count ? (wirdSession.index + 1 >= items.length ? "إنهاء الجلسة" : "تم الذكر — التالي") : "تم الذكر — التكرار التالي";
+  document.getElementById("wirdSessionNote").textContent = percent >= 100 ? "أحسنت، اكتمل وردك اليوم." : "سيُحفظ آخر موضع لك على هذا الجهاز.";
+}
+
+function advanceWirdSession(markComplete) {
+  if (!wirdSession) return;
+  const entry = wirdSession.items[wirdSession.index];
+  const count = Number(entry.item.count) || 1;
+  if (markComplete) wirdSession.progress[entry.sourceIndex] = Math.min((Number(wirdSession.progress[entry.sourceIndex]) || 0) + 1, count);
+  const current = Number(wirdSession.progress[entry.sourceIndex]) || 0;
+  if (current >= count || !markComplete) wirdSession.index = Math.min(wirdSession.index + 1, wirdSession.items.length - 1);
+  try { localStorage.setItem(getWirdSessionKey(wirdSession.number), String(wirdSession.index)); } catch (_) {}
+  saveTopicProgress(wirdSession.number, wirdSession.progress);
+  renderAzkarTopic(wirdSession.number, wirdSession.items.map(({ sourceIndex }) => sourceIndex), wirdSession.title);
+  renderWirdSession();
+  if (markComplete && current >= count && wirdSession.index === wirdSession.items.length - 1 && current >= count) {
+    const allDone = wirdSession.items.every(({ item, sourceIndex }) => (Number(wirdSession.progress[sourceIndex]) || 0) >= (Number(item.count) || 1));
+    if (allDone) document.getElementById("wirdSessionNote").textContent = "أحسنت، اكتمل وردك اليوم.";
+  }
+}
+
+window.openWirdSession = openWirdSession;
 
 // =====================================================
 // مفتاح حفظ التقدم
@@ -645,3 +735,18 @@ document.addEventListener(
 
   }
 );
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("openWirdSessionButton")?.addEventListener("click", event => {
+    const button = event.currentTarget;
+    let itemIndexes = null;
+    try { itemIndexes = JSON.parse(button.dataset.itemIndexes || "null"); } catch (_) {}
+    openWirdSession(Number(button.dataset.topicNumber), itemIndexes, button.dataset.title);
+  });
+  document.getElementById("wirdSessionNext")?.addEventListener("click", () => advanceWirdSession(true));
+  document.getElementById("wirdSessionSkip")?.addEventListener("click", () => advanceWirdSession(false));
+  document.querySelectorAll("[data-close-wird-session]").forEach(element => element.addEventListener("click", closeWirdSession));
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && wirdSession) closeWirdSession();
+  });
+});

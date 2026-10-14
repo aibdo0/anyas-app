@@ -38,6 +38,7 @@
 <link rel="stylesheet" href="css/home.css?v=20260927-2">
 <link rel="stylesheet" href="css/prayer.css?v=20260927-2">
 <link rel="stylesheet" href="css/azkar.css?v=20261003-1">
+<link rel="stylesheet" href="css/wird-session.css?v=20261014-1">
 <link rel="stylesheet" href="css/daily-adhkar.css?v=20261013-2">
 <link rel="stylesheet" href="css/settings.css?v=20261003-3">
 <link rel="stylesheet" href="css/audio-library.css?v=20261007-1">
@@ -46,7 +47,7 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261013-34">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261014-2">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20261003-1">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
@@ -556,6 +557,7 @@
 <div class="category-detail-header">
 <button class="back-button" id="azkarBackButton" type="button" aria-label="العودة">رجوع</button>
 <div class="category-detail-title" id="categoryDetailTitle">القسم</div>
+<button class="azkar-session-open-button" id="openWirdSessionButton" type="button">ابدأ جلسة الورد</button>
 </div>
 <p class="azkar-meaning-disclaimer">المعنى للتوضيح فقط؛ لا يُنسب ثواب مخصوص دون مصدر.</p>
 <section class="section">
@@ -564,6 +566,26 @@
 <div id="azkarTopicNavigation"></div>
 </section>
 </main>
+
+<div class="wird-session-modal" id="wirdSessionModal" hidden>
+  <div class="wird-session-backdrop" data-close-wird-session></div>
+  <section class="wird-session-dialog" role="dialog" aria-modal="true" aria-labelledby="wirdSessionTitle">
+    <button class="wird-session-close" type="button" data-close-wird-session aria-label="إغلاق جلسة الورد">×</button>
+    <div class="wird-session-kicker">جلسة ورد هادئة</div>
+    <h2 id="wirdSessionTitle">أذكار الصباح</h2>
+    <div class="wird-session-progress-row"><span id="wirdSessionStep">الذكر ١ من ١</span><span id="wirdSessionPercent">٠٪</span></div>
+    <div class="wird-session-progress-track"><span id="wirdSessionProgress"></span></div>
+    <article class="wird-session-card">
+      <div class="wird-session-text" id="wirdSessionText"></div>
+      <div class="wird-session-count" id="wirdSessionCount">اقرأ الذكر بهدوء</div>
+    </article>
+    <div class="wird-session-actions">
+      <button class="wird-session-next" id="wirdSessionNext" type="button">تم الذكر — التالي</button>
+      <button class="wird-session-skip" id="wirdSessionSkip" type="button">تخطي مؤقتًا</button>
+    </div>
+    <p class="wird-session-note" id="wirdSessionNote">سيُحفظ آخر موضع لك على هذا الجهاز.</p>
+  </section>
+</div>
 
 
 <!-- =====================================================
@@ -2304,7 +2326,7 @@ type="button"
 <script src="js/quiet-hours.js?v=20261014-1"></script>
 <script src="js/friday.js?v=20261014-1"></script>
 <script src="js/favorites.js?v=20260926-3"></script>
-<script src="js/azkar.js?v=20261002-4"></script>
+<script src="js/azkar.js?v=20261014-1"></script>
 <script src="js/wird.js?v=20261002-5"></script>
 <script src="js/optional-audio.js?v=20261014-2"></script>
 <script src="js/settings.js?v=20261014-1"></script>
