@@ -84,7 +84,7 @@ public class ReminderReceiver extends BroadcastReceiver {
         Notification.Builder builder = Build.VERSION.SDK_INT >= 26
                 ? new Notification.Builder(context, ongoing ? "reminder_playback" : "reminders")
                 : new Notification.Builder(context).setDefaults(ongoing ? 0 : Notification.DEFAULT_VIBRATE);
-        return builder.setSmallIcon(R.drawable.ic_notification)
+        builder.setSmallIcon(R.drawable.ic_notification)
                 .setColor(Color.rgb(196, 154, 85))
                 .setContentTitle(title)
                 .setContentText(body)
