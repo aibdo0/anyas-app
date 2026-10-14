@@ -202,6 +202,19 @@ check("Android reminders use one compact card with a remove-and-stop action", ()
   assert.match(player, /if \(key\.equals\(notificationKey\)\)[\s\S]*?releasePlayer\(\)[\s\S]*?stopForeground\(true\)/);
 });
 
+check("Android reminders support one 10-minute snooze without changing regular schedules", () => {
+  const receiver = read("android/app/src/main/java/com/anyas/app/ReminderReceiver.java");
+  const player = read("android/app/src/main/java/com/anyas/app/ReminderPlayerService.java");
+  assert.match(receiver, /غفوة ١٠ دقائق/);
+  assert.match(player, /putExtra\("snoozed", true\)/);
+  assert.match(receiver, /rememberReminderForSnooze\(context, id, title, body, sound, soundFile, volume\)/);
+  assert.match(player, /ACTION_SNOOZE\.equals\(intent\.getAction\(\)\)/);
+  assert.match(player, /10L \* 60L \* 1000L/);
+  assert.match(player, /setAndAllowWhileIdle\(AlarmManager\.RTC_WAKEUP/);
+  assert.match(player, /if \(scheduled\) dismissReminder\(key, startId\)/);
+  assert.match(read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java"), /scheduleOne\(context, alarm, reminder/);
+});
+
 check("notification inbox supports marking all items read", () => {
   assert.match(index, /id="markAllNotificationsReadButton"/);
   assert.match(enhancements, /const markAll = byId\("markAllNotificationsReadButton"\)/);

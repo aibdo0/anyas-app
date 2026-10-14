@@ -63,8 +63,9 @@ public class RainReceiver extends BroadcastReceiver {
                 android.content.SharedPreferences prefs = context.getSharedPreferences(ReminderScheduler.PREFS, Context.MODE_PRIVATE);
                 if (key.equals(prefs.getString("lastRainReminder", ""))) return;
                 prefs.edit().putString("lastRainReminder", key).apply();
+                ReminderPlayerService.rememberReminderForSnooze(context, "notifyRainSunnah", "سنة نزول المطر", "اللهم صيبًا نافعًا.", true, "rain-sunnah-reminder.mp3", masterVolume);
                 ReminderReceiver.showNotification(context, "notifyRainSunnah", "سنة نزول المطر", "اللهم صيبًا نافعًا.");
-                Intent player = new Intent(context, ReminderPlayerService.class).putExtra("soundFile", "rain-sunnah-reminder.mp3").putExtra("title", "سنة نزول المطر").putExtra("volume", masterVolume);
+                Intent player = new Intent(context, ReminderPlayerService.class).putExtra("soundFile", "rain-sunnah-reminder.mp3").putExtra("title", "سنة نزول المطر").putExtra("body", "اللهم صيبًا نافعًا.").putExtra("notificationKey", "notifyRainSunnah").putExtra("volume", masterVolume).putExtra("snoozeAvailable", true);
                 if (Build.VERSION.SDK_INT >= 26) context.startForegroundService(player); else context.startService(player);
             } catch (Exception ignored) {
             } finally {
