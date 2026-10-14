@@ -1744,3 +1744,24 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-azkar-detail .zikr-count { padding: 5px 9px; border-radius: 999px; color: var(--gold-dark); background: var(--gold-pale); font-size: 11px; }
 #page-azkar-detail .zikr-button { min-width: 108px; min-height: 40px; padding: 8px 13px; border-radius: 12px; box-shadow: 0 6px 14px rgba(128, 101, 59, .14); }
 #page-azkar-detail .zikr-button:active { transform: scale(.97); }
+
+/* شاشة الفتح — ترحيب أخف ومسار اختيار أوضح */
+.first-run-card {
+  max-height: min(84vh, 700px) !important;
+  padding: 20px 18px 17px !important;
+  border-radius: 23px !important;
+}
+.first-run-brand-row { margin-bottom: 15px !important; }
+.first-run-brand-mark { width: 43px; height: 43px; flex-basis: 43px; border-radius: 14px; }
+.first-run-brand-mark svg { width: 22px; height: 22px; }
+.first-run-title { font-size: clamp(22px, 5.8vw, 27px) !important; }
+.first-run-description { margin-bottom: 14px !important; font-size: 13px; }
+.first-run-feature-list { gap: 7px !important; margin-bottom: 15px !important; }
+.first-run-feature { min-height: 53px !important; padding: 8px 10px !important; border-radius: 14px !important; }
+.first-run-feature-icon { width: 33px; height: 33px; border-radius: 11px; font-size: 15px; }
+.first-run-feature-copy strong { font-size: 12px; }
+.first-run-feature-copy small { font-size: 9px; }
+.first-run-actions { gap: 7px !important; }
+.first-run-primary, .first-run-secondary { min-height: 43px !important; border-radius: 13px !important; }
+.first-run-privacy { margin-bottom: 14px !important; padding: 11px 12px !important; border-radius: 13px !important; }
+.first-run-note { margin-top: 9px !important; }
