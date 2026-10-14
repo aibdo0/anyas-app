@@ -1,0 +1,191 @@
+/* Palette refinement: forest green, olive, warm ivory, and Anias gold. */
+:root {
+  --page: #f5f1e5;
+  --surface: #fffaf0;
+  --surface-soft: #edf1e5;
+  --ink: #302f25;
+  --muted: #77735e;
+  --gold-dark: #6b542b;
+  --gold-light: #9a7a42;
+  --gold-pale: #f2e8cf;
+  --gold: #b69552;
+  --line: #ded5bc;
+  --shadow: 0 10px 26px rgba(57, 67, 42, .09);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #1b2c21;
+  --surface: #26392c;
+  --surface-soft: #314333;
+  --ink: #f6f0de;
+  --muted: #c8bea0;
+  --gold-dark: #e7ce91;
+  --gold-light: #d7bd7d;
+  --gold-pale: #3e402d;
+  --gold: #d7b66a;
+  --line: #4b5d45;
+  --shadow: 0 12px 30px rgba(11, 22, 13, .28);
+}
+
+html { background: var(--page) !important; }
+body {
+  color: var(--ink) !important;
+  background-color: var(--page) !important;
+  background-image:
+    linear-gradient(rgba(247, 243, 231, .93), rgba(247, 243, 231, .96)),
+    var(--app-scene-image, none),
+    radial-gradient(ellipse at 88% 0%, rgba(207, 190, 137, .28), transparent 36rem) !important;
+  background-attachment: fixed;
+  background-position: center, center, center;
+  background-size: cover, cover, auto;
+}
+:root[data-theme="dark"] body {
+  background-color: var(--page) !important;
+  background-image:
+    linear-gradient(rgba(28, 46, 32, .88), rgba(25, 41, 29, .92)),
+    var(--app-scene-image, none),
+    radial-gradient(ellipse at 88% 0%, rgba(191, 162, 91, .15), transparent 35rem) !important;
+}
+
+/* Main identity surfaces */
+#page-home .main-header {
+  color: #fff8e7 !important;
+  border: 1px solid rgba(218, 192, 126, .55) !important;
+  background: linear-gradient(135deg, #294632, #3d5a3a 72%, #59613a) !important;
+  box-shadow: 0 12px 27px rgba(38, 57, 35, .18) !important;
+}
+#page-home .main-header :is(.home-brand, .plain-header .brand, .date-line, .date-line span) {
+  color: #fff8e7 !important;
+}
+#page-home .theme-toggle,
+#page-home .notification-bell-button {
+  color: #f1d99d !important;
+  border-color: rgba(238, 215, 159, .4) !important;
+  background: rgba(35, 62, 43, .9) !important;
+}
+#page-home .prayer-section {
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+  background: linear-gradient(145deg, #fbf7e9, #f0eddf) !important;
+  box-shadow: var(--shadow) !important;
+}
+:root[data-theme="dark"] #page-home .prayer-section {
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+  background: linear-gradient(145deg, #2d4331, #25392b 78%) !important;
+}
+#page-home .prayer-row {
+  border-color: #e3dac2 !important;
+  background: #fffaf0 !important;
+}
+#page-home .prayer-row.next {
+  border-color: #c8aa68 !important;
+  background: linear-gradient(135deg, #f2e6c7, #e9e2cc) !important;
+}
+#page-home .sunrise-row {
+  background: #f0f0df !important;
+}
+:root[data-theme="dark"] #page-home .prayer-row,
+:root[data-theme="dark"] #page-home .sunrise-row {
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+  background: #314333 !important;
+}
+:root[data-theme="dark"] #page-home .prayer-row.next {
+  border-color: #9d8752 !important;
+  background: linear-gradient(135deg, #514832, #3e412f) !important;
+}
+#page-home .daily-content .content-block {
+  border-color: var(--line) !important;
+  background: linear-gradient(145deg, #fffaf0, #f2eedf) !important;
+}
+:root[data-theme="dark"] #page-home .daily-content .content-block {
+  border-color: var(--line) !important;
+  background: linear-gradient(145deg, #2a3d2d, #25382a) !important;
+}
+
+/* Navigation: forest green replaces charcoal while preserving the gold active state. */
+.bottom-nav {
+  border-color: #62724b !important;
+  background: rgba(39, 65, 43, .97) !important;
+  box-shadow: 0 12px 30px rgba(26, 43, 28, .3) !important;
+}
+.bottom-nav .nav-item { color: #e4dfc9 !important; }
+.bottom-nav .nav-item.active {
+  color: #f2d894 !important;
+  border-color: rgba(235, 211, 152, .55) !important;
+  background: #465638 !important;
+}
+.bottom-nav .nav-icon::before {
+  color: #d7c18c !important;
+  border-color: rgba(227, 211, 168, .25) !important;
+  background: #334934 !important;
+}
+.bottom-nav .nav-item.active .nav-icon::before {
+  color: #f1d58e !important;
+  background: #5b6340 !important;
+}
+
+/* Distinct prayer-adjacent dhikr scenes in olive, leaf green, and warm amber. */
+#page-home .daily-adhkar-card[data-adhkar-period] {
+  color: #fff8e8 !important;
+  border-color: rgba(232, 211, 157, .48) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="awakening"] {
+  background: radial-gradient(ellipse at 85% 95%, rgba(224, 184, 107, .52), transparent 37%), linear-gradient(145deg, #43533a, #68704b 62%, #8a7950) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="after-fajr"],
+#page-home .daily-adhkar-card[data-adhkar-period="sunrise"] {
+  background: radial-gradient(ellipse at 87% 100%, rgba(240, 194, 111, .62), transparent 37%), linear-gradient(145deg, #536444, #788052 62%, #a07c4a) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="morning"] {
+  background: radial-gradient(ellipse at 88% 8%, rgba(224, 198, 125, .42), transparent 35%), linear-gradient(145deg, #36553c, #4b6a44 60%, #69764b) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="day"],
+#page-home .daily-adhkar-card[data-adhkar-period="after-dhuhr"] {
+  background: radial-gradient(ellipse at 10% 0%, rgba(213, 194, 119, .38), transparent 42%), linear-gradient(145deg, #40583d, #5b6c43 62%, #79764b) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="after-asr"] {
+  background: radial-gradient(ellipse at 88% 100%, rgba(231, 173, 98, .56), transparent 40%), linear-gradient(145deg, #46543a, #696346 60%, #896845) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="evening"],
+#page-home .daily-adhkar-card[data-adhkar-period="after-maghrib"] {
+  background: radial-gradient(ellipse at 82% 100%, rgba(225, 158, 88, .52), transparent 39%), linear-gradient(145deg, #493d30, #67513a 58%, #806444) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="after-isha"],
+#page-home .daily-adhkar-card[data-adhkar-period="sleep"],
+#page-home .daily-adhkar-card[data-adhkar-period="sahar"] {
+  background: radial-gradient(circle at 13% 20%, rgba(255, 243, 202, .55) 0 1px, transparent 1.8px), radial-gradient(circle at 42% 12%, rgba(255, 250, 226, .38) 0 1px, transparent 1.8px), radial-gradient(circle at 72% 30%, rgba(240, 220, 169, .4) 0 1px, transparent 1.8px), radial-gradient(ellipse at 84% 0%, rgba(185, 158, 93, .28), transparent 42%), linear-gradient(145deg, #253b2c, #344c34 65%, #4a5439) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-text {
+  color: #fff9ea !important;
+  border-inline-start-color: #f0d38c !important;
+  background: rgba(28, 43, 29, .34) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-title, .daily-adhkar-eyebrow, .daily-adhkar-hint) {
+  color: #fff8e8 !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-mark,
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-badge {
+  color: #f6dfa4 !important;
+  border-color: rgba(246, 223, 164, .42) !important;
+  background: rgba(39, 58, 36, .72) !important;
+}
+
+/* Shared cards and outlines follow the warm ivory/forest system. */
+:root[data-theme="dark"] body :is(.settings-card, .worship-card, .weekly-report-card, .report-stat, .qibla-card, .traveler-card, .nearby-mosque-card, .learning-module, .task-item, .category-card, .zikr-card, .wird-section, .wird-item) {
+  border-color: var(--line) !important;
+  background: var(--surface) !important;
+}
+:root[data-theme="dark"] body :is(.content-block, .daily-dua.card, .learning-intro, .more-menu-item) {
+  border-color: var(--line) !important;
+  background: linear-gradient(145deg, #2a3d2d, #25382a 82%) !important;
+}
+:root[data-theme="dark"] body .progress-track,
+:root[data-theme="dark"] body .prayer-progress,
+:root[data-theme="dark"] body .prayer-progress-track { background: #42533b !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav, #page-home .daily-adhkar-card[data-adhkar-period] { transition: none !important; }
+}
