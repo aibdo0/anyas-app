@@ -9,7 +9,7 @@
 
 body {
   background-image:
-    linear-gradient(rgba(7, 13, 24, .84), rgba(7, 13, 24, .9)),
+    linear-gradient(rgba(7, 13, 24, .93), rgba(7, 13, 24, .96)),
     var(--app-scene-image),
     radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .25), transparent 36rem) !important;
   background-position: center, center, center;
@@ -20,12 +20,12 @@ body {
 
 :root[data-theme="light"] body {
   background-image:
-    linear-gradient(rgba(247, 244, 235, .84), rgba(247, 244, 235, .91)),
+    linear-gradient(rgba(247, 244, 235, .96), rgba(247, 244, 235, .985)),
     var(--app-scene-image),
     radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .62), transparent 36rem) !important;
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  body { background-image: var(--app-scene-image) !important; }
-  :root[data-theme="light"] body { background-image: linear-gradient(rgba(247,244,235,.9), rgba(247,244,235,.94)), var(--app-scene-image) !important; }
+  body { background-image: linear-gradient(rgba(7,13,24,.97), rgba(7,13,24,.98)), var(--app-scene-image) !important; }
+  :root[data-theme="light"] body { background-image: linear-gradient(rgba(247,244,235,.98), rgba(247,244,235,.99)), var(--app-scene-image) !important; }
 }
