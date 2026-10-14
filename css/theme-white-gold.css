@@ -1865,3 +1865,46 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   background-size: cover !important;
   background-position: center !important;
 }
+
+
+/* Keep prayer report summaries visible; expand the longer day-by-day history on demand. */
+#page-prayer-report .weekly-report-details { padding: 0; overflow: hidden; }
+#page-prayer-report .weekly-report-details-summary {
+  display: flex;
+  min-height: 54px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 15px;
+  cursor: pointer;
+  list-style: none;
+}
+#page-prayer-report .weekly-report-details-summary::-webkit-details-marker { display: none; }
+#page-prayer-report .weekly-report-details-summary .card-title { margin: 0; }
+#page-prayer-report .weekly-report-details-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--gold-dark);
+  font-size: 11px;
+  font-weight: 800;
+}
+#page-prayer-report .weekly-report-details-hint::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform .18s ease;
+}
+#page-prayer-report .weekly-report-details[open] .weekly-report-details-hint::after {
+  transform: rotate(225deg) translate(-1px, -1px);
+}
+#page-prayer-report .weekly-report-details > .weekly-prayer-list {
+  padding: 0 15px 15px;
+}
+#page-prayer-report .weekly-report-details[open] > .weekly-report-details-summary {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 12px;
+}
