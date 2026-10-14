@@ -1524,3 +1524,15 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 .bottom-nav .nav-item.active .nav-icon { width: 52px !important; height: 44px !important; border-radius: 14px !important; background: #4a3f2c !important; }
 .bottom-nav .nav-item .nav-icon svg { width: 26px !important; height: 26px !important; }
 .bottom-nav .nav-item.active .nav-icon svg { stroke: #e2bf76 !important; }
+
+/* زر المدينة — دلالة أوضح على إمكانية التعديل */
+#page-home .prayer-city-chip {
+  gap: 6px !important;
+  padding: 5px 9px !important;
+  border-color: rgba(241, 216, 159, .9) !important;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+}
+#page-home .prayer-city-chip::after { content: "‹"; color: #e5c684; font-size: 18px; line-height: 1; }
+#page-home .prayer-city-chip:hover { border-color: #f1d89f !important; background: rgba(16, 15, 13, .88) !important; }
+#page-home .prayer-city-chip:active { transform: scale(.97); }
