@@ -1292,7 +1292,7 @@ function setupThemeAndLanguage() {
   const timeBackgroundDescription = document.getElementById("timeBackgroundDescription");
 
   const languageControls =
-    document.querySelectorAll("#languageSelect");
+    document.querySelectorAll("#languageSelect, #aboutLanguageSelect");
 
   let initialMode = "light";
   try {

@@ -24,6 +24,17 @@
     "فعّل إذن الإشعارات ثم اختبر التنبيه من الزر أدناه.": "Enable notification permission, then test the alert with the button below.",
     "معلومات عن أنياس ومزاياه": "About Anias and its features",
     "رفيقك اليومي للعبادة وتنظيم يومك": "Your daily companion for worship and an organized day",
+    "لغة التطبيق": "App language", "لغة واجهة التطبيق": "App interface language",
+    "تغيّر واجهة التطبيق فقط؛ وتبقى الآيات والأذكار بالعربية.": "Changes the app interface only; Quranic verses and adhkar remain in Arabic.",
+    "تحميل نسخة Android": "Download Anias for Android",
+    "افتح إصدارات أنياس على GitHub لتنزيل آخر APK متاح": "Open Anias releases on GitHub to download the latest APK.",
+    "الأسئلة الشائعة": "Frequently asked questions",
+    "كيف أغيّر المدينة؟": "How do I change my city?",
+    "هل يعمل أنياس بدون إنترنت؟": "Does Anias work offline?",
+    "لماذا تأخر التذكير؟": "Why was my reminder delayed?",
+    "هل يرسل التطبيق بياناتي؟": "Does Anias send my data?",
+    "كيف أحذف بياناتي؟": "How do I delete my data?",
+    "تعرف على ما يحفظه أنياس على جهازك ومتى يستخدم الموقع والخدمات الخارجية.": "Learn what Anias stores on your device and when it uses location and external services.",
     "العربية": "Arabic", "إحصائيات العبادة": "Worship statistics", "أذكار مكتملة": "Completed adhkar", "تسبيحات": "Tasbeeh", "سنن منجزة": "Completed sunnah", "أيام نشطة": "Active days", "من بياناتك المحفوظة على هذا الجهاز": "From data saved on this device", "ابدأ بتسجيل عبادتك اليوم، وستظهر إحصائياتك هنا.": "Start recording your worship today and your statistics will appear here.",
     "أذونات التطبيق": "App permissions", "الموقع": "Location", "الموقع الجغرافي": "Location access",
     "اختر إذنًا لمعرفة فائدته وتفعيله عند الحاجة.": "Choose a permission to see why it is useful and enable it when needed.",
@@ -225,7 +236,7 @@
     if (description) description.content = current === "en"
       ? "Anias — a daily companion for prayer times, the Quran, and adhkar."
       : "أنياس - رفيق يومي لمواقيت الصلاة والقرآن والأذكار";
-    document.querySelectorAll("#languageSelect").forEach(select => { select.value = current; });
+    document.querySelectorAll("#languageSelect, #aboutLanguageSelect").forEach(select => { select.value = current; });
     if (persist) {
       try { localStorage.setItem("anyas_language", current); } catch (error) { /* locale still applies in memory */ }
     }
