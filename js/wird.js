@@ -185,7 +185,14 @@
     window.openAzkarWird?.(id);
   }
 
+  function openWirdSessionCategory(id) {
+    if (!sections[id]) return;
+    openWirdCategory(id);
+    window.setTimeout(() => document.getElementById("openWirdSessionButton")?.click(), 0);
+  }
+
   window.openWirdCategory = openWirdCategory;
+  window.openWirdSessionCategory = openWirdSessionCategory;
   window.openAzkarWird = id => {
     const section = sections[id];
     if (!section || typeof window.openAzkarTopic !== "function") return;

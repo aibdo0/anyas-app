@@ -42,7 +42,7 @@
     badge.textContent = period.badge;
     text.textContent = period.description;
     hint.textContent = period.hint;
-    openButton.textContent = period.button;
+    openButton.textContent = ["morning", "evening", "sleep"].includes(period.id) ? "ابدأ جلسة الورد" : period.button;
     const mark = card.querySelector(".daily-adhkar-mark");
     if (mark) mark.textContent = period.icon;
     openButton.dataset.adhkarAction = period.action;
@@ -51,7 +51,7 @@
   openButton.addEventListener("click", () => {
     const action = openButton.dataset.adhkarAction;
     if (["morning", "evening", "beforeSleep"].includes(action)) {
-      window.openWirdCategory?.(action);
+      window.openWirdSessionCategory?.(action);
       return;
     }
     if (action === "waking") {
