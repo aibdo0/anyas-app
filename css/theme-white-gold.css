@@ -1717,3 +1717,30 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-settings .preview-button { min-height: 32px; padding: 6px 9px; border-radius: 9px; font-size: 11px; }
 #page-settings #fajrMuezzinRow { border-color: #d6bb7d !important; background: linear-gradient(135deg, #fffaf0, #f4ead4) !important; }
 #page-settings #fajrMuezzinRow .setting-title { color: var(--gold-dark); }
+
+/* شاشة الذكر — قراءة أريح وعدّ أوضح */
+#page-azkar-detail .zikr-card {
+  padding: 17px 15px !important;
+  border-bottom-color: #eee5d5 !important;
+}
+#page-azkar-detail .zikr-text {
+  font-size: clamp(21px, 5.3vw, 26px) !important;
+  line-height: 1.95 !important;
+}
+#page-azkar-detail .zikr-meaning-wrap {
+  margin-top: 9px !important;
+  padding: 9px 11px !important;
+  border-inline-start-width: 3px !important;
+  border-radius: 12px !important;
+}
+#page-azkar-detail .zikr-meaning { font-size: 12px; line-height: 1.7; }
+#page-azkar-detail .zikr-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+}
+#page-azkar-detail .zikr-count { padding: 5px 9px; border-radius: 999px; color: var(--gold-dark); background: var(--gold-pale); font-size: 11px; }
+#page-azkar-detail .zikr-button { min-width: 108px; min-height: 40px; padding: 8px 13px; border-radius: 12px; box-shadow: 0 6px 14px rgba(128, 101, 59, .14); }
+#page-azkar-detail .zikr-button:active { transform: scale(.97); }
