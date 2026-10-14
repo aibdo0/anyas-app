@@ -16,6 +16,7 @@ import org.json.JSONObject;
 public class ReminderPlayerService extends Service {
     static final String ACTION_DISMISS = "com.anyas.app.action.DISMISS_REMINDER";
     static final String ACTION_SNOOZE = "com.anyas.app.action.SNOOZE_REMINDER";
+    static final String ACTION_DONE = "com.anyas.app.action.DONE_REMINDER";
     private static final String SNOOZE_PREFS = "anyas_snooze_reminders";
     private MediaPlayer player;
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -34,6 +35,10 @@ public class ReminderPlayerService extends Service {
         }
         if (intent != null && ACTION_SNOOZE.equals(intent.getAction())) {
             snoozeReminder(intent.getStringExtra("notificationKey"), startId);
+            return START_NOT_STICKY;
+        }
+        if (intent != null && ACTION_DONE.equals(intent.getAction())) {
+            completeReminder(intent.getStringExtra("notificationKey"), startId);
             return START_NOT_STICKY;
         }
         ReminderScheduler.createChannels(this);
@@ -80,12 +85,13 @@ public class ReminderPlayerService extends Service {
         android.app.NotificationManager manager = (android.app.NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (manager != null) manager.cancel(ReminderScheduler.requestCode(key));
         getSharedPreferences(SNOOZE_PREFS, MODE_PRIVATE).edit().remove(key).apply();
+        boolean otherReminderPlaying = notificationKey != null && !key.equals(notificationKey) && player != null;
         if (key.equals(notificationKey)) {
             releasePlayer();
             notificationRestored = true;
             stopForeground(true);
         }
-        stopSelfResult(startId);
+        if (!otherReminderPlaying) stopSelfResult(startId);
     }
 
     private void snoozeReminder(String key, int startId) {
@@ -119,6 +125,15 @@ public class ReminderPlayerService extends Service {
         } catch (Exception ignored) { }
         if (scheduled) dismissReminder(key, startId);
         else stopSelfResult(startId);
+    }
+
+    private void completeReminder(String key, int startId) {
+        if (key == null || key.trim().isEmpty()) {
+            stopSelfResult(startId);
+            return;
+        }
+        NotificationHistory.markLatestRead(this, key);
+        dismissReminder(key, startId);
     }
 
     static void rememberReminderForSnooze(Context context, String id, String title, String body, boolean sound, String soundFile, float volume) {

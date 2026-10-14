@@ -71,7 +71,10 @@ public class ReminderReceiver extends BroadcastReceiver {
     }
 
     static Notification buildNotification(Context context, String id, String title, String body, boolean ongoing, boolean snoozeAvailable) {
-        Intent open = new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        String destination = destinationPage(id);
+        Intent open = new Intent(context, MainActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                .putExtra("anyas_page", destination);
         PendingIntent pending = PendingIntent.getActivity(context, ReminderScheduler.requestCode(id), open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Intent dismiss = new Intent(context, ReminderPlayerService.class)
                 .setAction(ReminderPlayerService.ACTION_DISMISS)
@@ -81,6 +84,10 @@ public class ReminderReceiver extends BroadcastReceiver {
                 .setAction(ReminderPlayerService.ACTION_SNOOZE)
                 .putExtra("notificationKey", id);
         PendingIntent snoozePending = PendingIntent.getService(context, ReminderScheduler.requestCode(id) ^ 0x2b71, snooze, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        Intent done = new Intent(context, ReminderPlayerService.class)
+                .setAction(ReminderPlayerService.ACTION_DONE)
+                .putExtra("notificationKey", id);
+        PendingIntent donePending = PendingIntent.getService(context, ReminderScheduler.requestCode(id) ^ 0x6d21, done, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         Notification.Builder builder = Build.VERSION.SDK_INT >= 26
                 ? new Notification.Builder(context, ongoing ? "reminder_playback" : "reminders")
                 : new Notification.Builder(context).setDefaults(ongoing ? 0 : Notification.DEFAULT_VIBRATE);
@@ -95,10 +102,22 @@ public class ReminderReceiver extends BroadcastReceiver {
                 .setAutoCancel(!ongoing)
                 .setContentIntent(pending)
                 .setCategory(ongoing ? Notification.CATEGORY_SERVICE : Notification.CATEGORY_REMINDER);
+        builder.addAction(android.R.drawable.checkbox_on_background, "تم", donePending);
         if (snoozeAvailable && !id.startsWith("test") && !"anyas-reminder-test".equals(id)) {
             builder.addAction(android.R.drawable.ic_lock_idle_alarm, "غفوة ١٠ دقائق", snoozePending);
         }
         return builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, "إزالة وإيقاف الصوت", dismissPending).build();
+    }
+
+    private static String destinationPage(String id) {
+        if (id == null) return "home";
+        if (id.startsWith("notifyWard") || id.startsWith("notifySalawat")
+                || "notifyAyatKursi".equals(id) || "notifyBaqiyat".equals(id)
+                || "notifyFridayKahf".equals(id) || "notifyLastThird".equals(id)) return "azkar";
+        if (id.startsWith("prayer_") || "beforeFajrReminder".equals(id)
+                || "notifyDuha".equals(id) || "notifyFridayPrayer".equals(id)
+                || "notifyFridayHour".equals(id)) return "tasks";
+        return "home";
     }
 
     static void restoreReminderNotification(Context context, String id, String title, String body) {

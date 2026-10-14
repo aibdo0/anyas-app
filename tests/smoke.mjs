@@ -215,6 +215,23 @@ check("Android reminders support one 10-minute snooze without changing regular s
   assert.match(read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java"), /scheduleOne\(context, alarm, reminder/);
 });
 
+check("Android reminder actions open the right app section and mark only the matching item done", () => {
+  const receiver = read("android/app/src/main/java/com/anyas/app/ReminderReceiver.java");
+  const player = read("android/app/src/main/java/com/anyas/app/ReminderPlayerService.java");
+  const history = read("android/app/src/main/java/com/anyas/app/NotificationHistory.java");
+  const activity = read("android/app/src/main/java/com/anyas/app/MainActivity.java");
+  assert.match(receiver, /"تم", donePending/);
+  assert.match(receiver, /\.putExtra\("anyas_page", destination\)/);
+  assert.match(receiver, /\.setContentIntent\(pending\)/);
+  assert.match(receiver, /id\.startsWith\("notifyWard"\)[\s\S]*?return "azkar"/);
+  assert.match(receiver, /return "tasks"/);
+  assert.match(player, /ACTION_DONE\.equals\(intent\.getAction\(\)\)/);
+  assert.match(player, /NotificationHistory\.markLatestRead\(this, key\)/);
+  assert.match(history, /static void markLatestRead\(Context context, String tag\)/);
+  assert.match(history, /normalizedTag\.equals\(normalizeTag\(item\.optString\("tag"\)\)\)/);
+  assert.match(activity, /"tasks"\.equals\(page\)/);
+});
+
 check("notification inbox supports marking all items read", () => {
   assert.match(index, /id="markAllNotificationsReadButton"/);
   assert.match(enhancements, /const markAll = byId\("markAllNotificationsReadButton"\)/);
