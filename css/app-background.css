@@ -1,0 +1,31 @@
+/* خلفية التطبيق الزمنية — صورة هادئة خلف البطاقات مع طبقة وضوح */
+:root { --app-scene-image: none; }
+:root[data-app-scene="awakening"],
+:root[data-app-scene="morning"],
+:root[data-app-scene="day"] { --app-scene-image: url("../assets/adhkar-morning-card.jpg"); }
+:root[data-app-scene="evening"] { --app-scene-image: url("../assets/adhkar-evening-card.jpg"); }
+:root[data-app-scene="sleep"],
+:root[data-app-scene="sahar"] { --app-scene-image: url("../assets/adhkar-sleep-card.jpg"); }
+
+body {
+  background-image:
+    linear-gradient(rgba(7, 13, 24, .84), rgba(7, 13, 24, .9)),
+    var(--app-scene-image),
+    radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .25), transparent 36rem) !important;
+  background-position: center, center, center;
+  background-size: cover, cover, auto;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+:root[data-theme="light"] body {
+  background-image:
+    linear-gradient(rgba(247, 244, 235, .84), rgba(247, 244, 235, .91)),
+    var(--app-scene-image),
+    radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .62), transparent 36rem) !important;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body { background-image: var(--app-scene-image) !important; }
+  :root[data-theme="light"] body { background-image: linear-gradient(rgba(247,244,235,.9), rgba(247,244,235,.94)), var(--app-scene-image) !important; }
+}

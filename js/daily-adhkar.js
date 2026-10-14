@@ -33,6 +33,7 @@
 
   function showPeriod() {
     const period = getCurrentPeriod();
+    document.documentElement.dataset.appScene = period.id;
     section.dataset.adhkarPeriod = period.id;
     card.dataset.adhkarPeriod = period.id;
     card.classList.remove("is-transitioning");
