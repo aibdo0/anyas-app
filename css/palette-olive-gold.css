@@ -97,34 +97,56 @@ body {
   background: linear-gradient(135deg, #514832, #3e412f) !important;
 }
 #page-home .daily-content .content-block {
-  border-color: var(--line) !important;
+  --ink: #302f25;
+  --muted: #77735e;
+  color: #302f25 !important;
+  border-color: #ded5bc !important;
   background: linear-gradient(145deg, #fffaf0, #f2eedf) !important;
 }
 :root[data-theme="dark"] #page-home .daily-content .content-block {
-  border-color: var(--line) !important;
-  background: linear-gradient(145deg, #2a3d2d, #25382a) !important;
+  --ink: #302f25;
+  --muted: #77735e;
+  color: #302f25 !important;
+  border-color: #ded5bc !important;
+  background: linear-gradient(145deg, #fffaf0, #f2eedf) !important;
 }
 
-/* Navigation: forest green replaces charcoal while preserving the gold active state. */
-.bottom-nav {
-  border-color: #62724b !important;
-  background: rgba(39, 65, 43, .97) !important;
-  box-shadow: 0 12px 30px rgba(26, 43, 28, .3) !important;
+/* Navigation: gold bar in light mode; warm dark-and-gold in dark mode. */
+:root:not([data-theme="dark"]) body .bottom-nav {
+  border-color: #8c6c35 !important;
+  background: linear-gradient(135deg, #c4a25a, #b58a3f) !important;
+  box-shadow: 0 12px 30px rgba(97, 72, 29, .26) !important;
 }
-.bottom-nav .nav-item { color: #e4dfc9 !important; }
-.bottom-nav .nav-item.active {
-  color: #f2d894 !important;
-  border-color: rgba(235, 211, 152, .55) !important;
-  background: #465638 !important;
+:root:not([data-theme="dark"]) body .bottom-nav .nav-item { color: #3a2e1c !important; }
+:root:not([data-theme="dark"]) body .bottom-nav .nav-item.active {
+  color: #f6e7bc !important;
+  border-color: rgba(250, 230, 185, .55) !important;
+  background: #382d1b !important;
 }
-.bottom-nav .nav-icon::before {
-  color: #d7c18c !important;
-  border-color: rgba(227, 211, 168, .25) !important;
-  background: #334934 !important;
+:root:not([data-theme="dark"]) body .bottom-nav .nav-icon::before {
+  color: #47371d !important;
+  border-color: rgba(74, 55, 26, .2) !important;
+  background: #d3b56c !important;
 }
-.bottom-nav .nav-item.active .nav-icon::before {
-  color: #f1d58e !important;
-  background: #5b6340 !important;
+:root:not([data-theme="dark"]) body .bottom-nav .nav-item.active .nav-icon::before {
+  color: #f4d991 !important;
+  background: #594525 !important;
+}
+
+/* Preserve the dark appearance without the legacy charcoal/navy cast. */
+:root[data-theme="dark"] body .bottom-nav {
+  border-color: #806b42 !important;
+  background: rgba(43, 36, 24, .98) !important;
+  box-shadow: 0 12px 30px rgba(11, 8, 4, .38) !important;
+}
+:root[data-theme="dark"] body .bottom-nav .nav-item { color: #d8c38f !important; }
+:root[data-theme="dark"] body .bottom-nav .nav-item.active {
+  color: #f4d991 !important;
+  background: #493c25 !important;
+}
+:root[data-theme="dark"] body .bottom-nav .nav-item.active .nav-icon {
+  color: #f4d991 !important;
+  background: #594525 !important;
 }
 
 /* Distinct prayer-adjacent dhikr scenes in olive, leaf green, and warm amber. */
