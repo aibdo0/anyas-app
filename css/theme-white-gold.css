@@ -1508,3 +1508,19 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* شريط التنقل السفلي — أوضح وأكثر ثباتًا */
+.bottom-nav {
+  width: min(calc(100% - 24px), 680px) !important;
+  min-height: 76px !important;
+  padding: 7px 10px 8px !important;
+  border-radius: 25px !important;
+  background: #252627 !important;
+  box-shadow: 0 13px 28px rgba(25, 23, 19, .25) !important;
+}
+.bottom-nav .nav-item { min-height: 57px !important; border-radius: 14px !important; }
+.bottom-nav .nav-item.active { background: #3b3428 !important; }
+.bottom-nav .nav-item .nav-icon { width: 44px !important; height: 44px !important; }
+.bottom-nav .nav-item.active .nav-icon { width: 52px !important; height: 44px !important; border-radius: 14px !important; background: #4a3f2c !important; }
+.bottom-nav .nav-item .nav-icon svg { width: 26px !important; height: 26px !important; }
+.bottom-nav .nav-item.active .nav-icon svg { stroke: #e2bf76 !important; }
