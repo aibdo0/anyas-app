@@ -1574,3 +1574,20 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   box-shadow: 0 7px 18px rgba(128, 101, 59, .1) !important;
 }
 #page-azkar .category-card:active { transform: scale(.985); }
+
+/* الإعدادات — صفوف موحدة ومساحة أهدأ */
+#page-settings .settings-section-title { margin: 17px 4px 7px !important; font-size: 13px !important; }
+#page-settings .settings-card { border-radius: 17px !important; }
+#page-settings .setting-row,
+#page-settings .worship-setting {
+  min-height: 56px !important;
+  gap: 10px !important;
+  padding: 9px 12px !important;
+}
+#page-settings .setting-title,
+#page-settings .worship-setting-title { font-size: 13px; }
+#page-settings .setting-description,
+#page-settings .worship-setting-description { font-size: 10px; line-height: 1.45; }
+#page-settings .switch-track { width: 39px; height: 22px; }
+#page-settings .switch-knob { width: 16px; height: 16px; }
+#page-settings .theme-mode-picker { margin: 2px 0; }
