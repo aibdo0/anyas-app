@@ -1791,3 +1791,16 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-prayer-report .report-stat-number { font-size: 20px; }
 #page-prayer-report .report-stat-label { font-size: 10px; }
 #page-prayer-report .report-range-tab:active { transform: scale(.985); }
+
+/* شاشة التسبيح — عداد أوضح وزر رئيسي أقوى */
+#page-tasbeeh .tasbeeh-card { gap: 8px !important; margin-top: 5px; padding: 20px 15px 16px !important; border-radius: 21px !important; }
+#page-tasbeeh .tasbeeh-selected-dhikr { font-size: 22px; }
+#page-tasbeeh .tasbeeh-counter { width: 156px; height: 156px; margin-top: 4px; font-size: 45px; border-color: #c9a866; box-shadow: inset 0 0 0 9px var(--surface), 0 0 0 1px var(--line), 0 9px 22px rgba(62, 52, 34, .1); }
+#page-tasbeeh .tasbeeh-goal-label { color: var(--gold-dark); font-size: 11px; }
+#page-tasbeeh .tasbeeh-progress-track { height: 6px; margin: 4px 0 1px; }
+#page-tasbeeh .tasbeeh-main-button { min-height: 52px; border-radius: 14px; font-size: 16px; box-shadow: 0 7px 16px rgba(128, 101, 59, .16); }
+#page-tasbeeh .tasbeeh-reset-button { min-height: 36px; padding: 6px 12px; border-radius: 11px; }
+#page-tasbeeh .tasbeeh-presets { gap: 6px !important; }
+#page-tasbeeh .tasbeeh-preset { min-height: 44px; border-radius: 12px; font-size: 12px; transition: border-color .16s ease, background .16s ease, transform .16s ease; }
+#page-tasbeeh .tasbeeh-preset:active { transform: scale(.98); }
+#page-tasbeeh .tasbeeh-note { margin: 9px 3px; font-size: 11px; }
