@@ -1646,3 +1646,21 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-home .prayer-track-item.completed .track-status { color: var(--gold-dark) !important; font-weight: 800; }
 #page-home .prayer-track-item:active { transform: scale(.985); }
 #page-home .prayer-track-item:focus-visible { outline-color: var(--gold); }
+
+/* يوم المسلم — مهام أخف وحالة الإنجاز أوضح */
+#page-tasks .daily-overview-card { padding: 15px !important; border-radius: 20px !important; }
+#page-tasks .daily-overview-metrics { gap: 6px !important; }
+#page-tasks .daily-overview-metrics > div { padding: 8px 6px !important; border-radius: 12px !important; }
+#page-tasks .daily-tasks { gap: 6px !important; }
+#page-tasks .task-item {
+  min-height: 48px !important;
+  padding: 8px 10px !important;
+  border-radius: 13px !important;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease;
+}
+#page-tasks .task-item[data-complete="true"] {
+  border-color: #c8a15d !important;
+  background: linear-gradient(135deg, #fffaf0, #f4ead4) !important;
+}
+#page-tasks .task-item[data-complete="true"] .task-text { color: var(--gold-dark); }
+#page-tasks .task-item:active { transform: scale(.985); }
