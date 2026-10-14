@@ -1818,3 +1818,23 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-privacy .privacy-section h2 { color: var(--gold-dark); font-size: 14px; }
 #page-privacy .privacy-section ul { gap: 4px; margin-top: 1px; font-size: 11px; line-height: 1.65; }
 #page-privacy .privacy-section strong { color: var(--gold-dark); }
+
+/* الصوت والتنبيهات — هوية أكثر احترافية */
+#page-settings .audio-library-heading { margin: 4px 2px 12px !important; }
+#page-settings .audio-library-heading h2 { color: var(--ink); font-size: clamp(25px, 6vw, 31px) !important; letter-spacing: -.3px; }
+#page-settings .audio-library-heading p { max-width: 34rem; margin-top: 5px; font-size: 12px; line-height: 1.7; }
+#page-settings .audio-library-intro {
+  gap: 12px !important;
+  padding: 15px !important;
+  border: 1px solid #eadfc8 !important;
+  border-radius: 21px !important;
+  background: linear-gradient(120deg, #fffaf0, #f4ecdc 78%) !important;
+  box-shadow: 0 9px 22px rgba(128, 101, 59, .08) !important;
+}
+#page-settings .audio-library-intro-icon { width: 48px; height: 48px; border-radius: 15px; color: var(--gold-dark); background: #fff !important; box-shadow: 0 4px 12px rgba(128, 101, 59, .1); }
+#page-settings .audio-library-intro-copy small { color: var(--gold-dark); font-size: 10px; font-weight: 800; }
+#page-settings .audio-library-intro-copy strong { font-size: 17px; }
+#page-settings .audio-library-intro-copy span { font-size: 11px; }
+#page-settings .optional-audio-manager { margin-top: 12px; padding: 13px !important; border-radius: 18px !important; }
+#page-settings .optional-audio-row { padding: 10px !important; border: 1px solid rgba(196,154,85,.12); border-radius: 13px; }
+#page-settings .optional-audio-row button { color: var(--gold-dark); border-color: #e0d0ad; background: var(--surface); }
