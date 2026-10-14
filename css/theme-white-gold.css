@@ -1705,3 +1705,15 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-qibla .qibla-start-button { min-height: 45px; border-radius: 13px; box-shadow: 0 7px 16px rgba(128, 101, 59, .15); }
 #page-qibla .qibla-message { margin-top: 9px; font-size: 11px; line-height: 1.65; }
 #page-qibla .qibla-accuracy { min-height: 32px; margin-top: 7px; padding: 5px 10px; font-size: 11px; }
+
+/* الأذان — خيارات مرتبة وأذان الفجر أوضح */
+#page-settings .audio-library-card { padding: 12px !important; border-radius: 18px !important; }
+#page-settings .audio-library-group { border-radius: 15px !important; }
+#page-settings .audio-library-summary { min-height: 52px !important; padding: 10px 11px !important; }
+#page-settings .audio-group-content { padding: 8px 10px !important; }
+#page-settings .expandable-row { min-height: 52px !important; padding: 8px 10px !important; border-radius: 13px !important; }
+#page-settings .muezzin-card { gap: 9px !important; min-height: 48px !important; padding: 9px 10px !important; border-radius: 12px !important; }
+#page-settings .muezzin-name { font-size: 12px; }
+#page-settings .preview-button { min-height: 32px; padding: 6px 9px; border-radius: 9px; font-size: 11px; }
+#page-settings #fajrMuezzinRow { border-color: #d6bb7d !important; background: linear-gradient(135deg, #fffaf0, #f4ead4) !important; }
+#page-settings #fajrMuezzinRow .setting-title { color: var(--gold-dark); }
