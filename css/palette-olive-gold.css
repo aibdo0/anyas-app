@@ -189,3 +189,32 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .bottom-nav, #page-home .daily-adhkar-card[data-adhkar-period] { transition: none !important; }
 }
+
+
+/* Give the selected prayer-period palette priority over older time-scene rules. */
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="awakening"] {
+  background: radial-gradient(ellipse at 85% 95%, rgba(224,184,107,.52), transparent 37%), linear-gradient(145deg,#43533a,#68704b 62%,#8a7950) !important;
+}
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="after-fajr"],
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="sunrise"] {
+  background: radial-gradient(ellipse at 87% 100%, rgba(240,194,111,.62), transparent 37%), linear-gradient(145deg,#536444,#788052 62%,#a07c4a) !important;
+}
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="morning"] {
+  background: radial-gradient(ellipse at 88% 8%, rgba(224,198,125,.42), transparent 35%), linear-gradient(145deg,#36553c,#4b6a44 60%,#69764b) !important;
+}
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="day"],
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="after-dhuhr"] {
+  background: radial-gradient(ellipse at 10% 0%, rgba(213,194,119,.38), transparent 42%), linear-gradient(145deg,#40583d,#5b6c43 62%,#79764b) !important;
+}
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="after-asr"] {
+  background: radial-gradient(ellipse at 88% 100%, rgba(231,173,98,.56), transparent 40%), linear-gradient(145deg,#46543a,#696346 60%,#896845) !important;
+}
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="evening"],
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="after-maghrib"] {
+  background: radial-gradient(ellipse at 82% 100%, rgba(225,158,88,.52), transparent 39%), linear-gradient(145deg,#493d30,#67513a 58%,#806444) !important;
+}
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="after-isha"],
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="sleep"],
+:root[data-app-scene] #page-home .daily-adhkar-card[data-adhkar-period="sahar"] {
+  background: radial-gradient(circle at 13% 20%,rgba(255,243,202,.55) 0 1px,transparent 1.8px), radial-gradient(circle at 42% 12%,rgba(255,250,226,.38) 0 1px,transparent 1.8px), radial-gradient(circle at 72% 30%,rgba(240,220,169,.4) 0 1px,transparent 1.8px), radial-gradient(ellipse at 84% 0%,rgba(185,158,93,.28),transparent 42%), linear-gradient(145deg,#253b2c,#344c34 65%,#4a5439) !important;
+}
