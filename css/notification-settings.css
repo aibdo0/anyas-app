@@ -14,6 +14,17 @@
 #page-settings .notification-readiness-copy strong { color: var(--ink); font-size: 12px; }
 #page-settings .notification-readiness-copy span { color: var(--muted); font-size: 11px; line-height: 1.55; }
 #page-settings .notification-readiness .secondary-action { flex: 0 0 auto; min-height: 36px; padding: 7px 10px; }
+#page-settings .quiet-hours-panel { margin: 0 0 14px; padding: 12px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface-soft); }
+#page-settings .quiet-hours-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#page-settings .quiet-hours-copy { display: grid; min-width: 0; gap: 4px; }
+#page-settings .quiet-hours-copy strong { color: var(--ink); font-size: 13px; font-weight: 900; }
+#page-settings .quiet-hours-copy span { color: var(--muted); font-size: 10px; line-height: 1.5; }
+#page-settings .quiet-hours-times { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 12px; }
+#page-settings .quiet-hours-times label { display: grid; gap: 6px; color: var(--muted); font-size: 10px; font-weight: 800; }
+#page-settings .quiet-hours-times input { width: 100%; min-width: 0; min-height: 40px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); background: var(--surface); font: inherit; font-size: 12px; direction: ltr; text-align: center; }
+#page-settings .quiet-hours-times input:focus-visible { outline: 3px solid rgba(196,154,85,.35); outline-offset: 1px; }
+#page-settings .quiet-hours-hint { display: block; margin-top: 8px; color: var(--muted); font-size: 9px; line-height: 1.55; }
+:root[data-theme="dark"] #page-settings .quiet-hours-panel { background: var(--surface); }
 #page-settings .notification-settings-group {
   display: block;
   margin: 10px 0;

@@ -125,6 +125,11 @@
     "الموقع اختياري": "Location is optional",
     "لن نطلب إذن الموقع إلا عند اختيار استخدام موقعي الحالي. يمكنك اختيار المدينة يدويًا.": "We won't ask for location permission unless you choose to use your current location. You can choose a city manually.",
     "اختيار المدينة": "Choose a city", "استخدم القاهرة مؤقتًا": "Use Cairo for now", "رجوع": "Back",
+    "وقت الهدوء": "Quiet hours",
+    "لا تظهر التذكيرات ولا تُشغّل أصواتها خلال الفترة التي تختارها.": "Notifications won't appear or play sounds during the period you choose.",
+    "تفعيل وقت الهدوء": "Enable quiet hours",
+    "بداية الهدوء": "Quiet hours start", "نهاية الهدوء": "Quiet hours end",
+    "الأوقات حسب ساعة جهازك، ويمكن أن تمتد الفترة إلى ما بعد منتصف الليل.": "Times follow your device clock; the quiet period can extend past midnight.",
     "يمكنك تغيير المدينة لاحقًا من أعلى مواقيت الصلاة.": "You can change your city later from the prayer times screen."
   };
 

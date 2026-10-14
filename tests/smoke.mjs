@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -21,6 +22,7 @@ const qibla = read("js/qibla.js");
 const commonCities = read("data/common-cities.js");
 const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java");
 const serviceWorker = read("sw.js");
+const quietHoursSource = read("js/quiet-hours.js");
 
 check("reminder settings expose a test notification button", () => {
   assert.match(index, /id="testNotificationButton"/);
@@ -217,6 +219,33 @@ check("notification inbox can filter unread items only", () => {
   assert.match(enhancements, /filterUnread\?\.addEventListener\("click"/);
   assert.match(enhancements, /لا توجد إشعارات غير مقروءة/);
   assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
+});
+
+check("quiet hours are optional and correctly handle midnight crossings", () => {
+  const storage = new Map();
+  const window = {};
+  vm.runInNewContext(quietHoursSource, {
+    window,
+    localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key, value) => storage.set(key, value) },
+    document: { getElementById: () => null }
+  });
+  const isQuiet = window.anyasIsQuietHours;
+  assert.equal(isQuiet(new Date(2026, 9, 14, 23, 0)), false, "quiet hours are off by default");
+  const overnight = { enabled: true, start: "22:00", end: "06:00" };
+  assert.equal(isQuiet(new Date(2026, 9, 14, 21, 59), overnight), false);
+  assert.equal(isQuiet(new Date(2026, 9, 14, 22, 0), overnight), true);
+  assert.equal(isQuiet(new Date(2026, 9, 15, 5, 59), overnight), true);
+  assert.equal(isQuiet(new Date(2026, 9, 15, 6, 0), overnight), false);
+  assert.match(index, /id="quietHoursEnabled"/);
+  assert.match(index, /id="quietHoursStart" type="time" value="22:00"/);
+  assert.match(index, /id="quietHoursEnd" type="time" value="06:00"/);
+  assert.match(settings, /quietHours: window\.anyasGetQuietHoursSettings/);
+  assert.match(settings, /if \(window\.anyasIsQuietHours\?\.\(\)\) return/);
+  assert.match(read("js/friday.js"), /if \(window\.anyasIsQuietHours\?\.\(\)\) return/);
+  assert.match(scheduler, /static boolean quietHoursActive\(Context context\)/);
+  assert.match(read("android/app/src/main/java/com/anyas/app/ReminderReceiver.java"), /if \(ReminderScheduler\.quietHoursActive\(context\)\)/);
+  assert.match(read("android/app/src/main/java/com/anyas/app/RainReceiver.java"), /if \(ReminderScheduler\.quietHoursActive\(context\)\) return/);
+  assert.match(serviceWorker, /quiet-hours\.js\?v=20261014-1/);
 });
 
 check("encrypted backups use local AES-GCM with password-protected import", () => {

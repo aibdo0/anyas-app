@@ -735,6 +735,7 @@ function anyasFormatReminderTime(value) {
 }
 
 function checkDailyAdhkarNotifications() {
+  if (window.anyasIsQuietHours?.()) return;
   const schedule = [
     { id: "notifyWardSahar", key: "sahar", title: "أذكار السحر", body: "حان وقت الاستغفار والدعاء.", minute: 120, audioId: "qiyamReminderAudio" },
     { id: "notifyWardAwakening", key: "awakening", title: "أذكار الاستيقاظ", body: "ابدأ يومك بذكر الله.", minute: 270, audioId: "wakeupWardAudio" },
@@ -769,6 +770,7 @@ function checkDailyAdhkarNotifications() {
 
 
 function checkPrayerReminderNotifications() {
+  if (window.anyasIsQuietHours?.()) return;
   if (localStorage.getItem("anyas_notifyPrayerSoon") !== "true") return;
   const timings = window.todayTimings;
   if (!timings) return;
@@ -807,6 +809,7 @@ function checkPrayerReminderNotifications() {
 }
 
 function fireOptionalReminder(id, key, title, body, audioId, dayKey = new Date().toDateString()) {
+  if (window.anyasIsQuietHours?.()) return;
   if (localStorage.getItem(`anyas_${id}`) !== "true") return;
   const firedKey = `anyas_optional_${key}_${dayKey}`;
   if (localStorage.getItem(firedKey) === "true") return;
@@ -850,6 +853,7 @@ function checkLastThirdNotification() {
 }
 
 function checkAdditionalReminders() {
+  if (window.anyasIsQuietHours?.()) return;
   const now = new Date();
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
   const withinMinute = target => currentMinutes >= target && currentMinutes <= target + 1;
@@ -1501,6 +1505,7 @@ function setupNotifications() {
     );
 
   });
+  window.setupAnyasQuietHours?.();
   setupReminderScheduleSettings();
   setupNotificationGroupStatus();
   setupNotificationReadiness();
@@ -1661,7 +1666,8 @@ function syncAndroidNotificationSettings() {
     eveningVoice: localStorage.getItem("anyas_eveningWardVoice") || "mishary",
     ayatVoice: localStorage.getItem("anyas_ayatKursiVoice") || "mishary",
     sound: document.getElementById("notificationSound")?.checked === true && !window.anyasAudioMuted,
-    volume: masterVolume
+    volume: masterVolume,
+    quietHours: window.anyasGetQuietHoursSettings?.() || { enabled: false, start: "22:00", end: "06:00" }
   }));
 }
 
