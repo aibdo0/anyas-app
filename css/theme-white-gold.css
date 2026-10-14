@@ -1628,3 +1628,21 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-notifications .notification-history-heading strong { font-size: 12px; }
 #page-notifications .notification-history-copy p { font-size: 10px; line-height: 1.5; }
 #page-notifications .notification-history-item.unread { border-inline-start: 3px solid var(--gold) !important; }
+
+/* متابعة الصلاة — حالة التسجيل أوضح */
+#page-home .prayer-tracker { gap: 7px !important; }
+#page-home .prayer-track-item {
+  min-height: 50px !important;
+  padding: 9px 11px !important;
+  border-radius: 14px !important;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease;
+}
+#page-home .prayer-track-item > span:first-child { font-size: 13px; }
+#page-home .prayer-track-item .track-status { font-size: 11px; }
+#page-home .prayer-track-item.completed {
+  border-color: #c8a15d !important;
+  background: linear-gradient(135deg, #fffaf0, #f4ead4) !important;
+}
+#page-home .prayer-track-item.completed .track-status { color: var(--gold-dark) !important; font-weight: 800; }
+#page-home .prayer-track-item:active { transform: scale(.985); }
+#page-home .prayer-track-item:focus-visible { outline-color: var(--gold); }
