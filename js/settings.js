@@ -1368,7 +1368,8 @@ function setupThemeAndLanguage() {
     }
   }
 
-  let timeBackgroundEnabled = false;
+  // الخلفية الزمنية مفعّلة افتراضيًا؛ يظل اختيار المستخدم "إيقاف" محفوظًا.
+  let timeBackgroundEnabled = true;
   try {
     const savedTimeBackground = localStorage.getItem("anyas_autoBackground");
     if (savedTimeBackground === "false") timeBackgroundEnabled = false;
