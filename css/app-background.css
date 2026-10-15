@@ -9,7 +9,7 @@
 
 body {
   background-image:
-    linear-gradient(rgba(7, 13, 24, .78), rgba(7, 13, 24, .86)),
+    linear-gradient(rgba(7, 13, 24, .90), rgba(7, 13, 24, .94)),
     var(--app-scene-image),
     radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .25), transparent 36rem) !important;
   background-position: center, center, center;
@@ -20,7 +20,7 @@ body {
 
 :root[data-theme="light"] body {
   background-image:
-    linear-gradient(rgba(247, 244, 235, .78), rgba(247, 244, 235, .88)),
+    linear-gradient(rgba(247, 244, 235, .91), rgba(247, 244, 235, .96)),
     var(--app-scene-image),
     radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .62), transparent 36rem) !important;
 }
