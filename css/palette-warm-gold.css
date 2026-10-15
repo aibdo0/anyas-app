@@ -220,3 +220,9 @@ button { -webkit-tap-highlight-color: transparent; }
 :root[data-theme="dark"] .wird-item.is-complete .wird-complete-button { color: var(--gold-dark) !important; border-color: var(--line) !important; background: var(--gold-pale) !important; }
 :root[data-theme="dark"] .wird-section.is-complete .wird-section-meta,
 :root[data-theme="dark"] .friday-task-item.is-complete .friday-task-check { color: var(--gold-dark) !important; }
+
+
+/* مفاتيح التشغيل: إيقاف يسار وتشغيل يمين في الواجهة العربية والإنجليزية. */
+.switch { direction: ltr !important; }
+.switch .switch-knob { left: 3px !important; right: auto !important; transform: none !important; }
+.switch input:checked ~ .switch-knob { left: auto !important; right: 3px !important; transform: none !important; }
