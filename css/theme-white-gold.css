@@ -665,8 +665,7 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .next-prayer {
   min-height: 235px; display: flex; flex-direction: column; justify-content: center; gap: 3px;
   border: 1px solid rgba(255,255,255,.22) !important; color: #fff !important;
-  background-image: linear-gradient(105deg,rgba(19,17,14,.48),rgba(22,19,15,.55) 48%,rgba(18,16,13,.72)),url("../assets/prayer-hero.jpg") !important;
-  background-position: center 48% !important; background-size: cover !important;
+  background: #383126 !important;
   box-shadow: 0 15px 36px rgba(31,25,16,.2) !important;
 }
 .prayer-hero-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 2px; }
@@ -801,15 +800,13 @@ html[data-theme="dark"] { background: var(--page) !important; }
 :root[data-theme="dark"] .qibla-arrow { color: #d0b276; }
 :root[data-theme="dark"] body .next-prayer {
   color: #fff !important; border-color: rgba(255,255,255,.22) !important;
-  background-image: linear-gradient(105deg,rgba(19,17,14,.08),rgba(22,19,15,.24) 48%,rgba(18,16,13,.65)),url("../assets/prayer-hero.jpg") !important;
-  background-position: center 48% !important; background-size: cover !important;
+  background: #383126 !important;
 }
 :root[data-theme="dark"] body .page .back-button { color: var(--ink) !important; border-color: var(--line) !important; background: var(--surface) !important; }
 
 :root[data-theme="light"] body .next-prayer {
   color: #fff !important; border-color: rgba(255,255,255,.22) !important;
-  background-image: linear-gradient(105deg,rgba(19,17,14,.08),rgba(22,19,15,.24) 48%,rgba(18,16,13,.65)),url("../assets/prayer-hero.jpg") !important;
-  background-position: center 48% !important; background-size: cover !important;
+  background: #383126 !important;
 }
 :root[data-theme="light"] body .next-prayer .prayer-name,
 :root[data-theme="light"] body .next-prayer .prayer-time,
@@ -1057,21 +1054,8 @@ html[data-theme="dark"] { background: var(--page) !important; }
 html[lang="en"] .more-menu-copy, html[lang="en"] .setting-info, html[lang="en"] .about-card, html[lang="en"] .about-hero { text-align: left; }
 html[lang="en"] .location-setting-actions { justify-content: flex-start; }
 
-/* Optional professional morning/night artwork for the countdown surfaces. */
-:root[data-auto-background="true"] body {
-  min-height: 100%;
-  background-color: #f3eee4;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center top;
-  background-size: cover;
-  background-image: linear-gradient(rgba(255,255,255,.16), rgba(255,255,255,.16)), url("../assets/anyas-morning-background.webp");
-  transition: background-color .7s ease, background-image .7s ease;
-}
-:root[data-auto-background="true"][data-time-scene="night"] body {
-  background-color: #0e1824;
-  background-image: linear-gradient(rgba(5,12,22,.12), rgba(5,12,22,.12)), url("../assets/anyas-night-background.webp");
-}
+/* خلفية التطبيق تعتمد على لون الصفحة فقط؛ لا صور خلف المحتوى. */
+body { background-image: none; }
 .setting-info { min-width: 0; }
 @media(max-width:420px) { .about-hero { gap: 10px; padding: 13px; } .about-app-icon { width: 48px; height: 48px; flex-basis: 48px; } .about-version { padding-inline: 7px; font-size: 10px; } }
 
@@ -1097,11 +1081,9 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 
 
 /* 2026-10-12 — ضبط التناسق البصري للموبايل دون تغيير الهوية */
-:root[data-time-scene="night"] body,
 :root[data-theme="dark"] body {
   background: radial-gradient(circle at 50% -8%, rgba(67, 74, 87, .34), transparent 32rem), #101722 !important;
 }
-:root[data-time-scene="night"] #page-home .main-header,
 :root[data-theme="dark"] #page-home .main-header {
   margin-bottom: 14px;
   padding: 15px 14px 13px;
@@ -1110,35 +1092,24 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   background: linear-gradient(135deg, rgba(62, 53, 38, .92), rgba(35, 39, 47, .94));
   box-shadow: 0 14px 30px rgba(7, 12, 20, .24);
 }
-:root[data-time-scene="night"] #page-home .home-greeting,
 :root[data-theme="dark"] #page-home .home-greeting { color: rgba(255,255,255,.78); }
-:root[data-time-scene="night"] #page-home .home-brand,
 :root[data-theme="dark"] #page-home .home-brand { color: #fff !important; }
-:root[data-time-scene="night"] #page-home .theme-toggle,
-:root[data-time-scene="night"] #page-home .notification-bell-button,
 :root[data-theme="dark"] #page-home .theme-toggle,
 :root[data-theme="dark"] #page-home .notification-bell-button { border-color: rgba(229,197,127,.3); color: #e4c27b; background: rgba(255,255,255,.06); box-shadow: none; }
 #page-home .next-prayer { min-height: 210px; padding: 19px 18px 16px; border-radius: 25px; }
 #page-home .prayer-name { font-size: clamp(24px, 7vw, 31px); }
 #page-home .prayer-time { font-size: clamp(32px, 10vw, 46px); }
 #page-home .daily-adhkar-card { border-radius: 22px; }
-:root[data-time-scene="night"] #page-home .daily-adhkar-card,
 :root[data-theme="dark"] #page-home .daily-adhkar-card {
   border-color: rgba(154, 137, 103, .42) !important;
   background: linear-gradient(145deg, #1c283e, #111a2b 90%) !important;
   box-shadow: 0 14px 30px rgba(6, 13, 26, .24);
 }
-:root[data-time-scene="night"] #page-home .daily-adhkar-card .daily-adhkar-title,
-:root[data-time-scene="night"] #page-home .daily-adhkar-card .daily-adhkar-text,
 :root[data-theme="dark"] #page-home .daily-adhkar-card .daily-adhkar-title,
 :root[data-theme="dark"] #page-home .daily-adhkar-card .daily-adhkar-text { color: #f4f1e9 !important; }
-:root[data-time-scene="night"] #page-home .daily-adhkar-card .daily-adhkar-text,
 :root[data-theme="dark"] #page-home .daily-adhkar-card .daily-adhkar-text { background: rgba(255,255,255,.08); border-inline-start-color: #d4b36d; }
-:root[data-time-scene="night"] #page-home .daily-adhkar-card .daily-adhkar-eyebrow,
-:root[data-time-scene="night"] #page-home .daily-adhkar-card .daily-adhkar-hint,
 :root[data-theme="dark"] #page-home .daily-adhkar-card .daily-adhkar-eyebrow,
 :root[data-theme="dark"] #page-home .daily-adhkar-card .daily-adhkar-hint { color: #c7c0b2 !important; }
-:root[data-time-scene="night"] #page-home .daily-adhkar-button,
 :root[data-theme="dark"] #page-home .daily-adhkar-button { color: #211d17; background: #e6c983; border-color: #eed89f; box-shadow: none; }
 .bottom-nav {
   width: min(calc(100% - 30px), 680px) !important;
@@ -1164,9 +1135,7 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-tasks .daily-overview-card {
   color: #fff !important;
   border-color: rgba(225, 195, 132, .38) !important;
-  background-image: linear-gradient(105deg, rgba(14, 22, 36, .88), rgba(18, 27, 43, .68) 55%, rgba(67, 50, 29, .48)), url("../assets/anyas-tasks-hero.jpg") !important;
-  background-position: center, center;
-  background-size: cover, cover;
+  background: #383126 !important;
   box-shadow: 0 14px 32px rgba(19, 25, 36, .22);
 }
 #page-tasks .daily-overview-card::before { background: linear-gradient(#ebcf8e, #9f7740); }
@@ -1193,9 +1162,7 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   border: 1px solid rgba(224, 194, 132, .38);
   border-radius: 23px;
   color: #fff;
-  background-image: linear-gradient(105deg, rgba(12, 19, 30, .87), rgba(16, 25, 42, .6) 53%, rgba(34, 25, 18, .2)), url("../assets/anyas-hisn-hero.jpg");
-  background-position: center;
-  background-size: cover;
+  background: #383126;
   box-shadow: 0 14px 32px rgba(19, 25, 36, .18);
 }
 #page-azkar .hisn-hero-copy { position: relative; z-index: 1; display: grid; gap: 3px; max-width: 72%; }
@@ -1216,9 +1183,7 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   border: 1px solid rgba(224, 194, 132, .38);
   border-radius: 23px;
   color: #fff;
-  background-image: linear-gradient(105deg, rgba(35, 28, 18, .82), rgba(55, 45, 28, .58) 54%, rgba(15, 24, 39, .28)), url("../assets/anyas-more-hero.jpg");
-  background-position: center;
-  background-size: cover;
+  background: #383126;
   box-shadow: 0 14px 32px rgba(19, 25, 36, .18);
 }
 #page-tasks .tasks-hero-copy { position: relative; z-index: 1; display: grid; gap: 3px; width: 100%; text-align: right; }
@@ -1239,9 +1204,7 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   border: 1px solid rgba(224, 194, 132, .38);
   border-radius: 23px;
   color: #fff;
-  background-image: linear-gradient(105deg, rgba(13, 18, 27, .86), rgba(25, 29, 37, .62) 54%, rgba(69, 51, 25, .26)), url("../assets/anyas-more-tools-hero.jpg");
-  background-position: center;
-  background-size: cover;
+  background: #383126;
   box-shadow: 0 14px 32px rgba(19, 25, 36, .18);
 }
 #page-more .more-hero-copy { position: relative; z-index: 1; display: grid; gap: 3px; width: 100%; text-align: right; }
@@ -1356,16 +1319,12 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-home .daily-adhkar-card[data-adhkar-period="morning"] {
   color: #fff !important;
   border-color: rgba(255, 220, 137, .72) !important;
-  background-image: linear-gradient(90deg, rgba(18, 33, 43, .25), rgba(18, 24, 31, .82)), url("../assets/anyas-morning-background.webp") !important;
-  background-size: cover !important;
-  background-position: center !important;
+  background-image: none !important;
 }
 #page-home .daily-adhkar-card[data-adhkar-period="evening"] {
   color: #fff !important;
   border-color: rgba(250, 177, 108, .72) !important;
-  background-image: linear-gradient(90deg, rgba(38, 24, 32, .28), rgba(26, 22, 29, .85)), url("../assets/prayer-hero.jpg") !important;
-  background-size: cover !important;
-  background-position: center 48% !important;
+  background-image: none !important;
 }
 #page-home .daily-adhkar-card[data-adhkar-period="morning"] :is(.daily-adhkar-title,.daily-adhkar-text),
 #page-home .daily-adhkar-card[data-adhkar-period="evening"] :is(.daily-adhkar-title,.daily-adhkar-text) { color: #fff !important; }
@@ -1847,23 +1806,17 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-settings .data-management-actions .setting-action-button { min-height: 40px; border-radius: 11px; font-size: 11px; }
 #page-settings .backup-password-field { border-radius: 11px; }
 
-/* خلفيات الورد الجديدة */
+/* ألوان بطاقات الورد؛ تُنسّق نهائيًا حسب الثيم في لوحة الألوان. */
 #page-home .daily-adhkar-card[data-adhkar-period="morning"] {
-  background-image: linear-gradient(90deg, rgba(18,33,43,.2), rgba(18,24,31,.84)), url("../assets/adhkar-morning-card.jpg") !important;
-  background-size: cover !important;
-  background-position: center !important;
+  background-image: none !important;
 }
 #page-home .daily-adhkar-card[data-adhkar-period="evening"] {
-  background-image: linear-gradient(90deg, rgba(38,24,32,.2), rgba(26,22,29,.86)), url("../assets/adhkar-evening-card.jpg") !important;
-  background-size: cover !important;
-  background-position: center !important;
+  background-image: none !important;
 }
 #page-home .daily-adhkar-card[data-adhkar-period="sleep"] {
   color: #eef3ff !important;
   border-color: #526b9d !important;
-  background-image: linear-gradient(90deg, rgba(16,23,43,.22), rgba(8,14,31,.9)), url("../assets/adhkar-sleep-card.jpg") !important;
-  background-size: cover !important;
-  background-position: center !important;
+  background-image: none !important;
 }
 
 

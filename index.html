@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta id="themeColorMeta" name="theme-color" content="#fbfaf7">
+<meta id="themeColorMeta" name="theme-color" content="#f7f5ef">
 <meta name="description" content="أنياس - رفيق يومي لمواقيت الصلاة والقرآن والأذكار">
 <link rel="manifest" href="manifest.webmanifest">
 <title>أنياس</title>
@@ -12,11 +12,9 @@
   (function () {
     var mode = "light";
     var locale = "ar";
-    var autoBackground = false;
     try {
       mode = localStorage.getItem("anyas_themeMode") || "";
       locale = localStorage.getItem("anyas_language") === "en" ? "en" : "ar";
-      autoBackground = localStorage.getItem("anyas_autoBackground") !== "false";
       if (!["system", "light", "dark"].includes(mode)) {
         var legacy = localStorage.getItem("anyas_darkMode");
         mode = legacy === "false" ? "light" : legacy === "true" ? "dark" : "light";
@@ -28,9 +26,6 @@
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "en" ? "ltr" : "rtl";
-    document.documentElement.dataset.autoBackground = String(autoBackground);
-    var hour = new Date().getHours();
-    document.documentElement.dataset.timeScene = hour >= 6 && hour < 18 ? "morning" : "night";
   })();
 </script>
 
@@ -39,7 +34,7 @@
 <link rel="stylesheet" href="css/prayer.css?v=20260927-2">
 <link rel="stylesheet" href="css/azkar.css?v=20261003-1">
 <link rel="stylesheet" href="css/wird-session.css?v=20261014-1">
-<link rel="stylesheet" href="css/daily-adhkar.css?v=20261013-2">
+<link rel="stylesheet" href="css/daily-adhkar.css?v=20261013-3">
 <link rel="stylesheet" href="css/settings.css?v=20261003-3">
 <link rel="stylesheet" href="css/audio-library.css?v=20261007-1">
 
@@ -47,18 +42,18 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261015-1">
-<link rel="stylesheet" href="css/app-background.css?v=20261015-8">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261015-2">
+<link rel="stylesheet" href="css/app-background.css?v=20261015-9">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20261003-1">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 <link rel="stylesheet" href="css/friday.css?v=20261003-2">
 <link rel="stylesheet" href="css/notification-settings.css?v=20261014-1">
-<link rel="stylesheet" href="css/more-page.css?v=20261015-1">
+<link rel="stylesheet" href="css/more-page.css?v=20261015-2">
 <link rel="stylesheet" href="css/app-design-system.css?v=20261013-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
-<link rel="stylesheet" href="css/palette-warm-gold.css?v=20261015-5">
+<link rel="stylesheet" href="css/palette-warm-gold.css?v=20261015-7">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -878,18 +873,6 @@ aria-selected="false"
     <label class="theme-mode-option"><input type="radio" name="themeMode" value="dark"><span>داكن</span></label>
   </div>
 </div>
-
-<div class="setting-row time-background-setting">
-  <div class="setting-info">
-    <div class="setting-title">خلفيات التطبيق حسب الوقت</div>
-    <div class="setting-description" id="timeBackgroundDescription">خلفية صباحية أو ليلية هادئة للتطبيق ويمكنك إيقافها متى شئت</div>
-  </div>
-  <label class="switch" aria-label="تفعيل الخلفيات حسب وقت اليوم">
-    <input id="timeBackgroundToggle" type="checkbox">
-    <span class="switch-track"></span><span class="switch-knob"></span>
-  </label>
-</div>
-
 
 <div class="setting-row">
 
@@ -2341,7 +2324,7 @@ type="button"
 <script src="js/azkar.js?v=20261014-1"></script>
 <script src="js/wird.js?v=20261014-2"></script>
 <script src="js/optional-audio.js?v=20261014-2"></script>
-<script src="js/settings.js?v=20261015-1"></script>
+<script src="js/settings.js?v=20261015-2"></script>
 <script src="js/qibla.js?v=20261008-1"></script>
 <script src="js/app-enhancements.js?v=20261013-3"></script>
 <script src="js/daily-devotions.js?v=20261003-1"></script>
