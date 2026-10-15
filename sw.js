@@ -1,4 +1,4 @@
-const CACHE_NAME = "anyas-shell-v1.1.9";
+const CACHE_NAME = "anyas-shell-v1.2.0";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -16,6 +16,8 @@ const CORE_ASSETS = [
   "./css/audio-library.css",
   "./css/offline-fonts.css",
   "./css/theme-white-gold.css",
+  "./css/app-background.css?v=20261015-1",
+  "./css/palette-warm-gold.css?v=20261015-1",
   "./css/tasks-ux.css",
   "./css/tasks-structure.css",
   "./css/home-structure.css",
@@ -25,7 +27,7 @@ const CORE_ASSETS = [
   "./css/app-design-system.css",
   "./css/first-run-onboarding.css",
   "./css/privacy.css",
-  "./data/app-version.js?v=20261014-3",
+  "./data/app-version.js?v=20261015-1",
   "./js/i18n.js?v=20261014-1",
   "./data/azkar-topics.js",
   "./data/azkar-benefits.js",
