@@ -273,7 +273,7 @@
   try { current = localStorage.getItem("anyas_language") === "en" ? "en" : "ar"; } catch (error) { current = "ar"; }
   document.documentElement.lang = current;
   document.documentElement.dir = current === "en" ? "ltr" : "rtl";
-  fetch("data/en-ui-translations.json?v=20261015-2")
+  fetch("data/en-ui-translations.json?v=20261001-1")
     .then(response => { if (!response.ok) throw new Error("translation data unavailable"); return response.json(); })
     .then(data => {
       dictionary = { ...data, ...manual };

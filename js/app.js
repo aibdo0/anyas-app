@@ -353,7 +353,7 @@ function setupQuickActions() {
         else openTasbeehFallback();
       } else if (destination === "qibla") {
         const backButton = document.getElementById("qiblaBackButton");
-        if (backButton) backButton.dataset.returnTo = button.dataset.returnTo || (button.closest("#page-home") ? "home" : "more");
+        if (backButton) backButton.dataset.returnTo = "more";
         goToPage("qibla");
       } else if (destination === "prayer-report") {
         goToPage("prayer-report");
@@ -361,13 +361,6 @@ function setupQuickActions() {
       } else {
         goToPage(destination);
       }
-    });
-  });
-  document.querySelectorAll("[data-home-action]").forEach(button => {
-    button.addEventListener("click", () => {
-      const action = button.dataset.homeAction;
-      if (action === "daily-adhkar") document.getElementById("openDailyAdhkarButton")?.click();
-      else if (action === "prayer-schedule") document.getElementById("openPrayerScheduleButton")?.click();
     });
   });
   const syncPrivacyLanguage = () => {

@@ -1,4 +1,4 @@
-const CACHE_NAME = "anyas-shell-v1.3.8";
+const CACHE_NAME = "anyas-shell-v1.3.5";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -26,14 +26,12 @@ const CORE_ASSETS = [
   "./css/home-structure.css",
   "./css/friday.css",
   "./css/notification-settings.css?v=20261014-1",
-  "./css/more-page.css?v=20261015-2",
+  "./css/more-page.css",
   "./css/app-design-system.css?v=20261015-3",
-  "./css/home-premium.css?v=20261015-2",
   "./css/first-run-onboarding.css",
   "./css/privacy.css",
   "./data/app-version.js?v=20261015-1",
-  "./js/i18n.js?v=20261015-3",
-  "./data/en-ui-translations.json?v=20261015-2",
+  "./js/i18n.js?v=20261015-2",
   "./data/azkar-topics.js",
   "./data/azkar-benefits.js",
   "./data/daily-quran.js",
@@ -50,8 +48,8 @@ const CORE_ASSETS = [
   "./js/settings.js?v=20261015-2",
   "./js/qibla.js",
   "./js/app-enhancements.js",
-  "./js/daily-devotions.js?v=20261015-2",
-  "./js/app.js?v=20261015-2",
+  "./js/daily-devotions.js",
+  "./js/app.js?v=20261015-1",
   "./js/about.js"
 ];
 
