@@ -244,3 +244,47 @@ button { -webkit-tap-highlight-color: transparent; }
 :root[data-auto-background="true"][data-theme="light"][data-app-scene="sahar"] body {
   background-image: linear-gradient(rgba(222, 231, 249, .30), rgba(211, 222, 243, .44)), var(--app-scene-image) !important;
 }
+
+
+/* مفتاح حديث وواضح: غير مفعّل يسار/رمادي، مفعّل يمين/ذهبي. */
+.switch {
+  position: relative !important;
+  display: inline-block !important;
+  width: 50px !important;
+  height: 28px !important;
+  min-width: 50px !important;
+  flex: 0 0 50px !important;
+  direction: ltr !important;
+  cursor: pointer !important;
+}
+.switch input {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+}
+.switch .switch-track {
+  position: absolute !important;
+  inset: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 999px !important;
+  background: #d7d9dc !important;
+  transition: background .2s ease !important;
+}
+.switch .switch-knob {
+  position: absolute !important;
+  z-index: 1 !important;
+  top: 3px !important;
+  left: 3px !important;
+  right: auto !important;
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,.22) !important;
+  transform: none !important;
+  transition: left .2s ease, right .2s ease !important;
+}
+.switch input:checked ~ .switch-track { background: #b9904e !important; }
+.switch input:checked ~ .switch-knob { left: auto !important; right: 3px !important; transform: none !important; }
