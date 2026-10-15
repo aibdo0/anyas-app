@@ -1,46 +1,7 @@
-/* خلفية التطبيق الزمنية — صورة هادئة خلف البطاقات مع طبقة وضوح */
-:root { --app-scene-image: none; }
-:root[data-auto-background="true"][data-app-scene="awakening"],
-:root[data-auto-background="true"][data-app-scene="morning"],
-:root[data-auto-background="true"][data-app-scene="day"] { --app-scene-image: url("../assets/adhkar-morning-card.jpg"); }
-:root[data-auto-background="true"][data-app-scene="evening"] { --app-scene-image: url("../assets/adhkar-evening-card.jpg"); }
-:root[data-auto-background="true"][data-app-scene="sleep"],
-:root[data-auto-background="true"][data-app-scene="sahar"] { --app-scene-image: url("../assets/adhkar-sleep-card.jpg"); }
-
+/* خلفية موحّدة ومصمتة؛ لا صور أو مشاهد زمنية خلف محتوى التطبيق. */
+html,
 body {
-  background-image:
-    linear-gradient(rgba(7, 13, 24, .68), rgba(7, 13, 24, .78)),
-    var(--app-scene-image),
-    radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .25), transparent 36rem) !important;
-  background-position: center, center, center;
-  background-size: cover, cover, auto;
-  background-attachment: fixed;
+  background-color: var(--page);
+  background-image: none !important;
   background-repeat: no-repeat;
-}
-
-:root[data-theme="light"] body {
-  background-image:
-    linear-gradient(rgba(247, 244, 235, .38), rgba(247, 244, 235, .50)),
-    var(--app-scene-image),
-    radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .62), transparent 36rem) !important;
-}
-
-:root[data-theme="light"][data-app-scene="awakening"] body,
-:root[data-theme="light"][data-app-scene="morning"] body,
-:root[data-theme="light"][data-app-scene="day"] body {
-  background-image: linear-gradient(rgba(255, 248, 228, .30), rgba(251, 244, 226, .42)), var(--app-scene-image) !important;
-}
-
-:root[data-theme="light"][data-app-scene="evening"] body {
-  background-image: linear-gradient(rgba(255, 228, 191, .28), rgba(248, 217, 183, .42)), var(--app-scene-image) !important;
-}
-
-:root[data-theme="light"][data-app-scene="sleep"] body,
-:root[data-theme="light"][data-app-scene="sahar"] body {
-  background-image: linear-gradient(rgba(222, 231, 249, .30), rgba(211, 222, 243, .44)), var(--app-scene-image) !important;
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  body { background-image: linear-gradient(rgba(7,13,24,.97), rgba(7,13,24,.98)), var(--app-scene-image) !important; }
-  :root[data-theme="light"] body { background-image: linear-gradient(rgba(247,244,235,.98), rgba(247,244,235,.99)), var(--app-scene-image) !important; }
 }

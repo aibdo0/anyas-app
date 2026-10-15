@@ -377,5 +377,54 @@ check("Android prayer widget shows the next prayer and refreshes", () => {
   assert.match(read("js/settings.js"), /city: document\.getElementById\("prayerHeroCity"\)/);
 });
 
+check("light and dark theme text, accents, borders, and actions meet WCAG AA contrast", () => {
+  const palette = read("css/palette-warm-gold.css");
+  const light = palette.match(/:root\s*\{([^}]*)\}/)?.[1];
+  const dark = palette.match(/:root\[data-theme="dark"\]\s*\{([^}]*)\}/)?.[1];
+  assert.ok(light && dark, "both theme token blocks must exist");
+  const token = (block, name) => {
+    const value = block.match(new RegExp(`--${name}:\\s*(#[0-9a-f]{6})`, "i"))?.[1];
+    assert.ok(value, `missing ${name} token`);
+    return value;
+  };
+  const luminance = hex => {
+    const rgb = [1, 3, 5].map(index => parseInt(hex.slice(index, index + 2), 16) / 255);
+    const linear = rgb.map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+  };
+  const contrast = (foreground, background) => {
+    const values = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
+    return (values[0] + 0.05) / (values[1] + 0.05);
+  };
+  const cases = [
+    { name: "light", block: light, surfaces: ["fffefa", "f7f5ef", "f1ece2"], actionInk: "#ffffff" },
+    { name: "dark", block: dark, surfaces: ["242220", "191817", "302c27"], actionInk: "#29241b" },
+  ];
+  for (const mode of cases) {
+    for (const role of ["ink", "muted", "gold-dark", "gold-light", "gold"]) {
+      for (const surface of mode.surfaces) {
+        assert.ok(contrast(token(mode.block, role), `#${surface}`) >= 4.5, `${mode.name} ${role} must meet 4.5:1 on #${surface}`);
+      }
+    }
+    for (const surface of mode.surfaces) {
+      assert.ok(contrast(token(mode.block, "line"), `#${surface}`) >= 3, `${mode.name} borders must meet 3:1 on #${surface}`);
+    }
+    assert.ok(contrast(mode.actionInk, token(mode.block, "action-bg")) >= 4.5, `${mode.name} action text must meet 4.5:1`);
+  }
+});
+
+check("photo backgrounds and the time-based background setting are removed", () => {
+  const cssDirectory = path.join(root, "css");
+  const css = fs.readdirSync(cssDirectory)
+    .filter(file => file.endsWith(".css"))
+    .map(file => fs.readFileSync(path.join(cssDirectory, file), "utf8"))
+    .join("\n");
+  assert.doesNotMatch(css, /background(?:-image)?\s*:[^;]*url\s*\(/i);
+  assert.doesNotMatch(index, /timeBackgroundToggle|timeBackgroundDescription|data-auto-background/);
+  assert.doesNotMatch(settings, /timeBackgroundToggle|timeBackgroundDescription|updateTimeBackground/);
+  assert.match(serviceWorker, /anyas-shell-v1\.3\.2/);
+  assert.doesNotMatch(serviceWorker, /anyas-morning-background|anyas-night-background|prayer-hero\.jpg/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);

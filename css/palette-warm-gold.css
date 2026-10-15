@@ -3,50 +3,64 @@
   color-scheme: light;
   --page: #f7f5ef;
   --surface: #fffefa;
-  --surface-soft: #f3eee4;
-  --ink: #302c25;
-  --muted: #777166;
-  --gold-dark: #71552e;
-  --gold-light: #987744;
-  --gold-pale: #f4ead5;
-  --gold: #b9904e;
-  --line: #e6dcc9;
-  --shadow: 0 10px 28px rgba(62, 48, 27, .08);
+  --surface-soft: #f1ece2;
+  --ink: #2b2822;
+  --muted: #625d54;
+  --gold-dark: #6d4f24;
+  --gold-light: #805f2d;
+  --gold-pale: #f0e6d3;
+  --gold: #87652f;
+  --line: #8e8577;
+  --action-bg: #6d4f24;
+  --action-ink: #ffffff;
+  --shadow: 0 10px 28px rgba(48, 39, 25, .08);
+  --background: var(--page);
+  --bg: var(--page);
+  --card: var(--surface);
+  --text: var(--ink);
+  --border: var(--line);
+  --primary: var(--gold-dark);
+  --primary-dark: var(--gold-dark);
+  --success: var(--gold-dark);
+  --shadow-sm: var(--shadow);
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
   --page: #191817;
   --surface: #242220;
   --surface-soft: #302c27;
-  --ink: #f3eee5;
-  --muted: #b9b0a2;
-  --gold-dark: #e1c589;
-  --gold-light: #d4b475;
-  --gold-pale: #3a3327;
-  --gold: #d1ad65;
-  --line: #494237;
+  --ink: #f4efe6;
+  --muted: #c6bdaf;
+  --gold-dark: #e6c987;
+  --gold-light: #d5b56e;
+  --gold-pale: #3b3325;
+  --gold: #d5b56e;
+  --line: #807a6d;
+  --action-bg: #e6c987;
+  --action-ink: #29241b;
   --shadow: 0 12px 30px rgba(0, 0, 0, .28);
+}
+:root[data-theme="dark"] body.dark-mode {
+  --background: var(--page);
+  --card: var(--surface);
+  --text: var(--ink);
+  --muted: #c6bdaf;
+  --border: var(--line);
+  --bg: var(--page);
+  --primary: var(--gold-dark);
+  --primary-dark: var(--gold-dark);
+  --success: var(--gold-dark);
+  --shadow-sm: var(--shadow);
 }
 html { min-height: 100%; background: var(--page) !important; color: var(--ink); }
 body {
   min-height: 100vh;
   color: var(--ink) !important;
   background-color: var(--page) !important;
-  background-image: radial-gradient(ellipse at 88% 0%, rgba(193, 160, 100, .12), transparent 36rem) !important;
-  background-attachment: fixed;
+  background-image: none !important;
   background-repeat: no-repeat;
 }
-:root[data-theme="dark"] body {
-  background-color: var(--page) !important;
-  background-image: radial-gradient(ellipse at 88% 0%, rgba(176, 139, 70, .09), transparent 34rem) !important;
-}
-:root[data-auto-background="true"][data-app-scene="awakening"] body,
-:root[data-auto-background="true"][data-app-scene="morning"] body { background-image: radial-gradient(ellipse at 90% 0%, rgba(205, 168, 99, .17), transparent 35rem) !important; }
-:root[data-auto-background="true"][data-app-scene="day"] body { background-image: radial-gradient(ellipse at 10% 15%, rgba(210, 188, 137, .13), transparent 34rem) !important; }
-:root[data-auto-background="true"][data-app-scene="evening"] body { background-image: radial-gradient(ellipse at 90% 0%, rgba(196, 132, 80, .16), transparent 35rem) !important; }
-:root[data-auto-background="true"][data-app-scene="sleep"] body,
-:root[data-auto-background="true"][data-app-scene="sahar"] body { background-image: radial-gradient(ellipse at 90% 0%, rgba(116, 99, 83, .16), transparent 35rem) !important; }
-:root[data-theme="dark"][data-auto-background="true"] body { background-image: radial-gradient(ellipse at 90% 0%, rgba(176, 139, 70, .09), transparent 34rem) !important; }
+:root[data-theme="dark"] body { background-color: var(--page) !important; background-image: none !important; }
 button, input, select { color: inherit; }
 button { -webkit-tap-highlight-color: transparent; }
 
@@ -228,24 +242,6 @@ button { -webkit-tap-highlight-color: transparent; }
 .switch input:checked ~ .switch-knob { left: auto !important; right: 3px !important; transform: none !important; }
 
 
-/* ربط حالة مفتاح الخلفية بالسلوك: مفعّل = صورة ظاهرة، غير مفعّل = بدون صورة. */
-:root[data-auto-background="false"] body {
-  background-image: radial-gradient(ellipse at 88% 0%, rgba(193, 160, 100, .12), transparent 36rem) !important;
-}
-:root[data-auto-background="true"][data-theme="light"][data-app-scene="morning"] body,
-:root[data-auto-background="true"][data-theme="light"][data-app-scene="awakening"] body,
-:root[data-auto-background="true"][data-theme="light"][data-app-scene="day"] body {
-  background-image: linear-gradient(rgba(255, 248, 228, .30), rgba(251, 244, 226, .42)), var(--app-scene-image) !important;
-}
-:root[data-auto-background="true"][data-theme="light"][data-app-scene="evening"] body {
-  background-image: linear-gradient(rgba(255, 228, 191, .28), rgba(248, 217, 183, .42)), var(--app-scene-image) !important;
-}
-:root[data-auto-background="true"][data-theme="light"][data-app-scene="sleep"] body,
-:root[data-auto-background="true"][data-theme="light"][data-app-scene="sahar"] body {
-  background-image: linear-gradient(rgba(222, 231, 249, .30), rgba(211, 222, 243, .44)), var(--app-scene-image) !important;
-}
-
-
 /* مفتاح حديث وواضح: غير مفعّل يسار/رمادي، مفعّل يمين/ذهبي. */
 .switch {
   position: relative !important;
@@ -330,3 +326,100 @@ button { -webkit-tap-highlight-color: transparent; }
   #page-home .main-header { border-radius: 22px !important; }
   #page-home .daily-adhkar-card { padding: 17px !important; }
 }
+
+/* تباين موحّد للواجهتين: نصوص واضحة، حدود مرئية، وخلفيات مصمتة بلا صور. */
+html, body { background-color: var(--page) !important; }
+body { background-image: none !important; color: var(--ink) !important; }
+.page :is(.setting-description, .track-status, .prayer-title, .reference, .more-menu-copy small, .notification-history-copy p, .notification-history-time, .offline-capabilities-list, .about-description, .empty-state, .hint, .helper-text) {
+  color: var(--muted) !important;
+}
+.page :is(button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--gold-dark) !important;
+  outline-offset: 3px;
+}
+.page :is(input, textarea)::placeholder { color: var(--muted) !important; opacity: 1; }
+.skip-link:focus { color: var(--action-ink) !important; background: var(--action-bg) !important; }
+.page :is(.daily-adhkar-button, .friday-feature-button, .qibla-start-button, .adhan-button, .tasbeeh-main-button, .tasks-tasbeeh-button, #tasksTasbeehIncrement, .permission-enable-button, .permission-settings-button, .setting-action-button:not(.danger-action-button), .small-action-button, #saveManualPrayerSettings),
+.pwa-status-banner button,
+.update-banner button:not(.dismiss-update) {
+  border-color: transparent !important;
+  color: var(--action-ink) !important;
+  background: var(--action-bg) !important;
+}
+.next-prayer,
+#page-home .next-prayer,
+#page-tasks .daily-overview-card,
+#page-tasks .tasks-hero-card,
+#page-azkar .hisn-hero-card,
+#page-more .more-hero-card {
+  color: #fff !important;
+  border-color: var(--gold) !important;
+  background-image: none !important;
+  background-color: #383126 !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period] {
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+  background-image: none !important;
+  background-color: var(--surface) !important;
+  box-shadow: var(--shadow) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period]::after { display: none !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-title, .daily-adhkar-text, .daily-adhkar-eyebrow, .daily-adhkar-hint) { color: var(--ink) !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-eyebrow, .daily-adhkar-hint) { color: var(--muted) !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-text { border-inline-start-color: var(--gold) !important; background: var(--surface-soft) !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-mark, .daily-adhkar-badge) {
+  color: var(--gold-dark) !important;
+  border-color: var(--line) !important;
+  background: var(--gold-pale) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-footer { border-color: var(--line) !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button {
+  border-color: transparent !important;
+  color: var(--action-ink) !important;
+  background: var(--action-bg) !important;
+}
+.danger-action-button { color: #8b302b !important; border-color: #8b302b !important; background: #fff4f2 !important; }
+:root[data-theme="dark"] .danger-action-button { color: #ffb4aa !important; border-color: #ba695e !important; background: #3a2422 !important; }
+.bottom-nav { border-color: var(--line) !important; }
+:root[data-theme="dark"] :is(.task-item.done .task-check, .report-range-tab.active, .traveler-back-button, .qibla-back-button, .home-button:not(.secondary), .hijri-date, .audio-apply-button, .azkar-count-button, .azkar-item.done .azkar-count-button, .schedule-tab.active, .secondary-action) {
+  color: var(--action-ink) !important;
+  border-color: transparent !important;
+  background: var(--action-bg) !important;
+}
+:root[data-theme="dark"] #page-settings .settings-section-title { color: var(--gold-dark) !important; border-color: var(--line) !important; background: var(--surface-soft) !important; }
+:root[data-theme="dark"] #page-settings :is(.audio-delete-button, #clearOptionalAudioButton) { color: #ffb4aa !important; border-color: #ba695e !important; background: #3a2422 !important; }
+:root[data-theme="dark"] .report-stat-number { color: var(--gold-dark) !important; }
+:root[data-theme="dark"] .privacy-mark { color: var(--action-ink) !important; background: var(--action-bg) !important; }
+:root[data-theme="dark"] #page-city-picker .city-search-row button { color: var(--action-ink) !important; border-color: transparent !important; background: var(--action-bg) !important; }
+#page-home .home-greeting { color: var(--muted) !important; }
+#page-home #homeFridayText { color: var(--ink) !important; }
+#page-home .upcoming-label { color: var(--gold-dark) !important; }
+#page-home .nearby-mosque-card { color: var(--ink) !important; border-color: var(--line) !important; background: linear-gradient(135deg, #fffefa, #f2ead9) !important; }
+#page-home .nearby-mosque-title { color: var(--gold-dark) !important; }
+:root[data-theme="dark"] body.dark-mode #page-home #nearbyMosqueButton { color: var(--ink) !important; border-color: var(--line) !important; background-image: none !important; background-color: var(--surface) !important; }
+:root[data-theme="dark"] #page-home .nearby-mosque-title { color: var(--gold-dark) !important; }
+.tasks-tasbeeh-title-wrap > div:last-child > span { color: var(--gold-dark) !important; }
+.friday-feature-eyebrow,
+.friday-feature-meta,
+.friday-tasks-eyebrow,
+#fridayTasksStatus,
+#wirdProgressText,
+#tasksTasbeehGoal,
+#azkarFridayText { color: var(--muted) !important; }
+.friday-task-icon,
+.friday-task-check,
+.friday-tasks-progress { color: var(--gold-dark) !important; }
+.azkar-friday-icon { color: #6d4f24 !important; }
+#page-azkar-detail .azkar-session-open-button { color: #ffffff !important; background: var(--gold-dark) !important; }
+:root[data-theme="dark"] #page-azkar-detail .azkar-session-open-button { color: var(--action-ink) !important; background: var(--action-bg) !important; }
+:root[data-theme="dark"] #page-settings .audio-library-intro { color: var(--ink) !important; border-color: var(--line) !important; background: linear-gradient(135deg, #292621, #211f1c) !important; }
+:root[data-theme="dark"] #page-settings .audio-library-intro-copy small { color: var(--gold-dark) !important; }
+:root[data-theme="dark"] #page-settings .audio-library-intro-copy strong { color: var(--ink) !important; }
+:root[data-theme="dark"] #page-settings .audio-library-intro-copy span { color: var(--muted) !important; }
+:root[data-theme="dark"] #page-settings #fajrMuezzinRow { color: var(--ink) !important; border-color: var(--line) !important; background: var(--surface) !important; }
+:root[data-theme="dark"] #page-settings #fajrMuezzinRow .setting-title { color: var(--gold-dark) !important; }
+:root[data-theme="dark"] #page-settings #fajrMuezzinRow .setting-description { color: var(--muted) !important; }
+:root[data-theme="dark"] #page-about .about-hero p { color: var(--muted) !important; }
+:root[data-theme="dark"] #page-notifications .notifications-overview-copy span { color: var(--muted) !important; }
+#page-tasks .daily-overview-focus { color: #ffffff !important; }

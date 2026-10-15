@@ -1288,8 +1288,10 @@ function setupThemeAndLanguage() {
   const themeChoices = document.querySelectorAll('input[name="themeMode"]');
   const themeDescription = document.getElementById("themeModeDescription");
   const themeColorMeta = document.getElementById("themeColorMeta");
-  const timeBackgroundToggle = document.getElementById("timeBackgroundToggle");
-  const timeBackgroundDescription = document.getElementById("timeBackgroundDescription");
+  try {
+    localStorage.removeItem("anyas_autoBackground");
+    localStorage.removeItem("anyas_autoBackground_v2_migrated");
+  } catch (error) { /* obsolete preference; no action needed when storage is unavailable */ }
 
   const languageControls =
     document.querySelectorAll("#languageSelect, #aboutLanguageSelect");
@@ -1323,7 +1325,7 @@ function setupThemeAndLanguage() {
     if (themeToggleIcon) themeToggleIcon.textContent = isDark ? "☀" : "☾";
 
     if (themeColorMeta) {
-      themeColorMeta.setAttribute("content", isDark ? "#111216" : "#fbfaf7");
+      themeColorMeta.setAttribute("content", isDark ? "#191817" : "#f7f5ef");
     }
 
     themeChoices.forEach(choice => {
@@ -1367,42 +1369,6 @@ function setupThemeAndLanguage() {
       systemPreference.addListener(updateSystemTheme);
     }
   }
-
-  // الخلفية الزمنية مفعّلة افتراضيًا؛ يظل اختيار المستخدم "إيقاف" محفوظًا.
-  let timeBackgroundEnabled = true;
-  try {
-    const savedTimeBackground = localStorage.getItem("anyas_autoBackground");
-    const backgroundPreferenceMigrated = localStorage.getItem("anyas_autoBackground_v2_migrated") === "done";
-    if (savedTimeBackground === "false" && backgroundPreferenceMigrated) {
-      timeBackgroundEnabled = false;
-    } else if (savedTimeBackground === "false") {
-      // كان الإصدار السابق يكتب false افتراضيًا؛ نصلحه مرة واحدة فقط.
-      localStorage.setItem("anyas_autoBackground", "true");
-      localStorage.setItem("anyas_autoBackground_v2_migrated", "done");
-    }
-  } catch (error) { /* time-based backgrounds default to on */ }
-
-  const updateTimeBackground = () => {
-    const hour = new Date().getHours();
-    const scene = hour >= 6 && hour < 18 ? "morning" : "night";
-    root.dataset.timeScene = scene;
-    root.dataset.autoBackground = timeBackgroundEnabled ? "true" : "false";
-    const sceneNames = { morning: "الصباح", night: "الليل" };
-    if (timeBackgroundDescription) {
-      timeBackgroundDescription.textContent = timeBackgroundEnabled
-        ? `الخلفية ${sceneNames[scene]} مفعّلة — تتبدّل تلقائيًا حسب ساعة جهازك`
-        : "خلفيات العدادات متوقفة";
-    }
-    if (timeBackgroundToggle) timeBackgroundToggle.checked = timeBackgroundEnabled;
-  };
-
-  timeBackgroundToggle?.addEventListener("change", () => {
-    timeBackgroundEnabled = timeBackgroundToggle.checked;
-    try { localStorage.setItem("anyas_autoBackground", String(timeBackgroundEnabled)); } catch (error) { /* preference is optional */ }
-    updateTimeBackground();
-  });
-  updateTimeBackground();
-  window.setInterval(updateTimeBackground, 60 * 1000);
 
   let savedLanguage = "ar";
   try {
