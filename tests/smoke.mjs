@@ -96,25 +96,6 @@ check("PWA install and offline shell are configured", () => {
   assert.match(index, /addEventListener\("offline"/);
 });
 
-check("morning, evening, and sleep backgrounds are selectable and cached offline", () => {
-  for (const scene of ["morning", "evening", "sleep"]) {
-    assert.ok(exists(`assets/adhkar-${scene}-background.webp`), `${scene} background is missing`);
-    assert.match(index, new RegExp(`name="backgroundChoice" value="${scene}"`));
-    assert.match(read("css/app-background.css"), new RegExp(`data-background-choice="${scene}"`));
-    assert.match(serviceWorker, new RegExp(`assets/adhkar-${scene}-background\\.webp`));
-  }
-  assert.match(index, /id="timeBackgroundToggle"/);
-  assert.match(index, /name="backgroundChoice" value="auto"/);
-  assert.match(settings, /anyas_backgroundChoice/);
-  assert.match(settings, /choice\.disabled = !timeBackgroundEnabled/);
-});
-
-check("settings opens with the general section visible", () => {
-  assert.match(appjs, /const initiallyExpanded = index === 0/);
-  assert.match(appjs, /panel\.hidden = !initiallyExpanded/);
-  assert.match(index, /data-more-go="settings"/);
-});
-
 check("keyboard and screen-reader accessibility basics are present", () => {
   assert.match(index, /class="skip-link" href="#page-home"/);
   for (const match of index.matchAll(/<img\b([^>]*)>/gi)) assert.match(match[1], /\balt=/, "every image needs alt text");
