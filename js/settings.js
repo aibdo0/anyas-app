@@ -1372,7 +1372,14 @@ function setupThemeAndLanguage() {
   let timeBackgroundEnabled = true;
   try {
     const savedTimeBackground = localStorage.getItem("anyas_autoBackground");
-    if (savedTimeBackground === "false") timeBackgroundEnabled = false;
+    const backgroundPreferenceMigrated = localStorage.getItem("anyas_autoBackground_v2_migrated") === "done";
+    if (savedTimeBackground === "false" && backgroundPreferenceMigrated) {
+      timeBackgroundEnabled = false;
+    } else if (savedTimeBackground === "false") {
+      // كان الإصدار السابق يكتب false افتراضيًا؛ نصلحه مرة واحدة فقط.
+      localStorage.setItem("anyas_autoBackground", "true");
+      localStorage.setItem("anyas_autoBackground_v2_migrated", "done");
+    }
   } catch (error) { /* time-based backgrounds default to on */ }
 
   const updateTimeBackground = () => {
