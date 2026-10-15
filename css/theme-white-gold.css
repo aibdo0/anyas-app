@@ -1849,19 +1849,19 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 
 /* خلفيات الورد الجديدة */
 #page-home .daily-adhkar-card[data-adhkar-period="morning"] {
-  background-image: linear-gradient(90deg, rgba(18,33,43,.2), rgba(18,24,31,.84)), url("../assets/adhkar-morning-card.jpg") !important;
+  background-image: linear-gradient(90deg, rgba(18,33,43,.2), rgba(18,24,31,.84)), url("../assets/adhkar-morning-background.webp") !important;
   background-size: cover !important;
   background-position: center !important;
 }
 #page-home .daily-adhkar-card[data-adhkar-period="evening"] {
-  background-image: linear-gradient(90deg, rgba(38,24,32,.2), rgba(26,22,29,.86)), url("../assets/adhkar-evening-card.jpg") !important;
+  background-image: linear-gradient(90deg, rgba(38,24,32,.2), rgba(26,22,29,.86)), url("../assets/adhkar-evening-background.webp") !important;
   background-size: cover !important;
   background-position: center !important;
 }
 #page-home .daily-adhkar-card[data-adhkar-period="sleep"] {
   color: #eef3ff !important;
   border-color: #526b9d !important;
-  background-image: linear-gradient(90deg, rgba(16,23,43,.22), rgba(8,14,31,.9)), url("../assets/adhkar-sleep-card.jpg") !important;
+  background-image: linear-gradient(90deg, rgba(16,23,43,.22), rgba(8,14,31,.9)), url("../assets/adhkar-sleep-background.webp") !important;
   background-size: cover !important;
   background-position: center !important;
 }

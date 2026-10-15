@@ -166,25 +166,71 @@
 #page-settings .settings-section-toggle {
   display: flex;
   width: 100%;
-  min-height: 48px;
+  min-height: 54px;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin: 18px 2px 9px;
-  padding: 5px 12px 5px 4px;
-  border: 0;
-  border-inline-start: 3px solid var(--gold);
-  border-radius: 0 12px 12px 0;
+  margin: 16px 0 8px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-inline-start: 4px solid var(--gold);
+  border-radius: 15px;
   color: var(--ink);
-  background: transparent;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
   font-size: 14px;
   font-weight: 900;
   text-align: right;
   cursor: pointer;
+  transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease, transform .18s ease;
 }
-#page-settings .settings-section-toggle::after { color: var(--gold-dark); content: "⌄"; font-size: 17px; transition: transform .18s ease; }
+#page-settings .settings-section-toggle::after {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--gold-dark);
+  background: var(--surface-soft);
+  content: "⌄";
+  font-size: 17px;
+  transition: transform .18s ease, background-color .18s ease;
+}
 #page-settings .settings-section-toggle[aria-expanded="true"]::after { transform: rotate(180deg); }
+#page-settings .settings-section-toggle[aria-expanded="true"] { border-color: color-mix(in srgb, var(--gold) 50%, var(--line)); background: linear-gradient(110deg, var(--gold-pale), var(--surface) 72%); }
+#page-settings .settings-section-toggle:hover { border-color: color-mix(in srgb, var(--gold) 48%, var(--line)); transform: translateY(-1px); }
+#page-settings .settings-section-toggle:focus-visible { outline: 3px solid rgba(196,154,85,.65); outline-offset: 2px; }
 #page-settings .settings-card { overflow: hidden; border-radius: 20px; }
+
+/* اختيار الخلفية: معاينات حقيقية وخيارات واضحة تعمل باللمس ولوحة المفاتيح. */
+#page-settings .background-choice-panel { padding: 2px 15px 15px; border-bottom: 1px solid var(--line); }
+#page-settings .background-choice-heading { color: var(--ink); font-size: 12px; font-weight: 900; }
+#page-settings .background-choice-hint { margin-top: 3px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+#page-settings .background-choice-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+#page-settings .background-choice-option { position: relative; display: block; min-width: 0; cursor: pointer; }
+#page-settings .background-choice-option input { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+#page-settings .background-choice-card { position: relative; display: grid; min-height: 86px; gap: 4px; padding: 6px; border: 1px solid var(--line); border-radius: 13px; color: var(--ink); background: var(--surface); text-align: center; transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease, transform .18s ease; }
+#page-settings .background-choice-thumb { display: block; width: 100%; min-height: 42px; border-radius: 8px; background-position: center; background-size: cover; }
+#page-settings .background-choice-thumb[data-background-preview="auto"] { background-image: linear-gradient(90deg, rgba(89,66,31,.08) 0 33%, rgba(64,31,37,.20) 33% 66%, rgba(20,28,54,.24) 66%), url("../assets/adhkar-morning-background.webp"); }
+#page-settings .background-choice-thumb[data-background-preview="morning"] { background-image: url("../assets/adhkar-morning-background.webp"); }
+#page-settings .background-choice-thumb[data-background-preview="evening"] { background-image: url("../assets/adhkar-evening-background.webp"); }
+#page-settings .background-choice-thumb[data-background-preview="sleep"] { background-image: url("../assets/adhkar-sleep-background.webp"); }
+#page-settings .background-choice-name { overflow: hidden; font-size: 11px; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; }
+#page-settings .background-choice-caption { overflow: hidden; color: var(--muted); font-size: 10px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+#page-settings .background-choice-option input:checked + .background-choice-card { border-color: var(--gold); background: var(--gold-pale); box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 22%, transparent); }
+#page-settings .background-choice-option input:checked + .background-choice-card::after { position: absolute; inset-block-start: 9px; inset-inline-start: 9px; display: grid; width: 19px; height: 19px; place-items: center; border: 1px solid rgba(255,255,255,.6); border-radius: 50%; color: #fff; background: var(--gold-dark); content: "✓"; font-size: 11px; font-weight: 900; }
+#page-settings .background-choice-option input:focus-visible + .background-choice-card { outline: 3px solid rgba(196,154,85,.7); outline-offset: 2px; }
+#page-settings .background-choice-option:hover .background-choice-card { border-color: color-mix(in srgb, var(--gold) 55%, var(--line)); transform: translateY(-1px); }
+#page-settings .background-choice-panel.is-disabled .background-choice-card { opacity: .5; }
+#page-settings .time-background-setting .switch { min-width: 48px; min-height: 44px; justify-content: center; }
+
+@media (max-width: 520px) {
+  #page-settings .background-choice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  #page-settings .background-choice-card { min-height: 94px; }
+  #page-settings .background-choice-thumb { min-height: 50px; }
+}
 
 /* المحافظة على التباين في الوضع الداكن */
 :root[data-theme="dark"] .page :is(.content-block,.upcoming-card,.prayer-section,.daily-prayer-card,.daily-overview-card,.qibla-card,.weekly-report-card,.tasbeeh-card,.worship-card,.about-card,.city-picker-card,.mosques-card,.notifications-card,.settings-card) {
@@ -192,7 +238,15 @@
   background-color: var(--surface);
   box-shadow: var(--shadow);
 }
-:root[data-theme="dark"] #page-settings .settings-section-toggle { color: var(--ink); }
+:root[data-theme="dark"] #page-settings .settings-section-toggle { border-color: var(--line); color: var(--ink); background: var(--surface); }
+:root[data-theme="dark"] #page-settings .settings-section-toggle[aria-expanded="true"] { border-color: #66563c; background: linear-gradient(110deg, #332d24, var(--surface) 72%); }
+:root[data-theme="dark"] #page-settings .settings-section-toggle::after { border-color: var(--line); color: var(--gold-dark); background: var(--surface-soft); }
+:root[data-theme="dark"] #page-settings .background-choice-card { border-color: var(--line); color: var(--ink); background: var(--surface); }
+:root[data-theme="dark"] #page-settings .background-choice-option input:checked + .background-choice-card { border-color: var(--gold); background: #332d24; }
+#page-more .more-menu-item[data-more-go="settings"] { background: linear-gradient(100deg, rgba(196,154,85,.12), transparent 72%); }
+#page-more .more-menu-item[data-more-go="settings"]:hover { background: linear-gradient(100deg, rgba(196,154,85,.19), var(--surface-soft) 82%); }
+:root[data-theme="dark"] body #page-more .more-menu-item[data-more-go="settings"] { background: linear-gradient(100deg, rgba(214,189,133,.15), transparent 76%) !important; }
+:root[data-theme="dark"] body #page-more .more-menu-item[data-more-go="settings"]:hover { background: linear-gradient(100deg, rgba(214,189,133,.22), var(--surface-soft) 86%) !important; }
 :root[data-theme="dark"] body .page:not(#page-home):not(#page-more) .plain-header .back-button {
   border-color: rgba(255,255,255,.18) !important;
   color: #fff !important;

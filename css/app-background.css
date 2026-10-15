@@ -1,11 +1,30 @@
-/* خلفية التطبيق الزمنية — صورة هادئة خلف البطاقات مع طبقة وضوح */
+/* خلفيات أنياس: تلقائية حسب فترة الورد أو اختيار ثابت من الإعدادات. */
 :root { --app-scene-image: none; }
-:root[data-auto-background="true"][data-app-scene="awakening"],
-:root[data-auto-background="true"][data-app-scene="morning"],
-:root[data-auto-background="true"][data-app-scene="day"] { --app-scene-image: url("../assets/adhkar-morning-card.jpg"); }
-:root[data-auto-background="true"][data-app-scene="evening"] { --app-scene-image: url("../assets/adhkar-evening-card.jpg"); }
-:root[data-auto-background="true"][data-app-scene="sleep"],
-:root[data-auto-background="true"][data-app-scene="sahar"] { --app-scene-image: url("../assets/adhkar-sleep-card.jpg"); }
+
+/* الاختيار التلقائي يتبع فترة الورد الحالية. */
+:root[data-auto-background="true"][data-background-choice="auto"][data-app-scene="awakening"],
+:root[data-auto-background="true"][data-background-choice="auto"][data-app-scene="morning"],
+:root[data-auto-background="true"][data-background-choice="auto"][data-app-scene="day"] {
+  --app-scene-image: url("../assets/adhkar-morning-background.webp");
+}
+:root[data-auto-background="true"][data-background-choice="auto"][data-app-scene="evening"] {
+  --app-scene-image: url("../assets/adhkar-evening-background.webp");
+}
+:root[data-auto-background="true"][data-background-choice="auto"][data-app-scene="sleep"],
+:root[data-auto-background="true"][data-background-choice="auto"][data-app-scene="sahar"] {
+  --app-scene-image: url("../assets/adhkar-sleep-background.webp");
+}
+
+/* الاختيار الثابت يحتفظ بالمشهد حتى مع تغيّر فترة الورد. */
+:root[data-auto-background="true"][data-background-choice="morning"] {
+  --app-scene-image: url("../assets/adhkar-morning-background.webp");
+}
+:root[data-auto-background="true"][data-background-choice="evening"] {
+  --app-scene-image: url("../assets/adhkar-evening-background.webp");
+}
+:root[data-auto-background="true"][data-background-choice="sleep"] {
+  --app-scene-image: url("../assets/adhkar-sleep-background.webp");
+}
 
 body {
   background-image:
@@ -25,18 +44,20 @@ body {
     radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .62), transparent 36rem) !important;
 }
 
-:root[data-theme="light"][data-app-scene="awakening"] body,
-:root[data-theme="light"][data-app-scene="morning"] body,
-:root[data-theme="light"][data-app-scene="day"] body {
+/* المعالجة اللونية تتبع المشهد المعروض لا وقت الجهاز فقط. */
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="auto"][data-app-scene="awakening"] body,
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="auto"][data-app-scene="morning"] body,
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="auto"][data-app-scene="day"] body,
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="morning"] body {
   background-image: linear-gradient(rgba(255, 248, 228, .30), rgba(251, 244, 226, .42)), var(--app-scene-image) !important;
 }
-
-:root[data-theme="light"][data-app-scene="evening"] body {
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="auto"][data-app-scene="evening"] body,
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="evening"] body {
   background-image: linear-gradient(rgba(255, 228, 191, .28), rgba(248, 217, 183, .42)), var(--app-scene-image) !important;
 }
-
-:root[data-theme="light"][data-app-scene="sleep"] body,
-:root[data-theme="light"][data-app-scene="sahar"] body {
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="auto"][data-app-scene="sleep"] body,
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="auto"][data-app-scene="sahar"] body,
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="sleep"] body {
   background-image: linear-gradient(rgba(222, 231, 249, .30), rgba(211, 222, 243, .44)), var(--app-scene-image) !important;
 }
 

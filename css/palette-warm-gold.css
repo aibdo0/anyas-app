@@ -1,31 +1,31 @@
 /* لوحة أنياس الدافئة: عاجي وذهبي نهارًا، وفحمي دافئ ليلًا — بلا زيتوني أو أخضر. */
 :root {
   color-scheme: light;
-  --page: #f7f5ef;
-  --surface: #fffefa;
-  --surface-soft: #f3eee4;
-  --ink: #302c25;
-  --muted: #777166;
-  --gold-dark: #71552e;
-  --gold-light: #987744;
-  --gold-pale: #f4ead5;
-  --gold: #b9904e;
-  --line: #e6dcc9;
-  --shadow: 0 10px 28px rgba(62, 48, 27, .08);
+  --page: #f1e8d6;
+  --surface: #fffdf8;
+  --surface-soft: #f3e8d3;
+  --ink: #30291d;
+  --muted: #62594b;
+  --gold-dark: #68491c;
+  --gold-light: #916a29;
+  --gold-pale: #f1e1bc;
+  --gold: #b67b22;
+  --line: #d8c49b;
+  --shadow: 0 10px 28px rgba(62, 48, 27, .11);
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --page: #191817;
-  --surface: #242220;
-  --surface-soft: #302c27;
-  --ink: #f3eee5;
-  --muted: #b9b0a2;
-  --gold-dark: #e1c589;
-  --gold-light: #d4b475;
-  --gold-pale: #3a3327;
-  --gold: #d1ad65;
-  --line: #494237;
-  --shadow: 0 12px 30px rgba(0, 0, 0, .28);
+  --page: #151310;
+  --surface: #211e19;
+  --surface-soft: #2d281f;
+  --ink: #f4eee1;
+  --muted: #c3b8a8;
+  --gold-dark: #e5c779;
+  --gold-light: #d6b56a;
+  --gold-pale: #3a3020;
+  --gold: #d6ad5c;
+  --line: #554731;
+  --shadow: 0 12px 30px rgba(0, 0, 0, .34);
 }
 html { min-height: 100%; background: var(--page) !important; color: var(--ink); }
 body {
@@ -188,6 +188,35 @@ button { -webkit-tap-highlight-color: transparent; }
 .permission-status.is-enabled { color: #71552e !important; background: #f4ead5 !important; }
 :root[data-theme="dark"] .permission-status.is-enabled { color: #e1c589 !important; background: #3a3327 !important; }
 .status-success, .success-state, .is-enabled, [data-state="success"] { accent-color: var(--gold) !important; }
+
+/* العنوان يتحول إلى زر تفاعلي؛ لا ترث عليه قاعدة اللون القديمة منخفضة التباين. */
+#page-settings .settings-section-toggle.settings-section-title {
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+  border-inline-start-color: var(--gold) !important;
+  background: var(--surface) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+#page-settings .settings-section-toggle.settings-section-title[aria-expanded="true"] {
+  color: var(--ink) !important;
+  border-color: color-mix(in srgb, var(--gold) 55%, var(--line)) !important;
+  background: linear-gradient(110deg, var(--gold-pale), var(--surface) 72%) !important;
+}
+#page-settings .settings-section-toggle.settings-section-title::after {
+  color: var(--ink) !important;
+  border: 1px solid var(--line) !important;
+  background: var(--surface-soft) !important;
+}
+:root[data-theme="dark"] #page-settings .settings-section-toggle.settings-section-title[aria-expanded="true"] {
+  color: #f4eee1 !important;
+  border-color: #66563c !important;
+  background: linear-gradient(110deg, #332d24, var(--surface) 72%) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  #page-settings .settings-section-toggle,
+  #page-settings .settings-section-toggle::after,
+  #page-settings .background-choice-card { transition: none !important; transform: none !important; }
+}
 @media (prefers-reduced-motion: reduce) { #page-home .daily-adhkar-card[data-adhkar-period] { transition: none !important; } }
 
 /* استبدال درجات النجاح/الأقسام الخضراء القديمة بألوان ذهبية في جميع الصفحات. */
@@ -230,19 +259,21 @@ button { -webkit-tap-highlight-color: transparent; }
 
 /* ربط حالة مفتاح الخلفية بالسلوك: مفعّل = صورة ظاهرة، غير مفعّل = بدون صورة. */
 :root[data-auto-background="false"] body {
-  background-image: radial-gradient(ellipse at 88% 0%, rgba(193, 160, 100, .12), transparent 36rem) !important;
+  background-image:
+    radial-gradient(ellipse 82% 58% at 90% 0%, rgba(193, 160, 100, .24), transparent 40rem),
+    radial-gradient(ellipse 62% 42% at 5% 100%, rgba(163, 126, 67, .13), transparent 36rem) !important;
 }
 :root[data-auto-background="true"][data-theme="light"][data-app-scene="morning"] body,
 :root[data-auto-background="true"][data-theme="light"][data-app-scene="awakening"] body,
 :root[data-auto-background="true"][data-theme="light"][data-app-scene="day"] body {
-  background-image: linear-gradient(rgba(255, 248, 228, .30), rgba(251, 244, 226, .42)), var(--app-scene-image) !important;
+  background-image: linear-gradient(rgba(255, 248, 228, .18), rgba(251, 244, 226, .28)), var(--app-scene-image) !important;
 }
 :root[data-auto-background="true"][data-theme="light"][data-app-scene="evening"] body {
-  background-image: linear-gradient(rgba(255, 228, 191, .28), rgba(248, 217, 183, .42)), var(--app-scene-image) !important;
+  background-image: linear-gradient(rgba(255, 228, 191, .17), rgba(248, 217, 183, .27)), var(--app-scene-image) !important;
 }
 :root[data-auto-background="true"][data-theme="light"][data-app-scene="sleep"] body,
 :root[data-auto-background="true"][data-theme="light"][data-app-scene="sahar"] body {
-  background-image: linear-gradient(rgba(222, 231, 249, .30), rgba(211, 222, 243, .44)), var(--app-scene-image) !important;
+  background-image: linear-gradient(rgba(222, 231, 249, .18), rgba(211, 222, 243, .28)), var(--app-scene-image) !important;
 }
 
 
@@ -289,13 +320,37 @@ button { -webkit-tap-highlight-color: transparent; }
 .switch input:checked ~ .switch-track { background: #b9904e !important; }
 .switch input:checked ~ .switch-knob { left: auto !important; right: 3px !important; transform: none !important; }
 
-/* دمج بصري من النموذج المرفق — بدون تغيير منطق التطبيق. */
+/* ترويسة ذهبية داكنة وواضحة، متسقة مع عناوين الصفحات وبنص عالي التباين. */
 #page-home .main-header {
   min-height: 92px !important;
   padding: 16px 18px !important;
   border-radius: 24px !important;
-  background: linear-gradient(135deg, rgba(255,254,250,.98), rgba(244,238,225,.96)) !important;
-  box-shadow: 0 10px 28px rgba(62,48,27,.10) !important;
+  border-color: rgba(232, 204, 145, .38) !important;
+  background: linear-gradient(135deg, #34291c 0%, #59421f 66%, #73572c 100%) !important;
+  box-shadow: 0 12px 30px rgba(62, 48, 27, .20) !important;
+}
+#page-home .main-header :is(.plain-header .brand, .home-brand, .home-greeting, .date-line, .date-line span) { color: #fffaf0 !important; }
+#page-home .main-header :is(.plain-header .brand, .home-brand) { color: #f4d487 !important; }
+:root[data-theme="dark"] #page-home .main-header :is(.plain-header .brand, .home-brand, .home-greeting, .date-line, .date-line span) { color: #fffaf0 !important; }
+:root[data-theme="dark"] #page-home .main-header :is(.plain-header .brand, .home-brand) { color: #f4d487 !important; }
+#page-home .main-header .date-separator { color: #f0cb76 !important; }
+#page-home .theme-toggle,
+#page-home .notification-bell-button {
+  border-color: rgba(255, 250, 232, .32) !important;
+  color: #f4d487 !important;
+  background: rgba(255, 255, 255, .12) !important;
+}
+#page-home .notification-bell-icon { stroke: #f4d487 !important; }
+:root[data-theme="dark"] #page-home .main-header {
+  background: linear-gradient(135deg, #211c15 0%, #392b19 66%, #4d3a20 100%) !important;
+}
+#page-home .prayer-section {
+  border-color: #d3ba84 !important;
+  background: linear-gradient(145deg, #fffdf8, #f2e5c9) !important;
+}
+:root[data-theme="dark"] #page-home .prayer-section {
+  border-color: #6b5530 !important;
+  background: linear-gradient(145deg, #2e291f, #211e19) !important;
 }
 #page-home .prayer-section {
   border-radius: 28px !important;
@@ -329,4 +384,25 @@ button { -webkit-tap-highlight-color: transparent; }
 @media (max-width: 520px) {
   #page-home .main-header { border-radius: 22px !important; }
   #page-home .daily-adhkar-card { padding: 17px !important; }
+}
+
+/* في الوضع الداكن لا نخفي صورة المشهد خلف التدرج؛ نُبقيها ظاهرة مع طبقة حماية للنص. */
+:root[data-theme="dark"][data-auto-background="true"] body {
+  background-image:
+    linear-gradient(rgba(23, 21, 18, .40), rgba(23, 21, 18, .56)),
+    var(--app-scene-image),
+    radial-gradient(ellipse at 90% 0%, rgba(196, 154, 85, .14), transparent 36rem) !important;
+}
+:root[data-theme="dark"][data-auto-background="false"] body {
+  background-image:
+    radial-gradient(ellipse 82% 58% at 90% 0%, rgba(196, 154, 85, .19), transparent 40rem),
+    radial-gradient(ellipse 62% 42% at 5% 100%, rgba(125, 93, 43, .14), transparent 36rem) !important;
+}
+
+/* نصوص ثانوية قابلة للقراءة فوق بطاقات الخلفيات الفاتحة والداكنة. */
+:root[data-theme="light"] #page-settings :is(.background-choice-hint, .background-choice-caption, .time-background-setting .setting-description) {
+  color: #625947 !important;
+}
+:root[data-theme="dark"] #page-settings :is(.background-choice-hint, .background-choice-caption, .time-background-setting .setting-description) {
+  color: #c2b9a7 !important;
 }

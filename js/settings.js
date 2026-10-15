@@ -1290,6 +1290,9 @@ function setupThemeAndLanguage() {
   const themeColorMeta = document.getElementById("themeColorMeta");
   const timeBackgroundToggle = document.getElementById("timeBackgroundToggle");
   const timeBackgroundDescription = document.getElementById("timeBackgroundDescription");
+  const backgroundChoicePanel = document.getElementById("backgroundChoicePanel");
+  const backgroundChoiceGrid = backgroundChoicePanel?.querySelector('[role="radiogroup"]');
+  const backgroundChoices = document.querySelectorAll('input[name="backgroundChoice"]');
 
   const languageControls =
     document.querySelectorAll("#languageSelect, #aboutLanguageSelect");
@@ -1368,38 +1371,63 @@ function setupThemeAndLanguage() {
     }
   }
 
-  // الخلفية الزمنية مفعّلة افتراضيًا؛ يظل اختيار المستخدم "إيقاف" محفوظًا.
+  // الخلفيات مفعّلة افتراضيًا؛ يظل إيقاف المستخدم واختياره محفوظين.
   let timeBackgroundEnabled = true;
+  let backgroundChoice = "auto";
+  const validBackgroundChoices = new Set(["auto", "morning", "evening", "sleep"]);
   try {
     const savedTimeBackground = localStorage.getItem("anyas_autoBackground");
     const backgroundPreferenceMigrated = localStorage.getItem("anyas_autoBackground_v2_migrated") === "done";
-    if (savedTimeBackground === "false" && backgroundPreferenceMigrated) {
-      timeBackgroundEnabled = false;
-    } else if (savedTimeBackground === "false") {
+    timeBackgroundEnabled = savedTimeBackground !== "false";
+    if (savedTimeBackground === "false" && !backgroundPreferenceMigrated) {
       // كان الإصدار السابق يكتب false افتراضيًا؛ نصلحه مرة واحدة فقط.
       localStorage.setItem("anyas_autoBackground", "true");
-      localStorage.setItem("anyas_autoBackground_v2_migrated", "done");
+      timeBackgroundEnabled = true;
     }
-  } catch (error) { /* time-based backgrounds default to on */ }
+    if (!backgroundPreferenceMigrated) localStorage.setItem("anyas_autoBackground_v2_migrated", "done");
+    const savedChoice = localStorage.getItem("anyas_backgroundChoice");
+    if (validBackgroundChoices.has(savedChoice)) backgroundChoice = savedChoice;
+  } catch (error) { /* use accessible defaults when storage is unavailable */ }
 
   const updateTimeBackground = () => {
     const hour = new Date().getHours();
-    const scene = hour >= 6 && hour < 18 ? "morning" : "night";
-    root.dataset.timeScene = scene;
+    root.dataset.timeScene = hour >= 6 && hour < 18 ? "morning" : "night";
     root.dataset.autoBackground = timeBackgroundEnabled ? "true" : "false";
-    const sceneNames = { morning: "الصباح", night: "الليل" };
+    root.dataset.backgroundChoice = backgroundChoice;
+
+    const descriptions = {
+      auto: "تتبدّل الخلفية تلقائيًا بين الصباح والمساء والنوم",
+      morning: "الخلفية الصباحية ثابتة",
+      evening: "الخلفية المسائية ثابتة",
+      sleep: "خلفية النوم ثابتة"
+    };
+    const message = timeBackgroundEnabled ? descriptions[backgroundChoice] : "الخلفيات متوقفة";
     if (timeBackgroundDescription) {
-      timeBackgroundDescription.textContent = timeBackgroundEnabled
-        ? `الخلفية ${sceneNames[scene]} مفعّلة — تتبدّل تلقائيًا حسب ساعة جهازك`
-        : "خلفيات العدادات متوقفة";
+      timeBackgroundDescription.textContent = window.anyasTranslate
+        ? window.anyasTranslate(message, document.documentElement.lang)
+        : message;
     }
     if (timeBackgroundToggle) timeBackgroundToggle.checked = timeBackgroundEnabled;
+    backgroundChoices.forEach(choice => {
+      choice.checked = choice.value === backgroundChoice;
+      choice.disabled = !timeBackgroundEnabled;
+    });
+    backgroundChoiceGrid?.setAttribute("aria-disabled", String(!timeBackgroundEnabled));
+    backgroundChoicePanel?.classList.toggle("is-disabled", !timeBackgroundEnabled);
   };
 
   timeBackgroundToggle?.addEventListener("change", () => {
     timeBackgroundEnabled = timeBackgroundToggle.checked;
     try { localStorage.setItem("anyas_autoBackground", String(timeBackgroundEnabled)); } catch (error) { /* preference is optional */ }
     updateTimeBackground();
+  });
+  backgroundChoices.forEach(choice => {
+    choice.addEventListener("change", () => {
+      if (!choice.checked) return;
+      backgroundChoice = validBackgroundChoices.has(choice.value) ? choice.value : "auto";
+      try { localStorage.setItem("anyas_backgroundChoice", backgroundChoice); } catch (error) { /* preference is optional */ }
+      updateTimeBackground();
+    });
   });
   updateTimeBackground();
   window.setInterval(updateTimeBackground, 60 * 1000);
