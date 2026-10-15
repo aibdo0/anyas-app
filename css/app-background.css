@@ -20,7 +20,7 @@ body {
 
 :root[data-theme="light"] body {
   background-image:
-    linear-gradient(rgba(247, 244, 235, .70), rgba(247, 244, 235, .82)),
+    linear-gradient(rgba(247, 244, 235, .38), rgba(247, 244, 235, .50)),
     var(--app-scene-image),
     radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .62), transparent 36rem) !important;
 }
@@ -28,16 +28,16 @@ body {
 :root[data-theme="light"][data-app-scene="awakening"] body,
 :root[data-theme="light"][data-app-scene="morning"] body,
 :root[data-theme="light"][data-app-scene="day"] body {
-  background-image: linear-gradient(rgba(255, 248, 228, .58), rgba(251, 244, 226, .72)), var(--app-scene-image) !important;
+  background-image: linear-gradient(rgba(255, 248, 228, .30), rgba(251, 244, 226, .42)), var(--app-scene-image) !important;
 }
 
 :root[data-theme="light"][data-app-scene="evening"] body {
-  background-image: linear-gradient(rgba(255, 228, 191, .56), rgba(248, 217, 183, .70)), var(--app-scene-image) !important;
+  background-image: linear-gradient(rgba(255, 228, 191, .28), rgba(248, 217, 183, .42)), var(--app-scene-image) !important;
 }
 
 :root[data-theme="light"][data-app-scene="sleep"] body,
 :root[data-theme="light"][data-app-scene="sahar"] body {
-  background-image: linear-gradient(rgba(222, 231, 249, .60), rgba(211, 222, 243, .74)), var(--app-scene-image) !important;
+  background-image: linear-gradient(rgba(222, 231, 249, .30), rgba(211, 222, 243, .44)), var(--app-scene-image) !important;
 }
 
 @media (prefers-reduced-transparency: reduce) {
