@@ -1,0 +1,577 @@
+/* Home dashboard refresh — preserve existing routes, data, and theme preference. */
+:root {
+  --home-forest-950: #061d19;
+  --home-forest-900: #0a2923;
+  --home-forest-800: #10382f;
+  --home-gold: #efd18b;
+  --home-gold-deep: #c39b52;
+  --home-cream: #fffaf0;
+  --home-muted-light: #c4cec7;
+}
+
+#page-home {
+  width: min(100%, 760px);
+  margin-inline: auto;
+  padding: 14px 14px calc(118px + env(safe-area-inset-bottom, 0px)) !important;
+}
+
+/* Brand hero */
+#page-home .main-header {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 184px !important;
+  margin: 0 0 14px !important;
+  padding: 18px !important;
+  overflow: hidden;
+  border: 1px solid rgba(239, 209, 139, .38) !important;
+  border-radius: 26px !important;
+  color: var(--home-cream) !important;
+  background:
+    linear-gradient(90deg, rgba(4, 17, 17, .12) 0%, rgba(4, 24, 21, .56) 42%, rgba(4, 24, 21, .96) 100%),
+    url("../assets/prayer-hero.jpg") center 47% / cover !important;
+  box-shadow: 0 18px 40px rgba(4, 18, 16, .24) !important;
+}
+#page-home .home-header-identity {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 150px;
+  min-width: 0;
+  text-align: start;
+}
+#page-home .home-greeting {
+  margin: 1px 0 5px;
+  color: rgba(255, 250, 240, .88) !important;
+  font-size: 11px;
+  font-weight: 700;
+}
+#page-home .home-brand {
+  margin: 0;
+  color: var(--home-gold) !important;
+  font-size: clamp(29px, 8vw, 38px) !important;
+  font-weight: 900;
+  line-height: 1.15;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .38);
+}
+#page-home .home-tagline {
+  display: block;
+  margin-top: 5px;
+  color: rgba(255, 250, 240, .84);
+  font-size: 11px;
+  font-weight: 600;
+}
+#page-home .home-header-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 7px;
+  align-items: center;
+}
+#page-home .home-header-actions > button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0;
+  border: 1px solid rgba(255, 250, 240, .38) !important;
+  border-radius: 14px;
+  color: var(--home-gold) !important;
+  background: rgba(7, 30, 26, .65) !important;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, .12);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+#page-home .home-header-actions svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#page-home .home-header-actions .notification-bell-icon { stroke: currentColor !important; }
+#page-home .home-header-actions .notification-badge {
+  position: absolute;
+  inset-block-start: -5px;
+  inset-inline-end: -4px;
+  min-width: 16px;
+  padding: 2px 4px;
+  border: 1px solid var(--home-forest-900);
+  border-radius: 99px;
+  color: #17231c;
+  background: var(--home-gold);
+  font-size: 9px;
+  font-weight: 900;
+}
+#page-home .date-line {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1 0 100%;
+  align-items: center;
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 10px;
+  color: rgba(255, 250, 240, .9) !important;
+  font-size: 11px !important;
+}
+#page-home .date-separator { color: var(--home-gold) !important; }
+
+/* Next-prayer feature card */
+#page-home .next-prayer {
+  position: relative;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  grid-template-rows: auto auto auto 5px;
+  align-items: center;
+  column-gap: 15px;
+  row-gap: 5px;
+  min-height: 150px;
+  margin: 0 0 14px !important;
+  padding: 18px !important;
+  overflow: hidden;
+  border: 1px solid rgba(232, 210, 160, .36) !important;
+  border-radius: 24px !important;
+  color: var(--home-cream) !important;
+  background:
+    linear-gradient(115deg, rgba(5, 26, 22, .83), rgba(7, 37, 31, .94)),
+    url("../assets/prayer-hero.jpg") center 55% / cover !important;
+  box-shadow: 0 14px 30px rgba(4, 18, 16, .2) !important;
+}
+#page-home .next-prayer::before {
+  position: absolute;
+  inset-block: 20px 24px;
+  inset-inline-start: 50%;
+  width: 1px;
+  background: rgba(239, 209, 139, .3);
+  content: "";
+  pointer-events: none;
+}
+#page-home .prayer-hero-meta {
+  z-index: 1;
+  grid-column: 1;
+  grid-row: 1 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 11px;
+  min-width: 0;
+  text-align: start;
+}
+#page-home .next-label {
+  color: rgba(255, 250, 240, .82) !important;
+  font-size: 12px !important;
+  font-weight: 800;
+}
+#page-home .prayer-city-chip {
+  max-width: 100%;
+  min-height: 34px;
+  padding: 5px 10px;
+  border: 1px solid rgba(239, 209, 139, .42) !important;
+  border-radius: 12px;
+  color: var(--home-gold) !important;
+  background: rgba(4, 20, 18, .45) !important;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+}
+#page-home #nextPrayerName {
+  z-index: 1;
+  grid-column: 3;
+  grid-row: 1;
+  align-self: end;
+  color: var(--home-cream) !important;
+  font-size: 16px !important;
+  font-weight: 800;
+}
+#page-home #nextPrayerTime {
+  z-index: 1;
+  grid-column: 3;
+  grid-row: 2;
+  color: var(--home-gold) !important;
+  font-size: clamp(29px, 8vw, 37px) !important;
+  font-weight: 900;
+  line-height: 1.1;
+  direction: ltr;
+  text-align: start;
+}
+#page-home #countdown {
+  z-index: 1;
+  grid-column: 3;
+  grid-row: 3;
+  justify-self: start;
+  padding: 4px 9px;
+  border: 1px solid rgba(239, 209, 139, .22);
+  border-radius: 99px;
+  color: rgba(255, 250, 240, .84) !important;
+  background: rgba(0, 0, 0, .16);
+  font-size: 10px !important;
+}
+#page-home .prayer-progress {
+  z-index: 1;
+  grid-column: 1 / -1;
+  grid-row: 4;
+  width: 100%;
+  height: 4px;
+  margin: 7px 0 0 !important;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .16) !important;
+}
+#page-home .prayer-progress-bar {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #c99c4d, #f2d994) !important;
+}
+
+/* Live daily achievement */
+#page-home .home-achievement-card {
+  margin: 0 0 18px;
+  padding: 16px 17px 14px;
+  border: 1px solid rgba(185, 145, 72, .28);
+  border-radius: 22px;
+  color: #23362e;
+  background: linear-gradient(145deg, #fffdf7, #f5efdf);
+  box-shadow: 0 12px 27px rgba(41, 37, 28, .1);
+}
+#page-home .home-achievement-heading,
+#page-home .home-achievement-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+#page-home .home-achievement-kicker {
+  display: block;
+  margin-bottom: 3px;
+  color: #82704e;
+  font-size: 10px;
+  font-weight: 700;
+}
+#page-home .home-achievement-title {
+  margin: 0;
+  color: #24372f;
+  font-size: 17px;
+  font-weight: 900;
+}
+#page-home .home-achievement-percent {
+  display: grid;
+  place-items: center;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(178, 137, 64, .34);
+  border-radius: 16px;
+  color: #705328;
+  background: #f4e8c8;
+  font-size: 13px;
+  font-weight: 900;
+}
+#page-home .home-achievement-track {
+  height: 8px;
+  margin: 13px 0 10px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #e6e0d1;
+}
+#page-home .home-achievement-track > span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #9a7537, #e5c77d);
+  transition: width 320ms ease;
+}
+#page-home .home-achievement-message {
+  min-width: 0;
+  margin: 0;
+  color: #5e665e;
+  font-size: 10px;
+  line-height: 1.6;
+}
+#page-home .home-achievement-count {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: baseline;
+  gap: 5px;
+  color: #536158;
+  font-size: 10px;
+}
+#page-home .home-achievement-count strong {
+  color: #5d4724;
+  font-size: 12px;
+  font-weight: 900;
+  direction: ltr;
+}
+
+/* Compact, thumb-friendly shortcuts */
+#page-home .home-shortcuts-section { margin: 0 0 18px; }
+#page-home .home-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 2px 11px;
+}
+#page-home .home-section-heading h2 {
+  margin: 0;
+  color: #26372f;
+  font-size: 16px;
+  font-weight: 900;
+}
+#page-home .home-section-heading p {
+  margin: 3px 0 0;
+  color: #75776f;
+  font-size: 10px;
+}
+#page-home .home-shortcut-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+#page-home .home-shortcut-card {
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  min-height: 118px;
+  margin: 0 !important;
+  padding: 12px 11px !important;
+  border: 1px solid rgba(171, 139, 77, .25) !important;
+  border-radius: 19px !important;
+  color: #25382f !important;
+  background: rgba(255, 252, 245, .95) !important;
+  box-shadow: 0 8px 19px rgba(40, 37, 28, .08) !important;
+  text-align: start;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+#page-home .home-shortcut-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(193, 153, 76, .26);
+  border-radius: 13px;
+  color: #8c6b32;
+  background: #f4ebd5;
+}
+#page-home .home-shortcut-icon svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#page-home .home-shortcut-copy { display: grid; gap: 3px; min-width: 0; }
+#page-home .home-shortcut-title,
+#page-home .home-shortcut-copy strong {
+  display: block;
+  overflow: hidden;
+  color: #26382f !important;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#page-home .home-shortcut-copy small {
+  display: block;
+  overflow: hidden;
+  color: #6e776f !important;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#page-home .home-shortcut-card:hover {
+  border-color: rgba(181, 139, 66, .58) !important;
+  box-shadow: 0 12px 23px rgba(40, 37, 28, .12) !important;
+  transform: translateY(-2px);
+}
+#page-home .home-shortcut-card:active { transform: scale(.98); }
+#page-home .home-shortcut-card:focus-visible,
+#page-home .home-header-actions > button:focus-visible {
+  outline: 3px solid #e7c879;
+  outline-offset: 3px;
+}
+
+/* The home cards share one quiet emerald language in dark mode. */
+:root[data-theme="dark"] #page-home .home-achievement-card {
+  border-color: rgba(224, 194, 126, .26);
+  color: #f5f1e6;
+  background: linear-gradient(145deg, #10382f, #0a2923);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, .22);
+}
+:root[data-theme="dark"] #page-home :is(.home-achievement-title, .home-section-heading h2) { color: #f6f1e4; }
+:root[data-theme="dark"] #page-home .home-achievement-kicker { color: #c6bd9e; }
+:root[data-theme="dark"] #page-home .home-achievement-percent {
+  border-color: rgba(239, 209, 139, .3);
+  color: #f2d896;
+  background: rgba(239, 209, 139, .13);
+}
+:root[data-theme="dark"] #page-home .home-achievement-track { background: rgba(255, 255, 255, .15); }
+:root[data-theme="dark"] #page-home .home-achievement-message,
+:root[data-theme="dark"] #page-home .home-achievement-count { color: #c5d0ca; }
+:root[data-theme="dark"] #page-home .home-achievement-count strong { color: #f0d28d; }
+:root[data-theme="dark"] #page-home .home-section-heading p { color: #c2cbc5; }
+:root[data-theme="dark"] #page-home .home-shortcut-card {
+  border-color: rgba(206, 187, 137, .2) !important;
+  color: #f6f1e5 !important;
+  background: linear-gradient(145deg, rgba(15, 49, 42, .96), rgba(8, 34, 29, .96)) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .2) !important;
+}
+:root[data-theme="dark"] #page-home .home-shortcut-icon {
+  border-color: rgba(239, 209, 139, .24);
+  color: #f0d28d;
+  background: rgba(239, 209, 139, .11);
+}
+:root[data-theme="dark"] #page-home .home-shortcut-title,
+:root[data-theme="dark"] #page-home .home-shortcut-copy strong { color: #f6f1e5 !important; }
+:root[data-theme="dark"] #page-home .home-shortcut-copy small { color: #c4cec7 !important; }
+:root[data-theme="dark"] #page-home .home-shortcut-card:hover { border-color: rgba(239, 209, 139, .5) !important; }
+:root[data-theme="dark"] #page-home .daily-adhkar-card {
+  border-color: rgba(224, 194, 126, .27) !important;
+  color: #f6f1e5 !important;
+  background: linear-gradient(145deg, #10382f, #0a2923) !important;
+}
+:root[data-theme="dark"] #page-home .daily-adhkar-card :is(.daily-adhkar-title, .daily-adhkar-eyebrow, .daily-adhkar-hint, .daily-adhkar-text) { color: #f3f0e6 !important; }
+:root[data-theme="dark"] #page-home .daily-adhkar-card .daily-adhkar-text { background: rgba(0, 0, 0, .13) !important; }
+:root[data-theme="dark"] #page-home .prayer-section,
+:root[data-theme="dark"] #page-home .daily-content.card {
+  border-color: rgba(224, 194, 126, .24) !important;
+  color: #f4f1e8 !important;
+  background: linear-gradient(145deg, #10352d, #0a2923) !important;
+}
+:root[data-theme="dark"] #page-home .daily-content.card .content-block {
+  border-color: rgba(255, 255, 255, .1) !important;
+  background: rgba(255, 255, 255, .035) !important;
+}
+:root[data-theme="dark"] #page-home .daily-content.card :is(.card-title, .ayah, .hadith-text, .reference) { color: #f4f1e8 !important; }
+
+/* Bottom navigation: four clear destinations, labelled and safe-area aware. */
+.bottom-nav {
+  right: 10px !important;
+  left: 10px !important;
+  bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  height: 82px !important;
+  padding: 6px !important;
+  border: 1px solid rgba(164, 133, 76, .2) !important;
+  border-radius: 23px !important;
+  background: rgba(255, 252, 245, .96) !important;
+  box-shadow: 0 12px 34px rgba(20, 27, 22, .18) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.nav-item {
+  position: relative;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 68px !important;
+  min-width: 0;
+  border-radius: 17px;
+  color: #907b52 !important;
+  background: transparent !important;
+  text-decoration: none;
+}
+.nav-icon { display: grid; place-items: center; width: 23px; height: 23px; }
+.nav-icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nav-label { display: block; color: inherit; font-size: 9px; font-weight: 800; line-height: 1.1; white-space: nowrap; }
+.nav-item.active {
+  color: #f2d68e !important;
+  background: linear-gradient(145deg, #554324, #745b2f) !important;
+}
+.nav-item.active::before {
+  position: absolute;
+  inset-block-start: 4px;
+  width: 22px;
+  height: 3px;
+  border-radius: 99px;
+  background: #f2d68e;
+  content: "";
+}
+:root[data-theme="dark"] .bottom-nav {
+  border-color: rgba(239, 209, 139, .22) !important;
+  background: rgba(7, 28, 24, .96) !important;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .42) !important;
+}
+:root[data-theme="dark"] .nav-item { color: #c8b98f !important; }
+:root[data-theme="dark"] .nav-item.active { color: #f5d992 !important; background: linear-gradient(145deg, #493b22, #65502b) !important; }
+
+@media (max-width: 370px) {
+  #page-home { padding-inline: 11px; }
+  #page-home .main-header { min-height: 172px !important; padding: 14px !important; }
+  #page-home .home-header-actions { gap: 5px; }
+  #page-home .home-header-actions > button { width: 37px; height: 37px; min-width: 37px; }
+  #page-home .next-prayer { column-gap: 10px; padding: 15px !important; }
+  #page-home .home-shortcut-grid { gap: 7px; }
+  #page-home .home-shortcut-card { min-height: 112px; padding: 10px 8px !important; }
+  #page-home .home-shortcut-copy strong,
+  #page-home .home-shortcut-title { font-size: 10px; }
+}
+@media (min-width: 760px) {
+  #page-home { padding-inline: 22px; }
+  #page-home .home-shortcut-grid { gap: 12px; }
+  #page-home .home-shortcut-card { min-height: 126px; padding: 15px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #page-home .home-achievement-track > span,
+  #page-home .home-shortcut-card { transition: none !important; }
+  #page-home .home-shortcut-card:hover,
+  #page-home .home-shortcut-card:active { transform: none !important; }
+}
+@media (prefers-contrast: more) {
+  #page-home .home-shortcut-card,
+  #page-home .home-achievement-card,
+  #page-home .next-prayer { border-width: 2px !important; }
+}
+
+
+/* Final responsive overrides verified in a 390px mobile viewport. */
+:root[data-theme="dark"] #page-home .main-header {
+  background:
+    linear-gradient(90deg, rgba(4, 17, 17, .12) 0%, rgba(4, 24, 21, .56) 42%, rgba(4, 24, 21, .96) 100%),
+    url("../assets/prayer-hero.jpg") center 47% / cover !important;
+}
+:root[data-theme="dark"] #page-home .main-header .home-tagline { color: rgba(255, 250, 240, .84) !important; }
+.bottom-nav {
+  left: 50% !important;
+  right: auto !important;
+  width: min(calc(100% - 20px), 680px) !important;
+  max-width: 680px !important;
+  margin: 0 !important;
+  transform: translateX(-50%) !important;
+}
+
+
+#page-home .home-section-heading {
+  padding: 9px 11px;
+  border: 1px solid rgba(164, 133, 76, .2);
+  border-radius: 14px;
+  background: rgba(255, 250, 240, .92);
+  box-shadow: 0 5px 14px rgba(31, 34, 28, .06);
+}
+:root[data-theme="dark"] #page-home .home-section-heading {
+  border-color: rgba(239, 209, 139, .2);
+  background: rgba(7, 28, 24, .9);
+}
+
+#page-home .home-achievement-count strong { direction: ltr; unicode-bidi: isolate; }
