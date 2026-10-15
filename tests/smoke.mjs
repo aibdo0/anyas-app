@@ -115,6 +115,23 @@ check("settings opens with the general section visible", () => {
   assert.match(index, /data-more-go="settings"/);
 });
 
+check("home dashboard shows live daily achievement and working shortcuts", () => {
+  const dailyDevotions = read("js/daily-devotions.js");
+  const translations = JSON.parse(read("data/en-ui-translations.json"));
+  assert.match(index, /id="homeAchievementProgressTrack"[^>]+role="progressbar"/);
+  assert.match(index, /id="homeAchievementProgress"/);
+  assert.match(dailyDevotions, /homeProgressTrack\.setAttribute\("aria-valuenow"/);
+  assert.match(index, /data-home-action="daily-adhkar"/);
+  assert.match(index, /data-home-action="prayer-schedule"/);
+  assert.match(appjs, /document\.querySelectorAll\("\[data-home-action\]"\)/);
+  assert.match(index, /id="openQiblaButton"/);
+  assert.match(index, /id="nearbyMosqueButton"/);
+  assert.match(index, /class="nav-label"/);
+  assert.ok(exists("css/home-premium.css"), "home premium styles are missing");
+  assert.equal(translations["إنجاز اليوم"], "Today's progress");
+  assert.equal(translations["الوصول السريع"], "Quick access");
+});
+
 check("keyboard and screen-reader accessibility basics are present", () => {
   assert.match(index, /class="skip-link" href="#page-home"/);
   for (const match of index.matchAll(/<img\b([^>]*)>/gi)) assert.match(match[1], /\balt=/, "every image needs alt text");
