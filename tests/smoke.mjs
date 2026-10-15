@@ -413,17 +413,28 @@ check("light and dark theme text, accents, borders, and actions meet WCAG AA con
   }
 });
 
-check("photo backgrounds and the time-based background setting are removed", () => {
-  const cssDirectory = path.join(root, "css");
-  const css = fs.readdirSync(cssDirectory)
-    .filter(file => file.endsWith(".css"))
-    .map(file => fs.readFileSync(path.join(cssDirectory, file), "utf8"))
-    .join("\n");
-  assert.doesNotMatch(css, /background(?:-image)?\s*:[^;]*url\s*\(/i);
+check("app-level background images stay removed while card imagery remains", () => {
+  const appBackground = read("css/app-background.css");
+  const palette = read("css/palette-warm-gold.css");
+  const theme = read("css/theme-white-gold.css");
+  assert.match(appBackground, /html,\s*body\s*\{[^}]*background-image:\s*none\s*!important/s);
+  assert.doesNotMatch(appBackground, /url\s*\(/i);
+  assert.doesNotMatch(`${theme}\n${palette}`, /data-time-scene|data-auto-background/);
+  for (const image of [
+    "prayer-hero.jpg",
+    "anyas-tasks-hero.jpg",
+    "anyas-hisn-hero.jpg",
+    "anyas-more-hero.jpg",
+    "anyas-more-tools-hero.jpg",
+    "adhkar-morning-card.jpg",
+    "adhkar-evening-card.jpg",
+    "adhkar-sleep-card.jpg",
+  ]) assert.ok(palette.includes(`../assets/${image}`), `card background ${image} must remain available`);
   assert.doesNotMatch(index, /timeBackgroundToggle|timeBackgroundDescription|data-auto-background/);
   assert.doesNotMatch(settings, /timeBackgroundToggle|timeBackgroundDescription|updateTimeBackground/);
-  assert.match(serviceWorker, /anyas-shell-v1\.3\.2/);
-  assert.doesNotMatch(serviceWorker, /anyas-morning-background|anyas-night-background|prayer-hero\.jpg/);
+  assert.match(serviceWorker, /anyas-shell-v1\.3\.3/);
+  assert.match(serviceWorker, /\.\/assets\/prayer-hero\.jpg/);
+  assert.doesNotMatch(serviceWorker, /anyas-morning-background|anyas-night-background/);
 });
 
 console.log(`Smoke tests passed: ${passed.length}`);

@@ -354,17 +354,14 @@ body { background-image: none !important; color: var(--ink) !important; }
 #page-more .more-hero-card {
   color: #fff !important;
   border-color: var(--gold) !important;
-  background-image: none !important;
   background-color: #383126 !important;
 }
 #page-home .daily-adhkar-card[data-adhkar-period] {
   color: var(--ink) !important;
   border-color: var(--line) !important;
-  background-image: none !important;
   background-color: var(--surface) !important;
   box-shadow: var(--shadow) !important;
 }
-#page-home .daily-adhkar-card[data-adhkar-period]::after { display: none !important; }
 #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-title, .daily-adhkar-text, .daily-adhkar-eyebrow, .daily-adhkar-hint) { color: var(--ink) !important; }
 #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-eyebrow, .daily-adhkar-hint) { color: var(--muted) !important; }
 #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-text { border-inline-start-color: var(--gold) !important; background: var(--surface-soft) !important; }
@@ -423,3 +420,107 @@ body { background-image: none !important; color: var(--ink) !important; }
 :root[data-theme="dark"] #page-about .about-hero p { color: var(--muted) !important; }
 :root[data-theme="dark"] #page-notifications .notifications-overview-copy span { color: var(--muted) !important; }
 #page-tasks .daily-overview-focus { color: #ffffff !important; }
+
+/* صور البطاقات فقط؛ تظل خلفية التطبيق والصفحات العامة مصمتة. */
+#page-home .next-prayer,
+:root[data-theme="dark"] body.dark-mode #page-home .next-prayer {
+  color: #fff !important;
+  background-color: #1c2026 !important;
+  background-image: linear-gradient(105deg, rgba(12, 17, 24, .64), rgba(12, 17, 24, .68) 52%, rgba(12, 17, 24, .72)), url("../assets/prayer-hero.jpg") !important;
+  background-position: center 48% !important;
+  background-size: cover !important;
+}
+#page-home .next-prayer .next-label { color: #fff !important; }
+
+#page-tasks .daily-overview-card,
+:root[data-theme="dark"] body.dark-mode #page-tasks .daily-overview-card {
+  color: #fff !important;
+  background-color: #17202b !important;
+  background-image: linear-gradient(105deg, rgba(12, 18, 28, .64), rgba(12, 18, 28, .68) 52%, rgba(12, 18, 28, .72)), url("../assets/anyas-tasks-hero.jpg") !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+#page-tasks .daily-overview-card :is(.daily-overview-eyebrow, .daily-overview-message, .daily-overview-metrics span),
+:root[data-theme="dark"] body.dark-mode #page-tasks .daily-overview-card :is(.daily-overview-eyebrow, .daily-overview-message, .daily-overview-metrics span) { color: #fff !important; }
+#page-tasks .daily-overview-card .daily-overview-metrics strong,
+:root[data-theme="dark"] body.dark-mode #page-tasks .daily-overview-card .daily-overview-metrics strong { color: #ffe6ad !important; }
+
+#page-azkar .hisn-hero-card,
+:root[data-theme="dark"] body.dark-mode #page-azkar .hisn-hero-card {
+  color: #fff !important;
+  background-color: #151a20 !important;
+  background-image: linear-gradient(105deg, rgba(12, 17, 24, .64), rgba(12, 17, 24, .68) 52%, rgba(12, 17, 24, .72)), url("../assets/anyas-hisn-hero.jpg") !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+#page-azkar .hisn-hero-copy span,
+:root[data-theme="dark"] body.dark-mode #page-azkar .hisn-hero-copy span { color: #ffe6ad !important; }
+#page-azkar .hisn-hero-copy small,
+:root[data-theme="dark"] body.dark-mode #page-azkar .hisn-hero-copy small { color: #fff !important; }
+
+#page-tasks .tasks-hero-card,
+:root[data-theme="dark"] body.dark-mode #page-tasks .tasks-hero-card {
+  color: #fff !important;
+  background-color: #171b20 !important;
+  background-image: linear-gradient(105deg, rgba(12, 17, 24, .64), rgba(12, 17, 24, .68) 52%, rgba(12, 17, 24, .72)), url("../assets/anyas-more-hero.jpg") !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+#page-tasks .tasks-hero-copy span,
+:root[data-theme="dark"] body.dark-mode #page-tasks .tasks-hero-copy span { color: #ffe6ad !important; }
+#page-tasks .tasks-hero-copy small,
+:root[data-theme="dark"] body.dark-mode #page-tasks .tasks-hero-copy small { color: #fff !important; }
+
+#page-more .more-hero-card,
+:root[data-theme="dark"] body.dark-mode #page-more .more-hero-card {
+  color: #fff !important;
+  background-color: #171b20 !important;
+  background-image: linear-gradient(105deg, rgba(12, 17, 24, .64), rgba(12, 17, 24, .68) 52%, rgba(12, 17, 24, .72)), url("../assets/anyas-more-tools-hero.jpg") !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+#page-more .more-hero-copy span,
+:root[data-theme="dark"] body.dark-mode #page-more .more-hero-copy span { color: #ffe6ad !important; }
+#page-more .more-hero-copy small,
+:root[data-theme="dark"] body.dark-mode #page-more .more-hero-copy small { color: #fff !important; }
+
+#page-home .daily-adhkar-card[data-adhkar-period="morning"],
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period="morning"] {
+  color: #fff !important;
+  border-color: rgba(255, 226, 163, .72) !important;
+  background-color: #1c211d !important;
+  background-image: linear-gradient(105deg, rgba(12, 17, 20, .62), rgba(12, 17, 20, .67)), url("../assets/adhkar-morning-card.jpg") !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="evening"],
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period="evening"] {
+  color: #fff !important;
+  border-color: rgba(255, 206, 157, .72) !important;
+  background-color: #21181c !important;
+  background-image: linear-gradient(105deg, rgba(17, 13, 19, .62), rgba(17, 13, 19, .67)), url("../assets/adhkar-evening-card.jpg") !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="sleep"],
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period="sleep"] {
+  color: #fff !important;
+  border-color: rgba(190, 207, 255, .72) !important;
+  background-color: #111726 !important;
+  background-image: linear-gradient(105deg, rgba(8, 13, 25, .58), rgba(8, 13, 25, .64)), url("../assets/adhkar-sleep-card.jpg") !important;
+  background-position: center !important;
+  background-size: cover !important;
+}
+#page-home .daily-adhkar-card:is([data-adhkar-period="morning"], [data-adhkar-period="evening"], [data-adhkar-period="sleep"]) :is(.daily-adhkar-title, .daily-adhkar-text, .daily-adhkar-eyebrow, .daily-adhkar-hint),
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card:is([data-adhkar-period="morning"], [data-adhkar-period="evening"], [data-adhkar-period="sleep"]) :is(.daily-adhkar-title, .daily-adhkar-text, .daily-adhkar-eyebrow, .daily-adhkar-hint) { color: #fff !important; }
+#page-home .daily-adhkar-card:is([data-adhkar-period="morning"], [data-adhkar-period="evening"], [data-adhkar-period="sleep"]) .daily-adhkar-text,
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card:is([data-adhkar-period="morning"], [data-adhkar-period="evening"], [data-adhkar-period="sleep"]) .daily-adhkar-text {
+  border-inline-start-color: #ffe19a !important;
+  background: rgba(9, 13, 18, .78) !important;
+}
+#page-home .daily-adhkar-card:is([data-adhkar-period="morning"], [data-adhkar-period="evening"], [data-adhkar-period="sleep"]) :is(.daily-adhkar-mark, .daily-adhkar-badge),
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card:is([data-adhkar-period="morning"], [data-adhkar-period="evening"], [data-adhkar-period="sleep"]) :is(.daily-adhkar-mark, .daily-adhkar-badge) {
+  color: #ffe6ad !important;
+  border-color: rgba(255, 230, 173, .58) !important;
+  background: rgba(9, 13, 18, .82) !important;
+}
