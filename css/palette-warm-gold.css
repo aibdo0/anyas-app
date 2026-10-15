@@ -406,3 +406,45 @@ button { -webkit-tap-highlight-color: transparent; }
 :root[data-theme="dark"] #page-settings :is(.background-choice-hint, .background-choice-caption, .time-background-setting .setting-description) {
   color: #c2b9a7 !important;
 }
+
+/* الخلفية ظاهرة في الفجوات حول البطاقات، فلا تحتاج إلى طبقة تعتيم ثقيلة. */
+:root[data-theme="dark"][data-auto-background="true"] body {
+  background-image:
+    linear-gradient(rgba(23, 21, 18, .12), rgba(23, 21, 18, .22)),
+    var(--app-scene-image),
+    radial-gradient(ellipse at 90% 0%, rgba(196, 154, 85, .10), transparent 36rem) !important;
+}
+
+/* درجات خفيفة تحفظ ألوان الصور بدل غسلها بطبقة بيضاء كثيفة. */
+:root[data-theme="light"][data-auto-background="true"][data-app-scene="morning"] body,
+:root[data-theme="light"][data-auto-background="true"][data-app-scene="awakening"] body,
+:root[data-theme="light"][data-auto-background="true"][data-app-scene="day"] body,
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="morning"] body {
+  background-image: linear-gradient(rgba(255, 248, 228, .06), rgba(251, 244, 226, .14)), var(--app-scene-image) !important;
+}
+:root[data-theme="light"][data-auto-background="true"][data-app-scene="evening"] body,
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="evening"] body {
+  background-image: linear-gradient(rgba(255, 228, 191, .06), rgba(248, 217, 183, .14)), var(--app-scene-image) !important;
+}
+:root[data-theme="light"][data-auto-background="true"][data-app-scene="sleep"] body,
+:root[data-theme="light"][data-auto-background="true"][data-app-scene="sahar"] body,
+:root[data-theme="light"][data-auto-background="true"][data-background-choice="sleep"] body {
+  background-image: linear-gradient(rgba(222, 231, 249, .06), rgba(211, 222, 243, .14)), var(--app-scene-image) !important;
+}
+
+/* في الهاتف، ركّز القصّ على جهة عناصر الصورة بدل الفراغ الوسطي العريض. */
+@media (max-width: 700px) and (orientation: portrait) {
+  :root[data-auto-background="true"] body {
+    background-position: center, 24% center, center !important;
+  }
+}
+
+/* تظل إعدادات تقليل الشفافية لدى النظام أعلى أولوية. */
+@media (prefers-reduced-transparency: reduce) {
+  :root[data-theme="dark"][data-auto-background="true"] body {
+    background-image: linear-gradient(rgba(23, 21, 18, .97), rgba(23, 21, 18, .98)), var(--app-scene-image) !important;
+  }
+  :root[data-theme="light"][data-auto-background="true"] body {
+    background-image: linear-gradient(rgba(247, 244, 235, .98), rgba(247, 244, 235, .99)), var(--app-scene-image) !important;
+  }
+}
