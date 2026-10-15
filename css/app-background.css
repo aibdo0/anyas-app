@@ -1,11 +1,11 @@
 /* خلفية التطبيق الزمنية — صورة هادئة خلف البطاقات مع طبقة وضوح */
 :root { --app-scene-image: none; }
-:root[data-app-scene="awakening"],
-:root[data-app-scene="morning"],
-:root[data-app-scene="day"] { --app-scene-image: url("../assets/adhkar-morning-card.jpg"); }
-:root[data-app-scene="evening"] { --app-scene-image: url("../assets/adhkar-evening-card.jpg"); }
-:root[data-app-scene="sleep"],
-:root[data-app-scene="sahar"] { --app-scene-image: url("../assets/adhkar-sleep-card.jpg"); }
+:root[data-auto-background="true"][data-app-scene="awakening"],
+:root[data-auto-background="true"][data-app-scene="morning"],
+:root[data-auto-background="true"][data-app-scene="day"] { --app-scene-image: url("../assets/adhkar-morning-card.jpg"); }
+:root[data-auto-background="true"][data-app-scene="evening"] { --app-scene-image: url("../assets/adhkar-evening-card.jpg"); }
+:root[data-auto-background="true"][data-app-scene="sleep"],
+:root[data-auto-background="true"][data-app-scene="sahar"] { --app-scene-image: url("../assets/adhkar-sleep-card.jpg"); }
 
 body {
   background-image:

@@ -226,3 +226,21 @@ button { -webkit-tap-highlight-color: transparent; }
 .switch { direction: ltr !important; }
 .switch .switch-knob { left: 3px !important; right: auto !important; transform: none !important; }
 .switch input:checked ~ .switch-knob { left: auto !important; right: 3px !important; transform: none !important; }
+
+
+/* ربط حالة مفتاح الخلفية بالسلوك: مفعّل = صورة ظاهرة، غير مفعّل = بدون صورة. */
+:root[data-auto-background="false"] body {
+  background-image: radial-gradient(ellipse at 88% 0%, rgba(193, 160, 100, .12), transparent 36rem) !important;
+}
+:root[data-auto-background="true"][data-theme="light"][data-app-scene="morning"] body,
+:root[data-auto-background="true"][data-theme="light"][data-app-scene="awakening"] body,
+:root[data-auto-background="true"][data-theme="light"][data-app-scene="day"] body {
+  background-image: linear-gradient(rgba(255, 248, 228, .30), rgba(251, 244, 226, .42)), var(--app-scene-image) !important;
+}
+:root[data-auto-background="true"][data-theme="light"][data-app-scene="evening"] body {
+  background-image: linear-gradient(rgba(255, 228, 191, .28), rgba(248, 217, 183, .42)), var(--app-scene-image) !important;
+}
+:root[data-auto-background="true"][data-theme="light"][data-app-scene="sleep"] body,
+:root[data-auto-background="true"][data-theme="light"][data-app-scene="sahar"] body {
+  background-image: linear-gradient(rgba(222, 231, 249, .30), rgba(211, 222, 243, .44)), var(--app-scene-image) !important;
+}
