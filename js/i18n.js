@@ -104,18 +104,6 @@
     "إعدادات الموقع الجغرافي": "Location settings",
     "اختر مدينة يدويًا أو استخدم موقعك لحساب المواقيت والقبلة والمساجد القريبة. إذن الموقع اختياري.": "Choose a city manually or use your location for prayer times, Qibla, and nearby mosques. Location permission is optional.",
     "استخدام موقعي الحالي": "Use my current location", "اختيار المدينة يدويًا": "Choose a city manually",
-    "إظهار خلفيات التطبيق": "Show app backgrounds",
-    "تتبدّل الخلفية تلقائيًا بين الصباح والمساء والنوم": "Background changes automatically between morning, evening, and sleep",
-    "الخلفيات متوقفة": "Backgrounds are off",
-    "الخلفية الصباحية ثابتة": "Morning background is fixed",
-    "الخلفية المسائية ثابتة": "Evening background is fixed",
-    "خلفية النوم ثابتة": "Sleep background is fixed",
-    "اختر خلفية التطبيق": "Choose an app background",
-    "اتركها تلقائية حسب وقت الورد أو ثبّت مشهدًا يناسبك": "Keep it automatic by adhkar time, or choose a scene that suits you",
-    "تلقائي": "Automatic", "حسب وقت الورد": "By adhkar time",
-    "الصباح": "Morning", "ضوء هادئ": "Soft daylight",
-    "المساء": "Evening", "دفء الغروب": "Sunset glow",
-    "النوم": "Sleep", "ليل ساكن": "Quiet night",
     "خلفية حسب وقت اليوم": "Background by time of day",
     "تتغير تلقائيًا بين الفجر والنهار والغروب والليل": "Automatically changes between dawn, day, sunset, and night",
     "تفعيل الخلفيات حسب وقت اليوم": "Enable time-based backgrounds",
@@ -273,7 +261,7 @@
   try { current = localStorage.getItem("anyas_language") === "en" ? "en" : "ar"; } catch (error) { current = "ar"; }
   document.documentElement.lang = current;
   document.documentElement.dir = current === "en" ? "ltr" : "rtl";
-  fetch("data/en-ui-translations.json?v=20261015-2")
+  fetch("data/en-ui-translations.json?v=20261001-1")
     .then(response => { if (!response.ok) throw new Error("translation data unavailable"); return response.json(); })
     .then(data => {
       dictionary = { ...data, ...manual };

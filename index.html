@@ -12,16 +12,11 @@
   (function () {
     var mode = "light";
     var locale = "ar";
-    var autoBackground = true;
-    var backgroundChoice = "auto";
+    var autoBackground = false;
     try {
       mode = localStorage.getItem("anyas_themeMode") || "";
       locale = localStorage.getItem("anyas_language") === "en" ? "en" : "ar";
-      var savedAutoBackground = localStorage.getItem("anyas_autoBackground");
-      var backgroundPreferenceMigrated = localStorage.getItem("anyas_autoBackground_v2_migrated") === "done";
-      autoBackground = savedAutoBackground !== "false" || !backgroundPreferenceMigrated;
-      backgroundChoice = localStorage.getItem("anyas_backgroundChoice") || "auto";
-      if (!["auto", "morning", "evening", "sleep"].includes(backgroundChoice)) backgroundChoice = "auto";
+      autoBackground = localStorage.getItem("anyas_autoBackground") !== "false";
       if (!["system", "light", "dark"].includes(mode)) {
         var legacy = localStorage.getItem("anyas_darkMode");
         mode = legacy === "false" ? "light" : legacy === "true" ? "dark" : "light";
@@ -34,18 +29,8 @@
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "en" ? "ltr" : "rtl";
     document.documentElement.dataset.autoBackground = String(autoBackground);
-    document.documentElement.dataset.backgroundChoice = backgroundChoice;
     var hour = new Date().getHours();
     document.documentElement.dataset.timeScene = hour >= 6 && hour < 18 ? "morning" : "night";
-    var minutes = hour * 60 + new Date().getMinutes();
-    var comparableMinutes = minutes < 120 ? minutes + 1440 : minutes;
-    var appScene = comparableMinutes < 270 ? "sahar"
-      : comparableMinutes < 330 ? "awakening"
-        : comparableMinutes < 720 ? "morning"
-          : comparableMinutes < 930 ? "day"
-            : comparableMinutes < 1200 ? "evening"
-              : "sleep";
-    document.documentElement.dataset.appScene = appScene;
   })();
 </script>
 
@@ -54,7 +39,7 @@
 <link rel="stylesheet" href="css/prayer.css?v=20260927-2">
 <link rel="stylesheet" href="css/azkar.css?v=20261003-1">
 <link rel="stylesheet" href="css/wird-session.css?v=20261014-1">
-<link rel="stylesheet" href="css/daily-adhkar.css?v=20261015-3">
+<link rel="stylesheet" href="css/daily-adhkar.css?v=20261013-2">
 <link rel="stylesheet" href="css/settings.css?v=20261003-3">
 <link rel="stylesheet" href="css/audio-library.css?v=20261007-1">
 
@@ -62,19 +47,18 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261015-2">
-<link rel="stylesheet" href="css/app-background.css?v=20261015-9">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261015-1">
+<link rel="stylesheet" href="css/app-background.css?v=20261015-8">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20261003-1">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 <link rel="stylesheet" href="css/friday.css?v=20261003-2">
 <link rel="stylesheet" href="css/notification-settings.css?v=20261014-1">
-<link rel="stylesheet" href="css/more-page.css?v=20261015-2">
-<link rel="stylesheet" href="css/app-design-system.css?v=20261015-3">
+<link rel="stylesheet" href="css/more-page.css?v=20261015-1">
+<link rel="stylesheet" href="css/app-design-system.css?v=20261013-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
-<link rel="stylesheet" href="css/palette-warm-gold.css?v=20261015-10">
-<link rel="stylesheet" href="css/home-premium.css?v=20261015-2">
+<link rel="stylesheet" href="css/palette-warm-gold.css?v=20261015-5">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -135,24 +119,28 @@
 <main class="page active" id="page-home">
 
 <header class="main-header">
-  <div class="home-header-identity">
-    <div class="home-greeting" id="homeGreeting">السلام عليكم يا أخي المسلم</div>
-    <div class="home-brand">أنياس</div>
-    <span class="home-tagline">رفيقك في طريق الطاعة</span>
-  </div>
-  <div class="home-header-actions">
-    <button class="home-settings-button" id="homeSettingsButton" data-more-go="settings" type="button" aria-label="الإعدادات" title="الإعدادات">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 8.1a3.9 3.9 0 1 0 0 7.8 3.9 3.9 0 0 0 0-7.8Z"/><path d="m19.4 13.5 1.1.8-1.1 1.9-1.3-.5a7.8 7.8 0 0 1-1.6.9l-.2 1.4h-2.2l-.3-1.4a7.8 7.8 0 0 1-1.7-.7l-1.2.7-1.5-1.5.7-1.2a7.8 7.8 0 0 1-.7-1.7l-1.4-.3V9.7l1.4-.2a7.8 7.8 0 0 1 .7-1.7l-.7-1.2 1.5-1.5 1.2.7a7.8 7.8 0 0 1 1.7-.7l.3-1.4h2.2l.2 1.4a7.8 7.8 0 0 1 1.7.7l1.2-.7 1.5 1.5-.7 1.2a7.8 7.8 0 0 1 .7 1.7l1.4.2v2.2l-1.4.3"/></svg>
-    </button>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
-      <span id="themeToggleIcon" aria-hidden="true">☾</span>
-    </button>
-    <button class="notification-bell-button" id="notificationBellButton" type="button" aria-label="الإشعارات" title="الإشعارات">
-      <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
-      <span class="notification-badge" id="notificationBadge" aria-live="polite" hidden>0</span>
-    </button>
-  </div>
-  <div class="date-line"><span id="todayHijri">--</span><span class="date-separator">•</span><span id="todayDate">اليوم</span></div>
+
+<div class="home-greeting" id="homeGreeting">السلام عليكم يا أخي المسلم</div>
+
+<div class="home-brand">أنياس</div>
+
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
+  <span id="themeToggleIcon" aria-hidden="true">☾</span>
+</button>
+
+<button class="notification-bell-button" id="notificationBellButton" type="button" aria-label="الإشعارات" title="الإشعارات">
+  <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+  </svg>
+  <span class="notification-badge" id="notificationBadge" aria-live="polite" hidden>0</span>
+</button>
+
+<div class="date-line">
+<span id="todayHijri">--</span>
+<span class="date-separator">•</span>
+<span id="todayDate">اليوم</span>
+</div>
+
 </header>
 
 
@@ -181,57 +169,6 @@
 
 </section>
 
-<section class="home-achievement-card" aria-labelledby="homeAchievementHeading">
-  <div class="home-achievement-heading">
-    <div>
-      <span class="home-achievement-kicker">تتبع الصلاة والأذكار والسنن</span>
-      <h2 class="home-achievement-title" id="homeAchievementHeading">إنجاز اليوم</h2>
-    </div>
-    <strong class="home-achievement-percent" id="homeAchievementPercent">٠٪</strong>
-  </div>
-  <div class="home-achievement-track" id="homeAchievementProgressTrack" role="progressbar" aria-label="مهام اليوم المنجزة" aria-valuemin="0" aria-valuemax="17" aria-valuenow="0">
-    <span id="homeAchievementProgress"></span>
-  </div>
-  <div class="home-achievement-bottom">
-    <p class="home-achievement-message" id="homeAchievementMessage">ابدأ بما تيسّر لك، والقليل الدائم خير.</p>
-    <span class="home-achievement-count"><strong id="homeAchievementCount" dir="ltr">٠ / ١٧</strong><span>مهمة</span></span>
-  </div>
-</section>
-
-<section class="home-shortcuts-section" aria-labelledby="homeQuickLinksHeading">
-  <div class="home-section-heading">
-    <div>
-      <h2 id="homeQuickLinksHeading">الوصول السريع</h2>
-      <p>عباداتك وأدواتك الأساسية</p>
-    </div>
-  </div>
-  <div class="home-shortcut-grid">
-    <button class="home-shortcut-card" data-home-action="daily-adhkar" type="button">
-      <span class="home-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
-      <span class="home-shortcut-copy"><strong class="home-shortcut-title">أذكار اليوم</strong><small>أذكار حسب وقتك</small></span>
-    </button>
-    <button class="home-shortcut-card" data-more-go="azkar" type="button">
-      <span class="home-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.5-2.9 8.1-7 10-4.1-1.9-7-5.5-7-10V6z"/><path d="M9 12h6M12 9v6"/></svg></span>
-      <span class="home-shortcut-copy"><strong class="home-shortcut-title">الأذكار</strong><small>الأذكار والأدعية</small></span>
-    </button>
-    <button class="home-shortcut-card" data-more-go="tasks" type="button">
-      <span class="home-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5h11v16H5V5h3Z"/><path d="M9 3h6v4H9zM8.5 12l2 2 5-5M8.5 17h7"/></svg></span>
-      <span class="home-shortcut-copy"><strong class="home-shortcut-title">يوم المسلم</strong><small>ابدأ يومك بعبادة</small></span>
-    </button>
-    <button class="home-shortcut-card" data-home-action="prayer-schedule" type="button">
-      <span class="home-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
-      <span class="home-shortcut-copy"><strong class="home-shortcut-title">مواقيت الصلاة</strong><small>متابعة مواقيت الصلاة</small></span>
-    </button>
-    <button class="nearby-mosque-card home-qibla-card home-shortcut-card" id="openQiblaButton" type="button">
-      <span class="home-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.3 4.7-4.7 2.3 2.3-4.7z"/></svg></span>
-      <span class="home-shortcut-copy"><strong class="home-shortcut-title mosque-title">اتجاه القبلة</strong><small class="mosque-description">اكتشف اتجاه القبلة</small></span>
-    </button>
-    <button class="nearby-mosque-card home-shortcut-card" id="nearbyMosqueButton" type="button">
-      <span class="home-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 20V9l7-5 7 5v11M9 20v-6h6v6M8 10h.01M16 10h.01"/></svg></span>
-      <span class="home-shortcut-copy"><strong class="home-shortcut-title nearby-mosque-title">أقرب مسجد</strong><small>مساجد قريبة منك</small></span>
-    </button>
-  </div>
-</section>
 
 <section class="section daily-adhkar-section" id="dailyAdhkarSection" aria-labelledby="dailyAdhkarHeading">
   <div class="daily-adhkar-card" id="dailyAdhkarCard" aria-live="polite">
@@ -318,6 +255,20 @@
     <div class="reference" id="dailyHadithReference">متفق عليه</div>
   </div>
 </div>
+</section>
+
+<section class="section">
+  <button class="nearby-mosque-card" id="nearbyMosqueButton" type="button">
+    <span class="nearby-mosque-title">أقرب مسجد</span>
+  </button>
+</section>
+
+<section class="section">
+  <button class="nearby-mosque-card home-qibla-card" id="openQiblaButton" type="button">
+    <span class="mosque-icon" aria-hidden="true">⌖</span>
+    <span class="mosque-info"><strong class="mosque-title">اتجاه القبلة</strong><small class="mosque-description">افتح البوصلة لتحديد الاتجاه</small></span>
+    <span class="mosque-arrow" aria-hidden="true">‹</span>
+  </button>
 </section>
 
 <section class="section">
@@ -930,52 +881,13 @@ aria-selected="false"
 
 <div class="setting-row time-background-setting">
   <div class="setting-info">
-    <div class="setting-title">إظهار خلفيات التطبيق</div>
-    <div class="setting-description" id="timeBackgroundDescription" aria-live="polite">تتبدّل الخلفية تلقائيًا بين الصباح والمساء والنوم</div>
+    <div class="setting-title">خلفيات التطبيق حسب الوقت</div>
+    <div class="setting-description" id="timeBackgroundDescription">خلفية صباحية أو ليلية هادئة للتطبيق ويمكنك إيقافها متى شئت</div>
   </div>
-  <label class="switch" aria-label="إظهار خلفيات التطبيق">
+  <label class="switch" aria-label="تفعيل الخلفيات حسب وقت اليوم">
     <input id="timeBackgroundToggle" type="checkbox">
     <span class="switch-track"></span><span class="switch-knob"></span>
   </label>
-</div>
-
-<div class="background-choice-panel" id="backgroundChoicePanel">
-  <div class="background-choice-heading" id="backgroundChoiceTitle">اختر خلفية التطبيق</div>
-  <div class="background-choice-hint">اتركها تلقائية حسب وقت الورد أو ثبّت مشهدًا يناسبك</div>
-  <div class="background-choice-grid" role="radiogroup" aria-labelledby="backgroundChoiceTitle" aria-describedby="timeBackgroundDescription">
-    <label class="background-choice-option">
-      <input type="radio" name="backgroundChoice" value="auto" checked>
-      <span class="background-choice-card">
-        <span class="background-choice-thumb" data-background-preview="auto" aria-hidden="true"></span>
-        <span class="background-choice-name">تلقائي</span>
-        <span class="background-choice-caption">حسب وقت الورد</span>
-      </span>
-    </label>
-    <label class="background-choice-option">
-      <input type="radio" name="backgroundChoice" value="morning">
-      <span class="background-choice-card">
-        <span class="background-choice-thumb" data-background-preview="morning" aria-hidden="true"></span>
-        <span class="background-choice-name">الصباح</span>
-        <span class="background-choice-caption">ضوء هادئ</span>
-      </span>
-    </label>
-    <label class="background-choice-option">
-      <input type="radio" name="backgroundChoice" value="evening">
-      <span class="background-choice-card">
-        <span class="background-choice-thumb" data-background-preview="evening" aria-hidden="true"></span>
-        <span class="background-choice-name">المساء</span>
-        <span class="background-choice-caption">دفء الغروب</span>
-      </span>
-    </label>
-    <label class="background-choice-option">
-      <input type="radio" name="backgroundChoice" value="sleep">
-      <span class="background-choice-card">
-        <span class="background-choice-thumb" data-background-preview="sleep" aria-hidden="true"></span>
-        <span class="background-choice-name">النوم</span>
-        <span class="background-choice-caption">ليل ساكن</span>
-      </span>
-    </label>
-  </div>
 </div>
 
 
@@ -2367,7 +2279,6 @@ type="button"
 <span class="nav-icon">
 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
 </span>
-<span class="nav-label">الرئيسية</span>
 </button>
 
 
@@ -2380,7 +2291,6 @@ type="button"
 <span class="nav-icon">
 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg>
 </span>
-<span class="nav-label">يوم المسلم</span>
 </button>
 
 
@@ -2394,7 +2304,6 @@ type="button"
 <span class="nav-icon">
 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 19 6v5c0 4.5-2.9 8.1-7 10-4.1-1.9-7-5.5-7-10V6z"/><path d="M9 12h6M12 9v6"/></svg>
 </span>
-<span class="nav-label">الأذكار</span>
 </button>
 
 
@@ -2407,7 +2316,6 @@ type="button"
 <span class="nav-icon">
 <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
 </span>
-<span class="nav-label">المزيد</span>
 </button>
 
 </nav>
@@ -2417,7 +2325,7 @@ type="button"
      ملفات JavaScript
 ===================================================== -->
 <script src="data/app-version.js?v=20261015-1"></script>
-<script src="js/i18n.js?v=20261015-3"></script>
+<script src="js/i18n.js?v=20261015-1"></script>
 <script src="data/azkar-topics.js?v=20260926-3"></script>
 <script src="data/azkar-benefits.js?v=20261001-1"></script>
 <script src="data/daily-quran.js?v=20260926-3"></script>
@@ -2433,11 +2341,11 @@ type="button"
 <script src="js/azkar.js?v=20261014-1"></script>
 <script src="js/wird.js?v=20261014-2"></script>
 <script src="js/optional-audio.js?v=20261014-2"></script>
-<script src="js/settings.js?v=20261015-2"></script>
+<script src="js/settings.js?v=20261015-1"></script>
 <script src="js/qibla.js?v=20261008-1"></script>
 <script src="js/app-enhancements.js?v=20261013-3"></script>
-<script src="js/daily-devotions.js?v=20261015-2"></script>
-<script src="js/app.js?v=20261015-2"></script>
+<script src="js/daily-devotions.js?v=20261003-1"></script>
+<script src="js/app.js?v=20261012-2"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script>
   if ("serviceWorker" in navigator && window.isSecureContext) {

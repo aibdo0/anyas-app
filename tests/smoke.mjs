@@ -96,42 +96,6 @@ check("PWA install and offline shell are configured", () => {
   assert.match(index, /addEventListener\("offline"/);
 });
 
-check("morning, evening, and sleep backgrounds are selectable and cached offline", () => {
-  for (const scene of ["morning", "evening", "sleep"]) {
-    assert.ok(exists(`assets/adhkar-${scene}-background.webp`), `${scene} background is missing`);
-    assert.match(index, new RegExp(`name="backgroundChoice" value="${scene}"`));
-    assert.match(read("css/app-background.css"), new RegExp(`data-background-choice="${scene}"`));
-    assert.match(serviceWorker, new RegExp(`assets/adhkar-${scene}-background\\.webp`));
-  }
-  assert.match(index, /id="timeBackgroundToggle"/);
-  assert.match(index, /name="backgroundChoice" value="auto"/);
-  assert.match(settings, /anyas_backgroundChoice/);
-  assert.match(settings, /choice\.disabled = !timeBackgroundEnabled/);
-});
-
-check("settings opens with the general section visible", () => {
-  assert.match(appjs, /const initiallyExpanded = index === 0/);
-  assert.match(appjs, /panel\.hidden = !initiallyExpanded/);
-  assert.match(index, /data-more-go="settings"/);
-});
-
-check("home dashboard shows live daily achievement and working shortcuts", () => {
-  const dailyDevotions = read("js/daily-devotions.js");
-  const translations = JSON.parse(read("data/en-ui-translations.json"));
-  assert.match(index, /id="homeAchievementProgressTrack"[^>]+role="progressbar"/);
-  assert.match(index, /id="homeAchievementProgress"/);
-  assert.match(dailyDevotions, /homeProgressTrack\.setAttribute\("aria-valuenow"/);
-  assert.match(index, /data-home-action="daily-adhkar"/);
-  assert.match(index, /data-home-action="prayer-schedule"/);
-  assert.match(appjs, /document\.querySelectorAll\("\[data-home-action\]"\)/);
-  assert.match(index, /id="openQiblaButton"/);
-  assert.match(index, /id="nearbyMosqueButton"/);
-  assert.match(index, /class="nav-label"/);
-  assert.ok(exists("css/home-premium.css"), "home premium styles are missing");
-  assert.equal(translations["إنجاز اليوم"], "Today's progress");
-  assert.equal(translations["الوصول السريع"], "Quick access");
-});
-
 check("keyboard and screen-reader accessibility basics are present", () => {
   assert.match(index, /class="skip-link" href="#page-home"/);
   for (const match of index.matchAll(/<img\b([^>]*)>/gi)) assert.match(match[1], /\balt=/, "every image needs alt text");

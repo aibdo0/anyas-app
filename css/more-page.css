@@ -50,30 +50,28 @@
 #page-more .more-page-header .brand { margin: 0; color: #fff; font-size: 25px; font-weight: 900; line-height: 1.2; }
 #page-more .more-page-header .date { margin: 2px 0 0; color: rgba(255, 255, 255, .76); font-size: 11px; line-height: 1.5; }
 
-#page-more .more-group { margin: 0 0 22px; }
+#page-more .more-group { margin: 0 0 20px; }
 .more-group-heading {
   display: grid;
   justify-items: start;
   align-content: center;
-  gap: 3px;
-  min-height: 44px;
-  margin: 0 4px 10px;
-  padding: 7px 12px;
+  gap: 2px;
+  min-height: 42px;
+  margin: 0 4px 9px;
+  padding-inline-start: 11px;
   border-inline-start: 3px solid var(--gold);
-  border-radius: 13px;
-  background: linear-gradient(90deg, rgba(196, 154, 85, .11), rgba(196, 154, 85, 0));
 }
-.more-group-heading h2 { margin: 0; color: var(--ink); font-size: 15px; font-weight: 900; line-height: 1.35; }
-.more-group-heading p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.more-group-heading h2 { margin: 0; color: var(--ink); font-size: 14px; font-weight: 900; line-height: 1.35; }
+.more-group-heading p { margin: 2px 0 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
 
 #page-more .more-menu {
   display: grid;
-  gap: 10px;
-  overflow: visible;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 21px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
 #page-more .more-menu-item {
   display: grid;
@@ -81,19 +79,20 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  min-height: 82px;
-  padding: 14px 15px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
+  min-height: 78px;
+  padding: 13px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
   color: var(--ink);
-  background: var(--surface);
-  box-shadow: 0 10px 24px rgba(28, 24, 18, .09), inset 0 1px 0 rgba(255,255,255,.16);
+  background: transparent;
   text-align: right;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color .18s ease, transform .16s ease, box-shadow .18s ease;
+  transition: background-color .18s ease, transform .16s ease;
 }
-#page-more .more-menu-item:hover { background: var(--surface-soft); transform: translateY(-1px); box-shadow: 0 13px 27px rgba(28, 24, 18, .13); }
+#page-more .more-menu-item:last-child { border-bottom: 0; }
+#page-more .more-menu-item:hover { background: var(--surface-soft); }
 #page-more button.more-menu-item:active { transform: scale(.99); background: var(--surface-soft); }
 #page-more .more-menu-icon {
   display: grid;
@@ -122,11 +121,11 @@
 .more-menu-icon--qibla { color: #596b40; border-color: #e0e5d0 !important; background: #eef0e0; }
 #page-more .more-menu-copy { display: grid; min-width: 0; gap: 2px; text-align: right; }
 #page-more .more-menu-copy strong { overflow: hidden; color: var(--ink); font-size: 14px; font-weight: 900; line-height: 1.4; text-overflow: ellipsis; }
-#page-more .more-menu-copy small { color: var(--muted); font-size: 11px; line-height: 1.55; }
+#page-more .more-menu-copy small { color: var(--muted); font-size: 10px; line-height: 1.55; }
 #page-more .more-menu-arrow {
   display: grid;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 11px;
@@ -146,8 +145,8 @@
   #page-about .about-language-row .select-control { flex-basis: 132px; width: 132px; }
 }
 
-:root[data-theme="dark"] body #page-more .more-menu { border: 0; background: transparent; box-shadow: none; }
-:root[data-theme="dark"] body #page-more .more-menu-item { background: var(--surface) !important; }
+:root[data-theme="dark"] body #page-more .more-menu { border-color: var(--line); background: var(--surface); }
+:root[data-theme="dark"] body #page-more .more-menu-item { background: transparent !important; }
 :root[data-theme="dark"] body #page-more .more-menu-item:hover,
 :root[data-theme="dark"] body #page-more button.more-menu-item:active { background: var(--surface-soft) !important; }
 :root[data-theme="dark"] body #page-more .more-menu-icon--tasks { color: #e2ca91 !important; border-color: #514735 !important; background: #393326 !important; }
@@ -159,17 +158,16 @@
 
 html[lang="en"] #page-more .more-page-header,
 html[lang="en"] #page-more .more-menu-item { text-align: left; }
-html[lang="en"] #page-more .more-menu-copy { text-align: left; }
 html[lang="en"] #page-more .more-menu-arrow svg { transform: rotate(180deg); }
 
 @media (max-width: 390px) {
   #page-more { padding-inline: 15px; }
   #page-more .more-page-header { grid-template-columns: 48px minmax(0, 1fr); gap: 10px; padding: 17px 15px; }
   .more-header-mark { width: 46px; height: 46px; border-radius: 15px; }
-  #page-more .more-menu-item { grid-template-columns: 43px minmax(0, 1fr) 28px; gap: 9px; min-height: 74px; padding: 11px 12px; border-radius: 18px; }
+  #page-more .more-menu-item { grid-template-columns: 43px minmax(0, 1fr) 28px; gap: 10px; min-height: 74px; padding: 11px 12px; }
   #page-more .more-menu-icon { width: 43px; height: 43px; border-radius: 14px; }
   #page-more .more-menu-copy strong { font-size: 13px; }
-  #page-more .more-menu-copy small { font-size: 10px; }
+  #page-more .more-menu-copy small { font-size: 9px; }
   #page-more .more-menu-arrow { width: 28px; height: 28px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -186,44 +184,4 @@ html[lang="en"] #page-more .more-menu-arrow svg { transform: rotate(180deg); }
 :root[data-time-scene="night"] #page-more .more-group-heading p {
   color: rgba(255, 255, 255, .82) !important;
   text-shadow: 0 1px 4px rgba(0, 0, 0, .38);
-}
-
-/* بطاقة إعدادات مميزة بلمعة ذهبية هادئة، مع احتفاظ كل وجهة بشكل البطاقة المستقلة. */
-#page-more .more-menu-item[data-more-go="settings"] {
-  position: relative;
-  isolation: isolate;
-  border-color: rgba(193, 153, 82, .58) !important;
-  background: linear-gradient(110deg, rgba(196, 154, 85, .16), var(--surface) 72%) !important;
-  box-shadow: 0 12px 28px rgba(62, 47, 23, .12), inset 0 1px 0 rgba(255, 255, 255, .2) !important;
-}
-#page-more .more-menu-item[data-more-go="settings"]::before {
-  position: absolute;
-  inset-block: 14px;
-  inset-inline-start: 0;
-  width: 3px;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #e8cc8b, #9a7334);
-  content: "";
-  pointer-events: none;
-}
-#page-more .more-menu-item[data-more-go="settings"] .more-menu-icon--settings {
-  color: #674d1c !important;
-  border-color: #d8be7c !important;
-  background: linear-gradient(145deg, #f7e6b7, #e6cb88) !important;
-}
-#page-more .more-menu-item[data-more-go="settings"]:hover {
-  background: linear-gradient(110deg, rgba(196, 154, 85, .23), var(--surface-soft) 76%) !important;
-}
-:root[data-theme="dark"] body #page-more .more-menu-item[data-more-go="settings"] {
-  border-color: #75613e !important;
-  background: linear-gradient(110deg, rgba(214, 189, 133, .19), var(--surface) 76%) !important;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, .24), inset 0 1px 0 rgba(255, 255, 255, .05) !important;
-}
-:root[data-theme="dark"] body #page-more .more-menu-item[data-more-go="settings"] .more-menu-icon--settings {
-  color: #f1d89b !important;
-  border-color: #75613e !important;
-  background: linear-gradient(145deg, #4a3e29, #352e22) !important;
-}
-:root[data-theme="dark"] body #page-more .more-menu-item[data-more-go="settings"]:hover {
-  background: linear-gradient(110deg, rgba(214, 189, 133, .25), var(--surface-soft) 80%) !important;
 }

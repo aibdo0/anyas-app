@@ -149,19 +149,6 @@
     const total = prayerTotal + catalog.adhkar.length + catalog.sunnah.length;
     const done = prayerCount + dhikrDone + sunnahDone;
     const percent = total ? Math.round(done / total * 100) : 0;
-    const homePercent = document.getElementById("homeAchievementPercent");
-    const homeCount = document.getElementById("homeAchievementCount");
-    const homeProgress = document.getElementById("homeAchievementProgress");
-    const homeProgressTrack = document.getElementById("homeAchievementProgressTrack");
-    if (homePercent) homePercent.textContent = `${number(percent)}٪`;
-    if (homeCount) homeCount.textContent = `${number(done)} / ${number(total)}`;
-    if (homeProgress) homeProgress.style.width = `${percent}%`;
-    if (homeProgressTrack) {
-      homeProgressTrack.setAttribute("aria-valuenow", String(done));
-      homeProgressTrack.setAttribute("aria-valuemax", String(total));
-    }
-    const homeMessage = document.getElementById("homeAchievementMessage");
-    if (homeMessage) homeMessage.textContent = percent === 100 ? "أحسنت، أتممت مهام يومك." : percent >= 60 ? "أحسنت، تبقّى القليل وأنت قريب." : "ابدأ بما تيسّر لك، والقليل الدائم خير.";
     const score = document.getElementById("dailyOverviewScore");
     const progress = document.getElementById("dailyOverviewProgress");
     const message = document.getElementById("dailyOverviewMessage");
