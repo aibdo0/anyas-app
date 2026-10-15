@@ -1,4 +1,4 @@
-const CACHE_NAME = "anyas-shell-v1.2.0";
+const CACHE_NAME = "anyas-shell-v1.2.1";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -42,7 +42,7 @@ const CORE_ASSETS = [
   "./js/favorites.js",
   "./js/azkar.js",
   "./js/wird.js",
-  "./js/settings.js?v=20261014-1",
+  "./js/settings.js?v=20261015-1",
   "./js/qibla.js",
   "./js/app-enhancements.js",
   "./js/daily-devotions.js",
