@@ -50,7 +50,7 @@
 
 .daily-adhkar-card[data-adhkar-period="morning"] {
   border-color: rgba(255, 220, 137, .72);
-  background-image: linear-gradient(90deg, rgba(18, 33, 43, .2), rgba(18, 24, 31, .84)), url("../assets/adhkar-morning-card.jpg");
+  background-image: linear-gradient(90deg, rgba(18, 33, 43, .2), rgba(18, 24, 31, .84)), url("../assets/adhkar-morning-background.webp");
   box-shadow: 0 16px 34px rgba(105, 74, 25, .24);
 }
 .daily-adhkar-card[data-adhkar-period="morning"]::after {
@@ -67,7 +67,7 @@
 
 .daily-adhkar-card[data-adhkar-period="evening"] {
   border-color: rgba(250, 177, 108, .72);
-  background-image: linear-gradient(90deg, rgba(38, 24, 32, .2), rgba(26, 22, 29, .86)), url("../assets/adhkar-evening-card.jpg");
+  background-image: linear-gradient(90deg, rgba(38, 24, 32, .2), rgba(26, 22, 29, .86)), url("../assets/adhkar-evening-background.webp");
   background-position: center 48%;
   box-shadow: 0 16px 34px rgba(126, 54, 28, .25);
 }
@@ -80,7 +80,7 @@
 .daily-adhkar-card[data-adhkar-period="sleep"] {
   border-color: #3e4a69;
   color: #eef3ff;
-  background-image: linear-gradient(90deg, rgba(16, 23, 43, .22), rgba(8, 14, 31, .9)), url("../assets/adhkar-sleep-card.jpg");
+  background-image: linear-gradient(90deg, rgba(16, 23, 43, .22), rgba(8, 14, 31, .9)), url("../assets/adhkar-sleep-background.webp");
   box-shadow: 0 14px 32px rgba(20, 30, 58, 0.25);
 }
 .daily-adhkar-card[data-adhkar-period="sleep"]::after {

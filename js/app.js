@@ -1900,9 +1900,10 @@ function setupSettingsSectionTabs() {
     toggle.className = `${heading.className} settings-section-toggle`;
     toggle.textContent = label;
     toggle.setAttribute("aria-controls", panelId);
-    toggle.setAttribute("aria-expanded", "false");
+    const initiallyExpanded = index === 0;
+    toggle.setAttribute("aria-expanded", String(initiallyExpanded));
     panel.id = panelId;
-    panel.hidden = true;
+    panel.hidden = !initiallyExpanded;
 
     toggle.addEventListener("click", () => {
       const isExpanded = toggle.getAttribute("aria-expanded") === "true";
