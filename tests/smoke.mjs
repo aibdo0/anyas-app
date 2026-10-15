@@ -109,6 +109,15 @@ check("morning, evening, and sleep backgrounds are selectable and cached offline
   assert.match(settings, /choice\.disabled = !timeBackgroundEnabled/);
 });
 
+check("all three backgrounds stay vivid in portrait view for both themes", () => {
+  const palette = read("css/palette-warm-gold.css");
+  assert.match(palette, /:root\[data-theme="dark"\]\[data-auto-background="true"\] body\s*\{\s*background-image:[\s\S]*?var\(--app-scene-image\)/);
+  assert.match(palette, /@media \(max-width: 700px\) and \(orientation: portrait\)[\s\S]*?background-position:\s*center,\s*24% center,\s*center/);
+  for (const scene of ["morning", "evening", "sleep"]) {
+    assert.match(palette, new RegExp(`data-background-choice="${scene}"`), `${scene} light-theme crop is missing`);
+  }
+});
+
 check("settings opens with the general section visible", () => {
   assert.match(appjs, /const initiallyExpanded = index === 0/);
   assert.match(appjs, /panel\.hidden = !initiallyExpanded/);
