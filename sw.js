@@ -9,6 +9,7 @@ const CORE_ASSETS = [
   "./assets/prayer-hero.jpg",
   "./css/style.css",
   "./css/home.css",
+  "./css/home-hero-polish.css?v=20261016-5",
   "./css/prayer.css",
   "./css/azkar.css",
   "./css/wird-session.css?v=20261016-1",
