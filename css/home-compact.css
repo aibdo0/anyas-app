@@ -56,13 +56,16 @@
   #page-home #themeToggleIcon { width: 29px; height: 29px; font-size: 25px; }
 
   #page-home .next-prayer {
+    width: 100%;
     grid-template-columns: minmax(0, 1fr) auto !important;
     grid-template-areas: "meta meta" "name name" "time countdown" "state state" "progress progress" !important;
     align-content: center;
     row-gap: 0 !important;
+    height: 142px !important;
     min-height: 142px !important;
+    box-sizing: border-box;
     margin: 0 0 10px !important;
-    padding: 8px 13px 8px !important;
+    padding: 8px 13px !important;
     border-radius: var(--home-compact-radius) !important;
     background-position: center 48% !important;
   }
@@ -84,36 +87,41 @@
 
   #page-home .daily-adhkar-section { margin-block: 8px !important; }
   #page-home .daily-adhkar-card {
-    display: block !important;
-    min-height: 0 !important;
-    height: auto !important;
-    padding: 18px 18px 16px !important;
-    border-radius: 24px !important;
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+    height: 142px !important;
+    min-height: 142px !important;
+    box-sizing: border-box;
+    padding: 8px 14px !important;
+    border-radius: var(--home-compact-radius) !important;
     background-size: cover;
     background-position: center;
   }
-  #page-home .daily-adhkar-heading-row { display: flex; align-items: center; gap: 11px; min-width: 0; margin: 0; }
-  #page-home .daily-adhkar-mark { display: grid !important; }
-  #page-home .daily-adhkar-eyebrow,
-  #page-home .daily-adhkar-badge { display: inline-flex !important; }
+  #page-home .daily-adhkar-heading-row { display: flex; align-items: center; gap: 6px; min-width: 0; margin: 0; }
+  #page-home .daily-adhkar-mark { display: grid !important; width: 30px; height: 30px; flex-basis: 30px; border-radius: 10px; font-size: 15px; }
+  #page-home .daily-adhkar-eyebrow { display: inline-flex !important; font-size: 9px; line-height: 1.1; }
+  #page-home .daily-adhkar-badge { display: inline-flex !important; padding: 3px 7px; font-size: 9px; line-height: 1.2; }
   #page-home .daily-adhkar-hint { display: none !important; }
   #page-home .daily-adhkar-heading-copy { min-width: 0; }
-  #page-home .daily-adhkar-title { margin: 2px 0 0 !important; font-size: 18px !important; line-height: 1.35 !important; }
+  #page-home .daily-adhkar-title { margin: 1px 0 0 !important; font-size: 14px !important; line-height: 1.1 !important; }
   #page-home .daily-adhkar-text {
-    display: block !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
     min-width: 0;
-    margin: 12px 0 0 !important;
-    padding: 10px 12px !important;
+    margin: 4px 0 0 !important;
+    padding: 2px 6px !important;
     border-inline-start: 3px solid #f1d27b !important;
-    border-radius: 14px !important;
+    border-radius: 10px !important;
     background: rgba(15, 20, 28, .34) !important;
-    overflow: visible;
-    font-size: 13px;
-    line-height: 1.7;
+    overflow: hidden;
+    font-size: 10px;
+    line-height: 1.2;
     white-space: normal;
-    text-overflow: clip;
+    text-overflow: ellipsis;
   }
-  #page-home .daily-adhkar-footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 12px 0 0 !important; padding: 11px 0 0 !important; border-top: 1px solid rgba(255,255,255,.2); }
+  #page-home .daily-adhkar-footer { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin: auto 0 0 !important; padding: 2px 0 0 !important; border-top: 1px solid rgba(255,255,255,.2); }
   #page-home .daily-adhkar-button {
     display: inline-flex;
     align-items: center;
@@ -128,24 +136,27 @@
   #page-home .friday-feature-section[data-home-compact-friday="false"] { display: none !important; }
   #page-home .friday-feature-card {
     position: relative;
-    display: block !important;
-    min-height: 0;
-    height: auto;
-    padding: 18px;
-    border-radius: 22px;
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+    height: 142px;
+    min-height: 142px;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border-radius: var(--home-compact-radius);
   }
   #page-home .friday-feature-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0; }
   #page-home #homeFridayMeta { display: none !important; }
-  #page-home #homeFridayHeading { margin: 1px 0 0; font-size: 18px; line-height: 1.35; }
+  #page-home #homeFridayHeading { margin: 1px 0 0; font-size: 15px; line-height: 1.2; }
   #page-home #homeFridayText {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     min-width: 0;
-    margin: 12px 0 5px;
+    margin: 6px 0 0;
     overflow: hidden;
-    font-size: 13px;
-    line-height: 1.7;
+    font-size: 12px;
+    line-height: 1.35;
     text-overflow: ellipsis;
   }
   #page-home .friday-feature-button {
@@ -154,8 +165,8 @@
     justify-content: center;
     width: 100%;
     min-height: 48px;
-    margin: 8px 0 0;
-    padding: 9px 14px;
+    margin: auto 0 0;
+    padding: 6px 14px;
     border-radius: 12px;
     font-size: 12px;
   }
@@ -293,7 +304,7 @@
   }
   #page-home .home-brand { font-size: 20px !important; }
   #page-home .date-line { font-size: 8px !important; }
-  #page-home .next-prayer { min-height: 139px !important; }
+  #page-home .next-prayer { height: 142px !important; min-height: 142px !important; }
   #page-home .prayer-time { font-size: 27px !important; }
   #page-home .home-location-tools { gap: 5px; }
   #page-home .home-location-tools > .nearby-mosque-card { padding: 7px !important; }

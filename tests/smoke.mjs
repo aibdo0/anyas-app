@@ -505,7 +505,7 @@ check("Android prayer widget shows the next prayer and refreshes", () => {
 });
 
 check("compact home omits the extra prayer counter and logging button while preserving tracking and accessible daily tabs", () => {
-  assert.match(index, /href="css\/home-compact\.css\?v=20261016-3"/);
+  assert.match(index, /href="css\/home-compact\.css\?v=20261016-4"/);
   assert.match(index, /src="js\/home-compact\.js\?v=20261016-2"/);
   assert.ok(index.indexOf("css/home-compact.css") > index.indexOf("css/app-background.css"));
   assert.doesNotMatch(index, /homePrayerProgressBadge|homeRecordPrayerButton|تسجيل الصلاة/);
@@ -522,9 +522,11 @@ check("compact home omits the extra prayer counter and logging button while pres
   assert.match(homeCompact, /getFridayState/);
   assert.match(homeCompactCss, /grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(homeCompactCss, /data-home-compact-friday="false"/);
-  assert.match(homeCompactCss, /daily-adhkar-card\s*\{[^}]*min-height:\s*0 !important/);
-  assert.match(homeCompactCss, /friday-feature-card\s*\{[^}]*min-height:\s*0/);
-  assert.match(serviceWorker, /home-compact\.css\?v=20261016-3/);
+  assert.match(homeCompactCss, /daily-adhkar-card\s*\{[^}]*height:\s*142px !important/);
+  assert.match(homeCompactCss, /friday-feature-card\s*\{[^}]*height:\s*142px/);
+  assert.match(homeCompactCss, /\.next-prayer\s*\{[^}]*height:\s*142px !important/);
+  assert.match(homeCompactCss, /\.next-prayer\s*\{[^}]*width:\s*100%/);
+  assert.match(serviceWorker, /home-compact\.css\?v=20261016-4/);
   assert.match(serviceWorker, /home-compact\.js\?v=20261016-2/);
 });
 
