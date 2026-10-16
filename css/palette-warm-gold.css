@@ -421,12 +421,12 @@ body { background-image: none !important; color: var(--ink) !important; }
 :root[data-theme="dark"] #page-notifications .notifications-overview-copy span { color: var(--muted) !important; }
 #page-tasks .daily-overview-focus { color: #ffffff !important; }
 
-/* صور البطاقات فقط؛ تظل خلفية التطبيق والصفحات العامة مصمتة. */
+/* صور البطاقات فقط، بلا طبقة تعتيم؛ تظل خلفية التطبيق والصفحات العامة مصمتة. */
 #page-home .next-prayer,
 :root[data-theme="dark"] body.dark-mode #page-home .next-prayer {
   color: #fff !important;
   background-color: #1c2026 !important;
-  background-image: linear-gradient(105deg, rgba(12, 17, 24, .64), rgba(12, 17, 24, .68) 52%, rgba(12, 17, 24, .72)), url("../assets/prayer-hero.jpg") !important;
+  background-image: url("../assets/prayer-hero.jpg") !important;
   background-position: center 48% !important;
   background-size: cover !important;
 }
@@ -436,7 +436,7 @@ body { background-image: none !important; color: var(--ink) !important; }
 :root[data-theme="dark"] body.dark-mode #page-tasks .daily-overview-card {
   color: #fff !important;
   background-color: #17202b !important;
-  background-image: linear-gradient(105deg, rgba(12, 18, 28, .64), rgba(12, 18, 28, .68) 52%, rgba(12, 18, 28, .72)), url("../assets/anyas-tasks-hero.jpg") !important;
+  background-image: url("../assets/anyas-tasks-hero.jpg") !important;
   background-position: center !important;
   background-size: cover !important;
 }
@@ -449,7 +449,7 @@ body { background-image: none !important; color: var(--ink) !important; }
 :root[data-theme="dark"] body.dark-mode #page-azkar .hisn-hero-card {
   color: #fff !important;
   background-color: #151a20 !important;
-  background-image: linear-gradient(105deg, rgba(12, 17, 24, .64), rgba(12, 17, 24, .68) 52%, rgba(12, 17, 24, .72)), url("../assets/anyas-hisn-hero.jpg") !important;
+  background-image: url("../assets/anyas-hisn-hero.jpg") !important;
   background-position: center !important;
   background-size: cover !important;
 }
@@ -462,7 +462,7 @@ body { background-image: none !important; color: var(--ink) !important; }
 :root[data-theme="dark"] body.dark-mode #page-tasks .tasks-hero-card {
   color: #fff !important;
   background-color: #171b20 !important;
-  background-image: linear-gradient(105deg, rgba(12, 17, 24, .64), rgba(12, 17, 24, .68) 52%, rgba(12, 17, 24, .72)), url("../assets/anyas-more-hero.jpg") !important;
+  background-image: url("../assets/anyas-more-hero.jpg") !important;
   background-position: center !important;
   background-size: cover !important;
 }
@@ -475,7 +475,7 @@ body { background-image: none !important; color: var(--ink) !important; }
 :root[data-theme="dark"] body.dark-mode #page-more .more-hero-card {
   color: #fff !important;
   background-color: #171b20 !important;
-  background-image: linear-gradient(105deg, rgba(12, 17, 24, .64), rgba(12, 17, 24, .68) 52%, rgba(12, 17, 24, .72)), url("../assets/anyas-more-tools-hero.jpg") !important;
+  background-image: url("../assets/anyas-more-tools-hero.jpg") !important;
   background-position: center !important;
   background-size: cover !important;
 }
@@ -489,7 +489,7 @@ body { background-image: none !important; color: var(--ink) !important; }
   color: #fff !important;
   border-color: rgba(255, 226, 163, .72) !important;
   background-color: #1c211d !important;
-  background-image: linear-gradient(105deg, rgba(12, 17, 20, .62), rgba(12, 17, 20, .67)), url("../assets/adhkar-morning-card.jpg") !important;
+  background-image: url("../assets/adhkar-morning-card.jpg") !important;
   background-position: center !important;
   background-size: cover !important;
 }
@@ -498,7 +498,7 @@ body { background-image: none !important; color: var(--ink) !important; }
   color: #fff !important;
   border-color: rgba(255, 206, 157, .72) !important;
   background-color: #21181c !important;
-  background-image: linear-gradient(105deg, rgba(17, 13, 19, .62), rgba(17, 13, 19, .67)), url("../assets/adhkar-evening-card.jpg") !important;
+  background-image: url("../assets/adhkar-evening-card.jpg") !important;
   background-position: center !important;
   background-size: cover !important;
 }
@@ -507,7 +507,7 @@ body { background-image: none !important; color: var(--ink) !important; }
   color: #fff !important;
   border-color: rgba(190, 207, 255, .72) !important;
   background-color: #111726 !important;
-  background-image: linear-gradient(105deg, rgba(8, 13, 25, .58), rgba(8, 13, 25, .64)), url("../assets/adhkar-sleep-card.jpg") !important;
+  background-image: url("../assets/adhkar-sleep-card.jpg") !important;
   background-position: center !important;
   background-size: cover !important;
 }

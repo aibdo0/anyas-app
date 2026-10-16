@@ -420,6 +420,8 @@ check("app-level background images stay removed while card imagery remains", () 
   assert.match(appBackground, /html,\s*body\s*\{[^}]*background-image:\s*none\s*!important/s);
   assert.doesNotMatch(appBackground, /url\s*\(/i);
   assert.doesNotMatch(`${theme}\n${palette}`, /data-time-scene|data-auto-background/);
+  const cardRules = palette.slice(palette.indexOf("/* صور البطاقات فقط"));
+  assert.doesNotMatch(cardRules, /background-image:\s*linear-gradient/i, "card photos must not have a dimming gradient");
   for (const image of [
     "prayer-hero.jpg",
     "anyas-tasks-hero.jpg",
@@ -432,7 +434,7 @@ check("app-level background images stay removed while card imagery remains", () 
   ]) assert.ok(palette.includes(`../assets/${image}`), `card background ${image} must remain available`);
   assert.doesNotMatch(index, /timeBackgroundToggle|timeBackgroundDescription|data-auto-background/);
   assert.doesNotMatch(settings, /timeBackgroundToggle|timeBackgroundDescription|updateTimeBackground/);
-  assert.match(serviceWorker, /anyas-shell-v1\.3\.3/);
+  assert.match(serviceWorker, /anyas-shell-v1\.3\.4/);
   assert.match(serviceWorker, /\.\/assets\/prayer-hero\.jpg/);
   assert.doesNotMatch(serviceWorker, /anyas-morning-background|anyas-night-background/);
 });
