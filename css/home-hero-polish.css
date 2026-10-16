@@ -1,0 +1,93 @@
+/* Home hero polish: layout and imagery only; preserve the existing palette. */
+#page-home .main-header {
+  position: relative;
+  min-height: 136px;
+  margin-bottom: 18px;
+  padding: 18px 18px 15px 118px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: right;
+}
+#page-home .home-greeting,
+#page-home .home-brand,
+#page-home .date-line { display: block; width: 100%; }
+#page-home .home-greeting {
+  margin: 0 0 2px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+#page-home .home-brand {
+  margin: 0;
+  color: var(--gold-dark);
+  font-size: clamp(29px, 8vw, 36px);
+  font-weight: 900;
+  line-height: 1.15;
+}
+#page-home .date-line {
+  justify-content: flex-start;
+  gap: 7px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+#page-home .theme-toggle,
+#page-home .notification-bell-button {
+  position: absolute;
+  top: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+}
+#page-home .theme-toggle {
+  right: auto;
+  inset-inline-end: auto;
+  left: 16px;
+}
+#page-home .notification-bell-button {
+  right: auto;
+  inset-inline-end: auto;
+  left: 68px;
+}
+#page-home .notification-bell-icon { width: 21px; height: 21px; }
+#page-home .notification-badge { top: -6px; right: -6px; inset-inline-end: auto; }
+
+/* لا صورة خلف الهيدر؛ الصورة تظهر بهدوء داخل بطاقة الورد فقط. */
+#page-home .daily-adhkar-card {
+  isolation: isolate;
+  min-height: 220px;
+  border-radius: 24px;
+  background: var(--surface);
+}
+#page-home .daily-adhkar-card::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,.93), rgba(255,255,255,.75)), url("../assets/anyas-morning-background.webp") center / cover no-repeat;
+  content: "";
+  opacity: .34;
+  pointer-events: none;
+}
+#page-home .daily-adhkar-card > * { position: relative; z-index: 1; }
+#page-home .next-prayer { border-radius: 26px; }
+
+/* يحجز مساحة عند ظهور تنبيه التحديث حتى لا يغطي الهيدر. */
+body:has(#updateBanner:not([hidden])) #page-home { padding-top: 84px; }
+#page-home { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
+
+@media (max-width: 420px) {
+  #page-home .main-header { min-height: 128px; padding: 16px 14px 14px 112px; border-radius: 21px; }
+  #page-home .theme-toggle,
+  #page-home .notification-bell-button { top: 16px; width: 42px; height: 42px; }
+  #page-home .theme-toggle { left: 14px; }
+  #page-home .notification-bell-button { left: 64px; }
+  body:has(#updateBanner:not([hidden])) #page-home { padding-top: 78px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #page-home .theme-toggle,
+  #page-home .notification-bell-button { transition: none; }
+}
