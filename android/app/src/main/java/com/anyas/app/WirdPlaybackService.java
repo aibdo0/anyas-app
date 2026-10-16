@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.AudioAttributes;
 import android.media.MediaMetadata;
 import android.media.session.MediaSession;
@@ -36,6 +37,8 @@ public final class WirdPlaybackService extends Service {
     private static final long MAX_WAKE_LOCK_MS = 15L * 60L * 1000L;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private AudioManager audioManager;
+    private final AudioManager.OnAudioFocusChangeListener audioFocusListener = change -> mainHandler.post(() -> handleAudioFocusChange(change));
     private TextToSpeech textToSpeech;
     private MediaSession mediaSession;
     private PowerManager.WakeLock wakeLock;
@@ -44,6 +47,7 @@ public final class WirdPlaybackService extends Service {
     private boolean paused;
     private boolean hasRequest;
     private boolean foregroundStarted;
+    private boolean pausedForFocus;
     private boolean replayCurrent;
     private String sessionToken = "";
     private String currentText = "";
@@ -53,11 +57,13 @@ public final class WirdPlaybackService extends Service {
     private int replayReturnIndex;
     private int repeatNumber = 1;
     private int repeatTotal = 1;
+    private int ttsRetryCount;
     private float volume = 1f;
     private float speechRate = 1f;
 
     @Override public void onCreate() {
         super.onCreate();
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         createChannel();
         mediaSession = new MediaSession(this, "AniasWirdPlayback");
         mediaSession.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS | MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
@@ -91,7 +97,7 @@ public final class WirdPlaybackService extends Service {
                 @Override public void onError(String id) { mainHandler.post(() -> handleTtsError(id)); }
                 @Override public void onError(String id, int errorCode) { mainHandler.post(() -> handleTtsError(id)); }
             });
-            if (hasRequest && !paused) speakCurrent();
+            if (hasRequest && !paused) startIfFocused();
         });
     }
 
@@ -137,6 +143,8 @@ public final class WirdPlaybackService extends Service {
                 sessionToken = safe(intent.getStringExtra("sessionToken"), "");
                 hasRequest = true;
                 paused = false;
+                pausedForFocus = false;
+                ttsRetryCount = 0;
                 setCurrentMetadata();
             } catch (Exception error) {
                 report("window.anyasAndroidWirdFailed");
@@ -149,7 +157,7 @@ public final class WirdPlaybackService extends Service {
             startForeground(NOTIFICATION_ID, buildNotification());
             foregroundStarted = true;
         } else updateNotification();
-        if (ttsReady && !paused) speakCurrent();
+        if (ttsReady && !paused) startIfFocused();
         return START_NOT_STICKY;
     }
 
@@ -180,17 +188,14 @@ public final class WirdPlaybackService extends Service {
         android.os.Bundle params = new android.os.Bundle();
         params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, volume);
         int result = textToSpeech.speak(currentText, TextToSpeech.QUEUE_FLUSH, params, utteranceId);
-        if (result == TextToSpeech.ERROR) {
-            report("window.anyasAndroidWirdFailed");
-            stopPlayback(false, false);
-            return;
-        }
+        if (result == TextToSpeech.ERROR) { retryOrStopTts(); return; }
         updateMediaState(PlaybackState.STATE_PLAYING);
         updateNotification();
     }
 
     private void completeUtterance(String completedId) {
         if (paused || !hasRequest || completedId == null || !completedId.equals(utteranceId)) return;
+        ttsRetryCount = 0;
         JSONObject entry = queue.optJSONObject(itemIndex);
         if (entry == null) { stopPlayback(true, true); return; }
         int count = Math.max(1, entry.optInt("count", 1));
@@ -223,11 +228,56 @@ public final class WirdPlaybackService extends Service {
 
     private void handleTtsError(String failedId) {
         if (paused || !hasRequest || failedId == null || !failedId.equals(utteranceId)) return;
+        retryOrStopTts();
+    }
+
+    private void retryOrStopTts() {
+        if (!hasRequest) return;
+        if (ttsRetryCount < 1) {
+            ttsRetryCount++;
+            mainHandler.postDelayed(() -> { if (hasRequest && !paused) speakCurrent(); }, 350);
+            return;
+        }
         report("window.anyasAndroidWirdFailed");
         stopPlayback(false, false);
     }
 
+    private boolean requestAudioFocus() {
+        if (audioManager == null) return false;
+        return audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
+                == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
+    }
+
+    private void startIfFocused() {
+        if (!hasRequest || paused) return;
+        if (requestAudioFocus()) speakCurrent();
+        else { paused = true; pausedForFocus = true; updateMediaState(PlaybackState.STATE_PAUSED); updateNotification(); report("window.anyasAndroidWirdPaused"); }
+    }
+
+    private void handleAudioFocusChange(int change) {
+        if (!hasRequest) return;
+        if (change == AudioManager.AUDIOFOCUS_GAIN) {
+            if (pausedForFocus) { pausedForFocus = false; resumePlayback(); }
+            return;
+        }
+        if (change == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT || change == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+            if (!paused) { pausedForFocus = true; pausePlaybackInternal(); }
+            return;
+        }
+        if (change == AudioManager.AUDIOFOCUS_LOSS) {
+            pausedForFocus = false;
+            if (!paused) pausePlaybackInternal();
+            abandonAudioFocus();
+        }
+    }
+
     private void pausePlayback() {
+        pausedForFocus = false;
+        abandonAudioFocus();
+        pausePlaybackInternal();
+    }
+
+    private void pausePlaybackInternal() {
         if (!hasRequest || paused) return;
         paused = true;
         if (textToSpeech != null) textToSpeech.stop();
@@ -239,7 +289,9 @@ public final class WirdPlaybackService extends Service {
 
     private void resumePlayback() {
         if (!hasRequest) return;
+        if (!requestAudioFocus()) { paused = true; pausedForFocus = true; updateMediaState(PlaybackState.STATE_PAUSED); updateNotification(); return; }
         paused = false;
+        pausedForFocus = false;
         speakCurrent();
         report("window.anyasAndroidWirdResumed");
     }
@@ -273,10 +325,12 @@ public final class WirdPlaybackService extends Service {
 
     private void stopPlayback(boolean notifyWeb, boolean completed) {
         paused = false;
+        pausedForFocus = false;
         hasRequest = false;
         utteranceId = null;
         currentText = "";
         releaseWakeLock();
+        abandonAudioFocus();
         if (textToSpeech != null) textToSpeech.stop();
         if (mediaSession != null) updateMediaState(PlaybackState.STATE_STOPPED);
         if (foregroundStarted) {
@@ -323,6 +377,10 @@ public final class WirdPlaybackService extends Service {
 
     private void releaseWakeLock() {
         if (wakeLock != null && wakeLock.isHeld()) wakeLock.release();
+    }
+
+    private void abandonAudioFocus() {
+        if (audioManager != null) audioManager.abandonAudioFocus(audioFocusListener);
     }
 
     private void updateMediaState(int state) {
@@ -401,6 +459,7 @@ public final class WirdPlaybackService extends Service {
 
     @Override public void onDestroy() {
         releaseWakeLock();
+        abandonAudioFocus();
         if (textToSpeech != null) {
             textToSpeech.stop();
             textToSpeech.shutdown();

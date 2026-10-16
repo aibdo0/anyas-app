@@ -242,6 +242,8 @@ let wirdAudioMode = "web";
 let wirdAudioSessionToken = "";
 let wirdAudioNextTimer = null;
 let wirdAudioWaitingForNext = false;
+let wirdAudioRetryTimer = null;
+let wirdAudioRetryCount = 0;
 
 function wirdAudioText(arabic, english) {
   return document.documentElement.lang === "en" ? english : arabic;
@@ -282,7 +284,9 @@ function renderWirdAudioControls() {
 function cancelWirdAudio() {
   wirdAudioGeneration += 1;
   if (wirdAudioNextTimer !== null) window.clearTimeout(wirdAudioNextTimer);
+  if (wirdAudioRetryTimer !== null) window.clearTimeout(wirdAudioRetryTimer);
   wirdAudioNextTimer = null;
+  wirdAudioRetryTimer = null;
   wirdAudioWaitingForNext = false;
   if (wirdAudioMode === "native") window.AnyasAndroid?.stopWirdPlayback?.(wirdAudioSessionToken);
   else if ("speechSynthesis" in window) window.speechSynthesis.cancel();
@@ -293,15 +297,41 @@ function cancelWirdAudio() {
 
 function saveWirdSessionPosition() {
   if (!wirdSession) return;
-  try { localStorage.setItem(getWirdSessionKey(wirdSession.number), String(wirdSession.index)); } catch (_) {}
+  const key = wirdSession.mode === "custom"
+    ? (wirdSession.positionKey || `anyas_wird_custom_position_${wirdSession.playlistId}_${wirdSession.revision}`)
+    : getWirdSessionKey(wirdSession.number);
+  try { localStorage.setItem(key, String(wirdSession.index)); } catch (_) {}
+}
+
+function wirdEntryCount(entry) {
+  return Math.max(1, Number(entry?.count ?? entry?.item?.count) || 1);
+}
+
+function wirdEntryProgressKey(entry) {
+  return String(entry?.progressKey ?? entry?.sourceIndex);
+}
+
+function wirdEntryProgress(entry) {
+  if (!wirdSession || !entry) return 0;
+  return Math.min(Math.max(0, Number(wirdSession.progress[wirdEntryProgressKey(entry)]) || 0), wirdEntryCount(entry));
+}
+
+function saveWirdSessionProgress() {
+  if (!wirdSession) return;
+  if (wirdSession.mode !== "custom") {
+    saveTopicProgress(wirdSession.number, wirdSession.progress);
+    return;
+  }
+  const key = wirdSession.progressKey || `anyas_wird_custom_progress_${wirdSession.playlistId}_${wirdSession.revision}_${new Date().toLocaleDateString("en-CA")}`;
+  try { localStorage.setItem(key, JSON.stringify(wirdSession.progress)); } catch (_) {}
 }
 
 function startNativeWirdUtterance() {
   if (!wirdSession || !window.AnyasAndroid || typeof window.AnyasAndroid.startWirdPlayback !== "function") return false;
   if (!wirdSession.items[wirdSession.index]) return false;
-  const queue = wirdSession.items.map(({ item, sourceIndex }) => {
-    const count = Math.max(1, Number(item.count) || 1);
-    return { text: String(item.text || ""), count, completed: Math.min(Math.max(0, Number(wirdSession.progress[sourceIndex]) || 0), count) };
+  const queue = wirdSession.items.map(entry => {
+    const count = wirdEntryCount(entry);
+    return { text: String(entry.item.text || ""), count, completed: wirdEntryProgress(entry) };
   });
   let volumeSetting = 100;
   try {
@@ -335,17 +365,20 @@ function finishWirdAudioSession() {
 function finishWirdAudioUtterance() {
   if (!wirdSession) return;
   const entry = wirdSession.items[wirdSession.index];
-  const count = Math.max(1, Number(entry.item.count) || 1);
+  const count = wirdEntryCount(entry);
   const replaying = wirdAudioReplayCurrent;
   if (!replaying) {
-    const completed = Math.min(Number(wirdSession.progress[entry.sourceIndex]) || 0, count);
-    wirdSession.progress[entry.sourceIndex] = Math.min(completed + 1, count);
-    saveTopicProgress(wirdSession.number, wirdSession.progress);
+    const key = wirdEntryProgressKey(entry);
+    const completed = wirdEntryProgress(entry);
+    wirdSession.progress[key] = Math.min(completed + 1, count);
+    saveWirdSessionProgress();
   }
-  renderAzkarTopic(wirdSession.number, wirdSession.items.map(({ sourceIndex }) => sourceIndex), wirdSession.title);
+  if (wirdSession.mode !== "custom") {
+    renderAzkarTopic(wirdSession.number, wirdSession.items.map(({ sourceIndex }) => sourceIndex), wirdSession.title);
+  }
   if (replaying) {
     wirdSession.index = Math.max(0, Math.min(wirdSession.items.length - 1, Number(wirdAudioReplayReturnIndex ?? wirdSession.index)));
-  } else if ((Number(wirdSession.progress[entry.sourceIndex]) || 0) >= count && wirdSession.index < wirdSession.items.length - 1) {
+  } else if (wirdEntryProgress(entry) >= count && wirdSession.index < wirdSession.items.length - 1) {
     wirdSession.index += 1;
   }
   wirdAudioReplayCurrent = false;
@@ -353,11 +386,12 @@ function finishWirdAudioUtterance() {
   saveWirdSessionPosition();
   renderWirdSession();
   const activeEntry = wirdSession.items[wirdSession.index];
-  const activeCount = Math.max(1, Number(activeEntry?.item.count) || 1);
-  if (wirdSession.index === wirdSession.items.length - 1 && (Number(wirdSession.progress[activeEntry?.sourceIndex]) || 0) >= activeCount) {
+  const activeCount = wirdEntryCount(activeEntry);
+  if (wirdSession.index === wirdSession.items.length - 1 && wirdEntryProgress(activeEntry) >= activeCount) {
     finishWirdAudioSession();
     return;
   }
+  wirdAudioRetryCount = 0;
   if (wirdAudioState !== "playing") return;
   if (wirdAudioMode === "native") {
     if (!startNativeWirdUtterance()) {
@@ -383,10 +417,12 @@ window.anyasAndroidWirdProgress = (completedIndex, completedCount, nextIndex, to
   if (wirdAudioMode !== "native" || !wirdSession || token !== wirdAudioSessionToken) return;
   const entry = wirdSession.items[Number(completedIndex)];
   if (!entry) return;
-  const count = Math.max(1, Number(entry.item.count) || 1);
-  wirdSession.progress[entry.sourceIndex] = Math.min(Math.max(0, Number(completedCount) || 0), count);
-  saveTopicProgress(wirdSession.number, wirdSession.progress);
-  renderAzkarTopic(wirdSession.number, wirdSession.items.map(({ sourceIndex }) => sourceIndex), wirdSession.title);
+  const count = wirdEntryCount(entry);
+  wirdSession.progress[wirdEntryProgressKey(entry)] = Math.min(Math.max(0, Number(completedCount) || 0), count);
+  saveWirdSessionProgress();
+  if (wirdSession.mode !== "custom") {
+    renderAzkarTopic(wirdSession.number, wirdSession.items.map(({ sourceIndex }) => sourceIndex), wirdSession.title);
+  }
   if (Number(nextIndex) >= 0 && Number(nextIndex) < wirdSession.items.length) {
     wirdSession.index = Number(nextIndex);
     saveWirdSessionPosition();
@@ -455,8 +491,8 @@ function speakWirdCurrentItem() {
     return;
   }
   if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) return;
-  const count = Math.max(1, Number(entry.item.count) || 1);
-  const completed = Math.min(Math.max(0, Number(wirdSession.progress[entry.sourceIndex]) || 0), count);
+  const count = wirdEntryCount(entry);
+  const completed = wirdEntryProgress(entry);
   const remaining = wirdAudioReplayCurrent ? 1 : count - completed;
   if (remaining <= 0) {
     if (wirdSession.index >= wirdSession.items.length - 1) {
@@ -491,6 +527,16 @@ function speakWirdCurrentItem() {
   };
   utterance.onerror = event => {
     if (generation !== wirdAudioGeneration || event.error === "canceled" || event.error === "interrupted") return;
+    if (wirdAudioRetryCount < 1) {
+      wirdAudioRetryCount += 1;
+      const status = document.getElementById("wirdSessionAudioStatus");
+      if (status) status.textContent = wirdAudioText("تعذر الصوت مؤقتًا؛ ستتم محاولة واحدة أخرى.", "Temporary speech error; retrying once.");
+      wirdAudioRetryTimer = window.setTimeout(() => {
+        wirdAudioRetryTimer = null;
+        if (generation === wirdAudioGeneration && wirdAudioState === "playing") speakWirdCurrentItem();
+      }, 350);
+      return;
+    }
     wirdAudioState = "idle";
     renderWirdAudioControls();
     const status = document.getElementById("wirdSessionAudioStatus");
@@ -501,6 +547,45 @@ function speakWirdCurrentItem() {
     wirdAudioState = "idle";
     renderWirdAudioControls();
   }
+}
+
+function stopOtherMedia() {
+  document.querySelectorAll("audio").forEach(audio => {
+    try { audio.pause(); audio.currentTime = 0; } catch (_) {}
+  });
+}
+
+function beginWirdAudio(replayCurrent = false, returnIndex = null) {
+  if (!wirdSession) return false;
+  const nativeAvailable = Boolean(window.AnyasAndroid && typeof window.AnyasAndroid.startWirdPlayback === "function");
+  const browserAvailable = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+  if (!nativeAvailable && !browserAvailable) {
+    const status = document.getElementById("wirdSessionAudioStatus");
+    if (status) status.textContent = wirdAudioText("القراءة الصوتية غير مدعومة في هذا المتصفح.", "Read-aloud is not supported in this browser.");
+    return false;
+  }
+  stopOtherMedia();
+  wirdAudioState = "playing";
+  wirdAudioMode = nativeAvailable ? "native" : "web";
+  wirdAudioReplayCurrent = Boolean(replayCurrent);
+  wirdAudioReplayReturnIndex = replayCurrent ? Number(returnIndex ?? wirdSession.index) : null;
+  wirdAudioSessionToken = `${wirdSession.number || wirdSession.playlistId}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  wirdAudioGeneration += 1;
+  wirdAudioRetryCount = 0;
+  renderWirdAudioControls();
+  const status = document.getElementById("wirdSessionAudioStatus");
+  if (status) status.textContent = nativeAvailable
+    ? wirdAudioText("بدأ صوت Android الأصلي. استخدم إشعار الجلسة للتحكم بها عند إغلاق الشاشة.", "Android speech started. Use the session notification to control playback with the screen off.")
+    : wirdAudioText("جارٍ القراءة بصوت الجهاز. قد يختلف النطق حسب محرك الصوت.", "Reading with your device voice. Pronunciation depends on its speech engine.");
+  if (nativeAvailable) {
+    if (!startNativeWirdUtterance()) {
+      wirdAudioMode = "web";
+      if (browserAvailable) speakWirdCurrentItem();
+      else { wirdAudioState = "idle"; renderWirdAudioControls(); }
+    }
+  } else speakWirdCurrentItem();
+  saveWirdSessionPosition();
+  return true;
 }
 
 function toggleWirdAudio() {
@@ -540,22 +625,7 @@ function toggleWirdAudio() {
     }
     return;
   }
-  wirdAudioState = "playing";
-  wirdAudioMode = nativeAvailable ? "native" : "web";
-  wirdAudioSessionToken = `${wirdSession.number}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-  wirdAudioGeneration += 1;
-  renderWirdAudioControls();
-  const status = document.getElementById("wirdSessionAudioStatus");
-  if (status) status.textContent = nativeAvailable
-    ? wirdAudioText("بدأ صوت Android الأصلي. استخدم إشعار الجلسة للتحكم بها عند إغلاق الشاشة.", "Android speech started. Use the session notification to control playback with the screen off.")
-    : wirdAudioText("جارٍ القراءة بصوت الجهاز. قد يختلف النطق حسب محرك الصوت.", "Reading with your device voice. Pronunciation depends on its speech engine.");
-  if (wirdAudioMode === "native") {
-    if (!startNativeWirdUtterance()) {
-      wirdAudioMode = "web";
-      if (browserAvailable) speakWirdCurrentItem();
-      else { wirdAudioState = "idle"; renderWirdAudioControls(); }
-    }
-  } else speakWirdCurrentItem();
+  beginWirdAudio(wirdAudioReplayCurrent, wirdAudioReplayReturnIndex);
 }
 
 function moveWirdSession(delta) {
@@ -572,13 +642,38 @@ function moveWirdSession(delta) {
   if (wasPlaying) {
     wirdAudioState = "playing";
     wirdAudioMode = wasNative ? "native" : "web";
-    wirdAudioSessionToken = `${wirdSession.number}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    stopOtherMedia();
+    wirdAudioSessionToken = `${wirdSession.number || wirdSession.playlistId}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     wirdAudioGeneration += 1;
+    wirdAudioRetryCount = 0;
     renderWirdAudioControls();
     if (wasNative) {
       if (!startNativeWirdUtterance()) { wirdAudioMode = "web"; speakWirdCurrentItem(); }
     } else speakWirdCurrentItem();
   }
+}
+
+function replayWirdSessionItem() {
+  if (!wirdSession) return;
+  cancelWirdAudio();
+  beginWirdAudio(true, wirdSession.index);
+}
+
+function restartWirdSession() {
+  if (!wirdSession) return;
+  if (!window.confirm(wirdAudioText("إعادة الجلسة من البداية ستصفّر إنجاز أذكارها المحفوظ على هذا الجهاز. هل تريد المتابعة؟", "Restarting clears this session's saved completion counts on this device. Continue?"))) return;
+  cancelWirdAudio();
+  wirdSession.items.forEach(entry => { delete wirdSession.progress[wirdEntryProgressKey(entry)]; });
+  wirdSession.index = 0;
+  wirdAudioReplayCurrent = false;
+  wirdAudioReplayReturnIndex = null;
+  saveWirdSessionProgress();
+  saveWirdSessionPosition();
+  if (wirdSession.mode !== "custom") {
+    renderAzkarTopic(wirdSession.number, wirdSession.items.map(({ sourceIndex }) => sourceIndex), wirdSession.title);
+  }
+  renderWirdSession();
+  beginWirdAudio(false, null);
 }
 
 function arabicNumber(value) {
@@ -594,7 +689,7 @@ function openWirdSession(number, itemIndexes = null, titleOverride = null) {
   const modal = document.getElementById("wirdSessionModal");
   if (!topic || !modal) return;
   const allItems = Array.isArray(topic.items) ? topic.items : [];
-  const items = allItems.map((item, sourceIndex) => ({ item, sourceIndex }))
+  const items = allItems.map((item, sourceIndex) => ({ item, sourceIndex, topicNumber: Number(topic.number), topicTitle: String(topic.title || "حصن المسلم"), count: Math.max(1, Number(item.count) || 1), progressKey: String(sourceIndex) }))
     .filter(entry => !itemIndexes || itemIndexes.includes(entry.sourceIndex));
   if (!items.length) return;
 
@@ -604,14 +699,56 @@ function openWirdSession(number, itemIndexes = null, titleOverride = null) {
   const firstPending = items.findIndex(({ item, sourceIndex }) => (Number(progress[sourceIndex]) || 0) < (Number(item.count) || 1));
   cancelWirdAudio();
   wirdAudioReplayCurrent = false;
-  wirdSession = { number, title: titleOverride || topic.title || "الورد اليومي", items, progress, index: Math.min(Math.max(savedIndex, 0), items.length - 1) };
+  wirdSession = { mode: "topic", number: Number(number), title: titleOverride || topic.title || "الورد اليومي", items, progress, index: Math.min(Math.max(savedIndex, 0), items.length - 1) };
   if (firstPending >= 0 && savedIndex >= items.length) wirdSession.index = firstPending;
   modal.hidden = false;
   document.body.classList.add("wird-session-open");
   renderWirdSession();
 }
 
+function openWirdCustomSession(playlistId, title, entries, revision = 1) {
+  const modal = document.getElementById("wirdSessionModal");
+  const topics = window.azkarTopics || [];
+  if (!modal || !Array.isArray(entries) || !entries.length) return;
+  const items = entries.map((entry, index) => {
+    const topic = topics.find(item => Number(item.number) === Number(entry.topicNumber));
+    const item = topic?.items?.[Number(entry.sourceIndex)];
+    if (!item || !item.text) return null;
+    return {
+      item,
+      sourceIndex: Number(entry.sourceIndex),
+      topicNumber: Number(topic.number),
+      topicTitle: String(topic.title || "حصن المسلم"),
+      count: Math.max(1, Number(entry.count) || 1),
+      sourceCount: Math.max(1, Number(item.count) || 1),
+      progressKey: String(index)
+    };
+  }).filter(Boolean);
+  if (!items.length) return;
+  const safeId = String(playlistId || "").replace(/[^\w-]/g, "").slice(0, 80);
+  if (!safeId) return;
+  const safeRevision = Math.max(1, Math.floor(Number(revision) || 1));
+  const dateKey = new Date().toLocaleDateString("en-CA");
+  const progressKey = `anyas_wird_custom_progress_${safeId}_${safeRevision}_${dateKey}`;
+  const positionKey = `anyas_wird_custom_position_${safeId}_${safeRevision}_${dateKey}`;
+  let progress = {};
+  let savedIndex = 0;
+  try { progress = JSON.parse(localStorage.getItem(progressKey) || "{}") || {}; } catch (_) {}
+  try { savedIndex = Number(localStorage.getItem(positionKey)) || 0; } catch (_) {}
+  cancelWirdAudio();
+  wirdAudioReplayCurrent = false;
+  wirdAudioReplayReturnIndex = null;
+  wirdSession = { mode: "custom", playlistId: safeId, revision: safeRevision, positionKey, progressKey, title: String(title || "جلسة مخصصة"), items, progress, index: Math.min(Math.max(savedIndex, 0), items.length - 1) };
+  modal.hidden = false;
+  document.body.classList.add("wird-session-open");
+  renderWirdSession();
+}
+
+window.openWirdCustomSession = openWirdCustomSession;
+
 function closeWirdSession() {
+  saveWirdSessionPosition();
+  saveWirdSessionProgress();
   cancelWirdAudio();
   const modal = document.getElementById("wirdSessionModal");
   if (modal) modal.hidden = true;
@@ -624,20 +761,22 @@ function renderWirdSession() {
   const { number, title, items, progress } = wirdSession;
   const entry = items[wirdSession.index];
   const item = entry.item;
-  const count = Number(item.count) || 1;
-  const current = Math.min(Number(progress[entry.sourceIndex]) || 0, count);
+  const count = wirdEntryCount(entry);
+  const current = wirdEntryProgress(entry);
   let completed = 0;
-  items.forEach(({ item: currentItem, sourceIndex }) => {
-    completed += Math.min(Number(progress[sourceIndex]) || 0, Number(currentItem.count) || 1);
-  });
-  const total = items.reduce((sum, currentItem) => sum + (Number(currentItem.item.count) || 1), 0);
+  items.forEach(currentEntry => { completed += wirdEntryProgress(currentEntry); });
+  const total = items.reduce((sum, currentEntry) => sum + wirdEntryCount(currentEntry), 0);
   const percent = total ? Math.round(completed / total * 100) : 0;
   document.getElementById("wirdSessionTitle").textContent = title;
   document.getElementById("wirdSessionText").textContent = item.text || "";
+  const source = document.getElementById("wirdSessionSource");
+  if (source) source.textContent = wirdAudioText(`المصدر: حصن المسلم — ${entry.topicTitle || "باب الأذكار"}`, `Source: Hisn al-Muslim — ${entry.topicTitle || "adhkar chapter"}`);
   document.getElementById("wirdSessionStep").textContent = `الذكر ${arabicNumber(wirdSession.index + 1)} من ${arabicNumber(items.length)}`;
   document.getElementById("wirdSessionPercent").textContent = `${arabicNumber(percent)}٪`;
   document.getElementById("wirdSessionProgress").style.width = `${percent}%`;
-  document.getElementById("wirdSessionCount").textContent = count > 1 ? `التكرار ${arabicNumber(current + 1)} من ${arabicNumber(count)}` : "اقرأ الذكر بهدوء";
+  document.getElementById("wirdSessionCount").textContent = current >= count
+    ? wirdAudioText(`اكتمل ${arabicNumber(current)} من ${arabicNumber(count)} تكرارات`, `Completed ${current} of ${count} repetitions`)
+    : wirdAudioText(`التكرار ${arabicNumber(current + 1)} من ${arabicNumber(count)} · المكتمل ${arabicNumber(current)}`, `Repeat ${current + 1} of ${count} · completed ${current}`);
   const next = document.getElementById("wirdSessionNext");
   next.textContent = current + 1 >= count ? (wirdSession.index + 1 >= items.length ? "إنهاء الجلسة" : "تم الذكر — التالي") : "تم الذكر — التكرار التالي";
   document.getElementById("wirdSessionNote").textContent = percent >= 100 ? "أحسنت، اكتمل وردك اليوم." : "سيُحفظ آخر موضع لك على هذا الجهاز.";
@@ -648,17 +787,20 @@ function advanceWirdSession(markComplete) {
   if (!wirdSession) return;
   if (wirdAudioState !== "idle") cancelWirdAudio();
   const entry = wirdSession.items[wirdSession.index];
-  const count = Number(entry.item.count) || 1;
-  if (markComplete) wirdSession.progress[entry.sourceIndex] = Math.min((Number(wirdSession.progress[entry.sourceIndex]) || 0) + 1, count);
-  const current = Number(wirdSession.progress[entry.sourceIndex]) || 0;
+  const key = wirdEntryProgressKey(entry);
+  const count = wirdEntryCount(entry);
+  if (markComplete) wirdSession.progress[key] = Math.min(wirdEntryProgress(entry) + 1, count);
+  const current = wirdEntryProgress(entry);
   if (current >= count || !markComplete) wirdSession.index = Math.min(wirdSession.index + 1, wirdSession.items.length - 1);
   wirdAudioReplayCurrent = false;
   saveWirdSessionPosition();
-  saveTopicProgress(wirdSession.number, wirdSession.progress);
-  renderAzkarTopic(wirdSession.number, wirdSession.items.map(({ sourceIndex }) => sourceIndex), wirdSession.title);
+  saveWirdSessionProgress();
+  if (wirdSession.mode !== "custom") {
+    renderAzkarTopic(wirdSession.number, wirdSession.items.map(({ sourceIndex }) => sourceIndex), wirdSession.title);
+  }
   renderWirdSession();
   if (markComplete && current >= count && wirdSession.index === wirdSession.items.length - 1 && current >= count) {
-    const allDone = wirdSession.items.every(({ item, sourceIndex }) => (Number(wirdSession.progress[sourceIndex]) || 0) >= (Number(item.count) || 1));
+    const allDone = wirdSession.items.every(currentEntry => wirdEntryProgress(currentEntry) >= wirdEntryCount(currentEntry));
     if (allDone) document.getElementById("wirdSessionNote").textContent = "أحسنت، اكتمل وردك اليوم.";
   }
 }
@@ -1100,6 +1242,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("wirdSessionPlayToggle")?.addEventListener("click", toggleWirdAudio);
   document.getElementById("wirdSessionPrevious")?.addEventListener("click", () => moveWirdSession(-1));
   document.getElementById("wirdSessionNextItem")?.addEventListener("click", () => moveWirdSession(1));
+  document.getElementById("wirdSessionReplay")?.addEventListener("click", replayWirdSessionItem);
+  document.getElementById("wirdSessionStop")?.addEventListener("click", closeWirdSession);
+  document.getElementById("wirdSessionRestart")?.addEventListener("click", restartWirdSession);
   document.getElementById("wirdSessionRate")?.addEventListener("input", renderWirdAudioControls);
   document.getElementById("wirdSessionRate")?.addEventListener("change", event => {
     try { localStorage.setItem("anyas_wirdSpeechRate", String(event.currentTarget.value)); } catch (_) {}
@@ -1111,6 +1256,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-close-wird-session]").forEach(element => element.addEventListener("click", closeWirdSession));
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && wirdSession) closeWirdSession();
+  });
+  window.addEventListener("pagehide", () => {
+    saveWirdSessionPosition();
+    saveWirdSessionProgress();
   });
   window.addEventListener("anyas:languagechange", renderWirdAudioControls);
 });

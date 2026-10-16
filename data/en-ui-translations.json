@@ -502,5 +502,19 @@
   "أُنجز اليوم": "Completed today",
   "اضغط بعد قراءة الذكر": "Tap after reciting the dhikr",
   "تم ✓": "Done ✓",
-  "تمّ الذكر": "Dhikr completed"
+  "تمّ الذكر": "Dhikr completed",
+  "جلساتي المخصصة": "My custom sessions",
+  "رتّب جلسة من أذكار الأبواب الموثقة في التطبيق. العدد الافتراضي من المصدر؛ أي تعديل منك اختيار شخصي وليس عددًا شرعيًا موثقًا.": "Build a session from the app's sourced adhkar chapters. The default count comes from the source; any change is your personal choice, not a verified religious prescription.",
+  "اسم القائمة": "Playlist name",
+  "مثال: ورد قصير بعد الفجر": "Example: Short dhikr after Fajr",
+  "اختر الباب": "Choose a chapter",
+  "أضف المحدد إلى المسودة": "Add selected to draft",
+  "ترتيب الجلسة": "Session order",
+  "٠ ذكر": "0 adhkar",
+  "حفظ القائمة": "Save playlist",
+  "قائمة جديدة": "New playlist",
+  "أدوات الجلسة": "Session controls",
+  "إعادة الذكر": "Repeat dhikr",
+  "إعادة الجلسة من البداية": "Restart session",
+  "إيقاف الجلسة": "Stop session"
 }

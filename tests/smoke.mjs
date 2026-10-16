@@ -358,6 +358,56 @@ check("wird session read-aloud is user initiated, repeat-aware, and locally resu
   assert.match(sessionCss, /\.wird-session-audio-controls/);
 });
 
+check("custom wird playlists validate counts, retain source references, and resolve current adhkar", () => {
+  const storage = new Map();
+  const window = { azkarTopics: [{ number: 4, title: "باب الاختبار", items: [{ text: "ذكر تجريبي", count: 3 }] }] };
+  const document = { addEventListener() {}, documentElement: { lang: "ar" } };
+  const localStorage = {
+    getItem: key => storage.has(key) ? storage.get(key) : null,
+    setItem: (key, value) => storage.set(key, String(value))
+  };
+  vm.runInNewContext(read("js/wird-playlists.js"), { window, document, localStorage });
+  const api = window.AnyasWirdPlaylists;
+  const playlist = api.normalize({ id: "test-list_1", name: "قائمة اختبار", revision: 1, items: [{ topicNumber: 4, sourceIndex: 0, count: 5 }] });
+  assert.equal(playlist.items[0].count, 5);
+  assert.equal(api.normalize({ id: "invalid", name: "bad", items: [{ topicNumber: 4, sourceIndex: 0, count: 0 }] }), null);
+  assert.equal(api.save([playlist]), true);
+  assert.equal(api.load().length, 1);
+  const resolved = api.resolve(playlist.items);
+  assert.equal(resolved.length, 1);
+  assert.equal(resolved[0].count, 5, "a user-selected repeat count is honored");
+  assert.equal(resolved[0].sourceCount, 3, "the original sourced count remains available");
+  assert.equal(resolved[0].item.text, "ذكر تجريبي");
+  assert.equal(api.resolve([{ topicNumber: 4, sourceIndex: 9, count: 1 }]).length, 0);
+  const storedItem = JSON.parse(storage.get("anyas_wird_playlists_v1"))[0].items[0];
+  assert.equal("text" in storedItem, false, "playlist persists source references, not copied adhkar text");
+});
+
+check("custom-session controls and playlist module are wired into the offline shell", () => {
+  const azkarScript = read("js/azkar.js");
+  const translations = JSON.parse(read("data/en-ui-translations.json"));
+  const version = read("data/app-version.js");
+  assert.match(index, /id="wirdPlaylistManager"/);
+  assert.match(index, /id="wirdSessionSource"/);
+  assert.match(index, /id="wirdSessionReplay"/);
+  assert.match(index, /id="wirdSessionRestart"/);
+  assert.match(index, /id="wirdSessionStop"/);
+  assert.match(index, /js\/wird-playlists\.js\?v=20261016-1/);
+  assert.match(index, /css\/wird-session\.css\?v=20261016-3/);
+  assert.match(index, /js\/azkar\.js\?v=20261016-6/);
+  assert.match(azkarScript, /window\.openWirdCustomSession = openWirdCustomSession/);
+  assert.match(azkarScript, /anyas_wird_custom_progress_/);
+  assert.match(azkarScript, /wirdAudioRetryCount < 1/);
+  assert.match(serviceWorker, /js\/wird-playlists\.js\?v=20261016-1/);
+  assert.match(serviceWorker, /css\/wird-session\.css\?v=20261016-3/);
+  assert.match(serviceWorker, /js\/azkar\.js\?v=20261016-6/);
+  assert.match(serviceWorker, /en-ui-translations\.json\?v=20261016-1/);
+  assert.match(version, /ANIAS_APP_VERSION = "1\.3\.0"/);
+  assert.match(version, /ANIAS_VERSION_CODE = 14/);
+  assert.equal(translations["جلساتي المخصصة"], "My custom sessions");
+  assert.equal(translations["إعادة الذكر"], "Repeat dhikr");
+});
+
 check("Android wird playback has a foreground TTS service and lock-screen controls", () => {
   const activity = read("android/app/src/main/java/com/anyas/app/MainActivity.java");
   const service = read("android/app/src/main/java/com/anyas/app/WirdPlaybackService.java");
@@ -373,6 +423,10 @@ check("Android wird playback has a foreground TTS service and lock-screen contro
   assert.match(service, /ACTION_RESUME/);
   assert.match(service, /ACTION_NEXT/);
   assert.match(service, /ACTION_STOP/);
+  assert.match(service, /AudioManager\.AUDIOFOCUS_GAIN_TRANSIENT/);
+  assert.match(service, /AUDIOFOCUS_LOSS_TRANSIENT/);
+  assert.match(service, /pausedForFocus/);
+  assert.match(service, /ttsRetryCount < 1/);
   assert.match(azkarScript, /window\.anyasAndroidWirdUtteranceCompleted/);
   assert.match(azkarScript, /window\.anyasAndroidWirdProgress/);
   assert.match(azkarScript, /window\.anyasAndroidWirdNext/);

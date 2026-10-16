@@ -31,3 +31,36 @@
 body.wird-session-open { overflow: hidden; }
 @media (max-width: 420px) { .category-detail-header { grid-template-columns: auto minmax(0,1fr); } .azkar-session-open-button { grid-column: 1 / -1; width: 100%; } .wird-session-dialog { padding-inline: 15px; } .wird-session-audio { padding: 11px; } .wird-session-audio-controls { grid-template-columns: 56px minmax(0,1fr) 56px; gap: 6px; } .wird-session-audio-controls button { padding-inline: 6px; font-size: 11px; } }
 @media (prefers-reduced-motion: reduce) { .wird-session-progress-track span { transition: none; } }
+
+/* قوائم ورد شخصية مبنية على مراجع البيانات المحلية */
+.wird-playlist-manager { margin: 12px 0 18px; padding: 13px; border: 1px solid rgba(198,163,99,.25); border-radius: 18px; background: rgba(255,255,255,.045); color: var(--text-primary,#f5f0e6); }
+.wird-playlist-manager > summary { cursor: pointer; font-weight: 850; color: #e6ca8c; }
+.wird-playlist-manager[open] > summary { margin-bottom: 12px; }
+.wird-playlist-intro,.wird-playlist-hint { color: var(--text-muted,#aeb7c5); font-size: 12px; line-height: 1.7; }
+.wird-playlist-form { display: grid; gap: 10px; }
+.wird-playlist-form label { color: #e4d8bd; font-size: 12px; font-weight: 700; }
+.wird-playlist-form input[type="text"],.wird-playlist-form select { box-sizing: border-box; width: 100%; min-height: 42px; padding: 9px 11px; border: 1px solid rgba(225,201,151,.25); border-radius: 11px; color: inherit; background: rgba(10,17,29,.62); font: inherit; }
+.wird-playlist-picker { max-height: 300px; overflow: auto; display: grid; gap: 7px; padding: 7px; border: 1px solid rgba(255,255,255,.08); border-radius: 13px; background: rgba(0,0,0,.12); }
+.wird-playlist-pick-row { display: grid; grid-template-columns: 22px minmax(0,1fr); align-items: start; gap: 8px; padding: 9px; border-radius: 10px; background: rgba(255,255,255,.035); }
+.wird-playlist-pick-row > input[type="checkbox"] { margin-top: 4px; accent-color: #d2ad61; }
+.wird-playlist-pick-copy { display: grid; gap: 7px; min-width: 0; color: #f2ead9; font-family: "Amiri",serif; font-size: 15px; line-height: 1.8; }
+.wird-playlist-count-wrap { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #bcb19a; font: 11px sans-serif; }
+.wird-playlist-count-wrap input { width: 74px; min-height: 34px; padding: 4px 7px; border: 1px solid rgba(225,201,151,.24); border-radius: 9px; color: #fff; background: rgba(10,17,29,.7); font: inherit; }
+.wird-playlist-primary-row,.wird-playlist-row-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.wird-playlist-action,.wird-playlist-mini { min-height: 36px; padding: 7px 10px; border: 1px solid rgba(225,201,151,.25); border-radius: 10px; color: #f2e8d3; background: rgba(255,255,255,.055); font: inherit; font-size: 11px; font-weight: 700; cursor: pointer; }
+.wird-playlist-action.primary { color: #292318; background: linear-gradient(135deg,#f4d992,#d0a94f); }
+.wird-playlist-action.danger,.wird-playlist-mini.danger { color: #ffd0c7; border-color: rgba(230,110,90,.3); }
+.wird-playlist-mini { min-height: 30px; padding: 5px 7px; }
+.wird-playlist-draft-heading { display: flex; justify-content: space-between; margin: 8px 0; color: #e1d1af; font-size: 12px; font-weight: 800; }
+.wird-playlist-draft { display: grid; gap: 6px; padding: 0; list-style: none; }
+.wird-playlist-draft-row { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 8px; padding: 8px; border: 1px solid rgba(255,255,255,.08); border-radius: 11px; color: #e9e1d1; font-size: 11px; line-height: 1.6; }
+.wird-playlist-saved { display: grid; gap: 8px; margin-top: 12px; }
+.wird-playlist-saved-card { display: grid; gap: 7px; padding: 11px; border: 1px solid rgba(255,255,255,.09); border-radius: 13px; background: rgba(255,255,255,.035); }
+.wird-playlist-saved-card strong { color: #f0d48f; }
+.wird-playlist-saved-card small { color: #aeb7c5; }
+.wird-playlist-status { min-height: 1.5em; color: #e2cf9e; font-size: 11px; }
+.wird-session-source { margin: -8px 2px 0; color: #c6b998; font-size: 11px; text-align: center; }
+.wird-session-extra-controls { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; margin-top: 9px; }
+.wird-session-extra-controls button { min-height: 36px; padding: 6px; border: 1px solid rgba(224,197,137,.2); border-radius: 10px; color: #d7c9a8; background: rgba(255,255,255,.04); font: inherit; font-size: 10px; font-weight: 700; cursor: pointer; }
+.wird-session-extra-controls button:focus-visible,.wird-playlist-manager button:focus-visible,.wird-playlist-manager input:focus-visible,.wird-playlist-manager select:focus-visible { outline: 3px solid #e6c576; outline-offset: 2px; }
+@media(max-width:420px) { .wird-playlist-manager { padding: 10px; } .wird-playlist-draft-row { grid-template-columns: 1fr; } .wird-session-extra-controls { grid-template-columns: 1fr; } }
