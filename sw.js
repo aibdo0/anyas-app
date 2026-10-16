@@ -26,6 +26,7 @@ const CORE_ASSETS = [
   "./css/first-run-onboarding.css",
   "./css/privacy.css",
   "./data/app-version.js?v=20261015-1",
+  "./css/mobile-ux-foundation.css?v=20261016-1",
   "./js/i18n.js?v=20261014-1",
   "./data/azkar-topics.js",
   "./data/azkar-benefits.js",
@@ -44,7 +45,7 @@ const CORE_ASSETS = [
   "./js/qibla.js",
   "./js/app-enhancements.js",
   "./js/daily-devotions.js",
-  "./js/app.js",
+  "./js/app.js?v=20261016-1",
   "./js/about.js"
 ];
 

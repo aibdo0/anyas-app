@@ -23,6 +23,27 @@ const commonCities = read("data/common-cities.js");
 const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java");
 const serviceWorker = read("sw.js");
 const quietHoursSource = read("js/quiet-hours.js");
+const mobileFoundation = read("css/mobile-ux-foundation.css");
+
+check("update notice auto-hides for the session and remains manually dismissible", () => {
+  assert.match(appjs, /const AUTO_HIDE_MS = 15000/);
+  assert.match(appjs, /anyas_update_banner_auto_hidden/);
+  assert.match(appjs, /anyas_update_banner_dismissed/);
+  assert.match(appjs, /banner\.addEventListener\("mouseenter"/);
+  assert.match(appjs, /banner\.addEventListener\("focusin"/);
+});
+
+check("mobile foundation reserves safe-area clearance and enforces 48px targets", () => {
+  assert.match(mobileFoundation, /padding-bottom:[^;]*safe-area-inset-bottom/);
+  assert.match(mobileFoundation, /\.bottom-nav\s*\{[^}]*bottom:/s);
+  assert.match(mobileFoundation, /min-height:\s*48px\s*!important/);
+  assert.match(mobileFoundation, /min-width:\s*48px\s*!important/);
+  assert.match(index, /mobile-ux-foundation\.css\?v=20261016-1/);
+  assert.match(index, /js\/app\.js\?v=20261016-1/);
+  assert.match(serviceWorker, /\.\/css\/mobile-ux-foundation\.css\?v=20261016-1/);
+  assert.match(serviceWorker, /\.\/js\/app\.js\?v=20261016-1/);
+  assert.match(serviceWorker, /\.\/data\/app-version\.js\?v=20261015-1/);
+});
 
 check("reminder settings expose a test notification button", () => {
   assert.match(index, /id="testNotificationButton"/);
