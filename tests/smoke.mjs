@@ -505,7 +505,7 @@ check("Android prayer widget shows the next prayer and refreshes", () => {
 });
 
 check("compact home keeps existing prayer tracking and accessible daily tabs", () => {
-  assert.match(index, /href="css\/home-compact\.css\?v=20261016-1"/);
+  assert.match(index, /href="css\/home-compact\.css\?v=20261016-2"/);
   assert.ok(index.indexOf("css/home-compact.css") > index.indexOf("css/app-background.css"));
   assert.match(index, /id="homePrayerProgressBadge"/);
   assert.match(index, /id="homeRecordPrayerButton" data-track-prayer="Fajr"/);
@@ -522,7 +522,7 @@ check("compact home keeps existing prayer tracking and accessible daily tabs", (
   assert.match(homeCompact, /getFridayState/);
   assert.match(homeCompactCss, /grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(homeCompactCss, /data-home-compact-friday="false"/);
-  assert.match(serviceWorker, /home-compact\.css\?v=20261016-1/);
+  assert.match(serviceWorker, /home-compact\.css\?v=20261016-2/);
   assert.match(serviceWorker, /home-compact\.js\?v=20261016-1/);
 });
 

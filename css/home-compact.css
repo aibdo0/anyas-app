@@ -129,42 +129,86 @@
 
   #page-home .daily-adhkar-section { margin-block: 8px !important; }
   #page-home .daily-adhkar-card {
-    display: flex !important;
-    align-items: center;
-    justify-content: space-between;
-    gap: 9px;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+    justify-content: stretch;
+    gap: 8px;
     min-height: 0 !important;
-    padding: 10px 12px !important;
+    padding: 16px 17px !important;
     border-radius: var(--home-compact-radius) !important;
   }
   #page-home .daily-adhkar-heading-row { display: flex; align-items: center; min-width: 0; margin: 0; }
   #page-home .daily-adhkar-mark,
   #page-home .daily-adhkar-eyebrow,
   #page-home .daily-adhkar-badge,
-  #page-home .daily-adhkar-text,
   #page-home .daily-adhkar-hint { display: none !important; }
   #page-home .daily-adhkar-heading-copy { min-width: 0; }
-  #page-home .daily-adhkar-title { margin: 0 !important; font-size: 14px !important; line-height: 1.35 !important; }
-  #page-home .daily-adhkar-footer { flex: 0 0 auto; margin: 0 !important; padding: 0 !important; border: 0 !important; }
-  #page-home .daily-adhkar-button { min-height: 32px; padding: 6px 9px; border-radius: 11px; font-size: 10px; }
+  #page-home .daily-adhkar-title { margin: 0 !important; font-size: 16px !important; line-height: 1.4 !important; }
+  #page-home .daily-adhkar-text {
+    display: block !important;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.6;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  #page-home .daily-adhkar-footer { display: block; margin: 0 !important; padding: 0 !important; border: 0 !important; }
+  #page-home .daily-adhkar-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px !important;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+  }
 
   #page-home .friday-feature-section[data-home-compact-friday="false"] { display: none !important; }
   #page-home .friday-feature-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 9px;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+    justify-content: stretch;
+    gap: 8px;
     min-height: 0;
-    padding: 10px 12px;
+    padding: 16px 17px;
     border-radius: var(--home-compact-radius);
   }
-  #page-home .friday-feature-heading { flex: 1 1 auto; margin: 0; }
+  #page-home .friday-feature-heading { display: flex; align-items: center; justify-content: flex-start; margin: 0; }
   #page-home .friday-feature-eyebrow,
   #page-home .friday-feature-badge,
-  #page-home #homeFridayText,
   #page-home #homeFridayMeta { display: none !important; }
-  #page-home #homeFridayHeading { margin: 0; font-size: 14px; line-height: 1.35; }
-  #page-home .friday-feature-button { flex: 0 0 auto; min-height: 31px; margin: 0; padding: 6px 9px; border-radius: 11px; font-size: 10px; }
+  #page-home #homeFridayHeading { margin: 0; font-size: 16px; line-height: 1.4; }
+  #page-home #homeFridayText {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.6;
+    text-overflow: ellipsis;
+  }
+  #page-home .friday-feature-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+  }
 
   #page-home .prayer-section {
     margin-block: 9px !important;
