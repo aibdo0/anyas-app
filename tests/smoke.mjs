@@ -23,6 +23,8 @@ const commonCities = read("data/common-cities.js");
 const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java");
 const serviceWorker = read("sw.js");
 const quietHoursSource = read("js/quiet-hours.js");
+const homeCompact = read("js/home-compact.js");
+const homeCompactCss = read("css/home-compact.css");
 
 check("reminder settings expose a test notification button", () => {
   assert.match(index, /id="testNotificationButton"/);
@@ -500,6 +502,28 @@ check("Android prayer widget shows the next prayer and refreshes", () => {
   assert.match(widget, /manager\.updateAppWidget/);
   assert.match(read("android/app/src/main/java/com/anyas/app/MainActivity.java"), /PrayerWidgetProvider\.updateAll/);
   assert.match(read("js/settings.js"), /city: document\.getElementById\("prayerHeroCity"\)/);
+});
+
+check("compact home keeps existing prayer tracking and accessible daily tabs", () => {
+  assert.match(index, /href="css\/home-compact\.css\?v=20261016-1"/);
+  assert.ok(index.indexOf("css/home-compact.css") > index.indexOf("css/app-background.css"));
+  assert.match(index, /id="homePrayerProgressBadge"/);
+  assert.match(index, /id="homeRecordPrayerButton" data-track-prayer="Fajr"/);
+  assert.match(index, /role="tablist" aria-label="المحتوى اليومي"/);
+  assert.match(index, /id="dailyAyahBlock" role="tabpanel"/);
+  assert.match(index, /id="dailyHadithBlock" role="tabpanel"/);
+  assert.match(index, /class="section home-location-tools"/);
+  for (const id of ["prayerList", "nextPrayerName", "nextPrayerTime", "dailyAyahText", "dailyHadithText", "nearbyMosqueButton", "openQiblaButton"]) {
+    assert.match(index, new RegExp(`id="${id}"`));
+  }
+  assert.match(homeCompact, /updatePrayerTrackingUI/);
+  assert.match(homeCompact, /todayPrayerTracker/);
+  assert.match(homeCompact, /prayer-row\.next/);
+  assert.match(homeCompact, /getFridayState/);
+  assert.match(homeCompactCss, /grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.match(homeCompactCss, /data-home-compact-friday="false"/);
+  assert.match(serviceWorker, /home-compact\.css\?v=20261016-1/);
+  assert.match(serviceWorker, /home-compact\.js\?v=20261016-1/);
 });
 
 console.log(`Smoke tests passed: ${passed.length}`);

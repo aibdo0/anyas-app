@@ -62,6 +62,7 @@
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/palette-warm-gold.css?v=20261015-2">
 <link rel="stylesheet" href="css/app-background.css?v=20261015-2">
+<link rel="stylesheet" href="css/home-compact.css?v=20261016-1">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -144,6 +145,8 @@
 <span id="todayDate">اليوم</span>
 </div>
 
+<div class="home-prayer-progress" id="homePrayerProgressBadge" role="status" aria-live="polite" aria-label="الصلوات المسجّلة اليوم">الصلوات اليوم ٠/٥</div>
+
 </header>
 
 
@@ -169,6 +172,8 @@
 <div class="prayer-progress" aria-hidden="true">
 <div class="prayer-progress-bar" id="prayerProgressBar"></div>
 </div>
+
+<button class="home-record-prayer-button" id="homeRecordPrayerButton" data-track-prayer="Fajr" type="button" aria-label="تسجيل الصلاة القادمة" aria-pressed="false">تسجيل الصلاة</button>
 
 </section>
 
@@ -247,12 +252,16 @@
 <section class="section">
 
 <div class="daily-content card" id="dailyContentCard">
-  <div class="content-block">
+  <div class="home-compact-tabs" role="tablist" aria-label="المحتوى اليومي">
+    <button class="home-compact-tab is-active" id="homeAyahTab" type="button" role="tab" aria-selected="true" aria-controls="dailyAyahBlock" tabindex="0">آية اليوم</button>
+    <button class="home-compact-tab" id="homeHadithTab" type="button" role="tab" aria-selected="false" aria-controls="dailyHadithBlock" tabindex="-1">حديث اليوم</button>
+  </div>
+  <div class="content-block home-compact-panel" id="dailyAyahBlock" role="tabpanel" aria-labelledby="homeAyahTab" tabindex="0">
     <div class="card-title">آية اليوم</div>
     <div class="ayah" id="dailyAyahText">﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾</div>
     <div class="reference" id="dailyAyahReference">سورة الرعد — 28</div>
   </div>
-  <div class="content-block" id="dailyHadithBlock">
+  <div class="content-block home-compact-panel" id="dailyHadithBlock" role="tabpanel" aria-labelledby="homeHadithTab" tabindex="0">
     <div class="card-title">حديث اليوم</div>
     <div class="hadith-text" id="dailyHadithText">إنما الأعمال بالنيات</div>
     <div class="reference" id="dailyHadithReference">متفق عليه</div>
@@ -260,13 +269,10 @@
 </div>
 </section>
 
-<section class="section">
-  <button class="nearby-mosque-card" id="nearbyMosqueButton" type="button">
+<section class="section home-location-tools">
+  <button class="nearby-mosque-card" id="nearbyMosqueButton" type="button" aria-label="البحث عن أقرب مسجد">
     <span class="nearby-mosque-title">أقرب مسجد</span>
   </button>
-</section>
-
-<section class="section">
   <button class="nearby-mosque-card home-qibla-card" id="openQiblaButton" type="button">
     <span class="mosque-icon" aria-hidden="true">⌖</span>
     <span class="mosque-info"><strong class="mosque-title">اتجاه القبلة</strong><small class="mosque-description">افتح البوصلة لتحديد الاتجاه</small></span>
@@ -2392,6 +2398,7 @@ type="button"
 <script src="js/daily-devotions.js?v=20261003-1"></script>
 <script src="js/app.js?v=20261012-2"></script>
 <script src="js/about.js?v=20261002-2"></script>
+<script src="js/home-compact.js?v=20261016-1"></script>
 <script>
   if ("serviceWorker" in navigator && window.isSecureContext) {
     window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(error => console.info("Service Worker غير متاح:", error.message)));
