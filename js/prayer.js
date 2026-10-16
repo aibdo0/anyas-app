@@ -340,9 +340,17 @@ async function loadPrayerTimes(latitude, longitude) {
   const calculateLocally = () => {
     if (!window.adhan) throw new Error("مكتبة حساب الصلاة المحلية غير متاحة");
     const coordinates = new window.adhan.Coordinates(Number(latitude), Number(longitude));
-    const parameters = method === 3
-      ? window.adhan.CalculationMethod.MuslimWorldLeague()
-      : window.adhan.CalculationMethod.Egyptian();
+    const localMethods = {
+      1: "Karachi",
+      2: "NorthAmerica",
+      3: "MuslimWorldLeague",
+      4: "UmmAlQura",
+      5: "Egyptian",
+      9: "Kuwait",
+      10: "Qatar"
+    };
+    const methodFactory = window.adhan.CalculationMethod[localMethods[method] || "Egyptian"];
+    const parameters = methodFactory();
     parameters.madhab = madhab === "hanafi" ? window.adhan.Madhab.Hanafi : window.adhan.Madhab.Shafi;
     const prayerTimes = new window.adhan.PrayerTimes(coordinates, now, parameters);
     const format = value => value.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });

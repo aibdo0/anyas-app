@@ -164,7 +164,9 @@
     const dhikr = document.getElementById("dailyOverviewDhikrCount");
     const sunnah = document.getElementById("dailyOverviewSunnahCount");
     if (prayer) prayer.textContent = `${number(prayerCount)}/${number(prayerTotal)}`;
-    if (dhikr) dhikr.textContent = `${number(dhikrDone)}/${number(catalog.adhkar.length)}`;
+    if (dhikr) dhikr.textContent = catalog.adhkar.length
+      ? `${number(dhikrDone)}/${number(catalog.adhkar.length)}`
+      : (document.documentElement.lang === "en" ? "No scheduled adhkar" : "لا يوجد ورد محدد اليوم");
     if (sunnah) sunnah.textContent = `${number(sunnahDone)}/${number(catalog.sunnah.length)}`;
   }
 

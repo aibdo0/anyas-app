@@ -8,7 +8,8 @@
 .wird-session-close { position: absolute; inset-block-start: 12px; inset-inline-start: 12px; width: 34px; height: 34px; border: 1px solid rgba(255,255,255,.18); border-radius: 11px; color: #e7d5ac; background: rgba(255,255,255,.06); font-size: 23px; line-height: 1; cursor: pointer; }
 .wird-session-kicker { color: #d7b976; font-size: 12px; font-weight: 800; }
 .wird-session-dialog h2 { margin: 3px 0 15px; font-size: 24px; }
-.wird-session-progress-row { display: flex; justify-content: space-between; color: #bdc7d8; font-size: 12px; font-weight: 700; }
+.wird-session-progress-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; color: #bdc7d8; font-size: 12px; font-weight: 700; }
+.wird-session-progress-row > span { white-space: nowrap; }
 .wird-session-progress-track { height: 8px; margin-top: 9px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.12); }
 .wird-session-progress-track span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#e9c978,#a9874d); transition: width .25s ease; }
 .wird-session-card { min-height: 220px; display: grid; align-content: center; gap: 18px; margin-top: 20px; padding: 25px 20px; border: 1px solid rgba(255,255,255,.1); border-radius: 20px; background: rgba(255,255,255,.07); }

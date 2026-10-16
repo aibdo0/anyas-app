@@ -1,49 +1,61 @@
 (() => {
   const manual = {
-    "أنياس": "Anias", "القاهرة": "Cairo", "مصر": "Egypt",
+    "السلام عليكم": "Peace be upon you",
+    "أدخل اسمك اختياريًا ليظهر بعد التحية": "Enter your name to personalize the greeting (optional)",
+    "اختياري": "Optional",
+    "النظام يتبع إعداد جهازك، والوضع الفاتح هو الافتراضي.": "System follows your device setting; light mode is the default.",
+    "يعرض التطبيق المواقيت المحفوظة أو يحسبها محليًا أولًا، ثم يحدّثها من Aladhan عند توفر الإنترنت. تبقى المدن الشائعة والمحتويات المحفوظة متاحة دون اتصال، بينما تحتاج خدمات البحث والحديث وبعض التحديثات إلى اتصال.": "The app first shows cached prayer times or calculates them locally, then refreshes from Aladhan when online. Popular cities and saved content remain available offline; search, hadith, and some updates require internet.",
+    "جامعة أم القرى، مكة المكرمة": "Umm Al-Qura University, Makkah",
+    "الكويت": "Kuwait",
+    "قطر": "Qatar",
+    "الجمعية الإسلامية لأمريكا الشمالية (ISNA)": "Islamic Society of North America (ISNA)",
+    "جامعة العلوم الإسلامية، كراتشي": "University of Islamic Sciences, Karachi",
+    "يُنزل من الإنترنت عند اختياره؛ ولا يُحمّل مع تثبيت التطبيق": "Downloaded from the internet when selected; not bundled with the install",
+
+    "أنياس": "Anyas", "القاهرة": "Cairo", "مصر": "Egypt",
     "الفجر": "Fajr", "الشروق": "Sunrise", "الظهر": "Dhuhr", "العصر": "Asr", "المغرب": "Maghrib", "العشاء": "Isha",
-    "عن التطبيق": "About the App", "معلومات عن أنياس": "About Anias",
-    "سياسة الخصوصية": "Privacy Policy", "كيف يتعامل أنياس مع بياناتك": "How Anias handles your data",
+    "عن التطبيق": "About the App", "معلومات عن أنياس": "About Anyas",
+    "سياسة الخصوصية": "Privacy Policy", "كيف يتعامل أنياس مع بياناتك": "How Anyas handles your data",
     "قراءة سياسة الخصوصية": "Read the Privacy Policy", "الخصوصية أولًا، والموقع اختياري": "Privacy first; location is optional",
     "رجوع إلى عن التطبيق": "Back to About the App", "آخر تحديث: 8 أكتوبر 2026": "Last updated: October 8, 2026",
     "بياناتك": "Your data", "نسخة احتياطية محلية": "Local backup",
     "احفظ إعداداتك ومفضلاتك وتقدمك، أو انقلها إلى جهاز آخر دون حساب.": "Save your settings, favorites, and progress, or move them to another device without an account.",
     "تصدير بياناتي": "Export my data", "تصدير نسخة مشفّرة": "Export encrypted backup", "استيراد نسخة": "Import a backup", "كلمة مرور النسخة المشفّرة": "Encrypted backup password", "أدخل كلمة مرور النسخة المشفّرة": "Enter the encrypted backup password", "٨ أحرف على الأقل": "At least 8 characters", "تم تصدير نسخة مشفّرة. احتفظ بكلمة المرور، فلا يمكن استعادتها دونها.": "Encrypted backup exported. Keep the password; it cannot be recovered without it.", "استخدم كلمة مرور من ٨ أحرف على الأقل.": "Use a password of at least 8 characters.", "كلمة المرور قصيرة أو مفقودة.": "The password is missing or too short.", "الملف غير صالح أو كلمة المرور غير صحيحة.": "The file is invalid or the password is incorrect.", "حذف بياناتي من هذا الجهاز": "Delete my data from this device",
     "تم تصدير نسخة بياناتك.": "Your data backup was exported.", "تعذر تصدير البيانات على هذا الجهاز.": "Could not export data on this device.",
-    "سيستبدل الاستيراد بيانات أنياس الحالية على هذا الجهاز. هل تريد المتابعة؟": "Importing will replace your current Anias data on this device. Continue?",
-    "تم استيراد بياناتك. سيُعاد تشغيل أنياس الآن.": "Your data was imported. Anias will restart now.",
-    "الملف غير صالح أو لا يحتوي على نسخة أنياس.": "The file is invalid or does not contain an Anias backup.",
-    "سيحذف هذا جميع إعدادات أنياس ومفضلاتك وتقدمك من هذا الجهاز. لا يمكن التراجع عن ذلك. هل أنت متأكد؟": "This will delete all Anias settings, favorites, and progress from this device. This cannot be undone. Are you sure?",
-    "تم حذف بيانات أنياس من هذا الجهاز. سيُعاد تشغيل التطبيق.": "Your Anias data was deleted from this device. The app will restart.",
+    "سيستبدل الاستيراد بيانات أنياس الحالية على هذا الجهاز. هل تريد المتابعة؟": "Importing will replace your current Anyas data on this device. Continue?",
+    "تم استيراد بياناتك. سيُعاد تشغيل أنياس الآن.": "Your data was imported. Anyas will restart now.",
+    "الملف غير صالح أو لا يحتوي على نسخة أنياس.": "The file is invalid or does not contain an Anyas backup.",
+    "سيحذف هذا جميع إعدادات أنياس ومفضلاتك وتقدمك من هذا الجهاز. لا يمكن التراجع عن ذلك. هل أنت متأكد؟": "This will delete all Anyas settings, favorites, and progress from this device. This cannot be undone. Are you sure?",
+    "تم حذف بيانات أنياس من هذا الجهاز. سيُعاد تشغيل التطبيق.": "Your Anyas data was deleted from this device. The app will restart.",
     "فعّل إذن الإشعارات أولًا من إعدادات الهاتف.": "Enable notification permission first in the phone settings.",
-    "قد يؤخر توفير البطارية التذكيرات؛ اسمح لأنياس بالعمل دون تقييد.": "Battery optimization may delay reminders; allow Anias to run without restrictions.",
-    "الإشعارات مفعّلة وأنياس غير مقيّد من إعدادات البطارية.": "Notifications are enabled and Anias is unrestricted by battery settings.",
+    "قد يؤخر توفير البطارية التذكيرات؛ اسمح لأنياس بالعمل دون تقييد.": "Battery optimization may delay reminders; allow Anyas to run without restrictions.",
+    "الإشعارات مفعّلة وأنياس غير مقيّد من إعدادات البطارية.": "Notifications are enabled and Anyas is unrestricted by battery settings.",
     "الإشعارات مفعّلة؛ اختبرها من زر الإشعار أدناه.": "Notifications are enabled; test them with the notification button below.",
-    "اختبار الإشعارات متاح في نسخة Android من أنياس.": "Notification testing is available in the Android version of Anias.",
+    "اختبار الإشعارات متاح في نسخة Android من أنياس.": "Notification testing is available in the Android version of Anyas.",
     "إذن إشعارات المتصفح مفعّل؛ اختبر التنبيه من زر الإشعار أدناه.": "Browser notification permission is enabled; test it with the notification button below.",
     "فعّل إذن الإشعارات ثم اختبر التنبيه من الزر أدناه.": "Enable notification permission, then test the alert with the button below.",
-    "معلومات عن أنياس ومزاياه": "About Anias and its features",
+    "معلومات عن أنياس ومزاياه": "About Anyas and its features",
     "رفيقك اليومي للعبادة وتنظيم يومك": "Your daily companion for worship and an organized day",
     "لغة التطبيق": "App language", "لغة واجهة التطبيق": "App interface language",
     "تغيّر واجهة التطبيق فقط؛ وتبقى الآيات والأذكار بالعربية.": "Changes the app interface only; Quranic verses and adhkar remain in Arabic.",
-    "تحميل نسخة Android": "Download Anias for Android",
-    "افتح إصدارات أنياس على GitHub لتنزيل آخر APK متاح": "Open Anias releases on GitHub to download the latest APK.",
+    "تحميل نسخة Android": "Download Anyas for Android",
+    "افتح إصدارات أنياس على GitHub لتنزيل آخر APK متاح": "Open Anyas releases on GitHub to download the latest APK.",
     "الأسئلة الشائعة": "Frequently asked questions",
     "كيف أغيّر المدينة؟": "How do I change my city?",
-    "هل يعمل أنياس بدون إنترنت؟": "Does Anias work offline?",
+    "هل يعمل أنياس بدون إنترنت؟": "Does Anyas work offline?",
     "لماذا تأخر التذكير؟": "Why was my reminder delayed?",
-    "هل يرسل التطبيق بياناتي؟": "Does Anias send my data?",
+    "هل يرسل التطبيق بياناتي؟": "Does Anyas send my data?",
     "كيف أحذف بياناتي؟": "How do I delete my data?",
-    "تعرف على ما يحفظه أنياس على جهازك ومتى يستخدم الموقع والخدمات الخارجية.": "Learn what Anias stores on your device and when it uses location and external services.",
+    "تعرف على ما يحفظه أنياس على جهازك ومتى يستخدم الموقع والخدمات الخارجية.": "Learn what Anyas stores on your device and when it uses location and external services.",
     "العربية": "Arabic", "إحصائيات العبادة": "Worship statistics", "أذكار مكتملة": "Completed adhkar", "تسبيحات": "Tasbeeh", "سنن منجزة": "Completed sunnah", "أيام نشطة": "Active days", "من بياناتك المحفوظة على هذا الجهاز": "From data saved on this device", "ابدأ بتسجيل عبادتك اليوم، وستظهر إحصائياتك هنا.": "Start recording your worship today and your statistics will appear here.",
     "أذونات التطبيق": "App permissions", "الموقع": "Location", "الموقع الجغرافي": "Location access",
     "اختر إذنًا لمعرفة فائدته وتفعيله عند الحاجة.": "Choose a permission to see why it is useful and enable it when needed.",
     "مواقيت الصلاة والقبلة والمساجد القريبة": "Prayer times, Qibla, and nearby mosques",
     "لماذا أفعّل هذا الإذن؟": "Why enable this permission?",
-    "يساعد أنياس على حساب المواقيت لموقعك والعثور على المساجد القريبة وتحديد القبلة. يمكنك اختيار مدينة يدويًا بدلًا من مشاركة موقعك.": "This lets Anias calculate local prayer times, find nearby mosques, and show the Qibla direction. You can choose a city manually instead of sharing your location.",
+    "يساعد أنياس على حساب المواقيت لموقعك والعثور على المساجد القريبة وتحديد القبلة. يمكنك اختيار مدينة يدويًا بدلًا من مشاركة موقعك.": "This lets Anyas calculate local prayer times, find nearby mosques, and show the Qibla direction. You can choose a city manually instead of sharing your location.",
     "تفعيل إذن الموقع": "Enable location permission", "الإشعارات": "Notifications",
     "تذكيرات الصلاة والأذكار التي تختارها": "Prayer and adhkar reminders you choose",
-    "لتصلك تذكيرات الصلاة والأذكار التي تشغّلها من إعدادات أنياس. لن يرسل التطبيق تنبيهًا لم تختره.": "Receive prayer and adhkar reminders that you enable in Anias settings. The app will not send reminders you have not selected.",
+    "لتصلك تذكيرات الصلاة والأذكار التي تشغّلها من إعدادات أنياس. لن يرسل التطبيق تنبيهًا لم تختره.": "Receive prayer and adhkar reminders that you enable in Anyas settings. The app will not send reminders you have not selected.",
     "تفعيل إذن الإشعارات": "Enable notifications", "فتح إعدادات الهاتف": "Open phone settings",
     "مفعّل": "Enabled", "غير مفعّل": "Not enabled", "جارٍ التحقق...": "Checking...",
     "جارٍ طلب الإذن من الهاتف...": "Requesting permission from your phone...",
@@ -54,7 +66,7 @@
     "الإشعارات غير مدعومة على هذا الجهاز.": "Notifications are not supported on this device.",
     "تعذر طلب الإذن. افتح إعدادات التطبيق من الهاتف وحاول مرة أخرى.": "Could not request permission. Open the app settings on your phone and try again.",
     "مركز الإشعارات": "Notification center",
-    "التذكيرات التي فعّلتها في أنياس": "Reminders you enabled in Anias",
+    "التذكيرات التي فعّلتها في أنياس": "Reminders you enabled in Anyas",
     "حالة التذكيرات": "Reminder status",
     "كل تنبيهاتك في مكان واحد": "All your reminders in one place",
     "تُعرض هنا التذكيرات التي اخترت تفعيلها.": "The reminders you enabled appear here.",
@@ -64,20 +76,20 @@
     "تنبيه مفعّل": "Reminder enabled", "تنبيهات مفعّلة": "Reminders enabled",
     "لا توجد تنبيهات مفعّلة": "No reminders enabled",
     "فعّل تذكيرًا من الإعدادات ليظهر هنا.": "Enable a reminder in Settings to see it here.",
-    "نشط": "Active", "تذكير اختياري من أنياس.": "An optional reminder from Anias.",
+    "نشط": "Active", "تذكير اختياري من أنياس.": "An optional reminder from Anyas.",
     "صندوق الإشعارات": "Notification inbox",
     "كل الإشعارات التي وصلتك محفوظة هنا": "Your received notifications are saved here",
     "سجل محفوظ على هذا الجهاز": "Saved on this device",
     "التنبيهات التي وصلتك فعلًا": "Notifications you actually received",
-    "تبقى هنا لتراجعها حتى بعد إغلاق أنياس.": "Saved here to revisit even after closing Anias.",
+    "تبقى هنا لتراجعها حتى بعد إغلاق أنياس.": "Saved here to revisit even after closing Anyas.",
     "إشعار غير مقروء": "Unread notification", "إشعارات غير مقروءة": "Unread notifications",
     "آخر ما وصلك": "Latest received",
     "الأحدث أولًا؛ السجل محفوظ على هذا الجهاز.": "Newest first; history is saved on this device.",
     "إعدادات التذكيرات": "Reminder settings",
     "لا توجد إشعارات بعد": "No notifications yet",
     "ستظهر هنا التنبيهات عند وصولها، لتراجعها متى شئت.": "Notifications appear here when received, so you can review them later.",
-    "إشعار من أنياس": "Notification from Anias", "جديد": "New", "مقروء": "Read",
-    "أصوات أنياس": "Anias sounds",
+    "إشعار من أنياس": "Notification from Anyas", "جديد": "New", "مقروء": "Read",
+    "أصوات أنياس": "Anyas sounds",
     "أصواتك مرتبة حسب الاستخدام": "Sounds organized by purpose",
     "اضبط مستوى موحدًا لجميع المقاطع والتنبيهات.": "Set one shared volume for all clips and reminders.",
     "مستوى الصوت لجميع الأصوات": "Volume for all sounds",
@@ -93,8 +105,8 @@
     "اكتب وصفًا للمشكلة واختر طريقة مشاركته": "Describe the issue and choose how to share it",
     "الملاحظات والاقتراحات": "Feedback and suggestions",
     "شارك رأيك يدويًا، دون إرسال تلقائي": "Share your feedback yourself; nothing is sent automatically",
-    "مشاركة التطبيق": "Share the app", "أرسل رابط أنياس لمن تحب": "Share the Anias link with someone",
-    "تقييم التطبيق": "Rate the app", "قيّم أنياس على Google Play": "Rate Anias on Google Play",
+    "مشاركة التطبيق": "Share the app", "أرسل رابط أنياس لمن تحب": "Share the Anyas link with someone",
+    "تقييم التطبيق": "Rate the app", "قيّم أنياس على Google Play": "Rate Anyas on Google Play",
     "سيفتح صفحة التطبيق على Google Play بعد إضافة الرابط": "The app's Google Play page will open once its link is added.",
     "رابط Google Play سيُضاف قريبًا.": "The Google Play link will be added soon.",
     "سياسة الخصوصية التفصيلية قيد الإعداد وستُضاف لاحقًا.": "A full privacy policy is planned and will be added later.",
@@ -126,7 +138,7 @@
     "غدًا": "Tomorrow", "الشهر الهجري": "Hijri month", "بدون تعديل": "No adjustment",
     "يوم سابق": "Previous day", "يوم لاحق": "Next day",
     "تتبع المظهر في جهازك": "Follow your device appearance", "المظهر الفاتح مفعّل": "Light appearance enabled", "المظهر الداكن مفعّل": "Dark appearance enabled",
-    "أهلًا بك في أنياس": "Welcome to Anias", "رفيقك اليومي للعبادة": "Your daily companion for worship",
+    "أهلًا بك في أنياس": "Welcome to Anyas", "رفيقك اليومي للعبادة": "Your daily companion for worship",
     "الصلاة والأذكار والقرآن في مكان واحد": "Prayer, adhkar, and the Qur'an in one place",
     "ومتابعة للصلاة القادمة خلال اليوم": "And see the next prayer throughout the day",
     "افتح ما يناسب وقتك وتابع من حيث وصلت": "Open the adhkar for this time and continue where you left off",
@@ -172,8 +184,8 @@
   rebuildReverse();
 
   const normalize = value => String(value).replace(/\s+/g, " ").trim();
-  const latinDigits = value => value.replace(/[٠-٩]/g, digit => "٠١٢٣٤٥٦٧٨٩".indexOf(digit));
-  const arabicDigits = value => value.replace(/[0-9]/g, digit => "٠١٢٣٤٥٦٧٨٩"[Number(digit)]);
+  const latinDigits = value => value.replace(/[٠-٩]/g, digit => "٠١٢٣٤٥٦٧٨٩".indexOf(digit)).replace(/٪/g, "%");
+  const arabicDigits = value => value.replace(/[0-9]/g, digit => "٠١٢٣٤٥٦٧٨٩"[Number(digit)]).replace(/%/g, "٪");
   const translatePhrase = (value, target) => {
     const source = normalize(value);
     const exact = target === "en" ? dictionary[source] : reverse[source];
@@ -211,7 +223,8 @@
       const value = element.getAttribute(attribute);
       if (value) {
         if (!(attribute in originals) || rendered[attribute] !== value) originals[attribute] = value;
-        const translated = translatePhrase(originals[attribute], current);
+        const phrase = translatePhrase(originals[attribute], current);
+        const translated = current === "en" ? latinDigits(phrase) : arabicDigits(phrase);
         rendered[attribute] = translated;
         if (translated !== value) element.setAttribute(attribute, translated);
       }
@@ -233,11 +246,13 @@
     current = language === "en" ? "en" : "ar";
     document.documentElement.lang = current;
     document.documentElement.dir = current === "en" ? "ltr" : "rtl";
-    document.title = current === "en" ? "Anias — Islamic Companion" : "أنياس";
+    document.title = current === "en" ? "Anyas — Islamic Companion" : "أنياس";
     const description = document.querySelector('meta[name="description"]');
     if (description) description.content = current === "en"
-      ? "Anias — a daily companion for prayer times, the Quran, and adhkar."
+      ? "Anyas — a daily companion for prayer times, the Quran, and adhkar."
       : "أنياس - رفيق يومي لمواقيت الصلاة والقرآن والأذكار";
+    const applicationName = document.querySelector('meta[name="application-name"]');
+    if (applicationName) applicationName.content = current === "en" ? "Anyas" : "أنياس";
     document.querySelectorAll("#languageSelect, #aboutLanguageSelect").forEach(select => { select.value = current; });
     if (persist) {
       try { localStorage.setItem("anyas_language", current); } catch (error) { /* locale still applies in memory */ }
@@ -263,7 +278,7 @@
   try { current = localStorage.getItem("anyas_language") === "en" ? "en" : "ar"; } catch (error) { current = "ar"; }
   document.documentElement.lang = current;
   document.documentElement.dir = current === "en" ? "ltr" : "rtl";
-  fetch("data/en-ui-translations.json?v=20261016-1")
+  fetch("data/en-ui-translations.json?v=20261017-1")
     .then(response => { if (!response.ok) throw new Error("translation data unavailable"); return response.json(); })
     .then(data => {
       dictionary = { ...data, ...manual };

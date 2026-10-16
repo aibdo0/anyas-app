@@ -20,9 +20,9 @@
 
   function makeFeedbackMessage() {
     const text = $("aboutFeedbackText")?.value.trim() || "";
-    const title = $("aboutFeedbackTitle")?.textContent.trim() || "Anias feedback";
+    const title = $("aboutFeedbackTitle")?.textContent.trim() || "Anyas feedback";
     const version = window.ANIAS_APP_VERSION || "1.1.5";
-    return `${title}\n${text}\n\nAnias ${document.documentElement.lang === "en" ? "version" : "الإصدار"} ${version}`;
+    return `${title}\n${text}\n\nAnyas ${document.documentElement.lang === "en" ? "version" : "الإصدار"} ${version}`;
   }
 
   function openFeedback(kind) {
@@ -203,7 +203,7 @@
         setStatus("اكتب رسالتك أولًا.");
         return;
       }
-      const title = $("aboutFeedbackTitle")?.textContent.trim() || "Anias feedback";
+      const title = $("aboutFeedbackTitle")?.textContent.trim() || "Anyas feedback";
       const text = makeFeedbackMessage();
       try {
         if (navigator.share) {

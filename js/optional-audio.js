@@ -109,7 +109,7 @@
         const ready = await isDownloaded(relative);
         button.textContent = ready ? text("حذف التنزيل", "Delete download") : text("تنزيل الصوت", "Download audio");
         button.setAttribute("aria-pressed", String(ready));
-        if (status && !ready) status.textContent = text("يُنزل عند الطلب؛ لا يُحمل مع التثبيت", "Downloaded on demand; not bundled with the install");
+        if (status && !ready) status.textContent = text("يُنزل من الإنترنت عند اختياره؛ ولا يُحمّل مع تثبيت التطبيق", "Downloaded from the internet when selected; not bundled with the install");
         if (status && ready) status.textContent = text("محفوظ على هذا الجهاز", "Saved on this device");
       };
       button.addEventListener("click", async () => {
@@ -138,7 +138,7 @@
         button.textContent = text("تنزيل الصوت", "Download audio");
         button.setAttribute("aria-pressed", "false");
       });
-      document.querySelectorAll("[data-audio-status]").forEach(status => { status.textContent = text("يُنزل عند الطلب", "Downloaded on demand"); });
+      document.querySelectorAll("[data-audio-status]").forEach(status => { status.textContent = text("يُنزل من الإنترنت عند اختياره؛ ولا يُحمّل مع تثبيت التطبيق", "Downloaded from the internet when selected; not bundled with the install"); });
       refreshUsage();
     });
     refreshUsage();

@@ -60,19 +60,25 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
   function initGreeting() {
     const input = byId("userNameInput");
     const greeting = byId("homeGreeting");
-    const saved = localStorage.getItem("anyas_user_name") || "أخي المسلم";
+    const stored = localStorage.getItem("anyas_user_name") || "";
+    const saved = stored === "أخي المسلم" ? "" : stored.trim();
     const render = () => {
-      const name = (input?.value || saved || "أخي المسلم").trim() || "أخي المسلم";
-      if (greeting) greeting.textContent = `السلام عليكم يا ${name}`;
+      const name = (input?.value ?? saved).trim();
+      const english = document.documentElement.lang === "en";
+      if (!greeting) return;
+      greeting.textContent = name
+        ? (english ? `Peace be upon you, ${name}` : `السلام عليكم يا ${name}`)
+        : (english ? "Peace be upon you" : "السلام عليكم");
     };
     if (input) {
-      input.value = saved === "أخي المسلم" ? "" : saved;
+      input.value = saved;
       input.addEventListener("input", () => {
         const value = input.value.trim();
-        localStorage.setItem("anyas_user_name", value || "أخي المسلم");
+        localStorage.setItem("anyas_user_name", value);
         render();
       });
     }
+    window.addEventListener("anyas:languagechange", render);
     render();
   }
 
@@ -107,7 +113,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       const city = byId("prayerHeroCity")?.textContent || (english ? "My city" : "مدينتي");
       const names = english ? { Fajr: "Fajr", Sunrise: "Sunrise", Dhuhr: "Dhuhr", Asr: "Asr", Maghrib: "Maghrib", Isha: "Isha" } : { Fajr: "الفجر", Sunrise: "الشروق", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" };
       const lines = Object.keys(names).map(key => `${names[key]}: ${format(timings[key])}`);
-      const text = english ? `Prayer times for ${city}\n${lines.join("\n")}\n\nShared from Anias` : `مواقيت الصلاة في ${city}\n${lines.join("\n")}\n\nمشاركة من تطبيق أنياس`;
+      const text = english ? `Prayer times for ${city}\n${lines.join("\n")}\n\nShared from Anyas` : `مواقيت الصلاة في ${city}\n${lines.join("\n")}\n\nمشاركة من تطبيق أنياس`;
       try {
         if (navigator.share) await navigator.share({ title: english ? "Prayer times" : "مواقيت الصلاة", text });
         else if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);

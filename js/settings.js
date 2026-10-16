@@ -1312,7 +1312,7 @@ function setupThemeAndLanguage() {
   }
 
   function applyTheme(mode, persist = true) {
-    const safeMode = ["system", "light", "dark"].includes(mode) ? mode : "dark";
+    const safeMode = ["system", "light", "dark"].includes(mode) ? mode : "light";
     const systemDark = Boolean(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
     const isDark = safeMode === "dark" || (safeMode === "system" && systemDark);
 
