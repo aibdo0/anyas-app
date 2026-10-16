@@ -129,85 +129,78 @@
 
   #page-home .daily-adhkar-section { margin-block: 8px !important; }
   #page-home .daily-adhkar-card {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr);
-    align-items: stretch;
-    justify-content: stretch;
-    gap: 8px;
-    min-height: 0 !important;
-    padding: 16px 17px !important;
-    border-radius: var(--home-compact-radius) !important;
+    display: block !important;
+    min-height: 206px !important;
+    padding: 18px 18px 16px !important;
+    border-radius: 24px !important;
+    background-size: cover;
+    background-position: center;
   }
-  #page-home .daily-adhkar-heading-row { display: flex; align-items: center; min-width: 0; margin: 0; }
-  #page-home .daily-adhkar-mark,
+  #page-home .daily-adhkar-heading-row { display: flex; align-items: center; gap: 11px; min-width: 0; margin: 0; }
+  #page-home .daily-adhkar-mark { display: grid !important; }
   #page-home .daily-adhkar-eyebrow,
-  #page-home .daily-adhkar-badge,
+  #page-home .daily-adhkar-badge { display: inline-flex !important; }
   #page-home .daily-adhkar-hint { display: none !important; }
   #page-home .daily-adhkar-heading-copy { min-width: 0; }
-  #page-home .daily-adhkar-title { margin: 0 !important; font-size: 16px !important; line-height: 1.4 !important; }
+  #page-home .daily-adhkar-title { margin: 2px 0 0 !important; font-size: 18px !important; line-height: 1.35 !important; }
   #page-home .daily-adhkar-text {
     display: block !important;
     min-width: 0;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    overflow: hidden;
-    font-size: 12px;
-    line-height: 1.6;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    margin: 12px 0 0 !important;
+    padding: 10px 12px !important;
+    border-inline-start: 3px solid #f1d27b !important;
+    border-radius: 14px !important;
+    background: rgba(15, 20, 28, .34) !important;
+    overflow: visible;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: normal;
+    text-overflow: clip;
   }
-  #page-home .daily-adhkar-footer { display: block; margin: 0 !important; padding: 0 !important; border: 0 !important; }
+  #page-home .daily-adhkar-footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 12px 0 0 !important; padding: 11px 0 0 !important; border-top: 1px solid rgba(255,255,255,.2); }
   #page-home .daily-adhkar-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     min-height: 48px !important;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 13px;
+    padding: 9px 16px;
+    border-radius: 13px;
+    font-size: 12px;
   }
 
   #page-home .friday-feature-section[data-home-compact-friday="false"] { display: none !important; }
   #page-home .friday-feature-card {
     position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    align-items: stretch;
-    justify-content: stretch;
-    gap: 8px;
-    min-height: 0;
-    padding: 16px 17px;
-    border-radius: var(--home-compact-radius);
+    display: block !important;
+    min-height: 184px;
+    padding: 18px;
+    border-radius: 22px;
   }
-  #page-home .friday-feature-heading { display: flex; align-items: center; justify-content: flex-start; margin: 0; }
-  #page-home .friday-feature-eyebrow,
-  #page-home .friday-feature-badge,
+  #page-home .friday-feature-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0; }
   #page-home #homeFridayMeta { display: none !important; }
-  #page-home #homeFridayHeading { margin: 0; font-size: 16px; line-height: 1.4; }
+  #page-home #homeFridayHeading { margin: 1px 0 0; font-size: 18px; line-height: 1.35; }
   #page-home #homeFridayText {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     min-width: 0;
-    margin: 0;
+    margin: 12px 0 5px;
     overflow: hidden;
-    font-size: 12px;
-    line-height: 1.6;
+    font-size: 13px;
+    line-height: 1.7;
     text-overflow: ellipsis;
   }
   #page-home .friday-feature-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
     min-height: 48px;
-    margin: 0;
-    padding: 10px 14px;
+    margin: 8px 0 0;
+    padding: 9px 14px;
     border-radius: 12px;
-    font-size: 13px;
+    font-size: 12px;
   }
 
   #page-home .prayer-section {
