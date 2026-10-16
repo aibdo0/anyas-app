@@ -177,3 +177,58 @@ html[lang="en"] #page-more .more-menu-arrow svg { transform: rotate(180deg); }
 
 /* ترويسة صفحة المزيد الداكنة تبقى مستقلة عن لون عناوين المجموعات. */
 #page-more .more-page-header .brand { color: #fff !important; }
+
+/* تحسين الهيكل فقط — الألوان الحالية محفوظة كما هي. */
+#page-more {
+  max-width: 680px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  padding-top: 20px;
+}
+#page-more .more-page-header {
+  min-height: 142px;
+  margin-bottom: 26px;
+  padding: 22px 20px;
+  border-radius: 28px;
+}
+#page-more .more-group { margin-bottom: 24px; }
+#page-more .more-group-heading {
+  min-height: 48px;
+  margin: 0 6px 10px;
+  padding-inline-start: 13px;
+}
+#page-more .more-group-heading h2 { font-size: 15px; }
+#page-more .more-group-heading p { font-size: 11px; }
+#page-more .more-menu { border-radius: 24px; }
+#page-more .more-menu-item {
+  min-height: 82px;
+  grid-template-columns: 52px minmax(0, 1fr) 34px;
+  gap: 14px;
+  padding: 14px 16px;
+}
+#page-more .more-menu-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 17px;
+}
+#page-more .more-menu-icon svg { width: 23px; height: 23px; }
+#page-more .more-menu-copy { gap: 4px; }
+#page-more .more-menu-copy strong { font-size: 15px; }
+#page-more .more-menu-copy small { font-size: 11px; }
+#page-more .more-menu-arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+}
+@media (max-width: 420px) {
+  #page-more { padding-inline: 12px; }
+  #page-more .more-page-header { min-height: 132px; padding: 18px 16px; }
+  #page-more .more-menu-item {
+    min-height: 76px;
+    grid-template-columns: 46px minmax(0, 1fr) 30px;
+    gap: 11px;
+    padding: 12px 13px;
+  }
+  #page-more .more-menu-icon { width: 46px; height: 46px; border-radius: 15px; }
+  #page-more .more-menu-copy strong { font-size: 14px; }
+}
