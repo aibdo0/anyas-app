@@ -156,3 +156,15 @@ body:has(#updateBanner:not([hidden])) #page-home { padding-top: 84px; }
 :root[data-theme="dark"] #page-home .daily-adhkar-card[data-adhkar-period="evening"] { background: linear-gradient(135deg, #493020, #33251a 88%) !important; }
 :root[data-theme="dark"] #page-home .daily-adhkar-card[data-adhkar-period="sleep"] { background: linear-gradient(135deg, #3d321f, #221d13 88%) !important; }
 :root[data-theme="dark"] #page-home .daily-adhkar-card[data-adhkar-period="sahar"] { background: linear-gradient(145deg, #352b1b, #1e1a12 88%) !important; }
+
+
+/* طبقة الصورة في الداكن دافئة وليست بيضاء/رمادية */
+:root[data-theme="dark"] #page-home .daily-adhkar-card::after {
+  background: linear-gradient(90deg, rgba(48, 38, 20, .84), rgba(48, 38, 20, .55)), url("../assets/anyas-morning-background.webp") center / cover no-repeat !important;
+  opacity: .28;
+}
+:root[data-theme="dark"] #page-home .daily-adhkar-card[data-adhkar-period="sleep"]::after,
+:root[data-theme="dark"] #page-home .daily-adhkar-card[data-adhkar-period="sahar"]::after {
+  background: linear-gradient(90deg, rgba(35, 28, 16, .72), rgba(47, 36, 18, .48)), url("../assets/anyas-night-background.webp") center / cover no-repeat !important;
+  opacity: .36;
+}
