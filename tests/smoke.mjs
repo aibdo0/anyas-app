@@ -96,6 +96,24 @@ check("PWA install and offline shell are configured", () => {
   assert.match(index, /addEventListener\("offline"/);
 });
 
+check("optional backgrounds follow morning, evening, and sleep periods", () => {
+  const palette = read("css/palette-warm-gold.css");
+  const backgrounds = read("css/app-background.css");
+  assert.match(index, /id="timeBackgroundToggle" type="checkbox"/);
+  assert.match(index, /localStorage\.getItem\("anyas_autoBackground"\) === "true"/);
+  assert.match(settings, /minutes >= 270 && minutes < 930 \? "morning"/);
+  assert.match(settings, /minutes >= 930 && minutes < 1200 \? "evening"/);
+  assert.match(settings, /: "sleep"/);
+  assert.match(backgrounds, /data-background-scene="morning"/);
+  assert.match(backgrounds, /data-background-scene="evening"/);
+  assert.match(backgrounds, /data-background-scene="sleep"/);
+  assert.match(backgrounds, /data-auto-background="true"\] body/);
+  assert.match(backgrounds, /#page-home \.daily-adhkar-card\[data-adhkar-period\]/);
+  assert.match(backgrounds, /data-theme="dark"\]\[data-auto-background="true"\].*#page-home \.daily-adhkar-card/s);
+  assert.match(palette, /:root\[data-theme="dark"\] #page-home \.nearby-mosque-card/);
+  assert.match(read("js/daily-adhkar.js"), /card\.dataset\.adhkarPeriod = period\.id/);
+});
+
 check("keyboard and screen-reader accessibility basics are present", () => {
   assert.match(index, /class="skip-link" href="#page-home"/);
   for (const match of index.matchAll(/<img\b([^>]*)>/gi)) assert.match(match[1], /\balt=/, "every image needs alt text");
@@ -316,6 +334,51 @@ check("optional audio downloads are cached and excluded from Android web assets"
   assert.match(optionalAudio, /caches\.open\(CACHE_NAME\)/);
   assert.match(optionalAudio, /raw\.githubusercontent\.com/);
   assert.doesNotMatch(gradle, /include 'audio\/\*\*'/);
+});
+
+check("wird session read-aloud is user initiated, repeat-aware, and locally resumable", () => {
+  const azkarScript = read("js/azkar.js");
+  const sessionCss = read("css/wird-session.css");
+  assert.match(index, /id="wirdSessionPlayToggle"/);
+  assert.match(index, /id="wirdSessionPrevious"/);
+  assert.match(index, /id="wirdSessionNextItem"/);
+  assert.match(index, /id="wirdSessionRate"/);
+  assert.match(azkarScript, /function toggleWirdAudio\(\)/);
+  assert.match(azkarScript, /wirdSessionPlayToggle[^\n]*addEventListener/);
+  assert.match(azkarScript, /speechSynthesis\.pause\(\)/);
+  assert.match(azkarScript, /speechSynthesis\.resume\(\)/);
+  assert.match(azkarScript, /const remaining = wirdAudioReplayCurrent \? 1 : count - completed/);
+  assert.match(azkarScript, /saveTopicProgress\(wirdSession\.number, wirdSession\.progress\)/);
+  assert.match(azkarScript, /const savedVolume = rawVolume === null \? 100 : Number\(rawVolume\)/);
+  assert.match(azkarScript, /wirdAudioWaitingForNext/);
+  assert.match(azkarScript, /anyas_wirdSpeechRate/);
+  assert.match(azkarScript, /speechSynthesis\.cancel\(\)/);
+  assert.doesNotMatch(azkarScript, /addEventListener\("pagehide", cancelWirdAudio\)/);
+  assert.match(index, /الصوت آلي من محرك جهازك/);
+  assert.match(sessionCss, /\.wird-session-audio-controls/);
+});
+
+check("Android wird playback has a foreground TTS service and lock-screen controls", () => {
+  const activity = read("android/app/src/main/java/com/anyas/app/MainActivity.java");
+  const service = read("android/app/src/main/java/com/anyas/app/WirdPlaybackService.java");
+  const manifest = read("android/app/src/main/AndroidManifest.xml");
+  const azkarScript = read("js/azkar.js");
+  assert.match(manifest, /\.WirdPlaybackService[^>]+foregroundServiceType="mediaPlayback"/);
+  assert.match(activity, /startWirdPlayback\(String queueJson, String title, int startIndex, double volume, double rate, boolean replayCurrent, int returnIndex, String sessionToken\)/);
+  assert.match(activity, /startForegroundService\(playback\)/);
+  assert.match(service, /TextToSpeech/);
+  assert.match(service, /MediaSession/);
+  assert.match(service, /Notification\.MediaStyle/);
+  assert.match(service, /ACTION_PAUSE/);
+  assert.match(service, /ACTION_RESUME/);
+  assert.match(service, /ACTION_NEXT/);
+  assert.match(service, /ACTION_STOP/);
+  assert.match(azkarScript, /window\.anyasAndroidWirdUtteranceCompleted/);
+  assert.match(azkarScript, /window\.anyasAndroidWirdProgress/);
+  assert.match(azkarScript, /window\.anyasAndroidWirdNext/);
+  assert.match(azkarScript, /startWirdPlayback/);
+  assert.match(azkarScript, /JSON\.stringify\(queue\)/);
+  assert.match(manifest, /android\.permission\.WAKE_LOCK/);
 });
 
 check("compressed audio stays playable and within the app size budget", () => {

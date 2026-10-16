@@ -1372,18 +1372,26 @@ function setupThemeAndLanguage() {
   try {
     const savedTimeBackground = localStorage.getItem("anyas_autoBackground");
     if (savedTimeBackground === "false") timeBackgroundEnabled = false;
-  } catch (error) { /* time-based backgrounds default to on */ }
+  } catch (error) { /* optional backgrounds default to off */ }
 
   const updateTimeBackground = () => {
-    const hour = new Date().getHours();
-    const scene = hour >= 6 && hour < 18 ? "morning" : "night";
+    const now = new Date();
+    const minutes = now.getHours() * 60 + now.getMinutes();
+    const scene = minutes >= 270 && minutes < 930 ? "morning" : minutes >= 930 && minutes < 1200 ? "evening" : "sleep";
+    root.dataset.backgroundScene = scene;
     root.dataset.timeScene = scene;
     root.dataset.autoBackground = timeBackgroundEnabled ? "true" : "false";
-    const sceneNames = { morning: "الصباح", night: "الليل" };
+    const isEnglish = document.documentElement.lang === "en";
+    const sceneNames = isEnglish
+      ? { morning: "morning", evening: "evening", sleep: "sleep" }
+      : { morning: "الصباح", evening: "المساء", sleep: "النوم" };
+    const sceneTimes = { morning: "04:30–15:29", evening: "15:30–19:59", sleep: "20:00–04:29" };
     if (timeBackgroundDescription) {
       timeBackgroundDescription.textContent = timeBackgroundEnabled
-        ? `الخلفية ${sceneNames[scene]} مفعّلة — تتبدّل تلقائيًا حسب ساعة جهازك`
-        : "خلفيات العدادات متوقفة";
+        ? (isEnglish
+          ? `${sceneNames[scene]} background on (${sceneTimes[scene]}) — follows your device clock`
+          : `خلفية ${sceneNames[scene]} مفعّلة (${sceneTimes[scene]})`)
+        : (isEnglish ? "Backgrounds are off. Turn this on to show the morning, evening, and sleep scenes." : "الخلفيات متوقفة؛ فعّل المفتاح لإظهار خلفيات الصباح والمساء والنوم.");
     }
     if (timeBackgroundToggle) timeBackgroundToggle.checked = timeBackgroundEnabled;
   };
@@ -1408,6 +1416,7 @@ function setupThemeAndLanguage() {
         window.setAppLanguage(nextLanguage);
       }
       languageControls.forEach(peer => { peer.value = nextLanguage; });
+      updateTimeBackground();
     });
   });
 

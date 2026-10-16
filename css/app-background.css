@@ -1,31 +1,77 @@
-/* خلفية التطبيق الزمنية — صورة هادئة خلف البطاقات مع طبقة وضوح */
-:root { --app-scene-image: none; }
-:root[data-auto-background="true"][data-app-scene="awakening"],
-:root[data-auto-background="true"][data-app-scene="morning"],
-:root[data-auto-background="true"][data-app-scene="day"] { --app-scene-image: url("../assets/adhkar-morning-card.jpg"); }
-:root[data-auto-background="true"][data-app-scene="evening"] { --app-scene-image: url("../assets/adhkar-evening-card.jpg"); }
-:root[data-auto-background="true"][data-app-scene="sleep"],
-:root[data-auto-background="true"][data-app-scene="sahar"] { --app-scene-image: url("../assets/adhkar-sleep-card.jpg"); }
+/* خلفيات زمنية اختيارية: ألوان دافئة بلا صور مشتتة أو أخضر. */
+:root {
+  --scene-glow-one: rgba(205, 168, 99, .19);
+  --scene-glow-two: rgba(255, 255, 255, .20);
+}
+:root[data-theme="dark"] {
+  --scene-glow-one: rgba(179, 139, 67, .12);
+  --scene-glow-two: rgba(122, 100, 74, .07);
+}
 
-body {
+:root[data-auto-background="true"][data-background-scene="morning"] {
+  --scene-glow-one: rgba(219, 184, 119, .25);
+  --scene-glow-two: rgba(255, 251, 239, .30);
+}
+:root[data-theme="dark"][data-auto-background="true"][data-background-scene="morning"] {
+  --scene-glow-one: rgba(190, 147, 74, .15);
+  --scene-glow-two: rgba(145, 113, 67, .08);
+}
+
+:root[data-auto-background="true"][data-background-scene="evening"] {
+  --scene-glow-one: rgba(203, 139, 107, .22);
+  --scene-glow-two: rgba(217, 186, 150, .16);
+}
+:root[data-theme="dark"][data-auto-background="true"][data-background-scene="evening"] {
+  --scene-glow-one: rgba(162, 101, 79, .16);
+  --scene-glow-two: rgba(166, 127, 94, .08);
+}
+
+:root[data-auto-background="true"][data-background-scene="sleep"] {
+  --scene-glow-one: rgba(130, 116, 142, .12);
+  --scene-glow-two: rgba(191, 163, 127, .10);
+}
+:root[data-theme="dark"][data-auto-background="true"][data-background-scene="sleep"] {
+  --scene-glow-one: rgba(116, 101, 139, .12);
+  --scene-glow-two: rgba(155, 127, 95, .06);
+}
+
+:root[data-auto-background="true"] body {
   background-image:
-    linear-gradient(rgba(7, 13, 24, .93), rgba(7, 13, 24, .96)),
-    var(--app-scene-image),
-    radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .25), transparent 36rem) !important;
-  background-position: center, center, center;
-  background-size: cover, cover, auto;
+    radial-gradient(ellipse at 92% 0%, var(--scene-glow-one), transparent 34rem),
+    radial-gradient(ellipse at 5% 42%, var(--scene-glow-two), transparent 32rem) !important;
   background-attachment: fixed;
   background-repeat: no-repeat;
 }
 
-:root[data-theme="light"] body {
-  background-image:
-    linear-gradient(rgba(247, 244, 235, .96), rgba(247, 244, 235, .985)),
-    var(--app-scene-image),
-    radial-gradient(ellipse at 90% 0%, rgba(237, 224, 198, .62), transparent 36rem) !important;
+@media (max-width: 600px) {
+  :root[data-auto-background="true"] body {
+    background-image: radial-gradient(ellipse at 100% 0%, var(--scene-glow-one), transparent 27rem) !important;
+  }
 }
 
-@media (prefers-reduced-transparency: reduce) {
-  body { background-image: linear-gradient(rgba(7,13,24,.97), rgba(7,13,24,.98)), var(--app-scene-image) !important; }
-  :root[data-theme="light"] body { background-image: linear-gradient(rgba(247,244,235,.98), rgba(247,244,235,.99)), var(--app-scene-image) !important; }
+/* تتبع بطاقة الورد اليومية المشهد نفسه، مع إبقاء النصوص واضحة. */
+:root[data-auto-background="true"][data-background-scene="morning"] #page-home .daily-adhkar-card[data-adhkar-period] {
+  border-color: #dec799 !important;
+  background: radial-gradient(ellipse at 90% 5%, rgba(255,255,255,.72), transparent 48%), linear-gradient(145deg, #f5ecd9, #eadbbd) !important;
+}
+:root[data-auto-background="true"][data-background-scene="evening"] #page-home .daily-adhkar-card[data-adhkar-period] {
+  border-color: #d6b396 !important;
+  background: radial-gradient(ellipse at 92% 0%, rgba(255,246,233,.70), transparent 48%), linear-gradient(145deg, #f1e1d3, #e4c9b4) !important;
+}
+:root[data-auto-background="true"][data-background-scene="sleep"] #page-home .daily-adhkar-card[data-adhkar-period] {
+  border-color: #c6bfd0 !important;
+  background: radial-gradient(ellipse at 90% 0%, rgba(255,255,255,.62), transparent 48%), linear-gradient(145deg, #eeebf1, #ded9e6) !important;
+}
+
+:root[data-theme="dark"][data-auto-background="true"][data-background-scene="morning"] #page-home .daily-adhkar-card[data-adhkar-period] {
+  border-color: #6b5838 !important;
+  background: radial-gradient(ellipse at 90% 0%, rgba(191,147,68,.18), transparent 52%), linear-gradient(145deg, #302b24, #24211e) !important;
+}
+:root[data-theme="dark"][data-auto-background="true"][data-background-scene="evening"] #page-home .daily-adhkar-card[data-adhkar-period] {
+  border-color: #705044 !important;
+  background: radial-gradient(ellipse at 90% 0%, rgba(173,104,75,.19), transparent 52%), linear-gradient(145deg, #302623, #24211f) !important;
+}
+:root[data-theme="dark"][data-auto-background="true"][data-background-scene="sleep"] #page-home .daily-adhkar-card[data-adhkar-period] {
+  border-color: #4e485b !important;
+  background: radial-gradient(ellipse at 90% 0%, rgba(121,104,148,.18), transparent 52%), linear-gradient(145deg, #292631, #211f27) !important;
 }

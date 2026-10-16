@@ -32,21 +32,12 @@ body {
   min-height: 100vh;
   color: var(--ink) !important;
   background-color: var(--page) !important;
-  background-image: radial-gradient(ellipse at 88% 0%, rgba(193, 160, 100, .12), transparent 36rem) !important;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  background-image: none !important;
 }
 :root[data-theme="dark"] body {
   background-color: var(--page) !important;
-  background-image: radial-gradient(ellipse at 88% 0%, rgba(176, 139, 70, .09), transparent 34rem) !important;
+  background-image: none !important;
 }
-:root[data-auto-background="true"][data-app-scene="awakening"] body,
-:root[data-auto-background="true"][data-app-scene="morning"] body { background-image: radial-gradient(ellipse at 90% 0%, rgba(205, 168, 99, .17), transparent 35rem) !important; }
-:root[data-auto-background="true"][data-app-scene="day"] body { background-image: radial-gradient(ellipse at 10% 15%, rgba(210, 188, 137, .13), transparent 34rem) !important; }
-:root[data-auto-background="true"][data-app-scene="evening"] body { background-image: radial-gradient(ellipse at 90% 0%, rgba(196, 132, 80, .16), transparent 35rem) !important; }
-:root[data-auto-background="true"][data-app-scene="sleep"] body,
-:root[data-auto-background="true"][data-app-scene="sahar"] body { background-image: radial-gradient(ellipse at 90% 0%, rgba(116, 99, 83, .16), transparent 35rem) !important; }
-:root[data-theme="dark"][data-auto-background="true"] body { background-image: radial-gradient(ellipse at 90% 0%, rgba(176, 139, 70, .09), transparent 34rem) !important; }
 button, input, select { color: inherit; }
 button { -webkit-tap-highlight-color: transparent; }
 
@@ -96,6 +87,17 @@ button { -webkit-tap-highlight-color: transparent; }
 
 /* البطاقات والصفوف تشترك في ألوان واضحة ومتسقة بين صفحات التطبيق. */
 #page-home .prayer-section { color: var(--ink) !important; border-color: var(--line) !important; background: var(--surface) !important; box-shadow: var(--shadow) !important; }
+#page-home .nearby-mosque-card {
+  color: var(--ink) !important;
+  border: 1px solid var(--line) !important;
+  background: linear-gradient(145deg, var(--surface), var(--surface-soft)) !important;
+  box-shadow: var(--shadow) !important;
+}
+:root[data-theme="dark"] #page-home .nearby-mosque-card {
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+  background: linear-gradient(145deg, #282521, #211f1c) !important;
+}
 #page-home .prayer-row,
 #page-home .prayer-track-item,
 #page-tasks .task-item,

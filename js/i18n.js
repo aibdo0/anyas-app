@@ -113,6 +113,8 @@
     "خلفية الليل مفعّلة — تتغير تلقائيًا حسب ساعة جهازك": "Night background enabled — changes automatically with your device clock",
     "الليل": "Night", "النهار": "Daytime", "الغروب": "Sunset",
     "الخلفية التلقائية متوقفة": "Automatic background is off",
+    "خلفيات التطبيق حسب الوقت": "Time-based app backgrounds",
+    "تظهر خلفية هادئة للصباح والمساء والنوم بعد تفعيلها من هنا": "Turn this on to show calm morning, evening, and sleep backgrounds.",
     "ظهر خطأ أثناء المشاركة. يمكنك نسخ الرسالة بدلًا من ذلك.": "Sharing failed. You can copy the message instead.",
     "تم نسخ الرسالة": "Message copied", "لم نتمكن من النسخ؛ يمكنك تحديد الرسالة ونسخها يدويًا.": "Could not copy. You can select and copy the message manually.",
     "لا توجد قناة دعم رسمية مضافة بعد.": "No official support contact is configured yet.",

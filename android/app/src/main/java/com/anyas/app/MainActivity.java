@@ -29,6 +29,7 @@ import java.util.Calendar;
 
 public class MainActivity extends Activity {
     static final String HOST = "appassets.androidplatform.net";
+    private static volatile MainActivity activeInstance;
     WebView web;
     WebViewAssetLoader assetLoader;
     GeolocationPermissions.Callback geoCallback;
@@ -37,6 +38,7 @@ public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        activeInstance = this;
         pendingShortcutPage = shortcutPage(getIntent());
         View splash = getLayoutInflater().inflate(R.layout.activity_splash, null);
         View splashTint = splash.findViewById(R.id.splashTint);
@@ -173,7 +175,39 @@ public class MainActivity extends Activity {
         super.onResume();
         if (web != null) web.post(() -> web.evaluateJavascript("if (window.anyasNotificationInboxRefresh) window.anyasNotificationInboxRefresh();", null));
     }
+    @Override protected void onDestroy() {
+        if (activeInstance == this) activeInstance = null;
+        if (web != null) web.destroy();
+        super.onDestroy();
+    }
     @Override public void onBackPressed() { if (web != null && web.canGoBack()) web.goBack(); else super.onBackPressed(); }
+
+    static void dispatchWirdPlaybackEvent(String javascriptCall) {
+        MainActivity activity = activeInstance;
+        if (activity == null || activity.web == null || activity.isFinishing()) return;
+        activity.runOnUiThread(() -> {
+            if (activity.web != null) activity.web.evaluateJavascript(javascriptCall + "?.()", null);
+        });
+    }
+    static void dispatchWirdPlaybackEvent(String javascriptCall, String token) {
+        String safeToken = JSONObject.quote(token == null ? "" : token);
+        dispatchWirdPlaybackScript(javascriptCall + "?.(" + safeToken + ");");
+    }
+    static void dispatchWirdPlaybackProgress(int completedIndex, int completedCount, int nextIndex, String token) {
+        String safeToken = JSONObject.quote(token == null ? "" : token);
+        dispatchWirdPlaybackScript("window.anyasAndroidWirdProgress?.(" + completedIndex + "," + completedCount + "," + nextIndex + "," + safeToken + ");");
+    }
+    static void dispatchWirdPlaybackPosition(int nextIndex, String token) {
+        String safeToken = JSONObject.quote(token == null ? "" : token);
+        dispatchWirdPlaybackScript("window.anyasAndroidWirdPosition?.(" + nextIndex + "," + safeToken + ");");
+    }
+    private static void dispatchWirdPlaybackScript(String script) {
+        MainActivity activity = activeInstance;
+        if (activity == null || activity.web == null || activity.isFinishing()) return;
+        activity.runOnUiThread(() -> {
+            if (activity.web != null) activity.web.evaluateJavascript(script, null);
+        });
+    }
 
     private boolean aboutPermissionGranted(String kind) {
         if ("location".equals(kind)) {
@@ -209,6 +243,33 @@ public class MainActivity extends Activity {
         }
         @JavascriptInterface public void clearNotificationHistory() {
             NotificationHistory.clear(MainActivity.this);
+        }
+        @JavascriptInterface public String startWirdPlayback(String queueJson, String title, int startIndex, double volume, double rate, boolean replayCurrent, int returnIndex, String sessionToken) {
+            if (queueJson == null || queueJson.trim().isEmpty() || queueJson.length() > 500000) return "invalid_queue";
+            Intent playback = new Intent(MainActivity.this, WirdPlaybackService.class)
+                    .setAction(WirdPlaybackService.ACTION_PLAY)
+                    .putExtra("queue", queueJson)
+                    .putExtra("title", title == null ? "جلسة الأذكار" : title)
+                    .putExtra("startIndex", Math.max(0, startIndex))
+                    .putExtra("volume", (float) Math.max(0d, Math.min(1d, volume)))
+                    .putExtra("rate", (float) Math.max(0.75d, Math.min(1.25d, rate)))
+                    .putExtra("replayCurrent", replayCurrent)
+                    .putExtra("returnIndex", Math.max(0, returnIndex))
+                    .putExtra("sessionToken", sessionToken == null ? "" : sessionToken);
+            try {
+                if (Build.VERSION.SDK_INT >= 26) startForegroundService(playback);
+                else startService(playback);
+                return "started";
+            } catch (Exception error) {
+                return "unavailable";
+            }
+        }
+        @JavascriptInterface public void pauseWirdPlayback(String token) { sendWirdPlaybackAction(WirdPlaybackService.ACTION_PAUSE, token); }
+        @JavascriptInterface public void resumeWirdPlayback(String token) { sendWirdPlaybackAction(WirdPlaybackService.ACTION_RESUME, token); }
+        @JavascriptInterface public void stopWirdPlayback(String token) { sendWirdPlaybackAction(WirdPlaybackService.ACTION_STOP, token); }
+        private void sendWirdPlaybackAction(String action, String token) {
+            try { startService(new Intent(MainActivity.this, WirdPlaybackService.class).setAction(action).putExtra("sessionToken", token == null ? "" : token)); }
+            catch (Exception ignored) { }
         }
         @JavascriptInterface public void recordNotification(String tag, String title, String body) {
             NotificationHistory.record(MainActivity.this, tag, title, body);

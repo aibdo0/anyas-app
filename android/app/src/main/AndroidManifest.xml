@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <application android:theme="@android:style/Theme.Material.Light.NoActionBar" android:label="أنياس" android:usesCleartextTraffic="false" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher">
         <activity android:name=".MainActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize" android:exported="true" android:launchMode="singleTop">
@@ -16,6 +17,7 @@
         <receiver android:name=".ReminderReceiver" android:exported="false" />
         <receiver android:name=".RainReceiver" android:exported="false" />
         <service android:name=".ReminderPlayerService" android:exported="false" android:foregroundServiceType="mediaPlayback" />
+        <service android:name=".WirdPlaybackService" android:exported="false" android:foregroundServiceType="mediaPlayback" />
         <receiver android:name=".BootReceiver" android:enabled="true" android:exported="true">
             <intent-filter><action android:name="android.intent.action.BOOT_COMPLETED" /><action android:name="android.intent.action.TIME_SET" /><action android:name="android.intent.action.TIMEZONE_CHANGED" /></intent-filter>
         </receiver>

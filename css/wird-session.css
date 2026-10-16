@@ -15,9 +15,19 @@
 .wird-session-text { color: #fff; font-family: "Amiri", serif; font-size: clamp(22px,5.2vw,30px); font-weight: 700; line-height: 2; text-align: center; }
 .wird-session-count { color: #d9c69e; font-size: 12px; text-align: center; }
 .wird-session-actions { display: grid; gap: 8px; margin-top: 17px; }
+.wird-session-audio { margin-top: 16px; padding: 14px; border: 1px solid rgba(224,197,137,.2); border-radius: 17px; background: rgba(0,0,0,.16); }
+.wird-session-audio-controls { display: grid; grid-template-columns: minmax(62px,auto) minmax(0,1fr) minmax(62px,auto); align-items: center; gap: 8px; }
+.wird-session-audio-controls button { min-height: 42px; padding: 8px 10px; border: 1px solid rgba(224,197,137,.28); border-radius: 12px; color: #f4ead3; background: rgba(255,255,255,.055); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+.wird-session-audio-controls button:focus-visible, .wird-session-rate:focus-visible { outline: 3px solid #e6c576; outline-offset: 3px; }
+#wirdSessionPlayToggle { border-color: #d8b76e; color: #292318; background: linear-gradient(135deg,#f4d992,#d0a94f); font-weight: 900; }
+.wird-session-rate-label { display: flex; justify-content: space-between; gap: 12px; margin-top: 13px; color: #e2d4b7; font-size: 12px; }
+.wird-session-rate-label output { color: #f1d486; font-weight: 800; }
+#wirdSessionRate { display: block; width: 100%; margin: 8px 0 0; accent-color: #d8b76e; }
+.wird-session-audio-note { margin: 10px 0 0; color: #c2b99f; font-size: 11px; line-height: 1.65; }
+.wird-session-audio-controls button:active { transform: scale(.98); }
 .wird-session-next { min-height: 48px; border: 1px solid #f2d58d; border-radius: 14px; color: #2a2419; background: linear-gradient(135deg,#ffe39a,#e7bd61); font-family: inherit; font-weight: 900; cursor: pointer; }
 .wird-session-skip { min-height: 38px; border: 0; color: #bcc6d8; background: transparent; font-family: inherit; font-size: 12px; cursor: pointer; }
 .wird-session-note { margin: 12px 0 0; color: #9daac0; font-size: 11px; text-align: center; }
 body.wird-session-open { overflow: hidden; }
-@media (max-width: 420px) { .category-detail-header { grid-template-columns: auto minmax(0,1fr); } .azkar-session-open-button { grid-column: 1 / -1; width: 100%; } .wird-session-dialog { padding-inline: 15px; } }
+@media (max-width: 420px) { .category-detail-header { grid-template-columns: auto minmax(0,1fr); } .azkar-session-open-button { grid-column: 1 / -1; width: 100%; } .wird-session-dialog { padding-inline: 15px; } .wird-session-audio { padding: 11px; } .wird-session-audio-controls { grid-template-columns: 56px minmax(0,1fr) 56px; gap: 6px; } .wird-session-audio-controls button { padding-inline: 6px; font-size: 11px; } }
 @media (prefers-reduced-motion: reduce) { .wird-session-progress-track span { transition: none; } }
