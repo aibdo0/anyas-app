@@ -175,7 +175,7 @@ html[lang="en"] #page-more .more-menu-arrow svg { transform: rotate(180deg); }
   #page-more .more-menu-arrow { transition: none; }
 }
 
-/* تباين النص فوق خلفية المشهد الليلي */
+/* ترويسة صفحة المزيد الداكنة تبقى مستقلة عن لون عناوين المجموعات. */
 #page-more .more-page-header .brand { color: #fff !important; }
 :root[data-time-scene="night"] #page-more .more-group-heading h2 {
   color: #fff !important;

@@ -507,6 +507,11 @@ check("Android prayer widget shows the next prayer and refreshes", () => {
 });
 
 check("mobile pages keep full cards, touch targets, and accessible page enhancements", () => {
+  const mobileUx = read("css/mobile-ux-foundation.css");
+  assert.match(index, /href="css\/mobile-ux-foundation\.css\?v=20261016-1"/);
+  assert.match(mobileUx, /min-width: 48px !important/);
+  assert.match(mobileUx, /min-height: 48px !important/);
+  assert.match(serviceWorker, /mobile-ux-foundation\.css\?v=20261016-1/);
   assert.match(index, /href="css\/home-compact\.css\?v=20261016-5"/);
   assert.match(index, /src="js\/home-compact\.js\?v=20261016-2"/);
   assert.match(index, /src="js\/home-ui-enhancements\.js\?v=20261016-1"/);
