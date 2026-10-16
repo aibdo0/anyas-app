@@ -406,20 +406,12 @@ check("custom-session controls and playlist module are wired into the offline sh
   assert.match(serviceWorker, /js\/wird-playlists\.js\?v=20261016-1/);
   assert.match(serviceWorker, /css\/wird-session\.css\?v=20261016-3/);
   assert.match(serviceWorker, /js\/azkar\.js\?v=20261016-7/);
-  assert.match(index, /css\/profile-portal\.css\?v=20261016-2/);
-  assert.match(serviceWorker, /css\/profile-portal\.css\?v=20261016-2/);
-  assert.match(index, /id="mainBottomNav"/);
-  assert.equal((index.match(/class="nav-item/g) || []).length, 5);
-  assert.match(index, /data-page="notifications"/);
-  assert.match(index, /data-page="more"[\s\S]{0,80}aria-label="حسابي"/);
-  assert.match(serviceWorker, /app-version\.js\?v=20261016-3/);
-  assert.match(serviceWorker, /en-ui-translations\.json\?v=20261016-2/);
-  assert.match(version, /ANIAS_APP_VERSION = "1\.4\.0"/);
-  assert.match(version, /ANIAS_VERSION_CODE = 16/);
+  assert.match(serviceWorker, /app-version\.js\?v=20261016-2/);
+  assert.match(serviceWorker, /en-ui-translations\.json\?v=20261016-1/);
+  assert.match(version, /ANIAS_APP_VERSION = "1\.3\.1"/);
+  assert.match(version, /ANIAS_VERSION_CODE = 15/);
   assert.equal(translations["جلساتي المخصصة"], "My custom sessions");
   assert.equal(translations["إعادة الذكر"], "Repeat dhikr");
-  assert.equal(translations["الملف الشخصي"], "Profile");
-  assert.equal(translations["حسابي"], "Profile");
 });
 
 check("Android wird playback has a foreground TTS service and lock-screen controls", () => {
