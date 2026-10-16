@@ -1920,11 +1920,7 @@ function setupSettingsSectionTabs() {
 // =====================================================
 
 function setupUpdateBanner() {
-
-  const banner =
-    document.getElementById(
-      "updateBanner"
-    );
+  const banner = document.getElementById("updateBanner");
 
   // نسخة Android تحمل ملفاتها محليًا؛ لا تعرض تنبيه تحديث الويب داخلها.
   if (window.AnyasAndroid && banner) {
@@ -1932,82 +1928,80 @@ function setupUpdateBanner() {
     return;
   }
 
-  const updateButton =
-    document.getElementById(
-      "updateButton"
-    );
+  if (!banner) return;
 
-  const dismissButton =
-    document.getElementById(
-      "dismissUpdateButton"
-    );
+  const updateButton = document.getElementById("updateButton");
+  const dismissButton = document.getElementById("dismissUpdateButton");
+  const currentVersion = "2.0";
+  const autoHiddenKey = "anyas_update_banner_auto_hidden";
+  const AUTO_HIDE_MS = 15000;
+  let autoHideTimer = null;
 
+  const clearAutoHide = () => {
+    if (autoHideTimer !== null) {
+      window.clearTimeout(autoHideTimer);
+      autoHideTimer = null;
+    }
+  };
 
-  if (!banner) {
-    return;
-  }
+  const wasAutoHiddenThisSession = () => {
+    try {
+      return sessionStorage.getItem(autoHiddenKey) === currentVersion;
+    } catch (error) {
+      return false;
+    }
+  };
 
-
-  const dismissedVersion =
-    localStorage.getItem(
-      "anyas_update_banner_dismissed"
-    );
-
-
-  const currentVersion =
-    "2.0";
-
-
-  if (
-    dismissedVersion !==
-    currentVersion
-  ) {
-
-    banner.hidden = false;
-
-  } else {
-
+  const hideForSession = () => {
+    clearAutoHide();
     banner.hidden = true;
+    try {
+      sessionStorage.setItem(autoHiddenKey, currentVersion);
+    } catch (error) {
+      // The notice still hides for this page view when session storage is unavailable.
+    }
+  };
 
+  const scheduleAutoHide = () => {
+    clearAutoHide();
+    if (!banner.hidden) {
+      autoHideTimer = window.setTimeout(hideForSession, AUTO_HIDE_MS);
+    }
+  };
+
+  const dismissedVersion = localStorage.getItem("anyas_update_banner_dismissed");
+  if (dismissedVersion !== currentVersion && !wasAutoHiddenThisSession()) {
+    banner.hidden = false;
+    scheduleAutoHide();
+  } else {
+    banner.hidden = true;
   }
 
+  // Do not hide the notice while a user is reading it or navigating by keyboard.
+  banner.addEventListener("mouseenter", clearAutoHide);
+  banner.addEventListener("focusin", clearAutoHide);
+  banner.addEventListener("mouseleave", () => {
+    if (!banner.contains(document.activeElement)) scheduleAutoHide();
+  });
+  banner.addEventListener("focusout", event => {
+    if (!banner.contains(event.relatedTarget) && !banner.matches(":hover")) scheduleAutoHide();
+  });
 
   if (updateButton) {
-
-    updateButton.addEventListener(
-      "click",
-      () => {
-
-        localStorage.removeItem(
-          "anyas_update_banner_dismissed"
-        );
-
-        window.location.reload();
-
-      }
-    );
-
+    updateButton.addEventListener("click", () => {
+      clearAutoHide();
+      localStorage.removeItem("anyas_update_banner_dismissed");
+      window.location.reload();
+    });
   }
-
 
   if (dismissButton) {
-
-    dismissButton.addEventListener(
-      "click",
-      () => {
-
-        localStorage.setItem(
-          "anyas_update_banner_dismissed",
-          currentVersion
-        );
-
-        banner.hidden = true;
-
-      }
-    );
-
+    dismissButton.addEventListener("click", () => {
+      clearAutoHide();
+      localStorage.setItem("anyas_update_banner_dismissed", currentVersion);
+      banner.hidden = true;
+    });
   }
-
 }
 
 

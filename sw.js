@@ -1,11 +1,9 @@
-const CACHE_NAME = "anyas-shell-v1.3.1-home-compact5";
+const CACHE_NAME = "anyas-shell-v1.3.2-mobile-ux";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./assets/anyas-app-icon.png",
-  "./assets/anyas-morning-background.webp",
-  "./assets/anyas-night-background.webp",
   "./assets/prayer-hero.jpg",
   "./css/style.css",
   "./css/home.css",
@@ -20,6 +18,7 @@ const CORE_ASSETS = [
   "./css/theme-white-gold.css?v=20261016-2",
   "./css/app-background.css?v=20261015-2",
   "./css/home-compact.css?v=20261016-5",
+  "./css/mobile-ux-foundation.css?v=20261016-1",
   "./css/palette-warm-gold.css?v=20261015-2",
   "./css/tasks-ux.css",
   "./css/tasks-structure.css",

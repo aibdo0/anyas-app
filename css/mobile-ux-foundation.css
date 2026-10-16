@@ -1,0 +1,66 @@
+/* Mobile interaction foundations for Anias: comfortable targets and safe-area clearance. */
+@media (max-width: 640px) {
+  .app {
+    padding-bottom: calc(var(--nav-height, 76px) + 18px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .bottom-nav {
+    bottom: max(10px, env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .app :is(button, [role="button"], summary, select),
+  .bottom-nav .nav-item,
+  .first-run-overlay :is(button, [role="button"]) {
+    min-width: 48px !important;
+    min-height: 48px !important;
+  }
+
+  .app input:not([type="checkbox"]):not([type="radio"]),
+  .app textarea {
+    min-height: 48px !important;
+  }
+
+  /* Keep the switch artwork compact while enlarging its clickable label area. */
+  .app label.switch {
+    display: inline-flex;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .app .muezzin-select {
+    min-height: 48px !important;
+  }
+
+  /* The update notice is temporary, but remains comfortably readable and tappable. */
+  #updateBanner.update-banner {
+    min-height: 56px !important;
+    padding: 8px 10px !important;
+    gap: 8px !important;
+  }
+
+  #updateBanner .update-banner-text {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+  }
+
+  #updateBanner.update-banner button {
+    min-width: 48px !important;
+    min-height: 48px !important;
+    padding: 8px 11px !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+  }
+
+  /* Match older, more-specific component rules to the same 48px touch floor. */
+  #page-home .daily-adhkar-button,
+  #page-home .daily-adhkar-card .btn,
+  #page-prayer-schedule .schedule-tab,
+  #page-prayer-schedule .schedule-row,
+  #page-prayer-report .report-range-tab,
+  .first-run-primary,
+  .first-run-secondary {
+    min-height: 48px !important;
+  }
+}

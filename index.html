@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta id="themeColorMeta" name="theme-color" content="#fbfaf7">
+<meta id="themeColorMeta" name="theme-color" content="#f7f5ef">
 <meta name="description" content="أنياس - رفيق يومي لمواقيت الصلاة والقرآن والأذكار">
 <link rel="manifest" href="manifest.webmanifest">
 <title>أنياس</title>
@@ -12,7 +12,6 @@
   (function () {
     var mode = "light";
     var locale = "ar";
-    var autoBackground = false;
     try {
       mode = localStorage.getItem("anyas_themeMode") || "";
       locale = localStorage.getItem("anyas_language") === "en" ? "en" : "ar";
@@ -63,6 +62,7 @@
 <link rel="stylesheet" href="css/palette-warm-gold.css?v=20261015-2">
 <link rel="stylesheet" href="css/app-background.css?v=20261015-2">
 <link rel="stylesheet" href="css/home-compact.css?v=20261016-5">
+<link rel="stylesheet" href="css/mobile-ux-foundation.css?v=20261016-1">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -2395,7 +2395,7 @@ type="button"
 <script src="js/qibla.js?v=20261008-1"></script>
 <script src="js/app-enhancements.js?v=20261013-3"></script>
 <script src="js/daily-devotions.js?v=20261003-1"></script>
-<script src="js/app.js?v=20261012-2"></script>
+<script src="js/app.js?v=20261016-1"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script src="js/home-compact.js?v=20261016-2"></script>
 <script src="js/home-ui-enhancements.js?v=20261016-1"></script>

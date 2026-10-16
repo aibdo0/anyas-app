@@ -1288,8 +1288,10 @@ function setupThemeAndLanguage() {
   const themeChoices = document.querySelectorAll('input[name="themeMode"]');
   const themeDescription = document.getElementById("themeModeDescription");
   const themeColorMeta = document.getElementById("themeColorMeta");
-  const timeBackgroundToggle = document.getElementById("timeBackgroundToggle");
-  const timeBackgroundDescription = document.getElementById("timeBackgroundDescription");
+  try {
+    localStorage.removeItem("anyas_autoBackground");
+    localStorage.removeItem("anyas_autoBackground_v2_migrated");
+  } catch (error) { /* obsolete preference; no action needed when storage is unavailable */ }
 
   const languageControls =
     document.querySelectorAll("#languageSelect, #aboutLanguageSelect");
@@ -1323,7 +1325,7 @@ function setupThemeAndLanguage() {
     if (themeToggleIcon) themeToggleIcon.textContent = isDark ? "☀" : "☾";
 
     if (themeColorMeta) {
-      themeColorMeta.setAttribute("content", isDark ? "#111216" : "#fbfaf7");
+      themeColorMeta.setAttribute("content", isDark ? "#191817" : "#f7f5ef");
     }
 
     themeChoices.forEach(choice => {
