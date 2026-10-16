@@ -321,10 +321,10 @@ function goToPage(pageId) {
       const target =
         nav.getAttribute("data-page");
 
-      nav.classList.toggle(
-        "active",
-        target === navPage
-      );
+      const isCurrentPage = target === navPage;
+      nav.classList.toggle("active", isCurrentPage);
+      if (isCurrentPage) nav.setAttribute("aria-current", "page");
+      else nav.removeAttribute("aria-current");
 
     });
 
