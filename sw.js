@@ -22,7 +22,7 @@ const CORE_ASSETS = [
   "./css/friday.css",
   "./css/notification-settings.css?v=20261014-1",
   "./css/more-page.css?v=20261016-1",
-  "./css/app-design-system.css",
+  "./css/app-design-system.css?v=20261016-1",
   "./css/first-run-onboarding.css",
   "./css/privacy.css",
   "./data/app-version.js?v=20261015-1",
