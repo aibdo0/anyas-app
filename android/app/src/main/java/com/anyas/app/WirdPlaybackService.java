@@ -215,7 +215,7 @@ public final class WirdPlaybackService extends Service {
             return;
         }
         itemIndex = nextIndex;
-        replayTotal = 1;
+        repeatTotal = 1;
         setCurrentMetadata();
         updateNotification();
         speakCurrent();
