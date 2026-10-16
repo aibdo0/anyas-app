@@ -62,7 +62,7 @@
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/palette-warm-gold.css?v=20261015-2">
 <link rel="stylesheet" href="css/app-background.css?v=20261015-2">
-<link rel="stylesheet" href="css/home-compact.css?v=20261016-2">
+<link rel="stylesheet" href="css/home-compact.css?v=20261016-3">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -145,8 +145,6 @@
 <span id="todayDate">اليوم</span>
 </div>
 
-<div class="home-prayer-progress" id="homePrayerProgressBadge" role="status" aria-live="polite" aria-label="الصلوات المسجّلة اليوم">الصلوات اليوم ٠/٥</div>
-
 </header>
 
 
@@ -172,8 +170,6 @@
 <div class="prayer-progress" aria-hidden="true">
 <div class="prayer-progress-bar" id="prayerProgressBar"></div>
 </div>
-
-<button class="home-record-prayer-button" id="homeRecordPrayerButton" data-track-prayer="Fajr" type="button" aria-label="تسجيل الصلاة القادمة" aria-pressed="false">تسجيل الصلاة</button>
 
 </section>
 
@@ -2398,7 +2394,7 @@ type="button"
 <script src="js/daily-devotions.js?v=20261003-1"></script>
 <script src="js/app.js?v=20261012-2"></script>
 <script src="js/about.js?v=20261002-2"></script>
-<script src="js/home-compact.js?v=20261016-1"></script>
+<script src="js/home-compact.js?v=20261016-2"></script>
 <script>
   if ("serviceWorker" in navigator && window.isSecureContext) {
     window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(error => console.info("Service Worker غير متاح:", error.message)));

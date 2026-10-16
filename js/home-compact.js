@@ -2,7 +2,6 @@
   "use strict";
 
   const byId = id => document.getElementById(id);
-  const trackedPrayerKeys = new Set(["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]);
 
   function isEnglish() {
     return document.documentElement.lang.toLowerCase().startsWith("en");
@@ -13,17 +12,12 @@
     const ayahTab = byId("homeAyahTab");
     const hadithTab = byId("homeHadithTab");
     const tabList = document.querySelector("#dailyContentCard [role='tablist']");
-    const recordButton = byId("homeRecordPrayerButton");
     const adhkarButton = byId("openDailyAdhkarButton");
 
     if (ayahTab) ayahTab.textContent = english ? "Verse today" : "آية اليوم";
     if (hadithTab) hadithTab.textContent = english ? "Hadith today" : "حديث اليوم";
     if (tabList) tabList.setAttribute("aria-label", english ? "Daily content" : "المحتوى اليومي");
 
-    if (recordButton) {
-      recordButton.textContent = english ? "Log prayer" : "تسجيل الصلاة";
-      recordButton.setAttribute("aria-label", english ? "Log this prayer" : "تسجيل الصلاة القادمة");
-    }
     if (adhkarButton) {
       const label = english ? "Open adhkar" : "افتح الأذكار";
       if (adhkarButton.textContent.trim() !== label) adhkarButton.textContent = label;
@@ -77,34 +71,6 @@
     activateTab("ayah");
   }
 
-  function updatePrayerCount() {
-    const badge = byId("homePrayerProgressBadge");
-    const tracker = byId("todayPrayerTracker");
-    if (!badge || !tracker) return;
-
-    const total = tracker.querySelectorAll(".prayer-track-item").length || 5;
-    const done = tracker.querySelectorAll(".prayer-track-item.completed").length;
-    const format = new Intl.NumberFormat(isEnglish() ? "en" : "ar");
-    const count = `${format.format(done)}/${format.format(total)}`;
-    badge.textContent = isEnglish() ? `Prayers today ${count}` : `الصلوات اليوم ${count}`;
-    badge.setAttribute("aria-label", isEnglish()
-      ? `${format.format(done)} of ${format.format(total)} prayers recorded today`
-      : `تم تسجيل ${format.format(done)} من ${format.format(total)} صلوات اليوم`);
-  }
-
-  function updateNextPrayerButton() {
-    const button = byId("homeRecordPrayerButton");
-    if (!button) return;
-
-    const row = document.querySelector("#prayerList .prayer-row.next[data-prayer]");
-    const prayer = row?.dataset.prayer || window.nextPrayer?.key || "Fajr";
-    const key = trackedPrayerKeys.has(prayer) ? prayer : "Fajr";
-    if (button.dataset.trackPrayer !== key) {
-      button.dataset.trackPrayer = key;
-      window.updatePrayerTrackingUI?.();
-    }
-  }
-
   function updateFridayVisibility() {
     const section = document.querySelector("#page-home .friday-feature-section");
     if (!section) return;
@@ -118,27 +84,7 @@
   function start() {
     updateLabels();
     setupDailyContentTabs();
-    updatePrayerCount();
-    updateNextPrayerButton();
     updateFridayVisibility();
-
-    const tracker = byId("todayPrayerTracker");
-    if (tracker) {
-      new MutationObserver(updatePrayerCount).observe(tracker, {
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["class"]
-      });
-    }
-
-    const prayerList = byId("prayerList");
-    if (prayerList) {
-      new MutationObserver(updateNextPrayerButton).observe(prayerList, {
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["class", "data-prayer"]
-      });
-    }
 
     const adhkarButton = byId("openDailyAdhkarButton");
     if (adhkarButton) {
@@ -157,8 +103,6 @@
     document.addEventListener("anyas:languagechange", updateLabels);
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) return;
-      updatePrayerCount();
-      updateNextPrayerButton();
       updateFridayVisibility();
     });
     window.setInterval(updateFridayVisibility, 60 * 1000);

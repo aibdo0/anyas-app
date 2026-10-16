@@ -55,34 +55,9 @@
   #page-home .notification-bell-icon { width: 17px !important; height: 17px !important; }
   #page-home #themeToggleIcon { width: 29px; height: 29px; font-size: 25px; }
 
-  #page-home .home-prayer-progress {
-    position: absolute;
-    inset-inline-start: auto;
-    inset-inline-end: auto;
-    left: 12px;
-    right: auto;
-    bottom: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 108px;
-    min-height: 22px;
-    padding: 3px 7px;
-    overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    color: var(--gold-dark);
-    background: var(--gold-pale);
-    font-size: 9px;
-    font-weight: 800;
-    line-height: 1.2;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
   #page-home .next-prayer {
     grid-template-columns: minmax(0, 1fr) auto !important;
-    grid-template-areas: "meta meta" "name name" "time countdown" "state state" "record record" "progress progress" !important;
+    grid-template-areas: "meta meta" "name name" "time countdown" "state state" "progress progress" !important;
     align-content: center;
     row-gap: 0 !important;
     min-height: 142px !important;
@@ -104,33 +79,14 @@
   #page-home .next-prayer .prayer-time { grid-area: time; align-self: center; font-size: 27px !important; line-height: 1 !important; }
   #page-home .countdown { align-self: center; justify-self: end; margin: 0 !important; font-size: 11px !important; line-height: 1.25 !important; }
   #page-home .next-prayer .prayer-state-note { grid-area: state; min-height: 0 !important; margin: 0 !important; font-size: 9px !important; line-height: 1.15 !important; }
-  #page-home .home-record-prayer-button {
-    grid-area: record;
-    justify-self: start;
-    min-height: 24px;
-    margin-top: 1px;
-    padding: 3px 8px;
-    border: 1px solid var(--gold-dark);
-    border-radius: 999px;
-    color: var(--gold-dark);
-    background: var(--gold-pale);
-    font: inherit;
-    font-size: 10px;
-    font-weight: 800;
-    line-height: 1.2;
-    cursor: pointer;
-  }
-  #page-home .home-record-prayer-button[aria-pressed="true"] {
-    box-shadow: inset 0 0 0 1px var(--gold);
-  }
-  #page-home .home-record-prayer-button:focus-visible,
   #page-home .home-compact-tab:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   #page-home .prayer-progress { grid-area: progress; width: 100%; height: 3px; margin: 4px 0 0 !important; }
 
   #page-home .daily-adhkar-section { margin-block: 8px !important; }
   #page-home .daily-adhkar-card {
     display: block !important;
-    min-height: 206px !important;
+    min-height: 0 !important;
+    height: auto !important;
     padding: 18px 18px 16px !important;
     border-radius: 24px !important;
     background-size: cover;
@@ -173,7 +129,8 @@
   #page-home .friday-feature-card {
     position: relative;
     display: block !important;
-    min-height: 184px;
+    min-height: 0;
+    height: auto;
     padding: 18px;
     border-radius: 22px;
   }
@@ -336,7 +293,6 @@
   }
   #page-home .home-brand { font-size: 20px !important; }
   #page-home .date-line { font-size: 8px !important; }
-  #page-home .home-prayer-progress { max-width: 104px; font-size: 8px; }
   #page-home .next-prayer { min-height: 139px !important; }
   #page-home .prayer-time { font-size: 27px !important; }
   #page-home .home-location-tools { gap: 5px; }
@@ -344,6 +300,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #page-home .home-record-prayer-button,
   #page-home .home-compact-tab { transition: none !important; }
 }
