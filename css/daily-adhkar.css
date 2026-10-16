@@ -36,9 +36,9 @@
 .daily-adhkar-card > * { position: relative; z-index: 1; }
 
 .daily-adhkar-card[data-adhkar-period="awakening"] {
-  border-color: #c7ddea;
-  background: linear-gradient(135deg, #f5fbff, #e8f3fa 80%);
-  box-shadow: 0 12px 28px rgba(87, 137, 167, 0.12);
+  border-color: #eadcc0;
+  background: linear-gradient(135deg, #fffdf6, #f4ead5 80%);
+  box-shadow: 0 12px 28px rgba(156, 119, 58, 0.10);
 }
 .daily-adhkar-card[data-adhkar-period="awakening"]::after {
   background: radial-gradient(circle at 12% 10%, #fff 0 7%, transparent 30%);
@@ -69,44 +69,44 @@
 }
 
 .daily-adhkar-card[data-adhkar-period="sleep"] {
-  border-color: #3e4a69;
-  color: #eef3ff;
-  background: linear-gradient(135deg, #1e2943, #101827 88%);
-  box-shadow: 0 14px 32px rgba(20, 30, 58, 0.25);
+  border-color: #755f37;
+  color: #f3ead7;
+  background: linear-gradient(135deg, #3d321f, #221d13 88%);
+  box-shadow: 0 14px 32px rgba(37, 27, 12, 0.28);
 }
 .daily-adhkar-card[data-adhkar-period="sleep"]::after {
   opacity: 0.32;
-  background: radial-gradient(circle at 82% 18%, #cad8ff 0 1px, transparent 2px), radial-gradient(circle at 64% 32%, #fff 0 1px, transparent 2px), radial-gradient(circle at 28% 20%, #a9baf0 0 1px, transparent 2px);
+  background: radial-gradient(circle at 82% 18%, #ead49c 0 1px, transparent 2px), radial-gradient(circle at 64% 32%, #fff 0 1px, transparent 2px), radial-gradient(circle at 28% 20%, #c9a75f 0 1px, transparent 2px);
   background-size: 73px 61px, 97px 83px, 131px 107px;
 }
 .daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-title,
-.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-text { color: #eef3ff; }
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-text { color: #f3ead7; }
 .daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-eyebrow,
-.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-hint { color: #b8c5e2; }
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-hint { color: #d9c797; }
 .daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-mark,
-.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-badge { color: #d9e3ff; border-color: #526185; background: rgba(71, 88, 133, 0.45); }
-.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-footer { border-color: rgba(200, 214, 255, 0.18); }
-.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-button { color: #172039; border-color: #d2ddff; background: #dce6ff; }
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-badge { color: #ead49c; border-color: #71603d; background: rgba(116, 93, 50, 0.4); }
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-footer { border-color: rgba(226, 202, 151, 0.2); }
+.daily-adhkar-card[data-adhkar-period="sleep"] .daily-adhkar-button { color: #302719; border-color: #ead49c; background: #e6cd8d; }
 
 .daily-adhkar-card[data-adhkar-period="sahar"] {
-  border-color: #394b75;
-  color: #eff4ff;
-  background: linear-gradient(145deg, #182544, #080f21 88%);
-  box-shadow: 0 14px 32px rgba(18, 30, 65, 0.28);
+  border-color: #6f5934;
+  color: #f3ead7;
+  background: linear-gradient(145deg, #352b1b, #1e1a12 88%);
+  box-shadow: 0 14px 32px rgba(30, 22, 10, 0.3);
 }
 .daily-adhkar-card[data-adhkar-period="sahar"]::after {
   opacity: 0.42;
-  background: radial-gradient(circle at 78% 23%, #fff 0 2px, transparent 3px), radial-gradient(circle at 25% 30%, #b6c9ff 0 1px, transparent 2px), radial-gradient(circle at 58% 12%, #fff 0 1px, transparent 2px), radial-gradient(circle at 43% 55%, #9bb2f5 0 1px, transparent 2px);
+  background: radial-gradient(circle at 78% 23%, #fff 0 2px, transparent 3px), radial-gradient(circle at 25% 30%, #e5cf98 0 1px, transparent 2px), radial-gradient(circle at 58% 12%, #fff 0 1px, transparent 2px), radial-gradient(circle at 43% 55%, #c7a45d 0 1px, transparent 2px);
   background-size: 107px 91px, 83px 73px, 137px 113px, 151px 127px;
 }
 .daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-title,
-.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-text { color: #eff4ff; }
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-text { color: #f3ead7; }
 .daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-eyebrow,
-.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-hint { color: #b9c8e8; }
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-hint { color: #d9c797; }
 .daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-mark,
-.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-badge { color: #dbe6ff; border-color: #526b9d; background: rgba(66, 89, 143, 0.38); }
-.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-footer { border-color: rgba(200, 214, 255, 0.18); }
-.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-button { color: #172039; border-color: #d2ddff; background: #dce6ff; }
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-badge { color: #ead49c; border-color: #71603d; background: rgba(116, 93, 50, 0.4); }
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-footer { border-color: rgba(226, 202, 151, 0.2); }
+.daily-adhkar-card[data-adhkar-period="sahar"] .daily-adhkar-button { color: #302719; border-color: #ead49c; background: #e6cd8d; }
 
 .daily-adhkar-card.is-transitioning { animation: adhkarPeriodIn 0.42s ease both; }
 @keyframes adhkarPeriodIn { from { opacity: .72; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
@@ -123,10 +123,10 @@
 .home-qibla-card .mosque-description { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; }
 .home-qibla-card:active { transform: scale(.985); }
 
-:root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) { border-color: #554932; background: linear-gradient(135deg, #2a2823, #1d1e23); box-shadow: 0 14px 32px rgba(0, 0, 0, .25); }
+:root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) { border-color: #665536; background: linear-gradient(135deg, #3a301f, #292318); box-shadow: 0 14px 32px rgba(0, 0, 0, .25); }
 :root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) .daily-adhkar-mark,
 :root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) .daily-adhkar-badge { border-color: #5b5039; color: #dec38c; background: rgba(55, 49, 37, .72); }
-:root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) .daily-adhkar-text { border-color: #b99b62; color: #d3c7b0; background: rgba(255, 255, 255, .035); }
+:root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) .daily-adhkar-text { border-color: #b99b62; color: #d3c7b0; background: rgba(185, 148, 67, .12); }
 :root[data-theme="dark"] .daily-adhkar-card:not([data-adhkar-period="sleep"]):not([data-adhkar-period="sahar"]) .daily-adhkar-footer { border-color: rgba(220, 195, 140, .18); }
 
 @media (max-width: 360px) {

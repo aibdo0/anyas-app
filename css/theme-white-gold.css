@@ -587,16 +587,16 @@ button.prayer-row:hover { border-color: #dccda9 !important; background: #fffdf9 
 /* لوحة ليلية كاملة — تستجيب للاختيار اليدوي أو إعداد الجهاز */
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --page: #111216;
-  --surface: #1b1c21;
-  --surface-soft: #24252b;
-  --ink: #f2efe8;
-  --muted: #b1ac9f;
+  --page: #211d15;
+  --surface: #2d281c;
+  --surface-soft: #383020;
+  --ink: #f4edd9;
+  --muted: #d1c5ad;
   --gold-dark: #dfc58e;
   --gold-light: #d3b877;
   --gold-pale: #302b22;
   --gold: #d4b36f;
-  --line: #383940;
+  --line: #524832;
   --shadow: 0 12px 32px rgba(0,0,0,.24);
   --background: var(--page);
   --card: var(--surface);
@@ -607,23 +607,23 @@ html[data-theme="dark"] { background: var(--page) !important; }
 :root[data-theme="dark"] body { color: var(--ink) !important; background: radial-gradient(ellipse at 90% 0%,rgba(133,106,58,.13),transparent 34rem),var(--page) !important; }
 :root[data-theme="dark"] body :is(.page,.section-title,.plain-header .brand,.home-brand,.next-label,.prayer-name,.prayer-time,.countdown,.prayer-title,.prayer-value,.daily-adhkar-title,.daily-adhkar-text,.daily-dua-text,.ayah,.dhikr,.hadith-text,.reference,.upcoming-text,.wird-item-text,.setting-title,.setting-description,.worship-setting-title,.worship-setting-description,.nearby-mosque-title,.traveler-text,.category-detail-title,.zikr-text,.learning-module-copy strong,.learning-points li) { color: var(--ink) !important; }
 :root[data-theme="dark"] body :is(.prayer-section,.prayer-row,.prayer-track-item,.task-item,.quick-action,.content-block,.upcoming-card,.dua-item,.category-card,.azkar-search input,.azkar-search-result,#azkarList,.zikr-card,.settings-card,.worship-card,.report-stat,.weekly-report-card,.qibla-card,.traveler-card,.nearby-mosque-card,.daily-dua.card,.daily-adhkar-card,.azkar-priority-section,.azkar-favorite-card,.wird-summary-card,.wird-section,.wird-item,.learning-module,.daily-prayer-card,.learning-intro,.tasbeeh-fallback-card) { color: var(--ink) !important; border-color: var(--line) !important; background: var(--surface) !important; box-shadow: var(--shadow); }
-:root[data-theme="dark"] body :is(.content-block:first-child,.daily-adhkar-card,.daily-dua.card,.learning-intro,.more-menu-item) { background: linear-gradient(135deg,#242329,#1b1c21 78%) !important; }
+:root[data-theme="dark"] body :is(.content-block:first-child,.daily-adhkar-card,.daily-dua.card,.learning-intro,.more-menu-item) { background: linear-gradient(135deg,#393020,#2d281c 78%) !important; }
 :root[data-theme="dark"] body :is(.prayer-day-summary,.prayer-track-item,.report-range-tabs,.azkar-favorites-empty,.azkar-period-card,.wird-item.is-complete,.worship-countdown,.task-check,.nav-icon::before,.theme-mode-picker) { color: var(--ink) !important; border-color: var(--line) !important; background: var(--surface-soft) !important; }
 :root[data-theme="dark"] body .prayer-track-item.completed { border-color: #806b43 !important; background: #302b22 !important; }
 :root[data-theme="dark"] body .prayer-track-item.completed .track-status { color: #dfc58e !important; }
 :root[data-theme="dark"] body :is(.more-menu-item,.more-menu-icon,.more-menu-arrow,.more-group > h2,.more-menu-copy strong,.more-menu-copy small,.learning-module-copy strong,.learning-module-copy small,.learning-module-status,.learning-module-chevron,.learning-intro-copy h2,.learning-intro-copy p,.learning-note,.learning-progress-badge,.learning-points li,.learning-module-note,.learning-reference-list li,.daily-prayer-heading h2,.wird-section-toggle,.wird-section-meta,.wird-item-status,.daily-adhkar-hint,.daily-adhkar-title,.daily-adhkar-text,.daily-adhkar-eyebrow,.daily-adhkar-badge,.daily-adhkar-mark,.azkar-priority-heading h2,.azkar-favorite-title,.azkar-favorite-text,.azkar-period-label,.azkar-period-time,.zikr-count,.more-button,.settings-arrow,.select-control,.preview-button,.back-button) { color: var(--ink) !important; }
-:root[data-theme="dark"] body .next-prayer { color: var(--ink) !important; border-color: var(--line) !important; background: linear-gradient(135deg,#29251e,#1b1c21 85%) !important; box-shadow: var(--shadow) !important; }
+:root[data-theme="dark"] body .next-prayer { color: var(--ink) !important; border-color: var(--line) !important; background: linear-gradient(135deg,#393020,#2d281c 85%) !important; box-shadow: var(--shadow) !important; }
 :root[data-theme="dark"] body :is(.location-line,.daily-adhkar-badge,.daily-adhkar-mark,.azkar-priority-heading > span,.more-menu-icon,.theme-mode-option input:checked + span,.learning-module-number,.learning-progress-badge) { color: var(--gold-dark) !important; border-color: var(--line) !important; background: var(--gold-pale) !important; }
-:root[data-theme="dark"] body :is(.prayer-progress,.prayer-progress-track,.wird-progress-track) { background: #35353b !important; }
+:root[data-theme="dark"] body :is(.prayer-progress,.prayer-progress-track,.wird-progress-track) { background: #463b27 !important; }
 :root[data-theme="dark"] body :is(.prayer-progress-bar,#wirdProgressBar,#todayPrayerProgressBar) { background: linear-gradient(90deg,#e0c98f,#a9874d) !important; }
 :root[data-theme="dark"] body .nav-item { color: #b5b1a8 !important; }
 :root[data-theme="dark"] body .nav-item.active { color: var(--gold-dark) !important; border-color: #514632 !important; background: #302b22 !important; }
 :root[data-theme="dark"] body .nav-icon::before { color: var(--gold-dark) !important; background: #2a2823 !important; }
-:root[data-theme="dark"] body .bottom-nav { border-color: var(--line) !important; background: rgba(25,26,31,.96) !important; box-shadow: 0 12px 34px rgba(0,0,0,.4) !important; }
+:root[data-theme="dark"] body .bottom-nav { border-color: var(--line) !important; background: rgba(46,40,28,.96) !important; box-shadow: 0 12px 34px rgba(0,0,0,.4) !important; }
 :root[data-theme="dark"] body :is(.select-control,.preview-button,.theme-mode-option input:checked + span,.tasbeeh-reset,.tasbeeh-close) { color: var(--ink) !important; border-color: var(--line) !important; background: var(--surface-soft) !important; }
 :root[data-theme="dark"] body :is(.wird-complete-button,.learning-complete-button,.daily-adhkar-button,.qibla-start-button,.adhan-button,.tasbeeh-button,.zikr-button) { color: #1b1a17 !important; border-color: #d6bd85 !important; background: #d6bd85 !important; }
 :root[data-theme="dark"] body .wird-item.is-complete .wird-complete-button, :root[data-theme="dark"] body .learning-complete-button[aria-pressed="true"] { color: #171613 !important; background: #d6bd85 !important; }
-:root[data-theme="dark"] body .tasbeeh-fallback-card { background: #1b1c21 !important; }
+:root[data-theme="dark"] body .tasbeeh-fallback-card { background: #2d281c !important; }
 :root[data-theme="dark"] body .tasbeeh-count { color: var(--gold-dark) !important; border-color: var(--line) !important; background: var(--surface-soft) !important; }
 :root[data-theme="dark"] body .update-banner { color: var(--ink); border-color: var(--line); background: var(--surface); }
 :root[data-theme="dark"] body :is(.daily-adhkar-footer,.setting-row,.worship-setting,.learning-module,.learning-points li,.daily-prayer-card) { border-color: var(--line) !important; }
@@ -641,10 +641,10 @@ html[data-theme="dark"] { background: var(--page) !important; }
 :root[data-theme="dark"] body #page-traveler-prayer .card { border-color: var(--line) !important; color: var(--ink) !important; background: var(--surface) !important; }
 :root[data-theme="dark"] body #page-settings .select-control { color: var(--ink) !important; border-color: var(--line) !important; background: var(--surface-soft) !important; }
 :root[data-theme="dark"] body .more-button { color: var(--gold-dark) !important; border-color: var(--line) !important; background: var(--gold-pale) !important; }
-:root[data-theme="dark"] body #page-more .more-menu-item { border-color: var(--line) !important; color: var(--ink) !important; background: linear-gradient(135deg,#242329,#1b1c21 82%) !important; }
+:root[data-theme="dark"] body #page-more .more-menu-item { border-color: var(--line) !important; color: var(--ink) !important; background: linear-gradient(135deg,#393020,#2d281c 82%) !important; }
 :root[data-theme="dark"] body #page-more .more-menu-item .more-menu-copy strong { color: var(--ink) !important; }
 :root[data-theme="dark"] body #page-more .more-menu-item .more-menu-copy small { color: var(--muted) !important; }
-:root[data-theme="dark"] body #page-learning .learning-intro { border-color: var(--line) !important; background: linear-gradient(135deg,#29262a,#1b1c21 82%) !important; }
+:root[data-theme="dark"] body #page-learning .learning-intro { border-color: var(--line) !important; background: linear-gradient(135deg,#393020,#2d281c 82%) !important; }
 :root[data-theme="dark"] body #page-learning .learning-module { border-color: var(--line) !important; background: var(--surface) !important; }
 :root[data-theme="dark"] body #page-learning .learning-points li { border-color: var(--gold-dark) !important; color: var(--ink) !important; background: var(--surface-soft) !important; }
 
@@ -970,8 +970,8 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .bottom-nav .nav-item:nth-child(5) .nav-icon::before { content: "⋯"; }
 .bottom-nav .nav-item:not(.active) .nav-icon::before { color: #8c744b !important; background: #faf8f3 !important; }
 .bottom-nav .nav-item.active .nav-icon::before { color: #6b5836 !important; background: #f1eadb !important; }
-.bottom-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; width: min(calc(100% - 20px), 680px); min-height: 82px; padding: 9px 12px 10px; border: 1px solid #3b3c3d; border-radius: 30px 30px 24px 24px; background: #292a2b; box-shadow: 0 16px 36px rgba(25,23,19,.28); backdrop-filter: none; -webkit-backdrop-filter: none; }
-.bottom-nav::before { content: ""; position: absolute; top: 8px; left: 50%; width: 74px; height: 5px; border-radius: 99px; background: #666361; transform: translateX(-50%); opacity: .85; }
+.bottom-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; width: min(calc(100% - 20px), 680px); min-height: 82px; padding: 9px 12px 10px; border: 1px solid #b99a56; border-radius: 30px 30px 24px 24px; background: linear-gradient(135deg,#ead69d,#d5b76f); box-shadow: 0 16px 36px rgba(25,23,19,.28); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.bottom-nav::before { content: ""; position: absolute; top: 8px; left: 50%; width: 74px; height: 5px; border-radius: 99px; background: #a4833f; transform: translateX(-50%); opacity: .85; }
 .bottom-nav .nav-item { min-height: 61px; margin-top: 7px; border-radius: 16px; color: #c5a66a !important; background: transparent !important; }
 .bottom-nav .nav-item.active { color: #e0bf74 !important; background: #3a3428 !important; }
 .bottom-nav .nav-item .nav-icon::before, .bottom-nav .nav-item:not(.active) .nav-icon::before, .bottom-nav .nav-item.active .nav-icon::before { width: 46px; height: 46px; color: currentColor !important; background: transparent !important; font-size: 28px; font-weight: 400; }
@@ -985,7 +985,7 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .bottom-nav .nav-item:nth-child(4) .nav-icon::before { content: "ذ"; }
 .bottom-nav .nav-item:nth-child(5) .nav-icon::before { content: "⋯"; }
 .bottom-nav .nav-item.active .nav-icon::before { color: #b28b43 !important; }
-:root[data-theme="dark"] .bottom-nav { border-color: #3d3d42 !important; background: #292a2d !important; }
+:root[data-theme="dark"] .bottom-nav { border-color: #6d5932 !important; background: linear-gradient(135deg,#342d1e,#292318) !important; }
 :root[data-theme="dark"] .bottom-nav .nav-item { color: #d5b875 !important; }
 :root[data-theme="dark"] .bottom-nav .nav-item.active { color: #e5c57f !important; background: #403828 !important; }
 :root[data-theme="dark"] .city-picker-card, :root[data-theme="dark"] .schedule-card, :root[data-theme="dark"] .notification-preview { background: var(--surface) !important; }
@@ -1092,3 +1092,73 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 .offline-capabilities-list { display: grid; gap: 3px; margin: 0; padding-inline-start: 18px; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .offline-retry-button { justify-self: start; padding: 7px 10px; font-size: 11px; }
 .offline-retry-button:disabled { opacity: .55; cursor: wait; }
+
+
+/* هوية زيتوني/ذهبي دافئة: فصل واضح بين الفاتح والداكن دون رماديات أو كحلي */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #211d15;
+  --surface: #2d281c;
+  --surface-soft: #3a3322;
+  --ink: #f4edd9;
+  --muted: #c7b895;
+  --gold-dark: #e5c986;
+  --gold-light: #d7b873;
+  --gold-pale: #403821;
+  --gold: #d8b96e;
+  --line: #625135;
+  --shadow: 0 12px 32px rgba(10, 8, 4, .34);
+}
+:root[data-theme="dark"] body {
+  color: var(--ink) !important;
+  background: radial-gradient(ellipse at 90% 0%, rgba(164, 124, 53, .14), transparent 34rem), var(--page) !important;
+}
+:root[data-theme="dark"] body :is(.content-block:first-child,.daily-adhkar-card,.daily-dua.card,.learning-intro,.more-menu-item) {
+  background: linear-gradient(135deg, #3a3020, #2d281c 78%) !important;
+}
+:root[data-theme="dark"] body :is(.prayer-progress,.prayer-progress-track,.wird-progress-track) { background: #463b27 !important; }
+:root[data-theme="dark"] body .tasbeeh-fallback-card { background: var(--surface) !important; }
+:root[data-theme="dark"] body #page-more .more-menu-item { background: linear-gradient(135deg, #393020, #2d281c 82%) !important; }
+:root[data-theme="dark"] body #page-learning .learning-intro { background: linear-gradient(135deg, #393020, #2d281c 82%) !important; }
+:root[data-theme="dark"] .sunnah-total,
+:root[data-theme="dark"] .qibla-status,
+:root[data-theme="dark"] .qibla-calibration { border-color: #5b4c32 !important; background: var(--surface-soft) !important; }
+:root[data-theme="dark"] .qibla-calibration summary::after { border-color: #625135; background: var(--surface); }
+:root[data-theme="dark"] .tasbeeh-reset-button,
+:root[data-theme="dark"] .manual-prayer-card button:not(#saveManualPrayerSettings) { border-color: #625135; background: #352e20; }
+:root[data-theme="dark"] .manual-prayer-card input[type=number] { border-color: #625135; background: #292419; }
+:root[data-theme="dark"] .compass-ring { border-color: #75613a; box-shadow: inset 0 0 0 9px var(--surface), inset 0 0 0 10px #493d28, 0 0 0 1px #493d28, 0 12px 28px rgba(0,0,0,.23); }
+
+/* تنقل ذهبي في الفاتح، وداكن زيتوني بإشارات ذهبية في الداكن */
+.bottom-nav {
+  border-color: #b99a56 !important;
+  background: linear-gradient(135deg, #ead69d, #d5b76f) !important;
+  box-shadow: 0 14px 34px rgba(91, 69, 28, .2) !important;
+}
+.bottom-nav::before { background: #a4833f !important; }
+.bottom-nav .nav-item { color: #4b3b1e !important; }
+.bottom-nav .nav-item .nav-icon { color: #4b3b1e !important; }
+.bottom-nav .nav-item.active,
+.bottom-nav .nav-item.active .nav-icon { color: #392c16 !important; background: rgba(255, 248, 226, .82) !important; }
+:root[data-theme="dark"] body .bottom-nav {
+  border-color: #6d5932 !important;
+  background: linear-gradient(135deg, #342d1e, #292318) !important;
+  box-shadow: 0 14px 34px rgba(0,0,0,.38) !important;
+}
+:root[data-theme="dark"] body .bottom-nav::before { background: #927641 !important; }
+:root[data-theme="dark"] body .bottom-nav .nav-item,
+:root[data-theme="dark"] body .bottom-nav .nav-item .nav-icon { color: #e3c982 !important; background: transparent !important; }
+:root[data-theme="dark"] body .bottom-nav .nav-item.active,
+:root[data-theme="dark"] body .bottom-nav .nav-item.active .nav-icon { color: #f3dfaa !important; background: #4a3a20 !important; }
+
+/* تبقى بطاقات القرآن والحديث بلون عاجي هادئ للقراءة في كلا الوضعين */
+:root[data-theme="dark"] #page-home #dailyContentCard,
+:root[data-theme="dark"] #page-home #dailyContentCard .content-block {
+  border-color: #eadcc0 !important;
+  color: #382f20 !important;
+  background: #fffaf0 !important;
+  box-shadow: 0 8px 22px rgba(25, 19, 10, .16) !important;
+}
+:root[data-theme="dark"] #page-home #dailyContentCard .card-title { color: #73582d !important; }
+:root[data-theme="dark"] #page-home #dailyContentCard :is(.ayah,.hadith-text) { color: #30291e !important; }
+:root[data-theme="dark"] #page-home #dailyContentCard .reference { color: #80663d !important; }

@@ -177,3 +177,14 @@ html[lang="en"] #page-more .more-menu-arrow svg { transform: rotate(180deg); }
   color: rgba(255, 255, 255, .82) !important;
   text-shadow: 0 1px 4px rgba(0, 0, 0, .38);
 }
+
+
+/* لمسات زيتونية/ذهبية موحّدة لأيقونات «المزيد» في الوضعين */
+.more-menu-icon--worship { color: #687144; border-color: #e1e4ce !important; background: #f0f1e3; }
+.more-menu-icon--mosque,
+.more-menu-icon--settings,
+.more-menu-icon--qibla { color: #79643b; border-color: #e8dfc6 !important; background: #f4eedb; }
+:root[data-theme="dark"] body #page-more .more-menu-icon--worship { color: #d0d7a1 !important; border-color: #4a4d32 !important; background: #353924 !important; }
+:root[data-theme="dark"] body #page-more .more-menu-icon--mosque,
+:root[data-theme="dark"] body #page-more .more-menu-icon--settings { color: #e4c987 !important; border-color: #514631 !important; background: #383020 !important; }
+:root[data-theme="dark"] body #page-more .more-menu-icon--qibla { color: #d0d7a1 !important; border-color: #46503c !important; background: #2f382a !important; }

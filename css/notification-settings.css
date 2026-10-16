@@ -99,9 +99,9 @@
 #page-settings .notification-settings-group-content .setting-row:last-of-type { border-bottom: 0; }
 #page-settings .notification-settings-summary:focus-visible { outline: 3px solid rgba(196, 154, 85, .7); outline-offset: -3px; }
 :root[data-theme="dark"] #page-settings .notification-settings-group { box-shadow: none; }
-:root[data-theme="dark"] #page-settings [data-notification-settings-group="extra"] .notification-settings-icon { color: #d0c5eb; border-color: #484354; background: #312d3a; }
-:root[data-theme="dark"] #page-settings [data-notification-settings-group="adhkar"] .notification-settings-icon { color: #b4d7bd; border-color: #3c5142; background: #2b382f; }
-:root[data-theme="dark"] #page-settings [data-notification-settings-group="friday"] .notification-settings-icon { color: #e2ca91; border-color: #514735; background: #393326; }
+:root[data-theme="dark"] #page-settings [data-notification-settings-group="extra"] .notification-settings-icon { color: #e4c987; border-color: #514631; background: #383020; }
+:root[data-theme="dark"] #page-settings [data-notification-settings-group="adhkar"] .notification-settings-icon { color: #d0d7a1; border-color: #4a4d32; background: #353924; }
+:root[data-theme="dark"] #page-settings [data-notification-settings-group="friday"] .notification-settings-icon { color: #e4c987; border-color: #514631; background: #383020; }
 html[lang="en"] #page-settings .notification-settings-copy { text-align: left; }
 @media (max-width: 390px) {
   #page-settings .notification-readiness { align-items: stretch; flex-direction: column; }

@@ -38,7 +38,7 @@
 <link rel="stylesheet" href="css/home.css?v=20260927-2">
 <link rel="stylesheet" href="css/prayer.css?v=20260927-2">
 <link rel="stylesheet" href="css/azkar.css?v=20261003-1">
-<link rel="stylesheet" href="css/daily-adhkar.css?v=20261003-1">
+<link rel="stylesheet" href="css/daily-adhkar.css?v=20261016-2">
 <link rel="stylesheet" href="css/settings.css?v=20261003-3">
 <link rel="stylesheet" href="css/audio-library.css?v=20261007-1">
 
@@ -46,14 +46,14 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261010-2">
-<link rel="stylesheet" href="css/home-hero-polish.css?v=20261016-1">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261016-2">
+<link rel="stylesheet" href="css/home-hero-polish.css?v=20261016-4">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20261003-1">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
 <link rel="stylesheet" href="css/friday.css?v=20261003-2">
-<link rel="stylesheet" href="css/notification-settings.css?v=20261007-1">
-<link rel="stylesheet" href="css/more-page.css?v=20261007-2">
+<link rel="stylesheet" href="css/notification-settings.css?v=20261016-1">
+<link rel="stylesheet" href="css/more-page.css?v=20261016-1">
 <link rel="stylesheet" href="css/app-design-system.css?v=20261007-2">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
@@ -239,11 +239,14 @@
 <p class="prayer-data-status" id="prayerDataStatus" aria-live="polite">جارٍ تجهيز المواقيت…</p>
 <section class="offline-status-card" id="offlineStatusCard" aria-labelledby="offlineStatusHeading">
   <div class="offline-status-heading"><strong id="offlineStatusHeading">حالة الاتصال</strong><span id="offlineConnectionStatus" role="status" aria-live="polite">جارٍ التحقق…</span></div>
-  <ul class="offline-capabilities-list">
-    <li>مواقيت الصلاة المحسوبة محليًا</li>
-    <li>القبلة والأذكار والمسبحة</li>
-    <li>المدينة والإعدادات والنسخ الاحتياطية</li>
-  </ul>
+  <details class="offline-details">
+    <summary>إمكانيات العمل دون اتصال</summary>
+    <ul class="offline-capabilities-list">
+      <li>مواقيت الصلاة المحسوبة محليًا</li>
+      <li>القبلة والأذكار والمسبحة</li>
+      <li>المدينة والإعدادات والنسخ الاحتياطية</li>
+    </ul>
+  </details>
   <button class="secondary-action offline-retry-button" id="retryOfflineDataButton" type="button">إعادة تحديث المواقيت</button>
 </section>
 </section>
@@ -264,13 +267,10 @@
 </div>
 </section>
 
-<section class="section">
+<section class="section home-shortcuts" aria-label="اختصارات الموقع والقبلة">
   <button class="nearby-mosque-card" id="nearbyMosqueButton" type="button">
     <span class="nearby-mosque-title">أقرب مسجد</span>
   </button>
-</section>
-
-<section class="section">
   <button class="nearby-mosque-card home-qibla-card" id="openQiblaButton" type="button">
     <span class="mosque-icon" aria-hidden="true">⌖</span>
     <span class="mosque-info"><strong class="mosque-title">اتجاه القبلة</strong><small class="mosque-description">افتح البوصلة لتحديد الاتجاه</small></span>
