@@ -94,8 +94,10 @@ check("PWA install and offline shell are configured", () => {
   assert.match(serviceWorker, /self\.addEventListener\("fetch"/);
   assert.match(serviceWorker, /caches\.match\("\.\/index\.html"\)/);
   assert.match(index, /id="pwaStatusBanner"/);
-  assert.match(index, /beforeinstallprompt/);
-  assert.match(index, /addEventListener\("offline"/);
+  assert.match(index, /id="pwaStatusDismissButton"/);
+  const homeUi = read("js/home-ui-enhancements.js");
+  assert.match(homeUi, /beforeinstallprompt/);
+  assert.match(homeUi, /addEventListener\("offline"/);
 });
 
 check("optional backgrounds follow morning, evening, and sleep periods", () => {
@@ -504,11 +506,14 @@ check("Android prayer widget shows the next prayer and refreshes", () => {
   assert.match(read("js/settings.js"), /city: document\.getElementById\("prayerHeroCity"\)/);
 });
 
-check("compact home omits the extra prayer counter and logging button while preserving tracking and accessible daily tabs", () => {
-  assert.match(index, /href="css\/home-compact\.css\?v=20261016-4"/);
+check("mobile pages keep full cards, touch targets, and accessible page enhancements", () => {
+  assert.match(index, /href="css\/home-compact\.css\?v=20261016-5"/);
   assert.match(index, /src="js\/home-compact\.js\?v=20261016-2"/);
+  assert.match(index, /src="js\/home-ui-enhancements\.js\?v=20261016-1"/);
   assert.ok(index.indexOf("css/home-compact.css") > index.indexOf("css/app-background.css"));
-  assert.doesNotMatch(index, /homePrayerProgressBadge|homeRecordPrayerButton|تسجيل الصلاة/);
+  assert.match(index, /id="homePrayerProgressBadge"/);
+  assert.match(index, /id="pwaStatusDismissButton"[^>]*aria-label="إغلاق إشعار أنياس"/);
+  assert.doesNotMatch(index, /homeRecordPrayerButton|تسجيل الصلاة/);
   assert.match(index, /role="tablist" aria-label="المحتوى اليومي"/);
   assert.match(index, /id="dailyAyahBlock" role="tabpanel"/);
   assert.match(index, /id="dailyHadithBlock" role="tabpanel"/);
@@ -522,12 +527,22 @@ check("compact home omits the extra prayer counter and logging button while pres
   assert.match(homeCompact, /getFridayState/);
   assert.match(homeCompactCss, /grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(homeCompactCss, /data-home-compact-friday="false"/);
-  assert.match(homeCompactCss, /daily-adhkar-card\s*\{[^}]*height:\s*142px !important/);
-  assert.match(homeCompactCss, /friday-feature-card\s*\{[^}]*height:\s*142px/);
-  assert.match(homeCompactCss, /\.next-prayer\s*\{[^}]*height:\s*142px !important/);
+  assert.match(homeCompactCss, /daily-adhkar-card\s*\{[^}]*height:\s*auto !important/);
+  assert.match(homeCompactCss, /friday-feature-card\s*\{[^}]*height:\s*auto !important/);
+  assert.match(homeCompactCss, /grid-template-areas:\s*"meta meta" "name name" "countdown countdown" "time time" "progress progress"/);
   assert.match(homeCompactCss, /\.next-prayer\s*\{[^}]*width:\s*100%/);
-  assert.match(serviceWorker, /home-compact\.css\?v=20261016-4/);
+  assert.match(homeCompactCss, /\.page button \{ min-height: 48px !important/);
+  assert.match(homeCompactCss, /#page-azkar \.azkar-search\s*\{[^}]*position: sticky/);
+  assert.ok(index.indexOf('id="dailyOverviewFocus"') < index.indexOf('class="wird-summary-card"'));
+  assert.equal((index.match(/class="wird-summary-card"/g) || []).length, 1);
+  assert.match(index, /class="sunnah-heading-toggle"[^>]*aria-expanded="true"/);
+  const enhancements = read("js/home-ui-enhancements.js");
+  assert.match(enhancements, /localStorage\.setItem\(BANNER_DISMISS_KEY, "true"\)/);
+  assert.match(enhancements, /new Date\(\)\.getDay\(\) === 5/);
+  assert.match(enhancements, /aria-expanded/);
+  assert.match(serviceWorker, /home-compact\.css\?v=20261016-5/);
   assert.match(serviceWorker, /home-compact\.js\?v=20261016-2/);
+  assert.match(serviceWorker, /home-ui-enhancements\.js\?v=20261016-1/);
 });
 
 console.log(`Smoke tests passed: ${passed.length}`);

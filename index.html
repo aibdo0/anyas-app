@@ -62,7 +62,7 @@
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/palette-warm-gold.css?v=20261015-2">
 <link rel="stylesheet" href="css/app-background.css?v=20261015-2">
-<link rel="stylesheet" href="css/home-compact.css?v=20261016-4">
+<link rel="stylesheet" href="css/home-compact.css?v=20261016-5">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -70,6 +70,7 @@
 <div class="pwa-status-banner" id="pwaStatusBanner" role="status" aria-live="polite" hidden>
   <span id="pwaStatusText">أنت تعمل دون اتصال؛ المحتوى المحفوظ ما زال متاحًا.</span>
   <button id="pwaInstallButton" type="button" hidden>تثبيت أنياس</button>
+  <button id="pwaStatusDismissButton" class="pwa-status-dismiss" type="button" aria-label="إغلاق إشعار أنياس">×</button>
 </div>
 <div class="first-run-overlay" id="firstRunOverlay" hidden>
   <section class="first-run-card" role="dialog" aria-modal="true" aria-labelledby="firstRunTitle" tabindex="-1">
@@ -126,7 +127,7 @@
 
 <div class="home-greeting" id="homeGreeting">السلام عليكم يا أخي المسلم</div>
 
-<div class="home-brand">أنياس</div>
+<div class="home-brand">أنياس <span class="home-prayer-progress" id="homePrayerProgressBadge" aria-live="polite" aria-label="الصلوات اليوم ٠ من ٥">الصلوات اليوم ٠/٥</span></div>
 
 <button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
   <span id="themeToggleIcon" aria-hidden="true">☾</span>
@@ -374,6 +375,11 @@
     <div><strong id="dailyOverviewSunnahCount">٠/٨</strong><span>السنن</span></div>
   </div>
   <div class="daily-overview-focus" id="dailyOverviewFocus">وردك المناسب لوقتك سيظهر هنا</div>
+  <section class="wird-summary-card" aria-live="polite">
+    <div class="wird-summary-heading">متابعتك اليوم</div>
+    <div id="wirdProgressText">0 من 0 ذكرًا مكتملًا اليوم</div>
+    <div class="wird-progress-track"><div id="wirdProgressBar" role="progressbar" aria-label="إنجاز الورد اليومي" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
+  </section>
 </section>
 
 <section class="tasks-section-group" aria-labelledby="tasksPrayersHeading">
@@ -427,11 +433,6 @@
   <div class="tasks-tasbeeh-progress" aria-hidden="true"><span id="tasksTasbeehProgress"></span></div>
   <button class="tasks-tasbeeh-button" id="tasksTasbeehIncrement" type="button">سبّح الآن <span aria-hidden="true">+</span></button>
 </section>
-<section class="wird-summary-card" aria-live="polite">
-  <div class="wird-summary-heading">متابعتك اليوم</div>
-  <div id="wirdProgressText">0 من 0 ذكرًا مكتملًا اليوم</div>
-  <div class="wird-progress-track"><div id="wirdProgressBar" role="progressbar" aria-label="إنجاز الورد اليومي" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
-</section>
 <section class="wird-section" id="wird-section-morning">
   <button class="wird-section-toggle" type="button" data-wird-toggle="morning" aria-expanded="false">
     <span>أذكار الصباح</span><span class="wird-section-meta" data-wird-count="morning"></span><span aria-hidden="true">+</span>
@@ -463,7 +464,7 @@
 <section class="devotion-section sunnah-section" aria-labelledby="sunnahTrackerHeading">
   <div class="devotion-section-heading">
     <div>
-      <h2 id="sunnahTrackerHeading">السنن والنوافل</h2>
+      <h2 id="sunnahTrackerHeading"><button class="sunnah-heading-toggle" type="button" aria-expanded="true" aria-controls="sunnahChecklist sunnahVirtue">السنن والنوافل</button></h2>
       <p>متابعة اختيارية؛ الفرائض أولًا</p>
     </div>
     <span class="sunnah-total" id="sunnahProgressText">٠ / ٤</span>
@@ -514,12 +515,27 @@
   </div>
 </section>
 
+<div class="azkar-search" role="search">
+<input
+  id="azkarSearchInput"
+  type="search"
+  placeholder="ابحث في الأذكار أو عناوين الأبواب"
+  aria-label="ابحث في الأذكار أو عناوين الأبواب"
+  autocomplete="off"
+>
+<button id="azkarSearchClear" type="button" aria-label="مسح البحث" hidden>مسح</button>
+</div>
+<div id="azkarSearchStatus" class="visually-hidden" aria-live="polite"></div>
+<div id="azkarSearchResults" class="azkar-search-results" hidden></div>
+
 <section class="azkar-priority-section" aria-label="المفضلة وأذكار اليوم">
-  <div class="azkar-priority-heading">
-    <h2>مفضلتي</h2>
-    <span id="favoritesCount">0</span>
+  <div class="azkar-favorites-panel">
+    <div class="azkar-priority-heading">
+      <h2>مفضلتي</h2>
+      <span id="favoritesCount">0</span>
+    </div>
+    <div id="azkarFavorites" class="azkar-favorites" aria-live="polite"></div>
   </div>
-  <div id="azkarFavorites" class="azkar-favorites" aria-live="polite"></div>
   <div class="azkar-period-shortcuts">
     <button type="button" class="azkar-period-card" data-open-wird="morning">
       <span class="azkar-period-label">أذكار الصباح</span>
@@ -558,19 +574,6 @@
   <div class="wird-playlist-saved" id="wirdPlaylistSaved"></div>
   <p class="wird-playlist-status" id="wirdPlaylistStatus" role="status" aria-live="polite"></p>
 </details>
-
-<div class="azkar-search" role="search">
-<input
-  id="azkarSearchInput"
-  type="search"
-  placeholder="ابحث في الأذكار أو عناوين الأبواب"
-  aria-label="ابحث في الأذكار أو عناوين الأبواب"
-  autocomplete="off"
->
-<button id="azkarSearchClear" type="button" aria-label="مسح البحث" hidden>مسح</button>
-</div>
-<div id="azkarSearchStatus" class="visually-hidden" aria-live="polite"></div>
-<div id="azkarSearchResults" class="azkar-search-results" hidden></div>
 
 <section class="section">
 
@@ -2395,45 +2398,11 @@ type="button"
 <script src="js/app.js?v=20261012-2"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script src="js/home-compact.js?v=20261016-2"></script>
+<script src="js/home-ui-enhancements.js?v=20261016-1"></script>
 <script>
   if ("serviceWorker" in navigator && window.isSecureContext) {
     window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(error => console.info("Service Worker غير متاح:", error.message)));
   }
-  (() => {
-    const banner = document.getElementById("pwaStatusBanner");
-    const status = document.getElementById("pwaStatusText");
-    const installButton = document.getElementById("pwaInstallButton");
-    let installPrompt = null;
-    const standalone = () => window.matchMedia?.("(display-mode: standalone)").matches || window.navigator.standalone === true;
-    const refreshConnection = () => {
-      if (!banner || !status) return;
-      if (!navigator.onLine) {
-        status.textContent = "أنت تعمل دون اتصال؛ المحتوى المحفوظ ما زال متاحًا.";
-        banner.hidden = false;
-      } else if (!installPrompt) {
-        banner.hidden = true;
-      }
-    };
-    window.addEventListener("offline", refreshConnection);
-    window.addEventListener("online", refreshConnection);
-    window.addEventListener("beforeinstallprompt", event => {
-      event.preventDefault();
-      installPrompt = event;
-      if (installButton && !standalone()) {
-        installButton.hidden = false;
-        banner.hidden = false;
-      }
-    });
-    installButton?.addEventListener("click", async () => {
-      if (!installPrompt) return;
-      installPrompt.prompt();
-      await installPrompt.userChoice;
-      installPrompt = null;
-      installButton.hidden = true;
-      refreshConnection();
-    });
-    refreshConnection();
-  })();
 </script>
 
 </body>
