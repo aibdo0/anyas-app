@@ -1,4 +1,4 @@
-const CACHE_NAME = "anyas-shell-v1.3.0-wird1";
+const CACHE_NAME = "anyas-shell-v1.3.1-wird1";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -29,7 +29,7 @@ const CORE_ASSETS = [
   "./css/app-design-system.css",
   "./css/first-run-onboarding.css",
   "./css/privacy.css",
-  "./data/app-version.js?v=20261016-1",
+  "./data/app-version.js?v=20261016-2",
   "./data/en-ui-translations.json?v=20261016-1",
   "./js/i18n.js?v=20261016-1",
   "./data/azkar-topics.js",
@@ -43,7 +43,7 @@ const CORE_ASSETS = [
   "./js/quiet-hours.js?v=20261014-1",
   "./js/friday.js?v=20261014-1",
   "./js/favorites.js",
-  "./js/azkar.js?v=20261016-6",
+  "./js/azkar.js?v=20261016-7",
   "./js/wird-playlists.js?v=20261016-1",
   "./js/wird.js",
   "./js/settings.js?v=20261015-2",

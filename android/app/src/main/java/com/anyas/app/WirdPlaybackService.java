@@ -31,6 +31,7 @@ public final class WirdPlaybackService extends Service {
     static final String ACTION_RESUME = "com.anyas.app.action.WIRD_RESUME";
     static final String ACTION_NEXT = "com.anyas.app.action.WIRD_NEXT";
     static final String ACTION_STOP = "com.anyas.app.action.WIRD_STOP";
+    static final String ACTION_SETTINGS = "com.anyas.app.action.WIRD_SETTINGS";
     private static final String CHANNEL_ID = "wird_playback";
     private static final int NOTIFICATION_ID = 4032;
     private static final int NOTIFICATION_OPEN_ID = 4033;
@@ -106,6 +107,12 @@ public final class WirdPlaybackService extends Service {
         if (ACTION_STOP.equals(action)) {
             if (!isCurrentSession(intent)) { if (!hasRequest) stopSelf(startId); return START_NOT_STICKY; }
             stopPlayback(true, false);
+            return START_NOT_STICKY;
+        }
+        if (ACTION_SETTINGS.equals(action)) {
+            if (!isCurrentSession(intent)) { if (!hasRequest) stopSelf(startId); return START_NOT_STICKY; }
+            volume = clamp(intent.getFloatExtra("volume", volume), 0f, 1f);
+            speechRate = clamp(intent.getFloatExtra("rate", speechRate), 0.75f, 1.25f);
             return START_NOT_STICKY;
         }
         if (ACTION_NEXT.equals(action)) {

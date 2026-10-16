@@ -253,10 +253,13 @@ function renderWirdAudioControls() {
   const button = document.getElementById("wirdSessionPlayToggle");
   const rate = document.getElementById("wirdSessionRate");
   const rateValue = document.getElementById("wirdSessionRateValue");
+  const volume = document.getElementById("wirdSessionVolume");
+  const volumeValue = document.getElementById("wirdSessionVolumeValue");
   const previous = document.getElementById("wirdSessionPrevious");
   const next = document.getElementById("wirdSessionNextItem");
   const note = document.getElementById("wirdSessionAudioStatus");
   const rateLabel = document.querySelector('label[for="wirdSessionRate"]');
+  const volumeLabel = document.querySelector('label[for="wirdSessionVolume"]');
   if (button) {
     const labels = {
       idle: ["ابدأ القراءة بصوت الجهاز", "Read aloud on this device"],
@@ -269,9 +272,14 @@ function renderWirdAudioControls() {
   if (previous) { previous.textContent = wirdAudioText("السابق", "Previous"); previous.setAttribute("aria-label", wirdAudioText("الذكر السابق", "Previous dhikr")); }
   if (next) { next.textContent = wirdAudioText("التالي", "Next"); next.setAttribute("aria-label", wirdAudioText("الذكر التالي", "Next dhikr")); }
   if (rateLabel) rateLabel.firstChild.textContent = wirdAudioText("سرعة القراءة ", "Reading speed ");
+  if (volumeLabel) volumeLabel.firstChild.textContent = wirdAudioText("مستوى الصوت ", "Volume ");
   if (rate && rateValue) {
     const value = Number(rate.value) || 1;
     rateValue.textContent = wirdAudioText(`${arabicNumber(value)}×`, `${value.toFixed(2).replace(/0+$/, "").replace(/\.$/, "")}×`);
+  }
+  if (volume && volumeValue) {
+    const value = Math.max(0, Math.min(100, Number(volume.value)));
+    volumeValue.textContent = wirdAudioText(`${arabicNumber(value)}٪`, `${value}%`);
   }
   if (note && wirdAudioState === "idle" && !note.dataset.hasError) {
     const androidNative = Boolean(window.AnyasAndroid && typeof window.AnyasAndroid.startWirdPlayback === "function");
@@ -316,6 +324,14 @@ function wirdEntryProgress(entry) {
   return Math.min(Math.max(0, Number(wirdSession.progress[wirdEntryProgressKey(entry)]) || 0), wirdEntryCount(entry));
 }
 
+function wirdAudioVolume() {
+  try {
+    const raw = localStorage.getItem("anyas_wirdVolume");
+    const value = raw === null ? 100 : Number(raw);
+    return Math.max(0, Math.min(1, (Number.isFinite(value) ? value : 100) / 100));
+  } catch (_) { return 1; }
+}
+
 function saveWirdSessionProgress() {
   if (!wirdSession) return;
   if (wirdSession.mode !== "custom") {
@@ -333,12 +349,7 @@ function startNativeWirdUtterance() {
     const count = wirdEntryCount(entry);
     return { text: String(entry.item.text || ""), count, completed: wirdEntryProgress(entry) };
   });
-  let volumeSetting = 100;
-  try {
-    const raw = localStorage.getItem("anyas_adhanVolume");
-    volumeSetting = raw === null ? 100 : Number(raw);
-  } catch (_) { }
-  const volume = Math.max(0, Math.min(1, (Number.isFinite(volumeSetting) ? volumeSetting : 100) / 100));
+  const volume = wirdAudioVolume();
   const rate = Math.max(0.75, Math.min(1.25, Number(document.getElementById("wirdSessionRate")?.value) || 1));
   const response = window.AnyasAndroid.startWirdPlayback(
     JSON.stringify(queue), String(wirdSession.title || "جلسة الأذكار"),
@@ -513,11 +524,7 @@ function speakWirdCurrentItem() {
   const utterance = new SpeechSynthesisUtterance(String(entry.item.text || ""));
   utterance.lang = "ar-SA";
   utterance.rate = Math.max(0.75, Math.min(1.25, Number(document.getElementById("wirdSessionRate")?.value) || 1));
-  try {
-    const rawVolume = localStorage.getItem("anyas_adhanVolume");
-    const savedVolume = rawVolume === null ? 100 : Number(rawVolume);
-    utterance.volume = Math.max(0, Math.min(1, (Number.isFinite(savedVolume) ? savedVolume : 100) / 100));
-  } catch (_) { utterance.volume = 1; }
+  utterance.volume = wirdAudioVolume();
   const voices = window.speechSynthesis.getVoices?.() || [];
   const arabicVoice = voices.find(voice => /^ar(?:-|$)/i.test(voice.lang));
   if (arabicVoice) utterance.voice = arabicVoice;
@@ -1245,14 +1252,32 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("wirdSessionReplay")?.addEventListener("click", replayWirdSessionItem);
   document.getElementById("wirdSessionStop")?.addEventListener("click", closeWirdSession);
   document.getElementById("wirdSessionRestart")?.addEventListener("click", restartWirdSession);
-  document.getElementById("wirdSessionRate")?.addEventListener("input", renderWirdAudioControls);
-  document.getElementById("wirdSessionRate")?.addEventListener("change", event => {
-    try { localStorage.setItem("anyas_wirdSpeechRate", String(event.currentTarget.value)); } catch (_) {}
-  });
+  const rateControl = document.getElementById("wirdSessionRate");
+  const volumeControl = document.getElementById("wirdSessionVolume");
+  const updateWirdAudioSettings = () => {
+    const rate = Math.max(0.75, Math.min(1.25, Number(rateControl?.value) || 1));
+    const volumePercent = Math.max(0, Math.min(100, Number(volumeControl?.value) || 0));
+    try {
+      localStorage.setItem("anyas_wirdSpeechRate", String(rate));
+      localStorage.setItem("anyas_wirdVolume", String(volumePercent));
+    } catch (_) {}
+    renderWirdAudioControls();
+    if (wirdAudioMode === "native" && typeof window.AnyasAndroid?.updateWirdPlaybackSettings === "function") {
+      try { window.AnyasAndroid.updateWirdPlaybackSettings(volumePercent / 100, rate, wirdAudioSessionToken); } catch (_) {}
+    }
+  };
+  rateControl?.addEventListener("input", updateWirdAudioSettings);
+  volumeControl?.addEventListener("input", updateWirdAudioSettings);
   try {
     const savedRate = localStorage.getItem("anyas_wirdSpeechRate");
-    if (savedRate && document.getElementById("wirdSessionRate")) document.getElementById("wirdSessionRate").value = String(Math.max(0.75, Math.min(1.25, Number(savedRate) || 1)));
+    const savedVolume = localStorage.getItem("anyas_wirdVolume");
+    if (savedRate !== null && rateControl) rateControl.value = String(Math.max(0.75, Math.min(1.25, Number(savedRate) || 1)));
+    if (savedVolume !== null && volumeControl) {
+      const parsedVolume = Number(savedVolume);
+      volumeControl.value = String(Math.max(0, Math.min(100, Number.isFinite(parsedVolume) ? parsedVolume : 100)));
+    }
   } catch (_) {}
+  renderWirdAudioControls();
   document.querySelectorAll("[data-close-wird-session]").forEach(element => element.addEventListener("click", closeWirdSession));
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && wirdSession) closeWirdSession();

@@ -231,7 +231,7 @@ public class MainActivity extends Activity {
         web.post(() -> web.evaluateJavascript(script, null));
     }
 
-    public class NativeBridge {
+        public class NativeBridge {
         @JavascriptInterface public String getNotificationHistory() {
             return NotificationHistory.getJson(MainActivity.this);
         }
@@ -263,6 +263,14 @@ public class MainActivity extends Activity {
             } catch (Exception error) {
                 return "unavailable";
             }
+        }
+        @JavascriptInterface public void updateWirdPlaybackSettings(double volume, double rate, String sessionToken) {
+            Intent update = new Intent(MainActivity.this, WirdPlaybackService.class)
+                    .setAction(WirdPlaybackService.ACTION_SETTINGS)
+                    .putExtra("volume", (float) Math.max(0d, Math.min(1d, volume)))
+                    .putExtra("rate", (float) Math.max(0.75d, Math.min(1.25d, rate)))
+                    .putExtra("sessionToken", sessionToken == null ? "" : sessionToken);
+            try { startService(update); } catch (Exception ignored) { }
         }
         @JavascriptInterface public void pauseWirdPlayback(String token) { sendWirdPlaybackAction(WirdPlaybackService.ACTION_PAUSE, token); }
         @JavascriptInterface public void resumeWirdPlayback(String token) { sendWirdPlaybackAction(WirdPlaybackService.ACTION_RESUME, token); }
