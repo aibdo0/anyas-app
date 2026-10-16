@@ -69,18 +69,18 @@
   gap: 0;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 21px;
+  border-radius: 22px;
   background: var(--surface);
   box-shadow: var(--shadow);
 }
 #page-more .more-menu-item {
   display: grid;
-  grid-template-columns: 46px minmax(0, 1fr) 30px;
+  grid-template-columns: 48px minmax(0, 1fr) 32px;
   align-items: center;
-  gap: 12px;
+  gap: 13px;
   width: 100%;
-  min-height: 78px;
-  padding: 13px 14px;
+  min-height: 80px;
+  padding: 14px 15px;
   border: 0;
   border-bottom: 1px solid var(--line);
   border-radius: 0;
@@ -96,8 +96,8 @@
 #page-more button.more-menu-item:active { transform: scale(.99); background: var(--surface-soft); }
 #page-more .more-menu-icon {
   display: grid;
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   place-items: center;
   border: 1px solid transparent;
   border-radius: 16px;
@@ -105,8 +105,8 @@
 }
 #page-more .more-menu-icon svg,
 #page-more .more-menu-arrow svg {
-  width: 21px;
-  height: 21px;
+  width: 22px;
+  height: 22px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -120,20 +120,20 @@
 .more-menu-icon--about { color: #9a704a; border-color: #efdfcf !important; background: #f8eee4; }
 .more-menu-icon--qibla { color: #596b40; border-color: #e0e5d0 !important; background: #eef0e0; }
 #page-more .more-menu-copy { display: grid; min-width: 0; gap: 2px; text-align: right; }
-#page-more .more-menu-copy strong { overflow: hidden; color: var(--ink); font-size: 14px; font-weight: 900; line-height: 1.4; text-overflow: ellipsis; }
-#page-more .more-menu-copy small { color: var(--muted); font-size: 10px; line-height: 1.55; }
+#page-more .more-menu-copy strong { overflow: hidden; color: var(--ink); font-size: 15px; font-weight: 900; line-height: 1.4; text-overflow: ellipsis; }
+#page-more .more-menu-copy small { color: var(--muted); font-size: 11px; line-height: 1.55; }
 #page-more .more-menu-arrow {
   display: grid;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   place-items: center;
   border: 1px solid var(--line);
-  border-radius: 11px;
+  border-radius: 12px;
   color: var(--gold-dark);
   background: var(--surface-soft);
   transition: transform .18s ease, background-color .18s ease;
 }
-#page-more .more-menu-arrow svg { width: 16px; height: 16px; }
+#page-more .more-menu-arrow svg { width: 17px; height: 17px; }
 #page-more .more-menu-item:hover .more-menu-arrow { background: var(--gold-pale); transform: translateX(-2px); }
 #page-more button:focus-visible { outline: 3px solid rgba(196, 154, 85, .68); outline-offset: 2px; }
 
@@ -164,11 +164,11 @@ html[lang="en"] #page-more .more-menu-arrow svg { transform: rotate(180deg); }
   #page-more { padding-inline: 15px; }
   #page-more .more-page-header { grid-template-columns: 48px minmax(0, 1fr); gap: 10px; padding: 17px 15px; }
   .more-header-mark { width: 46px; height: 46px; border-radius: 15px; }
-  #page-more .more-menu-item { grid-template-columns: 43px minmax(0, 1fr) 28px; gap: 10px; min-height: 74px; padding: 11px 12px; }
-  #page-more .more-menu-icon { width: 43px; height: 43px; border-radius: 14px; }
-  #page-more .more-menu-copy strong { font-size: 13px; }
-  #page-more .more-menu-copy small { font-size: 9px; }
-  #page-more .more-menu-arrow { width: 28px; height: 28px; }
+  #page-more .more-menu-item { grid-template-columns: 44px minmax(0, 1fr) 30px; gap: 11px; min-height: 76px; padding: 11px 13px; }
+  #page-more .more-menu-icon { width: 44px; height: 44px; border-radius: 14px; }
+  #page-more .more-menu-copy strong { font-size: 14px; }
+  #page-more .more-menu-copy small { font-size: 10px; }
+  #page-more .more-menu-arrow { width: 30px; height: 30px; }
 }
 @media (prefers-reduced-motion: reduce) {
   #page-more .more-menu-item,

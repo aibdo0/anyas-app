@@ -1,4 +1,4 @@
-const CACHE_NAME = "anyas-shell-v1.3.1-wird1";
+const CACHE_NAME = "anyas-shell-v1.3.1-ui-polish1";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -17,7 +17,7 @@ const CORE_ASSETS = [
   "./css/settings.css",
   "./css/audio-library.css",
   "./css/offline-fonts.css",
-  "./css/theme-white-gold.css",
+  "./css/theme-white-gold.css?v=20261016-2",
   "./css/app-background.css?v=20261015-2",
   "./css/palette-warm-gold.css?v=20261015-2",
   "./css/tasks-ux.css",
@@ -25,8 +25,8 @@ const CORE_ASSETS = [
   "./css/home-structure.css",
   "./css/friday.css",
   "./css/notification-settings.css?v=20261014-1",
-  "./css/more-page.css",
-  "./css/app-design-system.css",
+  "./css/more-page.css?v=20261016-2",
+  "./css/app-design-system.css?v=20261016-2",
   "./css/first-run-onboarding.css",
   "./css/privacy.css",
   "./data/app-version.js?v=20261016-2",
