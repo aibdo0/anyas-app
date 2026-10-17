@@ -16,6 +16,7 @@ const CORE_ASSETS = [
   "./css/audio-library.css",
   "./css/offline-fonts.css",
   "./css/theme-white-gold.css?v=20261016-2",
+  "./css/card-backgrounds.css?v=20261017-1",
   "./css/app-background.css?v=20261015-2",
   "./css/home-compact.css?v=20261016-5",
   "./css/mobile-ux-foundation.css?v=20261016-1",

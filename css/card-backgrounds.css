@@ -1,0 +1,76 @@
+/* Card imagery only: keep the 91edfaf page design and avoid app-wide backgrounds. */
+#page-home .next-prayer {
+  color: #fff !important;
+  border-color: rgba(255,255,255,.22) !important;
+  background-image: linear-gradient(105deg, rgba(19,17,14,.55), rgba(22,19,15,.58) 48%, rgba(18,16,13,.78)), url("../assets/prayer-hero.jpg") !important;
+  background-position: center 48% !important;
+  background-size: cover !important;
+  box-shadow: 0 15px 36px rgba(31,25,16,.2) !important;
+}
+#page-home .next-prayer .next-label,
+#page-home .next-prayer .prayer-name,
+#page-home .next-prayer .prayer-time { color: #fff !important; }
+#page-home .next-prayer .countdown { color: #f2dfb7 !important; }
+#page-home .next-prayer .prayer-progress { background: rgba(255,255,255,.28) !important; }
+#page-home .next-prayer .prayer-progress-bar { background: #f1d89f !important; }
+
+#page-home .daily-adhkar-card {
+  isolation: isolate;
+  color: #fff;
+  border-color: rgba(255,255,255,.25) !important;
+  background-position: center !important;
+  background-size: cover !important;
+  box-shadow: 0 14px 32px rgba(31,25,16,.18) !important;
+}
+#page-home .daily-adhkar-card::after {
+  z-index: -1;
+  opacity: 1;
+  background: linear-gradient(105deg, rgba(18,16,12,.76), rgba(20,18,14,.48) 52%, rgba(18,16,13,.72)) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="awakening"],
+#page-home .daily-adhkar-card[data-adhkar-period="morning"] {
+  background-image: url("../assets/adhkar-morning-card.jpg") !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="day"] {
+  background-image: url("../assets/adhkar-morning-card.jpg") !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="evening"] {
+  background-image: url("../assets/adhkar-evening-card.jpg") !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="sleep"],
+#page-home .daily-adhkar-card[data-adhkar-period="sahar"] {
+  background-image: url("../assets/adhkar-sleep-card.jpg") !important;
+}
+#page-home .daily-adhkar-card > * { position: relative; z-index: 1; }
+#page-home .daily-adhkar-card .daily-adhkar-title,
+#page-home .daily-adhkar-card .daily-adhkar-text { color: #fff !important; }
+#page-home .daily-adhkar-card .daily-adhkar-eyebrow,
+#page-home .daily-adhkar-card .daily-adhkar-hint { color: rgba(255,255,255,.82) !important; }
+#page-home .daily-adhkar-card .daily-adhkar-mark,
+#page-home .daily-adhkar-card .daily-adhkar-badge { color: #f4dfab !important; border-color: rgba(244,223,171,.55) !important; background: rgba(25,22,16,.52) !important; }
+#page-home .daily-adhkar-card .daily-adhkar-text { border-color: #e4c878 !important; background: rgba(12,11,9,.42) !important; }
+#page-home .daily-adhkar-card .daily-adhkar-footer { border-color: rgba(255,255,255,.22) !important; }
+#page-home .daily-adhkar-card .daily-adhkar-button { color: #fff !important; border-color: rgba(255,255,255,.16) !important; background: #80653b !important; }
+
+/* بطاقات الصفحات الداخلية: صور مستقلة مع طبقة قراءة واضحة. */
+#page-tasks .tasks-hero-card,
+#page-azkar .hisn-hero-card,
+#page-more .more-hero-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff !important;
+  border-color: rgba(255,255,255,.28) !important;
+  background-position: center !important;
+  background-size: cover !important;
+  box-shadow: 0 14px 32px rgba(31,25,16,.16) !important;
+}
+#page-tasks .tasks-hero-card { background-image: linear-gradient(105deg, rgba(20,16,10,.72), rgba(28,22,14,.42)), url("../assets/anyas-tasks-hero.jpg") !important; }
+#page-azkar .hisn-hero-card { background-image: linear-gradient(105deg, rgba(18,16,11,.72), rgba(29,23,14,.4)), url("../assets/anyas-hisn-hero.jpg") !important; }
+#page-more .more-hero-card { background-image: linear-gradient(105deg, rgba(20,17,12,.72), rgba(31,24,15,.42)), url("../assets/anyas-more-hero.jpg") !important; }
+#page-tasks .tasks-hero-card > *,
+#page-azkar .hisn-hero-card > *,
+#page-more .more-hero-card > * { position: relative; z-index: 1; }
+#page-tasks .tasks-hero-card :is(h1,h2,h3,p,span),
+#page-azkar .hisn-hero-card :is(h1,h2,h3,p,span),
+#page-more .more-hero-card :is(h1,h2,h3,p,span) { color: #fff !important; }
