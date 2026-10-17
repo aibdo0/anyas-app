@@ -100,6 +100,17 @@ check("PWA install and offline shell are configured", () => {
   assert.match(homeUi, /addEventListener\("offline"/);
 });
 
+check("homepage redesign is responsive and keeps existing tabs and shortcuts", () => {
+  const homeDesign = read("css/home-redesign.css");
+  assert.match(index, /css\/home-redesign\.css/);
+  assert.match(serviceWorker, /css\/home-redesign\.css/);
+  assert.match(index, /id="homeAyahTab"[\s\S]*id="homeHadithTab"/);
+  assert.match(index, /class="section home-location-tools"[\s\S]*id="nearbyMosqueButton"[\s\S]*id="openQiblaButton"/);
+  assert.match(homeDesign, /#page-home #dailyContentCard \.home-compact-tabs/);
+  assert.match(homeDesign, /@media \(min-width: 601px\)/);
+  assert.match(homeDesign, /prefers-reduced-motion/);
+});
+
 check("optional backgrounds follow morning, evening, and sleep periods", () => {
   const palette = read("css/palette-warm-gold.css");
   const backgrounds = read("css/app-background.css");

@@ -1,4 +1,4 @@
-const CACHE_NAME = "anyas-shell-v1.3.2-fixes-20261017";
+const CACHE_NAME = "anyas-shell-v1.3.2-home-redesign-20261017";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -19,6 +19,7 @@ const CORE_ASSETS = [
   "./css/app-background.css?v=20261015-2",
   "./css/home-compact.css?v=20261016-5",
   "./css/mobile-ux-foundation.css?v=20261016-1",
+  "./css/home-redesign.css?v=20261017-2",
   "./css/palette-warm-gold.css?v=20261015-2",
   "./css/tasks-ux.css",
   "./css/tasks-structure.css",
