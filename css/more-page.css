@@ -69,18 +69,18 @@
   gap: 0;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: 21px;
   background: var(--surface);
   box-shadow: var(--shadow);
 }
 #page-more .more-menu-item {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) 32px;
+  grid-template-columns: 46px minmax(0, 1fr) 30px;
   align-items: center;
-  gap: 13px;
+  gap: 12px;
   width: 100%;
-  min-height: 80px;
-  padding: 14px 15px;
+  min-height: 78px;
+  padding: 13px 14px;
   border: 0;
   border-bottom: 1px solid var(--line);
   border-radius: 0;
@@ -96,8 +96,8 @@
 #page-more button.more-menu-item:active { transform: scale(.99); background: var(--surface-soft); }
 #page-more .more-menu-icon {
   display: grid;
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   place-items: center;
   border: 1px solid transparent;
   border-radius: 16px;
@@ -105,8 +105,8 @@
 }
 #page-more .more-menu-icon svg,
 #page-more .more-menu-arrow svg {
-  width: 22px;
-  height: 22px;
+  width: 21px;
+  height: 21px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -115,35 +115,27 @@
 }
 .more-menu-icon--tasks { color: #80653b; border-color: #e9ddc6 !important; background: #f3ecde; }
 .more-menu-icon--worship { color: #47735e; border-color: #dce9df !important; background: #eaf2ec; }
-.more-menu-icon--mosque { color: #6e633e; border-color: #e2d8bd !important; background: #f2eddc; }
-.more-menu-icon--settings { color: #7b6537; border-color: #e8dfc6 !important; background: #f4eedb; }
+.more-menu-icon--mosque { color: #526d9c; border-color: #dce4f2 !important; background: #edf1f9; }
+.more-menu-icon--settings { color: #765f98; border-color: #e8dff1 !important; background: #f1ebf6; }
 .more-menu-icon--about { color: #9a704a; border-color: #efdfcf !important; background: #f8eee4; }
-.more-menu-icon--qibla { color: #596b40; border-color: #e0e5d0 !important; background: #eef0e0; }
+.more-menu-icon--qibla { color: #526d9c; border-color: #dce4f2 !important; background: #edf1f9; }
 #page-more .more-menu-copy { display: grid; min-width: 0; gap: 2px; text-align: right; }
-#page-more .more-menu-copy strong { overflow: hidden; color: var(--ink); font-size: 15px; font-weight: 900; line-height: 1.4; text-overflow: ellipsis; }
-#page-more .more-menu-copy small { color: var(--muted); font-size: 11px; line-height: 1.55; }
+#page-more .more-menu-copy strong { overflow: hidden; color: var(--ink); font-size: 14px; font-weight: 900; line-height: 1.4; text-overflow: ellipsis; }
+#page-more .more-menu-copy small { color: var(--muted); font-size: 10px; line-height: 1.55; }
 #page-more .more-menu-arrow {
   display: grid;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   place-items: center;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 11px;
   color: var(--gold-dark);
   background: var(--surface-soft);
   transition: transform .18s ease, background-color .18s ease;
 }
-#page-more .more-menu-arrow svg { width: 17px; height: 17px; }
+#page-more .more-menu-arrow svg { width: 16px; height: 16px; }
 #page-more .more-menu-item:hover .more-menu-arrow { background: var(--gold-pale); transform: translateX(-2px); }
 #page-more button:focus-visible { outline: 3px solid rgba(196, 154, 85, .68); outline-offset: 2px; }
-
-#page-about .about-language-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-#page-about .about-language-copy { display: grid; flex: 1; min-width: 0; gap: 3px; }
-#page-about .about-language-label { color: var(--ink); font-size: 13px; font-weight: 900; }
-#page-about .about-language-row .select-control { flex: 0 0 148px; width: 148px; min-height: 42px; }
-@media (max-width: 360px) {
-  #page-about .about-language-row .select-control { flex-basis: 132px; width: 132px; }
-}
 
 :root[data-theme="dark"] body #page-more .more-menu { border-color: var(--line); background: var(--surface); }
 :root[data-theme="dark"] body #page-more .more-menu-item { background: transparent !important; }
@@ -151,10 +143,10 @@
 :root[data-theme="dark"] body #page-more button.more-menu-item:active { background: var(--surface-soft) !important; }
 :root[data-theme="dark"] body #page-more .more-menu-icon--tasks { color: #e2ca91 !important; border-color: #514735 !important; background: #393326 !important; }
 :root[data-theme="dark"] body #page-more .more-menu-icon--worship { color: #acd0b7 !important; border-color: #34483c !important; background: #28382f !important; }
-:root[data-theme="dark"] body #page-more .more-menu-icon--mosque { color: #e7d39b !important; border-color: #524a36 !important; background: #393527 !important; }
-:root[data-theme="dark"] body #page-more .more-menu-icon--settings { color: #d7bd7d !important; border-color: #514735 !important; background: #393326 !important; }
+:root[data-theme="dark"] body #page-more .more-menu-icon--mosque { color: #b7c8ed !important; border-color: #39445d !important; background: #2a3244 !important; }
+:root[data-theme="dark"] body #page-more .more-menu-icon--settings { color: #d0b8e8 !important; border-color: #4a3d58 !important; background: #352b40 !important; }
 :root[data-theme="dark"] body #page-more .more-menu-icon--about { color: #e2b991 !important; border-color: #534235 !important; background: #3d3025 !important; }
-:root[data-theme="dark"] body #page-more .more-menu-icon--qibla { color: #c8d1a4 !important; border-color: #46513c !important; background: #2f382a !important; }
+:root[data-theme="dark"] body #page-more .more-menu-icon--qibla { color: #b7c8ed !important; border-color: #39445d !important; background: #2a3244 !important; }
 
 html[lang="en"] #page-more .more-page-header,
 html[lang="en"] #page-more .more-menu-item { text-align: left; }
@@ -164,18 +156,18 @@ html[lang="en"] #page-more .more-menu-arrow svg { transform: rotate(180deg); }
   #page-more { padding-inline: 15px; }
   #page-more .more-page-header { grid-template-columns: 48px minmax(0, 1fr); gap: 10px; padding: 17px 15px; }
   .more-header-mark { width: 46px; height: 46px; border-radius: 15px; }
-  #page-more .more-menu-item { grid-template-columns: 44px minmax(0, 1fr) 30px; gap: 11px; min-height: 76px; padding: 11px 13px; }
-  #page-more .more-menu-icon { width: 44px; height: 44px; border-radius: 14px; }
-  #page-more .more-menu-copy strong { font-size: 14px; }
-  #page-more .more-menu-copy small { font-size: 10px; }
-  #page-more .more-menu-arrow { width: 30px; height: 30px; }
+  #page-more .more-menu-item { grid-template-columns: 43px minmax(0, 1fr) 28px; gap: 10px; min-height: 74px; padding: 11px 12px; }
+  #page-more .more-menu-icon { width: 43px; height: 43px; border-radius: 14px; }
+  #page-more .more-menu-copy strong { font-size: 13px; }
+  #page-more .more-menu-copy small { font-size: 9px; }
+  #page-more .more-menu-arrow { width: 28px; height: 28px; }
 }
 @media (prefers-reduced-motion: reduce) {
   #page-more .more-menu-item,
   #page-more .more-menu-arrow { transition: none; }
 }
 
-/* ترويسة صفحة المزيد الداكنة تبقى مستقلة عن لون عناوين المجموعات. */
+/* تباين النص فوق خلفية المشهد الليلي */
 #page-more .more-page-header .brand { color: #fff !important; }
 :root[data-time-scene="night"] #page-more .more-group-heading h2 {
   color: #fff !important;
@@ -185,14 +177,3 @@ html[lang="en"] #page-more .more-menu-arrow svg { transform: rotate(180deg); }
   color: rgba(255, 255, 255, .82) !important;
   text-shadow: 0 1px 4px rgba(0, 0, 0, .38);
 }
-
-
-/* لمسات زيتونية/ذهبية موحّدة لأيقونات «المزيد» في الوضعين */
-.more-menu-icon--worship { color: #687144; border-color: #e1e4ce !important; background: #f0f1e3; }
-.more-menu-icon--mosque,
-.more-menu-icon--settings,
-.more-menu-icon--qibla { color: #79643b; border-color: #e8dfc6 !important; background: #f4eedb; }
-:root[data-theme="dark"] body #page-more .more-menu-icon--worship { color: #d0d7a1 !important; border-color: #4a4d32 !important; background: #353924 !important; }
-:root[data-theme="dark"] body #page-more .more-menu-icon--mosque,
-:root[data-theme="dark"] body #page-more .more-menu-icon--settings { color: #e4c987 !important; border-color: #514631 !important; background: #383020 !important; }
-:root[data-theme="dark"] body #page-more .more-menu-icon--qibla { color: #d0d7a1 !important; border-color: #46503c !important; background: #2f382a !important; }

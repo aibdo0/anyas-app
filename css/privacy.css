@@ -1,7 +1,6 @@
 #page-privacy { padding-bottom: calc(118px + env(safe-area-inset-bottom)); }
 #page-privacy .plain-header { margin-bottom: 13px; }
 .privacy-document { display: grid; gap: 12px; }
-.privacy-document[hidden], .about-version[hidden] { display: none !important; }
 .privacy-intro, .privacy-section { padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: var(--shadow); }
 .privacy-intro { display: flex; align-items: flex-start; gap: 12px; background: linear-gradient(135deg, var(--gold-pale), var(--surface) 75%); }
 .privacy-mark { display: grid; flex: 0 0 42px; width: 42px; height: 42px; place-items: center; border-radius: 14px; color: #fff; background: var(--gold-dark); font-size: 22px; font-weight: 900; }
