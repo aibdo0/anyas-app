@@ -1,4 +1,4 @@
-const CACHE_NAME = "anyas-shell-v1.3.2-home-redesign-20261017";
+const CACHE_NAME = "anyas-shell-v1.3.3-offline-safe-20261017";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -17,6 +17,7 @@ const CORE_ASSETS = [
   "./css/offline-fonts.css",
   "./css/theme-white-gold.css?v=20261016-2",
   "./css/card-backgrounds.css?v=20261017-1",
+  "./css/anyas-fixes.css",
   "./css/app-background.css?v=20261015-2",
   "./css/home-compact.css?v=20261016-5",
   "./css/mobile-ux-foundation.css?v=20261016-1",
@@ -65,11 +66,22 @@ const CORE_ASSETS = [
   "./js/app.js",
   "./js/about.js",
   "./js/home-compact.js?v=20261016-2",
-  "./js/home-ui-enhancements.js?v=20261016-1"
+  "./js/home-ui-enhancements.js?v=20261016-1",
+  "./js/quran-wird.js",
+  "./js/share-card.js"
 ];
 
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_ASSETS)).then(() => self.skipWaiting()));
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => Promise.all(
+        CORE_ASSETS.map(asset => cache.add(asset).catch(error => {
+          console.warn("تعذر تخزين ملف للعمل دون اتصال:", asset, error.message);
+          return null;
+        }))
+      ))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", event => {
