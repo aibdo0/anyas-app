@@ -1,0 +1,559 @@
+/* هوية «ضباب الفجر» — المصدر المركزي لألوان واجهة أنياس في الوضعين. */
+:root {
+  color-scheme: light;
+  --dawn-primary: #426B73;
+  --dawn-secondary: #9186A8;
+  --dawn-page: #F5F3F8;
+  --dawn-card: #FFFFFF;
+  --dawn-text: #292D3A;
+  --dawn-muted: #747584;
+  --dawn-accent: #C18F9D;
+  --dawn-border: #E5E1EB;
+  --dawn-surface-soft: #EFEDF4;
+  --dawn-primary-soft: #E8F0F1;
+  --dawn-secondary-soft: #F0EDF5;
+  --dawn-accent-soft: #F7EFF1;
+  --dawn-accent-ink: #855966;
+  --dawn-action-ink: #FFFFFF;
+  --dawn-shadow: 0 6px 18px rgba(41, 45, 58, .045);
+
+  /* أسماء توافقية مستخدمة في أوراق الأنماط الحالية. */
+  --page: var(--dawn-page);
+  --surface: var(--dawn-card);
+  --surface-soft: var(--dawn-surface-soft);
+  --ink: var(--dawn-text);
+  --muted: var(--dawn-muted);
+  --line: var(--dawn-border);
+  --gold-dark: var(--dawn-primary);
+  --gold-light: var(--dawn-secondary);
+  --gold-pale: var(--dawn-secondary-soft);
+  --gold: var(--dawn-accent);
+  --action-bg: var(--dawn-primary);
+  --action-ink: var(--dawn-action-ink);
+  --background: var(--dawn-page);
+  --bg: var(--dawn-page);
+  --card: var(--dawn-card);
+  --text: var(--dawn-text);
+  --border: var(--dawn-border);
+  --primary: var(--dawn-primary);
+  --primary-dark: var(--dawn-primary);
+  --accent: var(--dawn-accent);
+  --success: var(--dawn-primary);
+  --shadow: var(--dawn-shadow);
+  --shadow-sm: var(--dawn-shadow);
+  --ania-hero-1: var(--dawn-primary);
+  --ania-hero-2: var(--dawn-secondary);
+  --ania-hero-accent: var(--dawn-accent);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --dawn-primary: #8BB7BE;
+  --dawn-secondary: #B5A8D2;
+  --dawn-page: #171922;
+  --dawn-card: #222632;
+  --dawn-text: #F2F0F7;
+  --dawn-muted: #B6B5C4;
+  --dawn-accent: #D0A8B3;
+  --dawn-border: #363847;
+  --dawn-surface-soft: #2A2E3A;
+  --dawn-primary-soft: #2A3940;
+  --dawn-secondary-soft: #343242;
+  --dawn-accent-soft: #3A2C35;
+  --dawn-accent-ink: #E0B7C1;
+  --dawn-action-ink: #171922;
+  --dawn-shadow: 0 8px 22px rgba(0, 0, 0, .18);
+
+  --page: var(--dawn-page);
+  --surface: var(--dawn-card);
+  --surface-soft: var(--dawn-surface-soft);
+  --ink: var(--dawn-text);
+  --muted: var(--dawn-muted);
+  --line: var(--dawn-border);
+  --gold-dark: var(--dawn-primary);
+  --gold-light: var(--dawn-secondary);
+  --gold-pale: var(--dawn-secondary-soft);
+  --gold: var(--dawn-accent);
+  --action-bg: var(--dawn-primary);
+  --action-ink: var(--dawn-action-ink);
+  --background: var(--dawn-page);
+  --bg: var(--dawn-page);
+  --card: var(--dawn-card);
+  --text: var(--dawn-text);
+  --border: var(--dawn-border);
+  --primary: var(--dawn-primary);
+  --primary-dark: var(--dawn-primary);
+  --accent: var(--dawn-accent);
+  --success: var(--dawn-primary);
+  --shadow: var(--dawn-shadow);
+  --shadow-sm: var(--dawn-shadow);
+  --ania-hero-1: var(--dawn-card);
+  --ania-hero-2: var(--dawn-card);
+  --ania-hero-accent: var(--dawn-secondary);
+}
+
+/* تثبيت الرموز كذلك على body: بعض أوراق CSS القديمة كانت تعيد تعريفها هناك. */
+:root[data-theme="dark"] body.dark-mode {
+  --page: var(--dawn-page);
+  --surface: var(--dawn-card);
+  --surface-soft: var(--dawn-surface-soft);
+  --ink: var(--dawn-text);
+  --muted: var(--dawn-muted);
+  --line: var(--dawn-border);
+  --gold-dark: var(--dawn-primary);
+  --gold-light: var(--dawn-secondary);
+  --gold-pale: var(--dawn-secondary-soft);
+  --gold: var(--dawn-accent);
+  --action-bg: var(--dawn-primary);
+  --action-ink: var(--dawn-action-ink);
+  --background: var(--dawn-page);
+  --bg: var(--dawn-page);
+  --card: var(--dawn-card);
+  --text: var(--dawn-text);
+  --border: var(--dawn-border);
+  --primary: var(--dawn-primary);
+  --primary-dark: var(--dawn-primary);
+  --success: var(--dawn-primary);
+  --shadow: var(--dawn-shadow);
+  --shadow-sm: var(--dawn-shadow);
+}
+
+/* خلفية التطبيق والكتابة العامة. */
+html,
+body,
+body.dark-mode {
+  color: var(--dawn-text) !important;
+  background: var(--dawn-page) !important;
+  background-image: none !important;
+}
+.page { color: var(--dawn-text) !important; }
+button, input, select, textarea { accent-color: var(--dawn-primary); }
+.page :is(input, select, textarea) {
+  color: var(--dawn-text) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-card) !important;
+}
+.page :is(input, textarea)::placeholder { color: var(--dawn-muted) !important; opacity: 1; }
+.page :is(button, input, select, textarea, [tabindex]):focus-visible,
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--dawn-primary) 72%, transparent) !important;
+  outline-offset: 3px;
+}
+.page :is(.setting-description, .track-status, .prayer-title, .reference, .more-menu-copy small, .notification-history-copy p, .notification-history-time, .offline-capabilities-list, .about-description, .empty-state, .hint, .helper-text, .daily-adhkar-eyebrow, .daily-adhkar-hint) {
+  color: var(--dawn-muted) !important;
+}
+.page :is(.section-title, .card-title, .prayer-value, .task-arrow, .nearby-mosque-title, .more-menu-copy strong, .setting-title, .settings-section-title, .about-card h2, .about-hero h2) {
+  color: var(--dawn-primary) !important;
+}
+.page a:not([class*="button"]):not(.nav-item) { color: var(--dawn-primary) !important; }
+.page svg { color: inherit; }
+
+/* الأسطح الشائعة في جميع الصفحات الداخلية والرئيسية. */
+.page :is(.card, [class*="-card"], .content-block, .upcoming-card, .prayer-section, .prayer-row, .prayer-track-item, .task-item, .category-card, .zikr-card, .more-menu-item, .settings-section, .settings-section-toggle, .setting-row, .muezzin-row, .notification-history-item, .notification-empty, .wird-section, .wird-item, .wird-summary-card, .friday-task-item, .azkar-period-card, .azkar-priority-section, .azkar-friday-card, .permission-accordion, .mosque-result, .schedule-row, .schedule-month-row, .city-result, .report-stat-card, .about-action, .offline-status-card) {
+  color: var(--dawn-text) !important;
+  border-color: var(--dawn-border) !important;
+  background-color: var(--dawn-card) !important;
+  box-shadow: var(--dawn-shadow) !important;
+}
+.page :is(.content-block, .upcoming-card, .prayer-section, .prayer-row, .prayer-track-item, .task-item, .category-card, .zikr-card, .more-menu-item, .setting-row, .muezzin-row, .notification-history-item, .notification-empty, .wird-section, .wird-item, .wird-summary-card, .friday-task-item, .azkar-period-card, .permission-accordion, .mosque-result, .schedule-row, .schedule-month-row, .city-result, .about-action, .offline-status-card) {
+  background-image: none !important;
+}
+.page :is(.settings-section-toggle, .settings-section-title) { background: var(--dawn-surface-soft) !important; }
+.page :is(.task-item[data-complete="true"], .prayer-row.next, .prayer-track-item.completed, .wird-item.is-complete, .wird-section.is-complete, .friday-task-item.is-complete, .azkar-item.done) {
+  color: var(--dawn-text) !important;
+  border-color: var(--dawn-primary) !important;
+  background: var(--dawn-primary-soft) !important;
+}
+.page :is(.quick-icon, .nearby-mosque-icon, .notification-history-icon, .notifications-overview-icon, .more-menu-icon, .audio-test-button-icon, .azkar-friday-icon, .friday-task-icon, .friday-task-check, .tasks-tasbeeh-icon, .qibla-accuracy[data-accuracy="good"]) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary-soft) !important;
+}
+.page :is(.quick-icon, .more-menu-icon--worship, .more-menu-icon--qibla, .more-menu-icon--privacy, .audio-category-icon.adhkar, .notification-settings-icon, .qibla-accuracy[data-accuracy="good"]) { color: var(--dawn-primary) !important; }
+
+/* الأزرار: لون أساسي واضح، وثانوي هادئ، وحالة خطر منفصلة. */
+.page :is(.daily-adhkar-button, .friday-feature-button, .qibla-start-button, .adhan-button, .tasbeeh-main-button, .tasks-tasbeeh-button, #tasksTasbeehIncrement, .permission-enable-button, .permission-settings-button, .setting-action-button:not(.danger-action-button), .small-action-button, #saveManualPrayerSettings, .zikr-button:not(:disabled), .azkar-session-open-button, .home-button:not(.secondary), .audio-apply-button, .schedule-tab.active, .report-range-tab.active, .azkar-count-button:not(:disabled), .secondary-action),
+.pwa-status-banner button,
+.update-banner button:not(.dismiss-update) {
+  color: var(--dawn-action-ink) !important;
+  border-color: transparent !important;
+  background: var(--dawn-primary) !important;
+  box-shadow: none !important;
+}
+:root[data-theme="dark"] .page :is(.daily-adhkar-button, .friday-feature-button, .qibla-start-button, .adhan-button, .tasbeeh-main-button, .tasks-tasbeeh-button, #tasksTasbeehIncrement, .permission-enable-button, .permission-settings-button, .setting-action-button:not(.danger-action-button), .small-action-button, #saveManualPrayerSettings, .zikr-button:not(:disabled), .azkar-session-open-button, .home-button:not(.secondary), .audio-apply-button, .schedule-tab.active, .report-range-tab.active, .azkar-count-button:not(:disabled), .secondary-action),
+:root[data-theme="dark"] .pwa-status-banner button,
+:root[data-theme="dark"] .update-banner button:not(.dismiss-update) { color: #171922 !important; }
+.page :is(.back-button, .more-button, .prayer-adjust-button, .preview-button, .audio-test-button, .traveler-back-button, .qibla-back-button, .tasbeeh-reset-button, .notification-manage-button, .wird-playlist-action, .wird-playlist-mini, .task-action-button) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary-soft) !important;
+  box-shadow: none !important;
+}
+.page :is(.danger-action-button, .audio-delete-button, #clearOptionalAudioButton) {
+  color: #8B454F !important;
+  border-color: #D7AAB1 !important;
+  background: #F8EEF0 !important;
+}
+:root[data-theme="dark"] .page :is(.danger-action-button, .audio-delete-button, #clearOptionalAudioButton) {
+  color: #F0B9C2 !important;
+  border-color: #8F626D !important;
+  background: #382932 !important;
+}
+.page :is(.permission-status.is-enabled, .status-success, .success-state, .is-enabled, [data-state="success"], .wird-item.is-complete .wird-complete-button, .task-item.done .task-check, .zikr-button:disabled) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary-soft) !important;
+}
+:root[data-theme="dark"] .page :is(.permission-status.is-enabled, .status-success, .success-state, .is-enabled, [data-state="success"], .wird-item.is-complete .wird-complete-button, .task-item.done .task-check, .zikr-button:disabled) { color: var(--dawn-primary) !important; }
+.page :is(.favorite-button[aria-pressed="true"], .zikr-favorite-button[aria-pressed="true"], .mosque-favorite-button[aria-pressed="true"]) {
+  color: var(--dawn-accent-ink) !important;
+  border-color: var(--dawn-accent) !important;
+  background: var(--dawn-accent-soft) !important;
+}
+
+/* الرأس وعناصر التنقل. */
+#page-home .main-header,
+.page:not(#page-home):not(#page-more) .plain-header,
+#page-more .more-page-header {
+  color: #FFFFFF !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary) !important;
+  box-shadow: var(--dawn-shadow) !important;
+}
+:root[data-theme="dark"] #page-home .main-header,
+:root[data-theme="dark"] .page:not(#page-home):not(#page-more) .plain-header,
+:root[data-theme="dark"] #page-more .more-page-header {
+  color: var(--dawn-text) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-card) !important;
+}
+#page-home .main-header :is(.home-brand, .plain-header .brand, .date-line, .date-line span, .home-greeting),
+.page:not(#page-home):not(#page-more) .plain-header :is(.brand, .date),
+#page-more .more-page-header :is(.brand, .date, .more-header-kicker, .more-header-mark) { color: #FFFFFF !important; }
+:root[data-theme="dark"] #page-home .main-header :is(.home-brand, .plain-header .brand, .date-line, .date-line span, .home-greeting),
+:root[data-theme="dark"] .page:not(#page-home):not(#page-more) .plain-header :is(.brand, .date),
+:root[data-theme="dark"] #page-more .more-page-header :is(.brand, .date, .more-header-kicker, .more-header-mark) { color: var(--dawn-text) !important; }
+.page .plain-header .back-button,
+#page-home :is(.theme-toggle, .notification-bell-button),
+#page-more .more-page-header .more-header-mark {
+  color: inherit !important;
+  border-color: color-mix(in srgb, currentColor 32%, transparent) !important;
+  background: color-mix(in srgb, currentColor 9%, transparent) !important;
+  box-shadow: none !important;
+}
+#page-home .theme-toggle,
+#page-home .notification-bell-button { color: #FFFFFF !important; }
+:root[data-theme="dark"] #page-home :is(.theme-toggle, .notification-bell-button) { color: var(--dawn-primary) !important; border-color: var(--dawn-border) !important; background: var(--dawn-surface-soft) !important; }
+#page-home .notification-badge { color: #FFFFFF !important; border-color: var(--dawn-primary) !important; }
+.page .section-title::before,
+.more-group-heading { border-color: var(--dawn-accent) !important; }
+.page .section-title::before { background: var(--dawn-accent) !important; }
+.bottom-nav {
+  color: var(--dawn-text) !important;
+  border-color: var(--dawn-border) !important;
+  background: rgba(255, 255, 255, .96) !important;
+  box-shadow: 0 6px 18px rgba(41, 45, 58, .08) !important;
+}
+.bottom-nav .nav-item { color: var(--dawn-muted) !important; }
+.bottom-nav .nav-item .nav-icon { color: var(--dawn-primary) !important; }
+.bottom-nav .nav-item.active,
+.bottom-nav .nav-item.active .nav-icon { color: #FFFFFF !important; background: var(--dawn-primary) !important; }
+:root[data-theme="dark"] .bottom-nav { color: var(--dawn-text) !important; border-color: var(--dawn-border) !important; background: rgba(34, 38, 50, .97) !important; }
+:root[data-theme="dark"] .bottom-nav .nav-item { color: var(--dawn-muted) !important; }
+:root[data-theme="dark"] .bottom-nav .nav-item .nav-icon { color: var(--dawn-primary) !important; }
+:root[data-theme="dark"] .bottom-nav .nav-item.active,
+:root[data-theme="dark"] .bottom-nav .nav-item.active .nav-icon { color: #171922 !important; background: var(--dawn-primary) !important; }
+
+/* البطاقات ذات الصور تبقى بصورها، مع طبقة قراءة بلون أزرق كحلي بدل البني/الذهبي. */
+#page-home .next-prayer,
+#page-tasks .daily-overview-card,
+#page-tasks .tasks-hero-card,
+#page-azkar .hisn-hero-card,
+#page-more .more-hero-card {
+  color: #FFFFFF !important;
+  border-color: rgba(229, 225, 235, .42) !important;
+}
+#page-home .next-prayer {
+  background-image: linear-gradient(105deg, rgba(23, 25, 34, .58), rgba(34, 38, 50, .42) 48%, rgba(23, 25, 34, .74)), url("../assets/prayer-hero.jpg") !important;
+}
+#page-tasks .daily-overview-card {
+  background-image: linear-gradient(105deg, rgba(23, 25, 34, .72), rgba(34, 38, 50, .46)), url("../assets/anyas-tasks-hero.jpg") !important;
+}
+#page-tasks .tasks-hero-card {
+  background-image: linear-gradient(105deg, rgba(23, 25, 34, .72), rgba(34, 38, 50, .46)), url("../assets/anyas-more-hero.jpg") !important;
+}
+#page-azkar .hisn-hero-card {
+  background-image: linear-gradient(105deg, rgba(23, 25, 34, .72), rgba(34, 38, 50, .46)), url("../assets/anyas-hisn-hero.jpg") !important;
+}
+#page-more .more-hero-card {
+  background-image: linear-gradient(105deg, rgba(23, 25, 34, .72), rgba(34, 38, 50, .46)), url("../assets/anyas-more-tools-hero.jpg") !important;
+}
+#page-home .daily-adhkar-card {
+  color: #FFFFFF !important;
+  border-color: rgba(229, 225, 235, .48) !important;
+  background-color: #222632 !important;
+  box-shadow: var(--dawn-shadow) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="awakening"],
+#page-home .daily-adhkar-card[data-adhkar-period="morning"],
+#page-home .daily-adhkar-card[data-adhkar-period="day"] {
+  background-image: linear-gradient(105deg, rgba(23, 25, 34, .76), rgba(34, 38, 50, .52)), url("../assets/adhkar-morning-card.jpg") !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="evening"] {
+  background-image: linear-gradient(105deg, rgba(23, 25, 34, .76), rgba(34, 38, 50, .52)), url("../assets/adhkar-evening-card.jpg") !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period="sleep"],
+#page-home .daily-adhkar-card[data-adhkar-period="sahar"] {
+  background-image: linear-gradient(105deg, rgba(23, 25, 34, .76), rgba(34, 38, 50, .52)), url("../assets/adhkar-sleep-card.jpg") !important;
+}
+#page-home .daily-adhkar-card::after { background: linear-gradient(105deg, rgba(23,25,34,.34), rgba(34,38,50,.18) 52%, rgba(23,25,34,.38)) !important; }
+#page-home .daily-adhkar-card :is(.daily-adhkar-title, .daily-adhkar-text, .daily-adhkar-eyebrow, .daily-adhkar-hint, .daily-adhkar-footer, .daily-adhkar-mark, .daily-adhkar-badge) { color: #FFFFFF !important; }
+#page-home .daily-adhkar-card :is(.daily-adhkar-mark, .daily-adhkar-badge) { border-color: rgba(229,225,235,.58) !important; background: rgba(34,38,50,.66) !important; }
+#page-home .daily-adhkar-card .daily-adhkar-text { border-inline-start-color: var(--dawn-secondary) !important; background: rgba(23,25,34,.46) !important; }
+#page-home .daily-adhkar-card .daily-adhkar-button { color: var(--dawn-action-ink) !important; background: var(--dawn-primary) !important; }
+#page-home .next-prayer :is(.next-label, .prayer-name, .prayer-time, .countdown),
+#page-tasks .daily-overview-card :is(.daily-overview-eyebrow, .daily-overview-message, .daily-overview-metrics span, .daily-overview-metrics strong),
+#page-tasks .tasks-hero-card :is(h1,h2,h3,p,span),
+#page-azkar .hisn-hero-card :is(h1,h2,h3,p,span),
+#page-more .more-hero-card :is(h1,h2,h3,p,span) { color: #FFFFFF !important; }
+#page-home .next-prayer .prayer-progress-bar { background: var(--dawn-secondary) !important; }
+#page-tasks .daily-overview-card .daily-overview-metrics strong,
+#page-azkar .hisn-hero-copy span,
+#page-tasks .tasks-hero-copy span,
+#page-more .more-hero-copy span { color: #D8CDEB !important; }
+
+/* تدرجات ونجاحات قديمة خضراء/ذهبية تصبح تلميحات هادئة من اللوحة الجديدة. */
+.page :is(.about-hero, .audio-library-intro, .notifications-overview, .daily-prayer-card, .daily-overview-card:not([style*="background-image"]), .friday-feature-card, .wird-summary-card) {
+  border-color: var(--dawn-border) !important;
+  background-color: var(--dawn-card) !important;
+  background-image: none !important;
+}
+.page :is(.about-detail-list li, .permission-accordion, .permission-status, .notification-history-status.unread, .wird-playlist-picker, .wird-playlist-saved-card, .wird-section-toggle > span:last-child, .tasks-tasbeeh-open, .tasks-tasbeeh-icon) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background-color: var(--dawn-primary-soft) !important;
+}
+.page :is(.about-detail-list a, .about-version, .notification-history-icon, .nearby-mosque-title, .upcoming-label, .prayer-city-chip, .tasks-section-index, .report-stat-number, .more-header-mark) { color: var(--dawn-primary) !important; }
+.page :is(.wird-playlist-action.primary, .preview-button[aria-pressed="true"], .nav-item.active) { color: var(--dawn-action-ink) !important; background: var(--dawn-primary) !important; }
+.page :is(.wird-playlist-status, .friday-feature-eyebrow, .friday-feature-meta, .friday-tasks-eyebrow, #fridayTasksStatus, #wirdProgressText, #tasksTasbeehGoal, #azkarFridayText) { color: var(--dawn-muted) !important; }
+.page :is(.wird-playlist-manager, .wird-playlist-draft-row, .wird-playlist-saved-card, .wird-session-note, .wird-session-source) { color: var(--dawn-text) !important; border-color: var(--dawn-border) !important; background-color: var(--dawn-surface-soft) !important; }
+
+/* يستخدم اللون الوردي الترابي كلمسة/حالة صغيرة فقط. */
+.page :is(.daily-adhkar-mark, .friday-task-check, .privacy-mark, .notification-history-status, .about-coming-soon) { accent-color: var(--dawn-accent); }
+.pwa-status-banner { color: var(--dawn-text) !important; border-color: var(--dawn-border) !important; background: var(--dawn-secondary-soft) !important; }
+.skip-link:focus { color: var(--dawn-action-ink) !important; background: var(--dawn-primary) !important; }
+.update-banner { color: var(--dawn-text) !important; border-color: var(--dawn-border) !important; background: var(--dawn-card) !important; }
+
+
+/* استثناءات مكونات خاصة ظهرت في تدقيق التباين على الهاتف. */
+:root { --dawn-muted-readable: #696B79; }
+:root[data-theme="dark"] { --dawn-muted-readable: #B6B5C4; }
+.page :is(.setting-description, .track-status, .prayer-title, .reference, .more-menu-copy small, .notification-history-copy p, .notification-history-time, .offline-capabilities-list, .about-description, .empty-state, .hint, .helper-text, .daily-adhkar-eyebrow, .daily-adhkar-hint, .wird-playlist-intro, .wird-playlist-hint, .wird-playlist-count-wrap, .wird-session-note, .wird-session-source, .audio-library-heading p, .audio-library-intro-copy span, .audio-volume-copy small, .audio-volume-status, .audio-volume-scale, .audio-test-help) {
+  color: var(--dawn-muted-readable) !important;
+}
+.page :is(.home-prayer-progress) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-card) !important;
+}
+#page-home .next-prayer .prayer-city-chip {
+  color: #FFFFFF !important;
+  border-color: rgba(229, 225, 235, .72) !important;
+  background: rgba(23, 25, 34, .78) !important;
+}
+.page :is(.mosque-icon, .prayer-city-icon) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary-soft) !important;
+}
+
+/* إدارة الورد ومكونات الأذكار: إزالة بقايا ألوان الذهب القديمة من كل الحالات. */
+.page :is(.wird-playlist-manager, .wird-playlist-picker, .wird-playlist-pick-row, .wird-playlist-draft-row, .wird-playlist-saved-card, .wird-session-extra-controls) {
+  color: var(--dawn-text) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-surface-soft) !important;
+  box-shadow: none !important;
+}
+.page :is(.wird-playlist-manager > summary, .wird-playlist-form label, .wird-playlist-draft-heading, .wird-playlist-pick-copy, .wird-playlist-saved-card strong, .wird-session-extra-controls button) {
+  color: var(--dawn-primary) !important;
+}
+.page :is(.wird-playlist-form input[type="text"], .wird-playlist-form select, .wird-playlist-count-wrap input) {
+  color: var(--dawn-text) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-card) !important;
+}
+.page :is(.wird-playlist-action, .wird-playlist-mini) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary-soft) !important;
+}
+.page :is(.wird-playlist-action.primary) { color: var(--dawn-action-ink) !important; border-color: transparent !important; background: var(--dawn-primary) !important; }
+:root[data-theme="dark"] .page :is(.wird-playlist-action.primary) { color: #171922 !important; }
+.page :is(.wird-playlist-action.danger, .wird-playlist-mini.danger) { color: #8B454F !important; border-color: #D7AAB1 !important; background: #F8EEF0 !important; }
+:root[data-theme="dark"] .page :is(.wird-playlist-action.danger, .wird-playlist-mini.danger) { color: #F0B9C2 !important; border-color: #8F626D !important; background: #382932 !important; }
+.page :is(.wird-playlist-manager, .wird-session-extra-controls) :is(button, input, select):focus-visible { outline-color: var(--dawn-primary) !important; }
+
+/* لوحة الصوت: سطح بارد هادئ مع الاحتفاظ بعناصر التحكم نفسها. */
+.page .master-audio-volume-control {
+  color: var(--dawn-text) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-card) !important;
+  box-shadow: var(--dawn-shadow) !important;
+}
+.page .audio-volume-header,
+.page .audio-volume-copy strong { color: var(--dawn-text) !important; }
+.page :is(.audio-volume-icon, .audio-test-heading-icon, .audio-test-button-icon, .audio-category-icon, .audio-library-intro-icon) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary-soft) !important;
+}
+.page .master-audio-volume-control output,
+.page .audio-mute-toggle {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary-soft) !important;
+}
+.page .audio-mute-toggle[aria-pressed="true"] { color: var(--dawn-action-ink) !important; background: var(--dawn-primary) !important; }
+:root[data-theme="dark"] .page .audio-mute-toggle[aria-pressed="true"] { color: #171922 !important; }
+.page .master-audio-volume-control input[type="range"] { accent-color: var(--dawn-primary) !important; }
+.page .master-audio-volume-control input[type="range"]::-webkit-slider-thumb { border-color: var(--dawn-card) !important; background: var(--dawn-primary) !important; }
+.page .master-audio-volume-control input[type="range"]::-moz-range-thumb { border-color: var(--dawn-card) !important; background: var(--dawn-primary) !important; }
+.page :is(.audio-category-icon.prayer, .audio-category-icon.adhkar, #testAdhkarButton .audio-test-button-icon, #testNotificationButton .audio-test-button-icon) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary-soft) !important;
+}
+
+/* أزرار الرجوع والبحث وشارة الخصوصية تحافظ على تباين كافٍ في الوضع الداكن. */
+:root[data-theme="dark"] body .page:not(#page-home):not(#page-more) .plain-header .back-button {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary-soft) !important;
+}
+#page-city-picker .city-search-row button { color: #FFFFFF !important; border-color: transparent !important; background: var(--dawn-primary) !important; }
+:root[data-theme="dark"] #page-city-picker .city-search-row button { color: #171922 !important; }
+:root[data-theme="dark"] .privacy-mark { color: var(--dawn-primary) !important; border-color: var(--dawn-border) !important; background: var(--dawn-primary-soft) !important; }
+#page-home .notification-bell-icon { stroke: currentColor !important; }
+
+
+/* اجعل الاسم التوافقي للنص الثانوي يختار الدرجة المقروءة وفق الخلفية. */
+:root { --muted: var(--dawn-muted-readable); }
+:root[data-theme="dark"] { --muted: var(--dawn-muted-readable); }
+:root[data-theme="dark"] body.dark-mode { --muted: var(--dawn-muted-readable); }
+
+
+/* ملخص اليوم ومؤشرات الإنجاز على صورة الخلفية الموجودة: نصوص فاتحة ولمسات باردة. */
+#page-tasks .daily-overview-card {
+  color: #FFFFFF !important;
+  border-color: rgba(229, 225, 235, .48) !important;
+}
+#page-tasks .daily-overview-card::before { background: var(--dawn-secondary) !important; }
+#page-tasks .daily-overview-card :is(.daily-overview-eyebrow, h2, .daily-overview-score, .daily-overview-message, .daily-overview-metrics strong, .daily-overview-focus, .wird-summary-heading) { color: #FFFFFF !important; }
+#page-tasks .daily-overview-card .daily-overview-metrics span,
+#page-tasks .daily-overview-card #wirdProgressText { color: #D8CDEB !important; }
+#page-tasks .daily-overview-progress,
+#page-tasks .daily-overview-card .wird-progress-track { background: rgba(229, 225, 235, .28) !important; }
+#page-tasks .daily-overview-progress span,
+#page-tasks .daily-overview-card #wirdProgressBar { background: var(--dawn-secondary) !important; }
+#page-tasks .daily-overview-metrics > div {
+  color: #FFFFFF !important;
+  border-color: rgba(229, 225, 235, .42) !important;
+  background: rgba(34, 38, 50, .74) !important;
+}
+#page-tasks .daily-overview-card .wird-summary-card {
+  color: #FFFFFF !important;
+  border-color: rgba(229, 225, 235, .42) !important;
+  background: rgba(34, 38, 50, .82) !important;
+  box-shadow: none !important;
+}
+#page-tasks .tasks-tasbeeh-card,
+#page-tasks .friday-tasks-card {
+  color: var(--dawn-text) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-card) !important;
+  background-image: none !important;
+  box-shadow: var(--dawn-shadow) !important;
+}
+#page-tasks .tasks-tasbeeh-card::before { background: var(--dawn-accent) !important; }
+#page-tasks .tasks-tasbeeh-card :is(.tasks-tasbeeh-title-wrap > div:last-child > span, .tasks-tasbeeh-count-row span, #tasksTasbeehGoal, .friday-tasks-eyebrow, .friday-tasks-heading p, .friday-task-item small, .friday-answer-hour small) { color: var(--dawn-muted-readable) !important; }
+#page-tasks .tasks-tasbeeh-card :is(h2, .tasks-tasbeeh-dhikr, .tasks-tasbeeh-count-row strong, .friday-tasks-heading h2, .friday-task-item, .friday-answer-hour) { color: var(--dawn-text) !important; }
+#page-tasks .tasks-tasbeeh-progress,
+#page-tasks .friday-tasks-progress { border-color: var(--dawn-border) !important; background: var(--dawn-primary-soft) !important; }
+#page-tasks .tasks-tasbeeh-progress span,
+#page-tasks .wird-progress-track > div,
+#page-tasks .friday-tasks-progress > span { background: var(--dawn-primary) !important; }
+#page-tasks .wird-section-toggle {
+  color: var(--dawn-text) !important;
+  border-inline-start-color: var(--dawn-accent) !important;
+  background: var(--dawn-surface-soft) !important;
+  background-image: none !important;
+}
+#page-tasks .wird-section-toggle > span:last-child { color: var(--dawn-primary) !important; border-color: var(--dawn-border) !important; background: var(--dawn-primary-soft) !important; }
+#page-tasks .wird-section-meta { color: var(--dawn-primary) !important; border-color: var(--dawn-border) !important; background: var(--dawn-card) !important; }
+#page-tasks .wird-complete-button { color: var(--dawn-action-ink) !important; border-color: transparent !important; background: var(--dawn-primary) !important; }
+:root[data-theme="dark"] #page-tasks .wird-complete-button { color: #171922 !important; }
+#page-tasks .wird-item.is-complete .wird-complete-button { color: var(--dawn-primary) !important; border-color: var(--dawn-border) !important; background: var(--dawn-primary-soft) !important; }
+#page-tasks :is(.tasks-section-index, .friday-task-icon, .friday-task-check) { color: var(--dawn-primary) !important; border-color: var(--dawn-border) !important; background: var(--dawn-primary-soft) !important; }
+
+/* لا تبقى مؤشرات التقدم أو التبويبات بلون ذهبي ثابت. */
+.page :is(.prayer-progress-track, .wird-progress-track, .tasks-tasbeeh-progress, .daily-overview-progress, .report-progress-track, .progress-track) { background-color: var(--dawn-surface-soft) !important; }
+.page :is(.prayer-progress-track > div, .prayer-progress-bar, .wird-progress-track > div, .tasks-tasbeeh-progress > span, .report-progress-track > div, .progress-track > span) { background-color: var(--dawn-primary) !important; }
+.page :is(.home-compact-tab:not(.active), .report-range-tab:not(.active), .schedule-tab:not(.active), .notification-filter-button:not([aria-pressed="true"])) {
+  color: var(--dawn-muted-readable) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-surface-soft) !important;
+}
+.page :is(.home-compact-tab.active, .report-range-tab.active, .schedule-tab.active, .notification-filter-button[aria-pressed="true"]) { color: var(--dawn-action-ink) !important; border-color: transparent !important; background: var(--dawn-primary) !important; }
+:root[data-theme="dark"] .page :is(.home-compact-tab.active, .report-range-tab.active, .schedule-tab.active, .notification-filter-button[aria-pressed="true"]) { color: #171922 !important; }
+
+
+/* تصحيحات أولوية لقواعد المشاهد الليلية القديمة ذات المحددات الأعلى. */
+body #page-home .daily-adhkar-card[data-adhkar-period] {
+  color: #FFFFFF !important;
+  border-color: rgba(229, 225, 235, .58) !important;
+  box-shadow: var(--dawn-shadow) !important;
+}
+body #page-home .daily-adhkar-card[data-adhkar-period="morning"] { background-image: linear-gradient(105deg, rgba(23,25,34,.78), rgba(34,38,50,.58)), url("../assets/adhkar-morning-card.jpg") !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period="evening"] { background-image: linear-gradient(105deg, rgba(23,25,34,.78), rgba(34,38,50,.58)), url("../assets/adhkar-evening-card.jpg") !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period="sleep"],
+body #page-home .daily-adhkar-card[data-adhkar-period="sahar"] { background-image: linear-gradient(105deg, rgba(23,25,34,.78), rgba(34,38,50,.58)), url("../assets/adhkar-sleep-card.jpg") !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period]::before { background: linear-gradient(var(--dawn-secondary), var(--dawn-accent)) !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period]::after { background: linear-gradient(105deg, rgba(23,25,34,.42), rgba(34,38,50,.28) 52%, rgba(23,25,34,.48)) !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-title, .daily-adhkar-text, .daily-adhkar-eyebrow, .daily-adhkar-hint, .daily-adhkar-footer) { color: #FFFFFF !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-text { border-inline-start-color: var(--dawn-secondary) !important; background: rgba(23,25,34,.62) !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-mark, .daily-adhkar-badge) { color: #FFFFFF !important; border-color: rgba(229,225,235,.64) !important; background: rgba(34,38,50,.78) !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button { color: #FFFFFF !important; background: var(--dawn-primary) !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] {
+  color: var(--dawn-text) !important;
+  border-color: var(--dawn-border) !important;
+}
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period="morning"] { background-image: linear-gradient(105deg, rgba(23,25,34,.78), rgba(34,38,50,.58)), url("../assets/adhkar-morning-card.jpg") !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period="evening"] { background-image: linear-gradient(105deg, rgba(23,25,34,.78), rgba(34,38,50,.58)), url("../assets/adhkar-evening-card.jpg") !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period="sleep"],
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period="sahar"] { background-image: linear-gradient(105deg, rgba(23,25,34,.78), rgba(34,38,50,.58)), url("../assets/adhkar-sleep-card.jpg") !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period]::before { background: linear-gradient(var(--dawn-secondary), var(--dawn-accent)) !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period]::after { background: linear-gradient(105deg, rgba(23,25,34,.42), rgba(34,38,50,.28) 52%, rgba(23,25,34,.48)) !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-text { border-inline-start-color: var(--dawn-secondary) !important; background: rgba(23,25,34,.62) !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-mark, .daily-adhkar-badge) { color: var(--dawn-secondary) !important; border-color: var(--dawn-border) !important; background: var(--dawn-surface-soft) !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button { color: #171922 !important; background: var(--dawn-primary) !important; }
+:root[data-theme="dark"] body #page-home .next-prayer .prayer-progress-bar,
+:root[data-theme="dark"] body #page-home #prayerProgressBar,
+:root[data-theme="dark"] body #page-home #todayPrayerProgressBar,
+:root[data-theme="dark"] body #page-home #wirdProgressBar {
+  background: var(--dawn-secondary) !important;
+  background-image: none !important;
+}
+#page-home .next-prayer { background-image: linear-gradient(105deg, rgba(23,25,34,.72), rgba(34,38,50,.56) 48%, rgba(23,25,34,.82)), url("../assets/prayer-hero.jpg") !important; }
+
+
+/* أيقونات صفحة المزيد تحتفظ بأشكال SVG الحالية، وتستبدل تلويناتها الخضراء/الذهبية. */
+body #page-more :is(.more-menu-icon, .more-header-mark) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-primary-soft) !important;
+}
+:root[data-theme="dark"] body #page-more :is(.more-menu-icon, .more-header-mark) {
+  color: var(--dawn-primary) !important;
+  border-color: var(--dawn-border) !important;
+  background: var(--dawn-surface-soft) !important;
+}
