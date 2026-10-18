@@ -120,8 +120,23 @@ check("coffee home header centers the brand and keeps accessible, responsive con
   assert.match(coffeeTheme, /home-header-settings \{[\s\S]*?right: 0/);
   assert.match(coffeeTheme, /--home-header-action-size: clamp\(44px, 12vw, 46px\)/);
   assert.match(coffeeTheme, /#page-home \.notification-bell-icon,[\s\S]*?home-header-settings-icon \{[\s\S]*?width: 20px; height: 20px/);
-  assert.match(index, /css\/coffee-theme\.css\?v=20261018-5/);
-  assert.match(serviceWorker, /coffee-theme\.css\?v=20261018-5/);
+  assert.match(index, /css\/coffee-theme\.css\?v=20261018-6/);
+  assert.match(serviceWorker, /coffee-theme\.css\?v=20261018-6/);
+});
+
+check("coffee prayer hero keeps readable cream and secondary text over its image", () => {
+  const coffeeTheme = read("css/coffee-theme.css");
+  assert.match(index, /class="next-prayer"[\s\S]*?id="openCityPickerButton"[\s\S]*?id="nextPrayerName"[\s\S]*?id="nextPrayerTime"[\s\S]*?id="countdown"/);
+  assert.match(coffeeTheme, /--coffee-hero-main: #F1E8DF/);
+  assert.match(coffeeTheme, /--coffee-hero-secondary: #D8C4B2/);
+  assert.match(coffeeTheme, /\.next-prayer \.countdown \{[\s\S]*?color: var\(--coffee-hero-secondary\) !important;[\s\S]*?background: rgba\(25, 22, 20, \.86\) !important/);
+  assert.match(coffeeTheme, /\.next-prayer \.prayer-city-chip \{[\s\S]*?color: var\(--coffee-hero-main\) !important;[\s\S]*?background: rgba\(25, 22, 20, \.86\) !important/);
+  assert.match(coffeeTheme, /#page-home \.next-prayer #prayerHeroCity \{[\s\S]*?color: var\(--coffee-hero-main\) !important/);
+  assert.match(coffeeTheme, /\.next-prayer \.prayer-state-note \{[\s\S]*?font-size: 11px !important/);
+  assert.match(coffeeTheme, /url\("\.\.\/assets\/prayer-hero\.jpg"\)/);
+  assert.match(read("js/app-enhancements.js"), /byId\("openCityPickerButton"\)/);
+  assert.match(index, /css\/coffee-theme\.css\?v=20261018-6/);
+  assert.match(serviceWorker, /coffee-theme\.css\?v=20261018-6/);
 });
 
 check("optional backgrounds follow morning, evening, and sleep periods", () => {

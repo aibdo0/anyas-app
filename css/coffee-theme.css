@@ -194,13 +194,22 @@ button, input, select, textarea { accent-color: var(--coffee-copper); }
 
 /* Egyptian sunset-and-mosque image is intentionally limited to the home prayer hero. */
 #page-home .next-prayer {
+  --coffee-hero-main: #F1E8DF;
+  --coffee-hero-secondary: #D8C4B2;
   color: #F1E8DF !important;
   border-color: #927362 !important;
   background-color: #29221E !important;
   background-image: linear-gradient(105deg, rgba(25, 22, 20, .82), rgba(25, 22, 20, .64) 55%, rgba(25, 22, 20, .78)), url("../assets/prayer-hero.jpg") !important;
   box-shadow: var(--coffee-shadow) !important;
 }
-#page-home .next-prayer :is(.next-label, .prayer-name, .prayer-time, .countdown, .prayer-city-chip, span, strong) { color: #F1E8DF !important; }
+#page-home .next-prayer :is(.next-label, .prayer-name, .prayer-time, .prayer-city-chip, span, strong) {
+  color: var(--coffee-hero-main) !important;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, .58);
+}
+#page-home .next-prayer :is(.countdown, .prayer-state-note) {
+  color: var(--coffee-hero-secondary) !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, .58);
+}
 #page-home .next-prayer .prayer-progress-bar,
 #page-home #prayerProgressBar,
 #page-home #todayPrayerProgressBar { background: #B58B70 !important; }
@@ -420,7 +429,8 @@ body #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button { co
 
 /* Dark-mode hero, state, and button rules have legacy selectors with extra weight. */
 :root[data-theme="dark"] body #page-home .next-prayer { color: var(--coffee-ink) !important; border-color: var(--coffee-secondary) !important; background-color: var(--coffee-surface) !important; background-image: linear-gradient(105deg, rgba(25, 22, 20, .82), rgba(25, 22, 20, .64) 55%, rgba(25, 22, 20, .78)), url("../assets/prayer-hero.jpg") !important; }
-:root[data-theme="dark"] body #page-home .next-prayer :is(.next-label, .prayer-name, .prayer-time, .countdown, .prayer-city-chip, span, strong) { color: var(--coffee-ink) !important; }
+:root[data-theme="dark"] body #page-home .next-prayer :is(.next-label, .prayer-name, .prayer-time, .prayer-city-chip, span, strong) { color: var(--coffee-hero-main) !important; }
+:root[data-theme="dark"] body #page-home .next-prayer :is(.countdown, .prayer-state-note) { color: var(--coffee-hero-secondary) !important; }
 :root[data-theme="dark"] body #page-home .next-prayer .prayer-progress-bar,
 :root[data-theme="dark"] body #page-home #prayerProgressBar,
 :root[data-theme="dark"] body #page-home #todayPrayerProgressBar,
@@ -508,9 +518,27 @@ body #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button { co
 .page :is(.prayer-progress-track, .wird-progress-track, .daily-overview-progress, .report-progress-track, .progress-track) { background-color: var(--coffee-surface-soft) !important; }
 .page :is(.prayer-progress-track > div, .prayer-progress-bar, .wird-progress-track > div, .daily-overview-progress span, .report-progress-track > div, .progress-track > span) { background-color: var(--coffee-copper) !important; }
 .page :is(.notification-badge) { color: var(--coffee-action-ink) !important; border-color: var(--coffee-surface) !important; background: var(--coffee-copper) !important; }
-#page-home .next-prayer .prayer-city-chip,
-#page-home .next-prayer .countdown { color: var(--coffee-ink) !important; border-color: var(--coffee-border) !important; background: rgba(25, 22, 20, .72) !important; }
-#page-home .next-prayer .prayer-city-chip { color: #F1E8DF !important; }
+#page-home .next-prayer .prayer-city-chip {
+  color: var(--coffee-hero-main) !important;
+  border-color: rgba(216, 196, 178, .76) !important;
+  background: rgba(25, 22, 20, .86) !important;
+}
+#page-home .next-prayer #prayerHeroCity {
+  color: var(--coffee-hero-main) !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, .58);
+}
+#page-home .next-prayer .countdown {
+  color: var(--coffee-hero-secondary) !important;
+  border-color: rgba(216, 196, 178, .42) !important;
+  background: rgba(25, 22, 20, .86) !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, .58);
+}
+#page-home .next-prayer .prayer-state-note {
+  color: var(--coffee-hero-secondary) !important;
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, .58);
+}
 #page-home .next-prayer .prayer-progress { background: rgba(241, 232, 223, .28) !important; }
 :root[data-theme="dark"] .bottom-nav {
   color: var(--coffee-ink) !important;
@@ -524,8 +552,6 @@ body #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button { co
   background-color: var(--coffee-surface-soft) !important;
   background-image: none !important;
 }
-:root[data-theme="dark"] #page-home .next-prayer :is(.prayer-city-chip, .countdown) { color: var(--coffee-ink) !important; border-color: var(--coffee-border) !important; background: rgba(25, 22, 20, .72) !important; }
-:root[data-theme="dark"] #page-home .next-prayer .prayer-city-chip { color: #F1E8DF !important; }
 :root[data-theme="dark"] #page-home .next-prayer .prayer-progress { background: rgba(241, 232, 223, .28) !important; }
 :root[data-theme="dark"] #page-home .notification-badge { color: var(--coffee-action-ink) !important; border-color: var(--coffee-surface) !important; background: var(--coffee-copper) !important;}
 
