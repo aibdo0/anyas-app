@@ -111,6 +111,19 @@ check("homepage redesign is responsive and keeps existing tabs and shortcuts", (
   assert.match(homeDesign, /prefers-reduced-motion/);
 });
 
+check("coffee home header centers the brand and keeps accessible, responsive controls", () => {
+  const coffeeTheme = read("css/coffee-theme.css");
+  const toolbar = index.match(/<div class="home-header-toolbar">([\s\S]*?)<\/div>\s*<div class="home-header-meta">/)?.[1] || "";
+  assert.match(toolbar, /class="theme-toggle"[\s\S]*?class="notification-bell-button"[\s\S]*?class="home-brand"[\s\S]*?class="home-header-settings"[^>]*data-more-go="settings"/);
+  assert.match(coffeeTheme, /home-header-left-actions \{[\s\S]*?left: 0;[\s\S]*?gap: clamp\(3px, 1vw, 5px\)/);
+  assert.match(coffeeTheme, /home-brand \{[\s\S]*?left: 50%[\s\S]*?transform: translate\(-50%, -50%\)/);
+  assert.match(coffeeTheme, /home-header-settings \{[\s\S]*?right: 0/);
+  assert.match(coffeeTheme, /--home-header-action-size: clamp\(44px, 12vw, 46px\)/);
+  assert.match(coffeeTheme, /#page-home \.notification-bell-icon,[\s\S]*?home-header-settings-icon \{[\s\S]*?width: 20px; height: 20px/);
+  assert.match(index, /css\/coffee-theme\.css\?v=20261018-5/);
+  assert.match(serviceWorker, /coffee-theme\.css\?v=20261018-5/);
+});
+
 check("optional backgrounds follow morning, evening, and sleep periods", () => {
   const palette = read("css/palette-warm-gold.css");
   const backgrounds = read("css/app-background.css");
