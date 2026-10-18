@@ -65,7 +65,7 @@
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/dawn-mist-theme.css?v=20261017-3">
-<link rel="stylesheet" href="css/coffee-theme.css?v=20261018-2">
+<link rel="stylesheet" href="css/coffee-theme.css?v=20261018-4">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -126,29 +126,41 @@
 
 <main class="page active" id="page-home">
 
-<header class="main-header">
+<header class="main-header home-main-header">
+  <div class="home-header-toolbar">
+    <div class="home-header-left-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
+        <span id="themeToggleIcon" aria-hidden="true">☾</span>
+      </button>
+      <button class="notification-bell-button" id="notificationBellButton" type="button" aria-label="الإشعارات" title="الإشعارات">
+        <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+        </svg>
+        <span class="notification-badge" id="notificationBadge" aria-live="polite" hidden>0</span>
+      </button>
+    </div>
 
-<div class="home-greeting" id="homeGreeting">السلام عليكم</div>
+    <div class="home-brand">أنياس</div>
 
-<div class="home-brand">أنياس <span class="home-prayer-progress" id="homePrayerProgressBadge" aria-live="polite" aria-label="الصلوات اليوم ٠ من ٥">الصلوات اليوم ٠/٥</span></div>
+    <button class="home-header-settings" id="homeSettingsButton" type="button" data-more-go="settings" aria-label="الإعدادات" title="الإعدادات">
+      <svg class="home-header-settings-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.827 2.37 2.37a1.724 1.724 0 0 0 1.065 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.827 3.31-2.37 2.37a1.724 1.724 0 0 0-2.573 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.827-2.37-2.37a1.724 1.724 0 0 0-1.065-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.827-3.31 2.37-2.37a1.724 1.724 0 0 0 2.573-1.065z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+    </button>
+  </div>
 
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
-  <span id="themeToggleIcon" aria-hidden="true">☾</span>
-</button>
-
-<button class="notification-bell-button" id="notificationBellButton" type="button" aria-label="الإشعارات" title="الإشعارات">
-  <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-    <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
-  </svg>
-  <span class="notification-badge" id="notificationBadge" aria-live="polite" hidden>0</span>
-</button>
-
-<div class="date-line">
-<span id="todayHijri">--</span>
-<span class="date-separator">•</span>
-<span id="todayDate">اليوم</span>
-</div>
-
+  <div class="home-header-meta">
+    <div class="home-header-meta-summary">
+      <div class="home-greeting" id="homeGreeting">السلام عليكم</div>
+      <span class="home-prayer-progress" id="homePrayerProgressBadge" aria-live="polite" aria-label="الصلوات اليوم ٠ من ٥">الصلوات اليوم ٠/٥</span>
+    </div>
+    <div class="date-line">
+      <span id="todayHijri">--</span>
+      <span class="date-separator">•</span>
+      <span id="todayDate">اليوم</span>
+    </div>
+  </div>
 </header>
 
 

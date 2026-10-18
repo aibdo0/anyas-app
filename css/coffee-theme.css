@@ -547,3 +547,89 @@ body #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button { co
   background: var(--coffee-surface) !important;
   background-image: none !important;
 }
+
+/* هيدر رئيسية مختصر: الاسم في مركز الشاشة، مع الحفاظ على جرس الإشعارات والمعلومات الحالية. */
+:root[data-theme] #page-home .main-header.home-main-header {
+  position: relative !important; display: flex !important; flex-direction: column !important; align-items: stretch !important;
+  gap: 0 !important; min-height: 0 !important; height: auto !important; margin: 0 0 10px !important;
+  padding: 7px 11px 6px !important; border: 1px solid #40352F !important; border-radius: 16px !important;
+  color: #F1E8DF !important; background: #191614 !important; background-image: none !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .18) !important; text-align: initial !important;
+}
+:root[data-theme] #page-home .home-header-toolbar {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 44px; min-height: 44px; direction: ltr;
+}
+:root[data-theme] #page-home .home-header-left-actions {
+  position: absolute; top: 50%; left: 0; right: auto; z-index: 2;
+  display: flex; align-items: center; gap: 2px; direction: ltr; transform: translateY(-50%);
+}
+:root[data-theme] #page-home .home-header-left-actions :is(.theme-toggle, .notification-bell-button),
+:root[data-theme] #page-home .home-header-settings {
+  display: grid !important; place-items: center !important; box-sizing: border-box !important;
+  width: 44px !important; min-width: 44px !important; height: 44px !important; min-height: 44px !important;
+  margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 50% !important;
+  color: #B58B70 !important; background: transparent !important; box-shadow: none !important; cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+:root[data-theme] #page-home .home-header-left-actions .theme-toggle {
+  position: static !important; inset: auto !important; transform: none !important;
+}
+:root[data-theme] #page-home .home-header-left-actions .notification-bell-button {
+  position: relative !important; inset: auto !important; transform: none !important;
+}
+:root[data-theme] #page-home #themeToggleIcon {
+  display: grid; width: 22px !important; height: 22px !important; place-items: center;
+  color: #B58B70 !important; font-size: 22px !important; line-height: 1 !important;
+}
+:root[data-theme] #page-home .notification-bell-icon,
+:root[data-theme] #page-home .home-header-settings-icon {
+  display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+:root[data-theme] #page-home .main-header.home-main-header .home-brand {
+  position: absolute !important; top: 50% !important; left: 50% !important; right: auto !important;
+  display: block !important; width: max-content !important; max-width: calc(100% - 150px);
+  margin: 0 !important; padding: 0 !important; color: #F1E8DF !important;
+  font-family: "Tajawal", "Noto Kufi Arabic", Arial, sans-serif !important; font-size: 22px !important;
+  font-weight: 800 !important; line-height: 1.15 !important; letter-spacing: 0 !important; text-align: center !important;
+  white-space: nowrap; transform: translate(-50%, -50%) !important; pointer-events: none; z-index: 1;
+}
+:root[data-theme] #page-home .home-header-settings {
+  position: absolute !important; top: 50% !important; left: auto !important; right: 0 !important;
+  transform: translateY(-50%) !important; z-index: 2;
+}
+:root[data-theme] #page-home .home-header-left-actions :is(.theme-toggle, .notification-bell-button):hover,
+:root[data-theme] #page-home .home-header-settings:hover {
+  color: #D8C4B2 !important; background: rgba(181, 139, 112, .12) !important;
+}
+:root[data-theme] #page-home .home-header-left-actions :is(.theme-toggle, .notification-bell-button):focus-visible,
+:root[data-theme] #page-home .home-header-settings:focus-visible { outline: 2px solid #B58B70 !important; outline-offset: 2px; }
+:root[data-theme] #page-home .home-header-meta {
+  display: flex !important; flex-direction: column !important; gap: 1px !important;
+  width: 100%; margin: 0 !important; padding: 0 !important;
+}
+:root[data-theme] #page-home .home-header-meta-summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 14px;
+}
+:root[data-theme] #page-home .main-header.home-main-header .home-header-meta .home-greeting {
+  display: block !important; width: auto !important; margin: 0 !important; padding: 0 !important;
+  color: #B6A69A !important; font-size: 9px !important; font-weight: 600 !important; line-height: 1.2 !important;
+}
+:root[data-theme] #page-home .main-header.home-main-header .home-header-meta .home-prayer-progress {
+  display: inline-flex !important; align-items: center; justify-content: center; min-height: 14px !important; height: 14px;
+  margin: 0 !important; padding: 0 6px !important; border: 1px solid #40352F !important; border-radius: 999px !important;
+  color: #B58B70 !important; background: transparent !important; font-size: 9px !important;
+  font-weight: 600 !important; line-height: 1 !important; white-space: nowrap;
+}
+:root[data-theme] #page-home .main-header.home-main-header .home-header-meta .date-line {
+  display: flex !important; align-items: center; justify-content: center !important; flex-wrap: nowrap !important;
+  gap: 4px !important; width: 100% !important; min-height: 12px; margin: 0 !important; padding: 0 !important;
+  border: 0 !important; color: #B6A69A !important; font-size: 9px !important; font-weight: 500 !important; line-height: 1.15 !important;
+}
+:root[data-theme] #page-home .main-header.home-main-header .home-header-meta .date-line > span { color: #B6A69A !important; }
+@media (max-width: 360px) { :root[data-theme] #page-home .main-header.home-main-header .home-brand { font-size: 20px !important; } }
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme] #page-home .home-header-left-actions :is(.theme-toggle, .notification-bell-button),
+  :root[data-theme] #page-home .home-header-settings { transition: none; }
+}
