@@ -1,0 +1,471 @@
+/*
+ * Coffee color system for Anyas.
+ * Central palette tokens are shared across every page; light mode uses the same
+ * palette in an inverted, readable surface/text arrangement.
+ */
+:root {
+  color-scheme: light;
+  --coffee-page: #D8C4B2;
+  --coffee-surface: #F1E8DF;
+  --coffee-surface-soft: #B6A69A;
+  --coffee-primary: #6F5143;
+  --coffee-secondary: #927362;
+  --coffee-copper: #B58B70;
+  --coffee-pale: #D8C4B2;
+  --coffee-ink: #191614;
+  --coffee-muted: #40352F;
+  --coffee-border: #927362;
+  --coffee-action: #6F5143;
+  --coffee-action-ink: #F1E8DF;
+  --coffee-shadow: 0 8px 22px rgba(25, 22, 20, .12);
+
+  /* Compatibility tokens used by existing components and page styles. */
+  --dawn-primary: var(--coffee-action);
+  --dawn-secondary: var(--coffee-secondary);
+  --dawn-page: var(--coffee-page);
+  --dawn-card: var(--coffee-surface);
+  --dawn-text: var(--coffee-ink);
+  --dawn-muted: var(--coffee-muted);
+  --dawn-muted-readable: var(--coffee-muted);
+  --dawn-accent: var(--coffee-copper);
+  --dawn-border: var(--coffee-border);
+  --dawn-surface-soft: var(--coffee-surface-soft);
+  --dawn-primary-soft: var(--coffee-surface-soft);
+  --dawn-secondary-soft: var(--coffee-surface-soft);
+  --dawn-accent-soft: var(--coffee-surface-soft);
+  --dawn-accent-ink: var(--coffee-primary);
+  --dawn-action-ink: var(--coffee-action-ink);
+  --dawn-shadow: var(--coffee-shadow);
+  --page: var(--coffee-page);
+  --surface: var(--coffee-surface);
+  --surface-soft: var(--coffee-surface-soft);
+  --ink: var(--coffee-ink);
+  --muted: var(--coffee-muted);
+  --line: var(--coffee-border);
+  --gold-dark: var(--coffee-primary);
+  --gold-light: var(--coffee-secondary);
+  --gold-pale: var(--coffee-surface-soft);
+  --gold: var(--coffee-copper);
+  --action-bg: var(--coffee-action);
+  --action-ink: var(--coffee-action-ink);
+  --background: var(--coffee-page);
+  --bg: var(--coffee-page);
+  --card: var(--coffee-surface);
+  --text: var(--coffee-ink);
+  --border: var(--coffee-border);
+  --primary: var(--coffee-primary);
+  --primary-dark: var(--coffee-primary);
+  --accent: var(--coffee-copper);
+  --success: var(--coffee-secondary);
+  --shadow: var(--coffee-shadow);
+  --shadow-sm: var(--coffee-shadow);
+  --ania-hero-1: var(--coffee-primary);
+  --ania-hero-2: var(--coffee-secondary);
+  --ania-hero-accent: var(--coffee-copper);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --coffee-page: #191614;
+  --coffee-surface: #29221E;
+  --coffee-surface-soft: #40352F;
+  --coffee-ink: #F1E8DF;
+  --coffee-muted: #B6A69A;
+  --coffee-border: #40352F;
+  --coffee-action: #B58B70;
+  --coffee-action-ink: #191614;
+  --coffee-shadow: 0 10px 26px rgba(0, 0, 0, .24);
+
+  --dawn-primary: var(--coffee-copper);
+  --dawn-text: var(--coffee-ink);
+  --dawn-muted: var(--coffee-muted);
+  --dawn-muted-readable: var(--coffee-muted);
+  --dawn-border: var(--coffee-border);
+  --dawn-surface-soft: var(--coffee-surface-soft);
+  --dawn-primary-soft: var(--coffee-surface-soft);
+  --dawn-secondary-soft: var(--coffee-surface-soft);
+  --dawn-accent-soft: var(--coffee-surface-soft);
+  --dawn-accent-ink: var(--coffee-pale);
+  --dawn-action-ink: var(--coffee-action-ink);
+  --dawn-shadow: var(--coffee-shadow);
+  --page: var(--coffee-page);
+  --surface: var(--coffee-surface);
+  --surface-soft: var(--coffee-surface-soft);
+  --ink: var(--coffee-ink);
+  --muted: var(--coffee-muted);
+  --line: var(--coffee-border);
+  --gold-dark: var(--coffee-copper);
+  --gold-light: var(--coffee-secondary);
+  --gold-pale: var(--coffee-surface-soft);
+  --gold: var(--coffee-copper);
+  --action-bg: var(--coffee-action);
+  --action-ink: var(--coffee-action-ink);
+  --background: var(--coffee-page);
+  --bg: var(--coffee-page);
+  --card: var(--coffee-surface);
+  --text: var(--coffee-ink);
+  --border: var(--coffee-border);
+  --primary: var(--coffee-copper);
+  --primary-dark: var(--coffee-copper);
+  --accent: var(--coffee-copper);
+  --success: var(--coffee-copper);
+  --shadow: var(--coffee-shadow);
+  --shadow-sm: var(--coffee-shadow);
+  --ania-hero-1: var(--coffee-surface);
+  --ania-hero-2: var(--coffee-surface-soft);
+  --ania-hero-accent: var(--coffee-copper);
+}
+
+:root[data-theme="dark"] body.dark-mode {
+  --page: var(--coffee-page);
+  --surface: var(--coffee-surface);
+  --surface-soft: var(--coffee-surface-soft);
+  --ink: var(--coffee-ink);
+  --muted: var(--coffee-muted);
+  --line: var(--coffee-border);
+  --gold-dark: var(--coffee-copper);
+  --gold-light: var(--coffee-secondary);
+  --gold-pale: var(--coffee-surface-soft);
+  --gold: var(--coffee-copper);
+  --action-bg: var(--coffee-action);
+  --action-ink: var(--coffee-action-ink);
+  --background: var(--coffee-page);
+  --bg: var(--coffee-page);
+  --card: var(--coffee-surface);
+  --text: var(--coffee-ink);
+  --border: var(--coffee-border);
+  --primary: var(--coffee-copper);
+  --primary-dark: var(--coffee-copper);
+  --accent: var(--coffee-copper);
+  --success: var(--coffee-copper);
+  --shadow: var(--coffee-shadow);
+  --shadow-sm: var(--coffee-shadow);
+}
+
+html,
+body,
+body.dark-mode {
+  color: var(--coffee-ink) !important;
+  background-color: var(--coffee-page) !important;
+  background-image: none !important;
+}
+body { color-scheme: inherit; }
+.page { color: var(--coffee-ink) !important; background: transparent !important; }
+button, input, select, textarea { accent-color: var(--coffee-copper); }
+
+/* All standard content surfaces share the coffee card tone; no photo under text. */
+:root :is(#page-home, #page-azkar, #page-azkar-detail, #page-tasks, #page-prayer-report, #page-prayer-schedule, #page-qibla, #page-settings, #page-more, #page-about, #page-privacy, #page-notifications, #page-city-picker, #page-mosques, #page-tasbeeh, #page-worship) :is(.card, [class*="-card"], .content-block, .upcoming-card, .prayer-section, .prayer-row, .prayer-track-item, .task-item, .category-card, .zikr-card, .more-menu-item, .settings-section, .setting-row, .muezzin-row, .notification-history-item, .notification-empty, .wird-section, .wird-item, .wird-summary-card, .friday-task-item, .azkar-period-card, .azkar-priority-section, .azkar-friday-card, .permission-accordion, .mosque-result, .schedule-row, .schedule-month-row, .city-result, .report-stat-card, .about-action, .offline-status-card, .quick-action, .tasbeeh-preset) {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background-color: var(--coffee-surface) !important;
+  background-image: none !important;
+  box-shadow: var(--coffee-shadow) !important;
+}
+:root :is(#page-home, #page-azkar, #page-azkar-detail, #page-tasks, #page-prayer-report, #page-prayer-schedule, #page-qibla, #page-settings, #page-more, #page-about, #page-privacy, #page-notifications, #page-city-picker, #page-mosques, #page-tasbeeh, #page-worship) :is(.settings-section-toggle, .settings-section-title, .permission-accordion, .wird-session-note, .wird-session-source, .wird-playlist-manager, .wird-playlist-picker, .wird-playlist-draft-row, .wird-playlist-saved-card, .wird-session-extra-controls, .notification-empty) {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background-color: var(--coffee-surface-soft) !important;
+  background-image: none !important;
+}
+
+/* Plain page headers, with a consistent dark mocha surface. */
+#page-home .main-header,
+.page:not(#page-home):not(#page-more) .plain-header,
+#page-more .more-page-header {
+  color: #F1E8DF !important;
+  border-color: #40352F !important;
+  background: linear-gradient(135deg, #6F5143, #40352F) !important;
+  box-shadow: var(--coffee-shadow) !important;
+}
+#page-home .main-header :is(.home-brand, .brand, .date-line, .date-line span, .home-greeting),
+.page:not(#page-home):not(#page-more) .plain-header :is(.brand, .date),
+#page-more .more-page-header :is(.brand, .date, .more-header-kicker, .more-header-mark) {
+  color: #F1E8DF !important;
+}
+#page-home .theme-toggle,
+#page-home .notification-bell-button,
+.page .plain-header .back-button,
+#page-more .more-page-header .more-header-mark {
+  color: var(--coffee-copper) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface) !important;
+  box-shadow: none !important;
+}
+
+/* Egyptian sunset-and-mosque image is intentionally limited to the home prayer hero. */
+#page-home .next-prayer {
+  color: #F1E8DF !important;
+  border-color: #927362 !important;
+  background-color: #29221E !important;
+  background-image: linear-gradient(105deg, rgba(25, 22, 20, .82), rgba(25, 22, 20, .64) 55%, rgba(25, 22, 20, .78)), url("../assets/prayer-hero.jpg") !important;
+  box-shadow: var(--coffee-shadow) !important;
+}
+#page-home .next-prayer :is(.next-label, .prayer-name, .prayer-time, .countdown, .prayer-city-chip, span, strong) { color: #F1E8DF !important; }
+#page-home .next-prayer .prayer-progress-bar,
+#page-home #prayerProgressBar,
+#page-home #todayPrayerProgressBar { background: #B58B70 !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface) !important;
+  background-image: none !important;
+  box-shadow: var(--coffee-shadow) !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-title, .daily-adhkar-text, .daily-adhkar-eyebrow, .daily-adhkar-hint, .daily-adhkar-footer) { color: var(--coffee-ink) !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-mark, .daily-adhkar-badge) { color: var(--coffee-primary) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface-soft) !important; }
+#page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-text { border-inline-start-color: var(--coffee-copper) !important; background: transparent !important; }
+
+/* Text and links use cream in dark mode and deep coffee in light mode. */
+:root :is(#page-home, #page-azkar, #page-azkar-detail, #page-tasks, #page-prayer-report, #page-prayer-schedule, #page-qibla, #page-settings, #page-more, #page-about, #page-privacy, #page-notifications, #page-city-picker, #page-mosques, #page-tasbeeh, #page-worship) :is(h1, h2, h3, h4, p, span, small, strong, label, li, summary, .section-title, .card-title, .prayer-value, .task-arrow, .setting-title, .settings-section-title, .about-card h2, .about-hero h2, .more-menu-copy strong, .brand, .date) {
+  color: var(--coffee-ink) !important;
+}
+:root :is(#page-home, #page-azkar, #page-azkar-detail, #page-tasks, #page-prayer-report, #page-prayer-schedule, #page-qibla, #page-settings, #page-more, #page-about, #page-privacy, #page-notifications, #page-city-picker, #page-mosques, #page-tasbeeh, #page-worship) :is(.setting-description, .track-status, .prayer-title, .reference, .more-menu-copy small, .notification-history-copy p, .notification-history-time, .offline-capabilities-list, .about-description, .empty-state, .hint, .helper-text, .daily-adhkar-eyebrow, .daily-adhkar-hint, .wird-playlist-intro, .wird-playlist-hint, .audio-library-heading p, .audio-volume-copy small, .audio-volume-status, .audio-test-help, .date) {
+  color: var(--coffee-muted) !important;
+}
+:root :is(#page-home, #page-azkar, #page-azkar-detail, #page-tasks, #page-prayer-report, #page-prayer-schedule, #page-qibla, #page-settings, #page-more, #page-about, #page-privacy, #page-notifications, #page-city-picker, #page-mosques, #page-tasbeeh, #page-worship) a:not([class*="button"]):not(.nav-item) { color: var(--coffee-primary) !important; }
+:root[data-theme="dark"] :is(#page-home, #page-azkar, #page-azkar-detail, #page-tasks, #page-prayer-report, #page-prayer-schedule, #page-qibla, #page-settings, #page-more, #page-about, #page-privacy, #page-notifications, #page-city-picker, #page-mosques, #page-tasbeeh, #page-worship) a:not([class*="button"]):not(.nav-item) { color: var(--coffee-copper) !important; }
+.page svg { color: inherit; }
+.page :is(.quick-icon, .nearby-mosque-icon, .notification-history-icon, .notifications-overview-icon, .more-menu-icon, .audio-test-button-icon, .azkar-friday-icon, .friday-task-icon, .tasks-tasbeeh-icon, .mosque-icon, .prayer-city-icon) {
+  color: var(--coffee-secondary) !important;
+  border-color: var(--coffee-border) !important;
+  background-color: var(--coffee-surface-soft) !important;
+}
+:root[data-theme="dark"] .page :is(.quick-icon, .nearby-mosque-icon, .notification-history-icon, .notifications-overview-icon, .more-menu-icon, .audio-test-button-icon, .azkar-friday-icon, .friday-task-icon, .tasks-tasbeeh-icon, .mosque-icon, .prayer-city-icon) { color: var(--coffee-copper) !important; }
+
+/* Copper is reserved for primary actions and concise state indicators. */
+.page :is(.daily-adhkar-button, .friday-feature-button, .qibla-start-button, .adhan-button, .tasbeeh-main-button, .tasks-tasbeeh-button, #tasksTasbeehIncrement, .permission-enable-button, .permission-settings-button, .setting-action-button:not(.danger-action-button), .small-action-button, #saveManualPrayerSettings, .zikr-button:not(:disabled), .azkar-session-open-button, .home-button:not(.secondary), .audio-apply-button, .schedule-tab.active, .report-range-tab.active, .azkar-count-button:not(:disabled), .secondary-action, .pwa-status-banner button, .update-banner button:not(.dismiss-update)) {
+  color: var(--coffee-action-ink) !important;
+  border-color: transparent !important;
+  background: var(--coffee-action) !important;
+  box-shadow: none !important;
+}
+.page :is(.back-button, .more-button, .prayer-adjust-button, .preview-button, .audio-test-button, .traveler-back-button, .qibla-back-button, .tasbeeh-reset-button, .notification-manage-button, .wird-playlist-action, .wird-playlist-mini, .task-action-button, .secondary-action-button) {
+  color: var(--coffee-primary) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface-soft) !important;
+  box-shadow: none !important;
+}
+:root[data-theme="dark"] .page :is(.back-button, .more-button, .prayer-adjust-button, .preview-button, .audio-test-button, .traveler-back-button, .qibla-back-button, .tasbeeh-reset-button, .notification-manage-button, .wird-playlist-action, .wird-playlist-mini, .task-action-button, .secondary-action-button) { color: var(--coffee-pale) !important; }
+.page :is(.danger-action-button, .audio-delete-button, #clearOptionalAudioButton) {
+  color: var(--coffee-primary) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface-soft) !important;
+}
+:root[data-theme="dark"] .page :is(.danger-action-button, .audio-delete-button, #clearOptionalAudioButton) { color: var(--coffee-pale) !important; }
+.page :is(.permission-status.is-enabled, .status-success, .success-state, .is-enabled, [data-state="success"], .wird-item.is-complete .wird-complete-button, .task-item.done .task-check, .zikr-button:disabled, .favorite-button[aria-pressed="true"], .zikr-favorite-button[aria-pressed="true"], .mosque-favorite-button[aria-pressed="true"]) {
+  color: var(--coffee-primary) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface-soft) !important;
+}
+:root[data-theme="dark"] .page :is(.permission-status.is-enabled, .status-success, .success-state, .is-enabled, [data-state="success"], .wird-item.is-complete .wird-complete-button, .task-item.done .task-check, .zikr-button:disabled, .favorite-button[aria-pressed="true"], .zikr-favorite-button[aria-pressed="true"], .mosque-favorite-button[aria-pressed="true"]) { color: var(--coffee-pale) !important; }
+:root :is(#page-home, #page-tasks, #page-azkar, #page-azkar-detail, #page-qibla, #page-settings, #page-more, #page-about, #page-privacy, #page-notifications, #page-city-picker, #page-mosques, #page-prayer-report, #page-prayer-schedule, #page-tasbeeh, #page-worship) :is(.task-item[data-complete="true"], .prayer-row.next, .prayer-track-item.completed, .wird-item.is-complete, .wird-section.is-complete, .friday-task-item.is-complete, .azkar-item.done, .nav-item.active) {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-copper) !important;
+  background: var(--coffee-surface-soft) !important;
+}
+:root[data-theme="dark"] :is(#page-home, #page-tasks, #page-azkar, #page-azkar-detail, #page-qibla, #page-settings, #page-more, #page-about, #page-privacy, #page-notifications, #page-city-picker, #page-mosques, #page-prayer-report, #page-prayer-schedule, #page-tasbeeh, #page-worship) :is(.task-item[data-complete="true"], .prayer-row.next, .prayer-track-item.completed, .wird-item.is-complete, .wird-section.is-complete, .friday-task-item.is-complete, .azkar-item.done, .nav-item.active) {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-copper) !important;
+  background: var(--coffee-copper) !important;
+}
+
+/* Navigation, controls, focus, and modal surfaces. */
+.bottom-nav {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface) !important;
+  box-shadow: var(--coffee-shadow) !important;
+}
+.bottom-nav .nav-item { color: var(--coffee-muted) !important; }
+.bottom-nav .nav-item .nav-icon { color: var(--coffee-secondary) !important; }
+.bottom-nav .nav-item.active,
+.bottom-nav .nav-item.active .nav-icon { color: var(--coffee-action-ink) !important; background: var(--coffee-action) !important; }
+:root[data-theme="dark"] .bottom-nav .nav-item { color: var(--coffee-muted) !important; }
+:root[data-theme="dark"] .bottom-nav .nav-item .nav-icon { color: var(--coffee-copper) !important; }
+.page :is(input, select, textarea) {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface) !important;
+}
+.page :is(input, textarea)::placeholder { color: var(--coffee-muted) !important; opacity: 1; }
+.page :is(input, select, textarea):focus-visible,
+button:focus-visible,
+.page :is(button, [tabindex]):focus-visible,
+.skip-link:focus {
+  outline: 3px solid var(--coffee-copper) !important;
+  outline-offset: 3px;
+}
+.first-run-card { color: var(--coffee-ink) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface) !important; }
+.first-run-card :is(h1, h2, p, strong, small, .first-run-description) { color: var(--coffee-ink) !important; }
+.first-run-card :is(.first-run-kicker, .first-run-brand-name, .first-run-feature-icon) { color: var(--coffee-primary) !important; }
+.pwa-status-banner,
+.update-banner { color: var(--coffee-ink) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface) !important; }
+.skip-link:focus { color: var(--coffee-action-ink) !important; background: var(--coffee-action) !important; }
+
+
+/* Priority tie-breakers for legacy !important rules retained for compatibility. */
+:root[data-theme="dark"] #page-home .main-header,
+:root[data-theme="dark"] .page:not(#page-home):not(#page-more) .plain-header,
+:root[data-theme="dark"] #page-more .more-page-header {
+  color: #F1E8DF !important;
+  border-color: #40352F !important;
+  background: linear-gradient(135deg, #6F5143, #40352F) !important;
+}
+:root[data-theme="dark"] #page-home .main-header :is(.home-brand, .brand, .date-line, .date-line span, .home-greeting),
+:root[data-theme="dark"] .page:not(#page-home):not(#page-more) .plain-header :is(.brand, .date),
+:root[data-theme="dark"] #page-more .more-page-header :is(.brand, .date, .more-header-kicker, .more-header-mark) { color: #F1E8DF !important; }
+:root[data-theme="dark"] #page-home :is(.theme-toggle, .notification-bell-button) { color: var(--coffee-copper) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface) !important; }
+:root[data-theme="dark"] body .page:not(#page-home):not(#page-more) .plain-header .back-button { color: var(--coffee-copper) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface-soft) !important; }
+
+body #page-home .daily-adhkar-card[data-adhkar-period] {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface) !important;
+  background-image: none !important;
+}
+body #page-home .daily-adhkar-card[data-adhkar-period]::before,
+body #page-home .daily-adhkar-card[data-adhkar-period]::after { background: none !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-title, .daily-adhkar-text, .daily-adhkar-eyebrow, .daily-adhkar-hint, .daily-adhkar-footer) { color: var(--coffee-ink) !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-mark, .daily-adhkar-badge) { color: var(--coffee-primary) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface-soft) !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-text { border-inline-start-color: var(--coffee-copper) !important; background: transparent !important; }
+body #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button { color: var(--coffee-action-ink) !important; background: var(--coffee-action) !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background-color: var(--coffee-surface) !important;
+  background-image: none !important;
+}
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-title, .daily-adhkar-text, .daily-adhkar-eyebrow, .daily-adhkar-hint, .daily-adhkar-footer) { color: var(--coffee-ink) !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-mark, .daily-adhkar-badge) { color: var(--coffee-pale) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface-soft) !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-text { border-inline-start-color: var(--coffee-copper) !important; background: transparent !important; }
+:root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button { color: var(--coffee-action-ink) !important; background: var(--coffee-action) !important; }
+
+/* Dark-mode hero, state, and button rules have legacy selectors with extra weight. */
+:root[data-theme="dark"] body #page-home .next-prayer { color: var(--coffee-ink) !important; border-color: var(--coffee-secondary) !important; background-color: var(--coffee-surface) !important; background-image: linear-gradient(105deg, rgba(25, 22, 20, .82), rgba(25, 22, 20, .64) 55%, rgba(25, 22, 20, .78)), url("../assets/prayer-hero.jpg") !important; }
+:root[data-theme="dark"] body #page-home .next-prayer :is(.next-label, .prayer-name, .prayer-time, .countdown, .prayer-city-chip, span, strong) { color: var(--coffee-ink) !important; }
+:root[data-theme="dark"] body #page-home .next-prayer .prayer-progress-bar,
+:root[data-theme="dark"] body #page-home #prayerProgressBar,
+:root[data-theme="dark"] body #page-home #todayPrayerProgressBar,
+:root[data-theme="dark"] body #page-home #wirdProgressBar { background: var(--coffee-copper) !important; background-image: none !important; }
+:root[data-theme="dark"] body :is(#page-tasks, #page-azkar, #page-more, #page-settings, #page-qibla, #page-about, #page-notifications, #page-prayer-report, #page-prayer-schedule, #page-city-picker, #page-mosques, #page-tasbeeh, #page-worship) [class*="-card"] { background-image: none !important; }
+:root[data-theme="dark"] body :is(#page-tasks, #page-azkar, #page-more, #page-settings, #page-qibla, #page-about, #page-notifications, #page-prayer-report, #page-prayer-schedule, #page-city-picker, #page-mosques, #page-tasbeeh, #page-worship) [class*="-card"] :is(h1, h2, h3, h4, p, span, small, strong, label, li) { color: var(--coffee-ink) !important; }
+:root[data-theme="dark"] .page :is(.daily-adhkar-button, .friday-feature-button, .qibla-start-button, .adhan-button, .tasbeeh-main-button, .tasks-tasbeeh-button, #tasksTasbeehIncrement, .permission-enable-button, .permission-settings-button, .setting-action-button:not(.danger-action-button), .small-action-button, #saveManualPrayerSettings, .zikr-button:not(:disabled), .azkar-session-open-button, .home-button:not(.secondary), .audio-apply-button, .schedule-tab.active, .report-range-tab.active, .azkar-count-button:not(:disabled), .secondary-action) { color: var(--coffee-action-ink) !important; }
+:root[data-theme="dark"] .page :is(.wird-playlist-action.primary, .audio-mute-toggle[aria-pressed="true"], .wird-complete-button, .home-compact-tab.active, .notification-filter-button[aria-pressed="true"]) { color: var(--coffee-action-ink) !important; }
+:root[data-theme="dark"] .page :is(.wird-playlist-action.danger, .wird-playlist-mini.danger) { color: var(--coffee-pale) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface-soft) !important; }
+:root[data-theme="dark"] .bottom-nav .nav-item.active,
+:root[data-theme="dark"] .bottom-nav .nav-item.active .nav-icon { color: var(--coffee-action-ink) !important; background: var(--coffee-action) !important; }
+:root[data-theme="dark"] #page-city-picker .city-search-row button { color: var(--coffee-action-ink) !important; background: var(--coffee-action) !important; }
+
+
+/* Fill every legacy Dawn token in dark mode; older audio styles read these directly. */
+:root[data-theme="dark"],
+:root[data-theme="dark"] body.dark-mode {
+  --dawn-primary: var(--coffee-copper);
+  --dawn-secondary: var(--coffee-secondary);
+  --dawn-page: var(--coffee-page);
+  --dawn-card: var(--coffee-surface);
+  --dawn-text: var(--coffee-ink);
+  --dawn-muted: var(--coffee-muted);
+  --dawn-muted-readable: var(--coffee-muted);
+  --dawn-accent: var(--coffee-copper);
+  --dawn-border: var(--coffee-border);
+  --dawn-surface-soft: var(--coffee-surface-soft);
+  --dawn-primary-soft: var(--coffee-surface-soft);
+  --dawn-secondary-soft: var(--coffee-surface-soft);
+  --dawn-accent-soft: var(--coffee-surface-soft);
+  --dawn-accent-ink: var(--coffee-pale);
+  --dawn-action-ink: var(--coffee-action-ink);
+  --dawn-shadow: var(--coffee-shadow);
+}
+
+/* Switches and audio controls retain their behavior while using the same palette. */
+.page .switch-track {
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface-soft) !important;
+}
+.page .switch-knob { border-color: var(--coffee-border) !important; background: var(--coffee-secondary) !important; }
+.page .switch input:checked + .switch-track { border-color: var(--coffee-primary) !important; background: var(--coffee-primary) !important; }
+.page .switch input:checked ~ .switch-knob { background: var(--coffee-surface) !important; }
+:root[data-theme="dark"] .page .switch-track { background: var(--coffee-surface-soft) !important; }
+:root[data-theme="dark"] .page .switch-knob { background: var(--coffee-muted) !important; }
+:root[data-theme="dark"] .page .switch input:checked + .switch-track { border-color: var(--coffee-copper) !important; background: var(--coffee-copper) !important; }
+:root[data-theme="dark"] .page .switch input:checked ~ .switch-knob { background: var(--coffee-ink) !important; }
+.page :is(.audio-library-intro, .master-audio-volume-control, .audio-test-panel, .audio-library-summary, .audio-category-card, .audio-group-content, .audio-test-card) {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background-color: var(--coffee-surface) !important;
+  background-image: none !important;
+  box-shadow: var(--coffee-shadow) !important;
+}
+.page :is(.audio-library-intro-icon, .audio-volume-icon, .audio-test-heading-icon, .audio-test-button-icon, .audio-category-icon, .notification-settings-icon, .privacy-mark) {
+  color: var(--coffee-secondary) !important;
+  border-color: var(--coffee-border) !important;
+  background-color: var(--coffee-surface-soft) !important;
+}
+.page .master-audio-volume-control :is(output, .audio-mute-toggle) {
+  color: var(--coffee-primary) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface-soft) !important;
+}
+.page .master-audio-volume-control input[type="range"] { accent-color: var(--coffee-copper) !important; }
+.page .master-audio-volume-control input[type="range"]::-webkit-slider-runnable-track,
+.page .master-audio-volume-control input[type="range"]::-moz-range-track { background: var(--coffee-surface-soft) !important; }
+.page .master-audio-volume-control input[type="range"]::-webkit-slider-thumb,
+.page .master-audio-volume-control input[type="range"]::-moz-range-thumb { border-color: var(--coffee-surface) !important; background: var(--coffee-copper) !important; }
+:root[data-theme="dark"] .page :is(.audio-test-button-icon, .audio-category-icon, .audio-volume-icon, .audio-library-intro-icon, .notification-settings-icon, .privacy-mark) { color: var(--coffee-copper) !important; border-color: var(--coffee-border) !important; background-color: var(--coffee-surface-soft) !important; }
+:root[data-theme="dark"] .page :is(.audio-delete-button, .danger-action-button, #clearOptionalAudioButton, .wird-playlist-action.danger, .wird-playlist-mini.danger) {
+  color: var(--coffee-pale) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface-soft) !important;
+}
+
+
+/* Remaining state, report, and summary surfaces use only coffee palette tokens. */
+:root :is(#page-home, #page-tasks, #page-azkar, #page-azkar-detail, #page-qibla, #page-settings, #page-more, #page-about, #page-privacy, #page-notifications, #page-prayer-report, #page-prayer-schedule, #page-city-picker, #page-mosques, #page-tasbeeh, #page-worship) :is(.prayer-day-summary, .azkar-favorites-empty, .report-range-tabs, .report-stat, .worship-stats-highlight, .notification-empty-action, .daily-overview-metrics > div, .daily-overview-card .wird-summary-card, .friday-answer-hour, .friday-feature-badge, .azkar-friday-action, .homeFridayBadge, .prayer-progress-track, .wird-progress-track, .daily-overview-progress, .report-progress-track, .progress-track) {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background-color: var(--coffee-surface-soft) !important;
+  background-image: none !important;
+}
+.page :is(.prayer-progress-track, .wird-progress-track, .daily-overview-progress, .report-progress-track, .progress-track) { background-color: var(--coffee-surface-soft) !important; }
+.page :is(.prayer-progress-track > div, .prayer-progress-bar, .wird-progress-track > div, .daily-overview-progress span, .report-progress-track > div, .progress-track > span) { background-color: var(--coffee-copper) !important; }
+.page :is(.notification-badge) { color: var(--coffee-action-ink) !important; border-color: var(--coffee-surface) !important; background: var(--coffee-copper) !important; }
+#page-home .next-prayer .prayer-city-chip,
+#page-home .next-prayer .countdown { color: var(--coffee-ink) !important; border-color: var(--coffee-border) !important; background: rgba(25, 22, 20, .72) !important; }
+#page-home .next-prayer .prayer-city-chip { color: #F1E8DF !important; }
+#page-home .next-prayer .prayer-progress { background: rgba(241, 232, 223, .28) !important; }
+:root[data-theme="dark"] .bottom-nav {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface) !important;
+  box-shadow: var(--coffee-shadow) !important;
+}
+:root[data-theme="dark"] :is(#page-home, #page-tasks, #page-azkar, #page-azkar-detail, #page-qibla, #page-settings, #page-more, #page-about, #page-privacy, #page-notifications, #page-prayer-report, #page-prayer-schedule, #page-city-picker, #page-mosques, #page-tasbeeh, #page-worship) :is(.prayer-day-summary, .azkar-favorites-empty, .report-range-tabs, .report-stat, .worship-stats-highlight, .notification-empty-action, .daily-overview-metrics > div, .daily-overview-card .wird-summary-card, .friday-answer-hour, .friday-feature-badge, .azkar-friday-action, .homeFridayBadge, .prayer-progress-track, .wird-progress-track, .daily-overview-progress, .report-progress-track, .progress-track) {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background-color: var(--coffee-surface-soft) !important;
+  background-image: none !important;
+}
+:root[data-theme="dark"] #page-home .next-prayer :is(.prayer-city-chip, .countdown) { color: var(--coffee-ink) !important; border-color: var(--coffee-border) !important; background: rgba(25, 22, 20, .72) !important; }
+:root[data-theme="dark"] #page-home .next-prayer .prayer-city-chip { color: #F1E8DF !important; }
+:root[data-theme="dark"] #page-home .next-prayer .prayer-progress { background: rgba(241, 232, 223, .28) !important; }
+:root[data-theme="dark"] #page-home .notification-badge { color: var(--coffee-action-ink) !important; border-color: var(--coffee-surface) !important; background: var(--coffee-copper) !important;}
+
+
+/* Match legacy theme selectors that include body.dark-mode and page IDs. */
+:root[data-theme="dark"] body.dark-mode .bottom-nav {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface) !important;
+  box-shadow: var(--coffee-shadow) !important;
+}
+#azkarFridayAction { color: var(--coffee-ink) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface-soft) !important; }
+:root[data-theme="dark"] body.dark-mode #azkarFridayAction { color: var(--coffee-ink) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface-soft) !important; }
+:root[data-theme="dark"] body.dark-mode #page-settings .settings-section-title.settings-section-toggle,
+:root[data-theme="dark"] body.dark-mode #page-settings .audio-test-button,
+:root[data-theme="dark"] body.dark-mode #page-settings .audio-library-summary {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface) !important;
+  background-image: none !important;
+}
