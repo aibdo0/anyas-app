@@ -335,6 +335,84 @@ body #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-button { co
   background-color: var(--coffee-surface) !important;
   background-image: none !important;
 }
+
+/* The reading-session overlay is mounted under body, outside .page; theme it explicitly. */
+:root .wird-session-modal .wird-session-dialog {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface) !important;
+  background-image: none !important;
+  box-shadow: var(--coffee-shadow) !important;
+}
+:root .wird-session-modal .wird-session-backdrop { background: rgba(25, 22, 20, .76) !important; }
+:root .wird-session-modal .wird-session-close,
+:root .wird-session-modal .wird-session-audio-controls button,
+:root .wird-session-modal .wird-session-extra-controls button {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface-soft) !important;
+}
+:root .wird-session-modal :is(.wird-session-kicker, .wird-session-progress-row, .wird-session-rate-label, .wird-session-source, .wird-session-note, .wird-session-audio-note, .wird-session-skip) { color: var(--coffee-muted) !important; }
+:root .wird-session-modal .wird-session-progress-track { background: var(--coffee-surface-soft) !important; }
+:root .wird-session-modal .wird-session-progress-track span { background: var(--coffee-copper) !important; background-image: none !important; }
+:root .wird-session-modal .wird-session-card {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-pale) !important;
+  background-image: none !important;
+}
+:root .wird-session-modal .wird-session-text { color: var(--coffee-ink) !important; }
+:root .wird-session-modal .wird-session-count,
+:root .wird-session-modal .wird-session-rate-label output { color: var(--coffee-primary) !important; }
+:root .wird-session-modal .wird-session-audio {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface-soft) !important;
+}
+:root[data-theme="dark"] .wird-session-modal .wird-session-card { background: var(--coffee-surface-soft) !important; }
+:root[data-theme="dark"] .wird-session-modal .wird-session-count { color: var(--coffee-muted) !important; }
+:root[data-theme="dark"] .wird-session-modal .wird-session-rate-label output { color: var(--coffee-ink) !important; }
+:root .wird-session-modal .wird-session-audio-controls button:focus-visible,
+:root .wird-session-modal .wird-session-rate:focus-visible,
+:root .wird-session-modal .wird-session-extra-controls button:focus-visible { outline-color: var(--coffee-copper) !important; }
+:root .wird-session-modal :is(#wirdSessionRate, #wirdSessionVolume) { accent-color: var(--coffee-copper) !important; }
+:root .wird-session-modal :is(.wird-session-next, #wirdSessionPlayToggle),
+:root .page.azkar-page .azkar-session-open-button,
+:root .page .azkar-session-open-button {
+  color: var(--coffee-action-ink) !important;
+  border-color: var(--coffee-action) !important;
+  background: var(--coffee-action) !important;
+  background-image: none !important;
+}
+:root .wird-session-modal #wirdSessionPlayToggle { font-weight: 900; }
+
+/* Personal wird lists share the same tokens instead of retaining blue/gold surfaces. */
+:root .wird-playlist-manager,
+:root .wird-playlist-picker,
+:root .wird-playlist-pick-row,
+:root .wird-playlist-saved-card {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface) !important;
+  background-image: none !important;
+}
+:root .wird-playlist-manager :is(summary, .wird-playlist-intro, .wird-playlist-hint, .wird-playlist-form label, .wird-playlist-count-wrap, .wird-playlist-draft-heading, .wird-playlist-draft-row, .wird-playlist-saved-card strong, .wird-playlist-saved-card small, .wird-playlist-status) { color: var(--coffee-muted) !important; }
+:root .wird-playlist-manager :is(input, select) {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface-soft) !important;
+}
+:root .wird-playlist-manager :is(.wird-playlist-action, .wird-playlist-mini) {
+  color: var(--coffee-ink) !important;
+  border-color: var(--coffee-border) !important;
+  background: var(--coffee-surface-soft) !important;
+  background-image: none !important;
+}
+:root .wird-playlist-manager .wird-playlist-action.primary {
+  color: var(--coffee-action-ink) !important;
+  border-color: var(--coffee-action) !important;
+  background: var(--coffee-action) !important;
+}
 :root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-title, .daily-adhkar-text, .daily-adhkar-eyebrow, .daily-adhkar-hint, .daily-adhkar-footer) { color: var(--coffee-ink) !important; }
 :root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] :is(.daily-adhkar-mark, .daily-adhkar-badge) { color: var(--coffee-pale) !important; border-color: var(--coffee-border) !important; background: var(--coffee-surface-soft) !important; }
 :root[data-theme="dark"] body.dark-mode #page-home .daily-adhkar-card[data-adhkar-period] .daily-adhkar-text { border-inline-start-color: var(--coffee-copper) !important; background: transparent !important; }

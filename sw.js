@@ -1,4 +1,4 @@
-const CACHE_NAME = "anyas-shell-v1.3.4-coffee-20261018-1";
+const CACHE_NAME = "anyas-shell-v1.3.4-coffee-20261018-2";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -33,7 +33,7 @@ const CORE_ASSETS = [
   "./css/first-run-onboarding.css",
   "./css/privacy.css",
   "./css/dawn-mist-theme.css?v=20261017-3",
-  "./css/coffee-theme.css?v=20261018-1",
+  "./css/coffee-theme.css?v=20261018-2",
   "./data/app-version.js?v=20261016-2",
   "./data/en-ui-translations.json?v=20261017-1",
   "./js/i18n.js?v=20261016-1",
