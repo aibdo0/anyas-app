@@ -34,6 +34,7 @@ const PRAYER_DEFINITIONS = [
   }
 ];
 
+let latestPrayerTimesRequest = 0;
 
 // =====================================================
 // تحديد طريقة حساب مواقيت الصلاة
@@ -299,6 +300,7 @@ async function fetchCityName(
 // =====================================================
 
 async function loadPrayerTimes(latitude, longitude) {
+  const requestId = ++latestPrayerTimesRequest;
   const now = new Date();
   const day = String(now.getDate()).padStart(2, "0");
   const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -322,6 +324,8 @@ async function loadPrayerTimes(latitude, longitude) {
   };
 
   const applyTimings = rawTimings => {
+    if (requestId !== latestPrayerTimesRequest) return;
+    window.prayerTimingsDateKey = dateKey;
     window.originalPrayerTimings = { ...rawTimings };
     const timings = applyPrayerOffsetsToTimings(rawTimings);
     window.todayTimings = timings;
@@ -383,6 +387,7 @@ async function loadPrayerTimes(latitude, longitude) {
     const response = await (window.anyasFetch ? window.anyasFetch(url, {}, { timeoutMs: 9000, retries: 1 }) : fetch(url));
     if (!response.ok) throw new Error(`Aladhan HTTP ${response.status}`);
     const data = await response.json();
+    if (requestId !== latestPrayerTimesRequest) return;
     if (!data?.data?.timings) throw new Error("بيانات المواقيت غير متاحة");
     rawTimings = data.data.timings;
     try {
@@ -1269,6 +1274,17 @@ function updateCountdown() {
     return;
   }
 
+  const now = new Date();
+  const currentDateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  if (window.prayerTimingsDateKey !== currentDateKey) {
+    const location = window.lastKnownLocation;
+    if (location && Number.isFinite(Number(location.latitude)) && Number.isFinite(Number(location.longitude))) {
+      loadPrayerTimes(Number(location.latitude), Number(location.longitude));
+    } else {
+      detectLocationAndLoadTimes({ allowPrompt: false });
+    }
+    return;
+  }
 
   updateNextPrayer(
     window.todayTimings
@@ -1292,10 +1308,6 @@ function updateCountdown() {
   if (!nextPrayer) {
     return;
   }
-
-
-  const now =
-    new Date();
 
 
   const difference =
