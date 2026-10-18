@@ -1325,7 +1325,7 @@ function setupThemeAndLanguage() {
     if (themeToggleIcon) themeToggleIcon.textContent = isDark ? "☀" : "☾";
 
     if (themeColorMeta) {
-      themeColorMeta.setAttribute("content", isDark ? "#171922" : "#F5F3F8");
+      themeColorMeta.setAttribute("content", isDark ? "#191614" : "#D8C4B2");
     }
 
     themeChoices.forEach(choice => {
