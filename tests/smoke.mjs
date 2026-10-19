@@ -100,6 +100,7 @@ check("home header centers Anias branding and preserves accessible controls", ()
   assert.match(index, /class="home-brand-mark"/);
   assert.match(index, /id="themeToggle"/);
   assert.match(index, /id="notificationBellButton"/);
+  assert.match(index, /home-header-top[\s\S]*notificationBellButton[\s\S]*home-brand[\s\S]*themeToggle/);
   assert.match(read("css/app-design-system.css"), /home-header-top/);
   assert.match(read("css/app-design-system.css"), /home-brand \{/);
 });
