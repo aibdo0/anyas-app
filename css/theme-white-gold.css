@@ -1674,3 +1674,50 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   #page-home .prayer-section .prayer-row { min-height: 68px !important; }
   .bottom-nav { width: calc(100% - 20px) !important; }
 }
+
+
+/* =========================================================
+   صور الواجهة الرئيسية — أصول محلية واضحة مع تعتيم موضعي
+========================================================= */
+#page-home .next-prayer {
+  background-image: linear-gradient(106deg, rgba(13,11,9,.30), rgba(40,27,18,.12) 46%, rgba(16,13,10,.52)), url("../assets/prayer-hero.jpg") !important;
+  background-position: center 48% !important;
+  background-size: cover !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period] {
+  background-image: linear-gradient(90deg, rgba(8,17,29,.20), rgba(8,17,29,.56) 58%, rgba(8,17,29,.78)), url("../assets/anyas-hisn-hero.jpg") !important;
+  background-position: center right !important;
+  background-size: cover !important;
+}
+#page-home .daily-adhkar-card[data-adhkar-period]::after {
+  background-image: linear-gradient(90deg, rgba(10,18,30,.14), rgba(10,18,30,.34)), url("../assets/anyas-night-background.webp");
+  background-position: center top;
+  background-size: cover;
+  mix-blend-mode: screen;
+  opacity: .16;
+}
+#page-home #nearbyMosqueButton {
+  min-height: 116px;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 18px 20px;
+  border-color: rgba(223,188,111,.52) !important;
+  background-image: linear-gradient(90deg, rgba(12,15,20,.12), rgba(12,15,20,.72) 78%), url("../assets/anyas-tasks-hero.jpg") !important;
+  background-position: center center !important;
+  background-size: cover !important;
+}
+#page-home #nearbyMosqueButton .nearby-mosque-title { padding: 7px 11px; border: 1px solid rgba(237,202,126,.55); border-radius: 999px; color: #f5d991 !important; background: rgba(13,16,20,.55); }
+#page-home #openQiblaButton {
+  min-height: 116px;
+  border-color: rgba(223,188,111,.52) !important;
+  background-image: linear-gradient(90deg, rgba(12,12,14,.70), rgba(12,12,14,.18) 72%), url("../assets/anyas-more-tools-hero.jpg") !important;
+  background-position: center center !important;
+  background-size: cover !important;
+}
+#page-home #openQiblaButton .mosque-info { padding: 8px 11px; border: 1px solid rgba(237,202,126,.42); border-radius: 14px; background: rgba(13,16,20,.42); }
+#page-home #openQiblaButton .mosque-title { color: #f5d991 !important; }
+#page-home #openQiblaButton .mosque-description { color: rgba(255,247,226,.78); }
+@media (max-width: 680px) {
+  #page-home .daily-adhkar-card[data-adhkar-period] { background-position: 68% center !important; }
+  #page-home #nearbyMosqueButton, #page-home #openQiblaButton { min-height: 104px; }
+}

@@ -429,3 +429,29 @@ html[lang="en"] #page-home .home-brand { letter-spacing: 0; }
 @media (max-width: 420px) {
   #page-home .next-prayer { min-height: 238px !important; }
 }
+
+
+/* التجاوز النهائي لصورة الصلاة — يبقى بعد قواعد نظام التصميم المتأخرة */
+#page-home .next-prayer {
+  background-image: linear-gradient(106deg, rgba(13,11,9,.30), rgba(40,27,18,.12) 46%, rgba(16,13,10,.52)), url("../assets/prayer-hero.jpg") !important;
+  background-position: center 48% !important;
+  background-size: cover !important;
+}
+
+
+/* خلفية الأذكار النهائية — لا تعتمد على وجود data-adhkar-period */
+#page-home .daily-adhkar-card,
+#page-home .daily-adhkar-card[data-adhkar-period],
+:root[data-time-scene] #page-home .daily-adhkar-card,
+:root[data-theme="dark"] #page-home .daily-adhkar-card {
+  background-image: linear-gradient(90deg, rgba(8,17,29,.20), rgba(8,17,29,.56) 58%, rgba(8,17,29,.78)), url("../assets/anyas-hisn-hero.jpg") !important;
+  background-position: center right !important;
+  background-size: cover !important;
+}
+#page-home .daily-adhkar-card::after {
+  background-image: linear-gradient(90deg, rgba(10,18,30,.14), rgba(10,18,30,.34)), url("../assets/anyas-night-background.webp") !important;
+  background-position: center top;
+  background-size: cover;
+  mix-blend-mode: screen;
+  opacity: .16;
+}
