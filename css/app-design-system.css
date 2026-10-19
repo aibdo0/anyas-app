@@ -549,3 +549,60 @@ html[lang="en"] #page-home .home-brand { letter-spacing: 0; }
   #page-qibla .qibla-layout { grid-template-rows: 245px 1px auto; }
   #page-qibla .qibla-visual-panel { min-height: 245px; }
 }
+
+/* =========================================================
+   العد التنازلي لرمضان — كارت الصفحة الرئيسية
+========================================================= */
+#page-home .ramadan-countdown-card {
+  display: grid;
+  min-height: 238px;
+  grid-template-columns: minmax(190px, 38%) minmax(0, 1fr);
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(213,164,81,.8) !important;
+  border-radius: 24px;
+  color: #f5efe5;
+  background: linear-gradient(135deg, #24180f, #0f141d 82%) !important;
+  box-shadow: inset 0 0 0 1px rgba(241,209,138,.08), 0 15px 34px rgba(0,0,0,.24);
+  direction: ltr;
+}
+#page-home .ramadan-countdown-visual {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 19px;
+  background-image: linear-gradient(90deg, rgba(8,12,19,.08), rgba(8,12,19,.28)), url("../assets/anyas-night-background.webp");
+  background-position: center 28%;
+  background-size: cover;
+}
+#page-home .ramadan-countdown-visual::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 34px rgba(0,0,0,.22); pointer-events: none; }
+#page-home .ramadan-crescent { position: relative; z-index: 1; color: #f1d18a; font-size: 58px; line-height: .9; text-shadow: 0 3px 17px rgba(241,209,138,.32); }
+#page-home .ramadan-lantern { position: relative; z-index: 1; align-self: flex-end; color: #f1d18a; font-size: 31px; text-shadow: 0 0 16px rgba(241,209,138,.55); }
+#page-home .ramadan-countdown-content { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; padding: 22px 26px; direction: rtl; text-align: right; }
+#page-home .ramadan-countdown-content .upcoming-label { display: inline-flex; align-items: center; gap: 7px; color: #f1d18a; font-size: 13px; font-weight: 900; }
+#page-home .ramadan-label-icon { color: #d5a451; font-size: 17px; }
+#page-home .ramadan-countdown-content h2 { margin: 0; color: #f5efe5; font-size: clamp(22px, 3vw, 31px); font-weight: 900; line-height: 1.25; }
+#page-home .ramadan-countdown-subtitle { margin: 0; color: #b7afa4; font-size: 12px; line-height: 1.55; }
+#page-home .ramadan-countdown-units { display: grid; width: 100%; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; margin-top: 3px; direction: ltr; }
+#page-home .ramadan-countdown-unit { display: grid; min-width: 0; min-height: 65px; place-items: center; align-content: center; gap: 4px; padding: 7px 4px; border: 1px solid rgba(213,164,81,.48); border-radius: 12px; background: linear-gradient(145deg, rgba(53,35,22,.88), rgba(15,20,29,.92)); }
+#page-home .ramadan-countdown-unit strong { color: #f1d18a; font-size: clamp(20px, 3.4vw, 29px); font-variant-numeric: tabular-nums; line-height: 1; }
+#page-home .ramadan-countdown-unit span { color: #b7afa4; font-size: 10px; font-weight: 800; }
+#page-home .ramadan-countdown-note { margin: 0; color: rgba(245,239,229,.62); font-size: 10px; line-height: 1.55; }
+#page-home .ramadan-countdown-card .upcoming-text { margin: 0; color: rgba(241,209,138,.76); font-size: 10px; font-weight: 800; line-height: 1.5; }
+@media (max-width: 600px) {
+  #page-home .ramadan-countdown-card { min-height: 0; grid-template-columns: 1fr; grid-template-rows: 142px auto; }
+  #page-home .ramadan-countdown-visual { min-height: 142px; border-radius: 23px 23px 0 0; background-position: center 24%; }
+  #page-home .ramadan-crescent { font-size: 48px; }
+  #page-home .ramadan-countdown-content { padding: 19px 17px 20px; }
+  #page-home .ramadan-countdown-content h2 { font-size: 23px; }
+  #page-home .ramadan-countdown-unit { min-height: 62px; }
+}
+@media (max-width: 370px) {
+  #page-home .ramadan-countdown-content { padding-inline: 14px; }
+  #page-home .ramadan-countdown-units { gap: 4px; }
+  #page-home .ramadan-countdown-unit strong { font-size: 19px; }
+  #page-home .ramadan-countdown-unit span { font-size: 9px; }
+}

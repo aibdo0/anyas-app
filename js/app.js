@@ -814,19 +814,65 @@ function setupDailyDhikr() {
 // المناسبة القادمة
 // =====================================================
 
+function getNextHijriDateForCountdown(targetMonth, targetDay) {
+  if (typeof getHijriParts !== "function") return null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  for (let offset = 0; offset <= 400; offset += 1) {
+    const candidate = new Date(today);
+    candidate.setDate(today.getDate() + offset);
+    const hijri = getHijriParts(candidate);
+    if (hijri?.month === targetMonth && hijri?.day === targetDay) return candidate;
+  }
+  return null;
+}
+
+function formatRamadanCountdownNumber(value) {
+  return new Intl.NumberFormat("ar-EG", { useGrouping: false, minimumIntegerDigits: 2 }).format(value);
+}
+
+function updateRamadanHomeCountdown() {
+  const countdown = document.getElementById("ramadanHomeCountdown");
+  if (!countdown) return;
+  const target = getNextHijriDateForCountdown(9, 1);
+  const occasion = document.getElementById("upcomingOccasion");
+  if (!target) {
+    countdown.setAttribute("data-state", "unavailable");
+    countdown.querySelectorAll("strong").forEach(element => { element.textContent = "—"; });
+    if (occasion) occasion.textContent = "تعذر حساب الموعد وفق التقويم المتاح";
+    return;
+  }
+
+  const remainingSeconds = Math.max(0, Math.floor((target.getTime() - Date.now()) / 1000));
+  const days = Math.floor(remainingSeconds / 86400);
+  const hours = Math.floor((remainingSeconds % 86400) / 3600);
+  const minutes = Math.floor((remainingSeconds % 3600) / 60);
+  const seconds = remainingSeconds % 60;
+  const values = { ramadanHomeDays: days, ramadanHomeHours: hours, ramadanHomeMinutes: minutes, ramadanHomeSeconds: seconds };
+  Object.entries(values).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) element.textContent = formatRamadanCountdownNumber(value);
+  });
+  if (occasion) {
+    occasion.textContent = remainingSeconds === 0
+      ? "حلّ الموعد الحسابي لرمضان؛ يبقى ثبوت الهلال مرجعًا شرعيًا."
+      : `باقي ${new Intl.NumberFormat("ar-EG", { useGrouping: false }).format(days)} يوم على رمضان وفق الحساب الهجري`;
+  }
+}
+
 function setupUpcomingOccasion() {
-
   updateUpcomingOccasion();
-
-  setInterval(
-    updateUpcomingOccasion,
-    60 * 60 * 1000
-  );
-
+  const interval = document.getElementById("ramadanHomeCountdown") ? 1000 : 60 * 60 * 1000;
+  setInterval(updateUpcomingOccasion, interval);
 }
 
 
 function updateUpcomingOccasion() {
+
+  if (document.getElementById("ramadanHomeCountdown")) {
+    updateRamadanHomeCountdown();
+    return;
+  }
 
   const element =
     document.getElementById("upcomingOccasion");

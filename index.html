@@ -53,7 +53,7 @@
 <link rel="stylesheet" href="css/friday.css?v=20261003-2">
 <link rel="stylesheet" href="css/notification-settings.css?v=20261007-1">
 <link rel="stylesheet" href="css/more-page.css?v=20261007-2">
-<link rel="stylesheet" href="css/app-design-system.css?v=20261020-mosque-qibla-1">
+<link rel="stylesheet" href="css/app-design-system.css?v=20261020-ramadan-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 </head>
@@ -301,14 +301,27 @@
 
 <section class="section">
 
-<div class="upcoming-card">
+<div class="upcoming-card ramadan-countdown-card" aria-labelledby="ramadanHomeTitle">
 
-<div class="upcoming-label">
-القادم
+<div class="ramadan-countdown-visual" aria-hidden="true">
+  <span class="ramadan-crescent">☾</span>
+  <span class="ramadan-lantern">✦</span>
 </div>
 
-<div class="upcoming-text" id="upcomingOccasion">
-جاري حساب الموعد القادم...
+<div class="ramadan-countdown-content">
+  <div class="upcoming-label"><span class="ramadan-label-icon" aria-hidden="true">✦</span> القادم</div>
+  <h2 id="ramadanHomeTitle">العد التنازلي لرمضان</h2>
+  <p class="ramadan-countdown-subtitle">موعد حسابي متوقع وفق التقويم الهجري</p>
+
+  <div class="ramadan-countdown-units" id="ramadanHomeCountdown" aria-live="polite" aria-atomic="true">
+    <div class="ramadan-countdown-unit"><strong id="ramadanHomeDays">--</strong><span>يوم</span></div>
+    <div class="ramadan-countdown-unit"><strong id="ramadanHomeHours">--</strong><span>ساعة</span></div>
+    <div class="ramadan-countdown-unit"><strong id="ramadanHomeMinutes">--</strong><span>دقيقة</span></div>
+    <div class="ramadan-countdown-unit"><strong id="ramadanHomeSeconds">--</strong><span>ثانية</span></div>
+  </div>
+
+  <p class="ramadan-countdown-note">قد يختلف بدء رمضان بحسب ثبوت الهلال، ولا يُعد هذا التاريخ إعلانًا شرعيًا.</p>
+  <div class="upcoming-text" id="upcomingOccasion" role="status">جاري حساب الموعد القادم...</div>
 </div>
 
 </div>
