@@ -455,3 +455,97 @@ html[lang="en"] #page-home .home-brand { letter-spacing: 0; }
   mix-blend-mode: screen;
   opacity: .16;
 }
+
+
+/* =========================================================
+   أقرب مسجد واتجاه القبلة — تكوين أفقي فاخر ومتجاوب
+========================================================= */
+#page-home {
+  --mosque-card: #17181b;
+  --mosque-gold: #d5a451;
+  --mosque-gold-light: #f1d18a;
+  --mosque-cream: #f5efe5;
+  --mosque-muted: #b7afa4;
+}
+#page-home .nearby-mosque-card {
+  display: grid;
+  width: 100%;
+  min-height: 218px;
+  grid-template-columns: minmax(155px, 38%) 1px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(213,164,81,.78) !important;
+  border-radius: 24px;
+  color: var(--mosque-cream);
+  background: linear-gradient(135deg, #21170f, #11151d 78%) !important;
+  box-shadow: inset 0 0 0 1px rgba(241,209,138,.07), 0 14px 34px rgba(0,0,0,.22);
+  direction: ltr;
+  text-align: left;
+  touch-action: manipulation;
+}
+#page-home .nearby-mosque-card:focus-visible { outline: 2px solid var(--mosque-gold-light); outline-offset: 3px; }
+#page-home .nearby-mosque-visual { position: relative; display: flex; min-width: 0; align-items: flex-end; justify-content: flex-start; padding: 16px; background-image: linear-gradient(90deg, rgba(10,14,20,.06), rgba(10,14,20,.18)), url("../assets/anyas-tasks-hero.jpg"); background-position: 14% center; background-size: cover; }
+#page-home .nearby-mosque-visual::after { content: ""; position: absolute; inset: 0; border-radius: 23px 0 0 23px; box-shadow: inset 0 0 30px rgba(0,0,0,.16); pointer-events: none; }
+#page-home .nearby-mosque-distance { position: relative; z-index: 1; display: inline-flex; min-height: 29px; align-items: center; padding: 5px 10px; border: 1px solid rgba(241,209,138,.8); border-radius: 999px; color: var(--mosque-gold-light); background: rgba(11,17,27,.72); font-size: 12px; font-weight: 900; direction: rtl; }
+#page-home .nearby-mosque-divider { width: 1px; min-height: 100%; background: linear-gradient(transparent, rgba(213,164,81,.72) 18%, rgba(213,164,81,.72) 82%, transparent); }
+#page-home .nearby-mosque-info, #page-home .home-qibla-info { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; justify-content: center; gap: 9px; padding: 22px 24px; direction: rtl; text-align: right; }
+#page-home .nearby-mosque-heading { display: inline-flex; align-items: center; gap: 8px; color: var(--mosque-gold-light); font-size: 14px; font-weight: 900; }
+#page-home .nearby-mosque-icon { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid rgba(213,164,81,.62); border-radius: 10px; color: var(--mosque-gold-light); background: rgba(213,164,81,.1); font-size: 18px; line-height: 1; }
+#page-home .nearby-mosque-name { max-width: 100%; overflow: hidden; color: var(--mosque-cream); font-size: clamp(19px, 2.3vw, 28px); font-weight: 900; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+#page-home .nearby-mosque-address { max-width: 100%; color: var(--mosque-muted); font-size: 12px; line-height: 1.75; }
+#page-home .nearby-mosque-address::before { content: "⌖"; margin-inline-end: 6px; color: var(--mosque-gold); font-size: 15px; }
+#page-home .nearby-mosque-directions { display: inline-flex; min-width: 146px; min-height: 40px; align-items: center; justify-content: center; gap: 10px; margin-top: 2px; padding: 8px 15px; border: 1px solid rgba(213,164,81,.7); border-radius: 13px; color: var(--mosque-gold-light); background: linear-gradient(135deg, rgba(65,42,23,.92), rgba(31,24,19,.94)); box-shadow: inset 0 0 16px rgba(213,164,81,.05); font-size: 13px; font-weight: 900; }
+#page-home .nearby-mosque-directions span { color: var(--mosque-gold-light); font-size: 18px; line-height: 1; }
+#page-home .home-qibla-card { background: linear-gradient(135deg, #111a29, #11151d 82%) !important; }
+#page-home .home-qibla-visual { position: relative; display: grid; min-width: 0; min-height: 218px; place-items: center; padding: 20px; background-image: linear-gradient(90deg, rgba(11,17,27,.18), rgba(11,17,27,.5)), url("../assets/anyas-night-background.webp"); background-position: center 25%; background-size: cover; }
+#page-home .home-qibla-compass-ring { position: relative; display: grid; width: min(165px, 100%); aspect-ratio: 1; place-items: center; border: 1px solid rgba(213,164,81,.9); border-radius: 50%; background: repeating-conic-gradient(from 0deg, rgba(241,209,138,.72) 0 1deg, transparent 1deg 15deg), radial-gradient(circle, #141c29 0 48%, #0b111b 49% 55%, #332618 56% 59%, #0b111b 60%); box-shadow: inset 0 0 0 7px #101722, inset 0 0 0 9px rgba(213,164,81,.66), 0 0 0 1px rgba(241,209,138,.22), 0 12px 26px rgba(0,0,0,.3); }
+#page-home .home-qibla-mark { position: absolute; color: var(--mosque-gold-light); font-size: 11px; font-weight: 900; }
+#page-home .home-qibla-mark-n { top: 10%; } #page-home .home-qibla-mark-e { right: 10%; } #page-home .home-qibla-mark-s { bottom: 10%; } #page-home .home-qibla-mark-w { left: 10%; }
+#page-home .home-qibla-arrow { position: absolute; color: var(--mosque-gold-light); font-size: 50px; line-height: 1; transform-origin: 50% 50%; filter: drop-shadow(0 2px 5px rgba(0,0,0,.4)); }
+#page-home .home-qibla-center { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgba(241,209,138,.7); border-radius: 50%; color: var(--mosque-gold-light); background: #151a22; font-size: 14px; font-weight: 900; }
+#page-home .home-qibla-status { color: var(--mosque-cream); font-size: 18px; font-weight: 900; }
+#page-home .home-qibla-degree { color: var(--mosque-gold-light); font-size: clamp(28px, 4vw, 42px); font-variant-numeric: tabular-nums; line-height: 1; }
+#page-home .home-qibla-direction { color: var(--mosque-muted); font-size: 12px; line-height: 1.7; }
+#page-home .home-qibla-action { margin-top: 5px; }
+#page-qibla { background: #0b111b; }
+#page-qibla .qibla-card { min-height: 440px; padding: 0; overflow: hidden; border: 1px solid rgba(213,164,81,.78) !important; border-radius: 26px; color: #f5efe5; background: linear-gradient(135deg, rgba(11,17,27,.93), rgba(28,20,15,.88)), url("../assets/anyas-night-background.webp") center / cover !important; box-shadow: inset 0 0 0 1px rgba(241,209,138,.07), 0 16px 38px rgba(0,0,0,.3); }
+#page-qibla .qibla-layout { display: grid; min-height: 440px; grid-template-columns: minmax(280px, 40%) 1px minmax(0, 60%); direction: ltr; }
+#page-qibla .qibla-visual-panel { display: grid; min-width: 0; min-height: 440px; place-items: center; padding: 25px; border-right: 1px solid rgba(213,164,81,.72); background: radial-gradient(circle at center, rgba(213,164,81,.08), transparent 60%); }
+#page-qibla .qibla-details { display: flex; min-width: 0; grid-column: 3; flex-direction: column; align-items: flex-start; justify-content: center; gap: 12px; padding: 32px 38px; direction: rtl; text-align: right; }
+#page-qibla .qibla-heading { display: flex; align-items: center; gap: 10px; color: #f1d18a; }
+#page-qibla .qibla-heading h2 { margin: 0; color: #f1d18a; font-size: clamp(22px, 3vw, 32px); font-weight: 900; }
+#page-qibla .qibla-heading-icon { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid rgba(213,164,81,.68); border-radius: 12px; color: #f1d18a; background: rgba(213,164,81,.1); font-size: 21px; }
+#page-qibla .qibla-status { min-height: 30px; padding: 6px 12px; border-color: rgba(213,164,81,.45); color: #b7afa4; background: rgba(8,13,21,.55); }
+#page-qibla .qibla-prompt { margin: 7px 0 0; color: #f5efe5; font-size: 19px; font-weight: 900; }
+#page-qibla .qibla-accuracy { margin: 0; color: #b7afa4; background: rgba(8,13,21,.5); }
+#page-qibla .qibla-degree { margin: 4px 0 0; color: #f1d18a; font-size: clamp(42px, 6vw, 66px); font-variant-numeric: tabular-nums; line-height: 1; }
+#page-qibla .qibla-direction { margin: 0; color: #b7afa4; font-size: 14px; }
+#page-qibla .qibla-start-button { min-height: 48px; margin-top: 8px; border: 1px solid rgba(213,164,81,.72); border-radius: 13px; color: #f5efe5; background: linear-gradient(135deg, #50351e, #251b15); font-size: 14px; }
+#page-qibla .qibla-message { margin: 0; color: #b7afa4; font-size: 12px; }
+#page-qibla .qibla-calibration { width: 100%; margin-top: 4px; border-color: rgba(213,164,81,.34); background: rgba(8,13,21,.42); }
+#page-qibla .qibla-compass { width: min(30vw, 300px); height: min(30vw, 300px); margin: 0; }
+#page-qibla .compass-ring { border-color: #d5a451; background: repeating-conic-gradient(from 0deg, rgba(241,209,138,.65) 0 1deg, transparent 1deg 10deg), radial-gradient(circle, #151e2c 0 43%, #0b111b 43.5% 48%, #563b20 48.5% 50%, #0b111b 50.5% 58%, #2e2318 58.5% 60%, #0b111b 60.5%); box-shadow: inset 0 0 0 8px #101722, inset 0 0 0 10px rgba(213,164,81,.68), 0 0 0 1px rgba(241,209,138,.24), 0 15px 34px rgba(0,0,0,.35); }
+#page-qibla .compass-mark { color: #f1d18a; font-size: 13px; font-weight: 900; }
+#page-qibla .compass-center { width: 62px; height: 62px; border-color: rgba(241,209,138,.72); color: #f1d18a; background: #141b25; font-size: 13px; }
+#page-qibla .qibla-arrow { color: #f1d18a; filter: drop-shadow(0 3px 7px rgba(0,0,0,.48)); }
+@media (max-width: 700px) {
+  #page-home .nearby-mosque-card { min-height: 0; grid-template-columns: 1fr; grid-template-rows: 150px 1px auto; }
+  #page-home .nearby-mosque-visual, #page-home .home-qibla-visual { min-height: 150px; border-radius: 23px 23px 0 0; }
+  #page-home .nearby-mosque-divider { width: 100%; min-height: 1px; background: linear-gradient(90deg, transparent, rgba(213,164,81,.72) 18%, rgba(213,164,81,.72) 82%, transparent); }
+  #page-home .nearby-mosque-info, #page-home .home-qibla-info { min-height: 190px; padding: 19px 18px 20px; }
+  #page-home .nearby-mosque-name { font-size: 21px; }
+  #page-home .home-qibla-visual { min-height: 178px; }
+  #page-home .home-qibla-compass-ring { width: 142px; }
+  #page-qibla .qibla-layout { grid-template-columns: 1fr; grid-template-rows: 270px 1px auto; }
+  #page-qibla .qibla-visual-panel { min-height: 270px; padding: 18px; border-right: 0; border-bottom: 1px solid rgba(213,164,81,.72); }
+  #page-qibla .qibla-details { grid-column: 1; padding: 24px 20px 22px; }
+  #page-qibla .qibla-compass { width: min(78vw, 270px); height: min(78vw, 270px); }
+}
+@media (max-width: 380px) {
+  #page-home .nearby-mosque-card { grid-template-rows: 135px 1px auto; }
+  #page-home .nearby-mosque-info, #page-home .home-qibla-info { min-height: 176px; padding-inline: 15px; }
+  #page-qibla .qibla-layout { grid-template-rows: 245px 1px auto; }
+  #page-qibla .qibla-visual-panel { min-height: 245px; }
+}

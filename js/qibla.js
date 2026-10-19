@@ -63,6 +63,16 @@ function getDirectionName(degree) {
   return "شمال غربي";
 }
 
+function updateHomeQiblaPreview() {
+  const degreeElement = document.getElementById("homeQiblaDegree");
+  const directionElement = document.getElementById("homeQiblaDirection");
+  const statusElement = document.getElementById("homeQiblaStatus");
+  if (qiblaBearing === null) return;
+  if (degreeElement) degreeElement.textContent = `${Math.round(qiblaBearing)}°`;
+  if (directionElement) directionElement.textContent = getDirectionName(qiblaBearing);
+  if (statusElement) statusElement.textContent = "اتجاهك نحو القبلة";
+}
+
 // تحديث معلومات القبلة
 function updateQiblaInfo() {
   const degreeElement = document.getElementById("qiblaDegree");
@@ -80,6 +90,7 @@ function updateQiblaInfo() {
     directionElement.textContent =
       `اتجاه القبلة: ${getDirectionName(qiblaBearing)}`;
   }
+  updateHomeQiblaPreview();
 }
 
 // ضبط الدرجة بين 0 و 360
@@ -143,6 +154,7 @@ function projectBearingToScreen(bearing, alpha, beta, gamma) {
 // مزامنة وردة البوصلة والسهم مع اتجاه الهاتف.
 function updateArrow() {
   const arrow = document.getElementById("qiblaArrow");
+  const homeArrow = document.getElementById("homeQiblaArrow");
   const ring = document.querySelector("#page-qibla .compass-ring");
   if (!arrow || !ring) return;
   document.querySelectorAll("#page-qibla .compass-mark").forEach(mark => {
@@ -152,12 +164,14 @@ function updateArrow() {
   if (compassCardRotation === null || arrowRotation === null) {
     ring.style.transform = "rotate(0deg)";
     arrow.style.visibility = "hidden";
+    if (homeArrow && qiblaBearing !== null) homeArrow.style.transform = `rotate(${qiblaBearing}deg)`;
     return;
   }
 
   ring.style.transform = `rotate(${compassCardRotation}deg)`;
   arrow.style.transform = `rotate(${arrowRotation}deg)`;
   arrow.style.visibility = "visible";
+  if (homeArrow) homeArrow.style.transform = `rotate(${arrowRotation}deg)`;
 }
 
 // الحصول على اتجاه الجهاز

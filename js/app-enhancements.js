@@ -545,6 +545,18 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     manage?.addEventListener("click", openSettingsFromEmpty);
   }
 
+  function updateHomeMosqueSummary({ name, address, distanceText } = {}) {
+    const nameElement = byId("homeMosqueName");
+    const addressElement = byId("homeMosqueAddress");
+    const distanceElement = byId("homeMosqueDistance");
+    if (nameElement && name) nameElement.textContent = name;
+    if (addressElement && address) addressElement.textContent = address;
+    if (distanceElement && distanceText) {
+      distanceElement.textContent = distanceText;
+      distanceElement.hidden = false;
+    }
+  }
+
   async function openMosqueDirectory() {
     openPage("mosques");
     const list = byId("mosquesList");
@@ -617,8 +629,8 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       const readFavorite = () => { try { return JSON.parse(localStorage.getItem(favoriteKey) || "null"); } catch (error) { return null; } };
       const writeFavorite = value => value ? localStorage.setItem(favoriteKey, JSON.stringify(value)) : localStorage.removeItem(favoriteKey);
       places.forEach(({ place, lat, lon, distance }) => {
-        const tags = place.tags || {};
-        const name = tags["name:ar"] || tags.name || "مسجد قريب";
+      const tags = place.tags || {};
+      const name = tags["name:ar"] || tags.name || "مسجد قريب";
         const phone = tags.phone || tags["contact:phone"] || "";
         const key = place.id ? `${place.type || "place"}/${place.id}` : `${lat},${lon}`;
         const item = document.createElement("div"); item.className = "mosque-result"; item.dataset.mosqueKey = key;
@@ -631,9 +643,13 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
         const walkingText = walkingMinutes < 60
           ? (document.documentElement.lang === "en" ? `${walkingMinutes} min walking` : `${toArabic(walkingMinutes)} دقيقة مشيًا`)
           : (document.documentElement.lang === "en" ? `${Math.floor(walkingMinutes / 60)}h ${walkingMinutes % 60}m walking` : `${toArabic(Math.floor(walkingMinutes / 60))} س و${toArabic(walkingMinutes % 60)} د مشيًا`);
-        details.textContent = document.documentElement.lang === "en"
+      details.textContent = document.documentElement.lang === "en"
           ? `About ${distance < 1000 ? `${Math.max(10, Math.round(distance / 10) * 10)} m` : `${(distance / 1000).toFixed(1)} km`} · ${walkingText}`
           : `يبعد تقريبًا ${distanceText} · ${walkingText}`;
+      if (places[0]?.place === place) {
+        const address = [tags["addr:street"], tags["addr:housenumber"], tags["addr:city"]].filter(Boolean).join("، ") || "العنوان غير متاح في بيانات الخريطة";
+        updateHomeMosqueSummary({ name, address, distanceText });
+      }
         item.dataset.distanceMeters = String(Math.round(distance));
         item.dataset.walkingMinutes = String(walkingMinutes);
         info.append(title, details);
@@ -664,4 +680,5 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
   });
   window.updatePrayerMoment = updatePrayerMoment;
   window.openMosqueDirectory = openMosqueDirectory;
+  window.updateHomeMosqueSummary = updateHomeMosqueSummary;
 })();

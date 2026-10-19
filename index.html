@@ -53,7 +53,7 @@
 <link rel="stylesheet" href="css/friday.css?v=20261003-2">
 <link rel="stylesheet" href="css/notification-settings.css?v=20261007-1">
 <link rel="stylesheet" href="css/more-page.css?v=20261007-2">
-<link rel="stylesheet" href="css/app-design-system.css?v=20261020-images-1">
+<link rel="stylesheet" href="css/app-design-system.css?v=20261020-mosque-qibla-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 </head>
@@ -270,15 +270,32 @@
 
 <section class="section">
   <button class="nearby-mosque-card" id="nearbyMosqueButton" type="button">
-    <span class="nearby-mosque-title">أقرب مسجد</span>
+    <span class="nearby-mosque-visual" aria-hidden="true">
+      <span class="nearby-mosque-distance" id="homeMosqueDistance" hidden>—</span>
+    </span>
+    <span class="nearby-mosque-divider" aria-hidden="true"></span>
+    <span class="nearby-mosque-info">
+      <span class="nearby-mosque-heading"><span class="nearby-mosque-icon" aria-hidden="true">⌂</span><span>أقرب مسجد</span></span>
+      <strong class="nearby-mosque-name" id="homeMosqueName">ابحث عن مسجد قريب</strong>
+      <small class="nearby-mosque-address" id="homeMosqueAddress">سيظهر الاسم والمسافة بعد تحديد موقعك</small>
+      <span class="nearby-mosque-directions" aria-hidden="true">الاتجاهات <span>↗</span></span>
+    </span>
   </button>
 </section>
 
 <section class="section">
   <button class="nearby-mosque-card home-qibla-card" id="openQiblaButton" type="button">
-    <span class="mosque-icon" aria-hidden="true">⌖</span>
-    <span class="mosque-info"><strong class="mosque-title">اتجاه القبلة</strong><small class="mosque-description">افتح البوصلة لتحديد الاتجاه</small></span>
-    <span class="mosque-arrow" aria-hidden="true">‹</span>
+    <span class="home-qibla-visual" aria-hidden="true">
+      <span class="home-qibla-compass-ring"><span class="home-qibla-mark home-qibla-mark-n">N</span><span class="home-qibla-mark home-qibla-mark-e">E</span><span class="home-qibla-mark home-qibla-mark-s">S</span><span class="home-qibla-mark home-qibla-mark-w">W</span><span class="home-qibla-arrow" id="homeQiblaArrow">↑</span><span class="home-qibla-center">ك</span></span>
+    </span>
+    <span class="nearby-mosque-divider" aria-hidden="true"></span>
+    <span class="home-qibla-info">
+      <span class="nearby-mosque-heading"><span class="nearby-mosque-icon qibla-icon" aria-hidden="true">⌖</span><span>اتجاه القبلة</span></span>
+      <strong class="home-qibla-status" id="homeQiblaStatus">اتجاهك نحو القبلة</strong>
+      <strong class="home-qibla-degree" id="homeQiblaDegree">--°</strong>
+      <small class="home-qibla-direction" id="homeQiblaDirection">حدّد موقعك لعرض الاتجاه الجغرافي</small>
+      <span class="nearby-mosque-directions home-qibla-action" aria-hidden="true">معايرة البوصلة <span>↻</span></span>
+    </span>
   </button>
 </section>
 
@@ -611,32 +628,28 @@ id="qiblaBackButton"
 
 <div class="qibla-card card">
 
-<div class="qibla-status" id="qiblaStatus" role="status" aria-live="polite" aria-atomic="true">
-جاري تجهيز البوصلة...
-</div>
+<div class="qibla-layout">
 
-<p class="qibla-accuracy" id="qiblaAccuracy" data-accuracy="unknown" aria-live="polite" aria-atomic="true">
-دقة البوصلة: بانتظار بيانات المستشعر.
-</p>
+<div class="qibla-visual-panel">
 
 <div class="qibla-compass">
 
 <div class="compass-ring">
 
 <div class="compass-mark north">
-ش
+N
 </div>
 
 <div class="compass-mark east">
-ق
+E
 </div>
 
 <div class="compass-mark south">
-ج
+S
 </div>
 
 <div class="compass-mark west">
-غ
+W
 </div>
 
 <div
@@ -655,6 +668,21 @@ aria-label="اتجاه القبلة"
 
 </div>
 
+</div>
+
+<div class="qibla-details">
+
+<div class="qibla-heading"><span class="qibla-heading-icon" aria-hidden="true">⌖</span><h2>اتجاه القبلة</h2></div>
+
+<div class="qibla-status" id="qiblaStatus" role="status" aria-live="polite" aria-atomic="true">
+جاري تجهيز البوصلة...
+</div>
+
+<p class="qibla-prompt">اتجاهك نحو القبلة</p>
+
+<p class="qibla-accuracy" id="qiblaAccuracy" data-accuracy="unknown" aria-live="polite" aria-atomic="true">
+دقة البوصلة: بانتظار بيانات المستشعر.
+</p>
 
 <div class="qibla-degree" id="qiblaDegree">
 --°
@@ -671,7 +699,7 @@ class="qibla-start-button"
 id="startQiblaButton"
 type="button"
 >
-تحديد اتجاه القبلة
+معايرة البوصلة
 </button>
 
 
@@ -691,6 +719,8 @@ id="qiblaMessage"
   </ol>
   <p>قد لا يوفّر المتصفح تقديرًا رقميًا للدقة؛ لا يعني ذلك انعدام البوصلة. راقب تذبذب السهم واستعن بهذه الإرشادات.</p>
 </details>
+
+</div>
 
 </div>
 
