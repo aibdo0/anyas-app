@@ -606,3 +606,32 @@ html[lang="en"] #page-home .home-brand { letter-spacing: 0; }
   #page-home .ramadan-countdown-unit strong { font-size: 19px; }
   #page-home .ramadan-countdown-unit span { font-size: 9px; }
 }
+
+/* إصلاحات دقيقة للصور وحالات عدم توفر الموقع في بطاقتي المسجد والقبلة */
+#page-home .nearby-mosque-visual {
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+#page-home .nearby-mosque-visual::after { display: none; }
+#page-home .home-qibla-visual {
+  background-color: #101925;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(213,164,81,.08) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(-45deg, rgba(213,164,81,.06) 0 1px, transparent 1px 26px),
+    radial-gradient(circle at center, rgba(213,164,81,.14), transparent 62%);
+  background-repeat: no-repeat;
+  background-size: auto, auto, cover;
+}
+#page-qibla .qibla-card {
+  background-color: #0b111b !important;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(213,164,81,.055) 0 1px, transparent 1px 30px),
+    repeating-linear-gradient(-45deg, rgba(213,164,81,.04) 0 1px, transparent 1px 30px),
+    radial-gradient(circle at 20% 50%, rgba(213,164,81,.12), transparent 46%) !important;
+  background-repeat: no-repeat;
+  background-size: auto, auto, cover;
+}
+#page-home .home-qibla-degree,
+#page-qibla .qibla-degree { min-width: 2ch; direction: ltr; unicode-bidi: isolate; }
