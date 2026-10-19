@@ -105,11 +105,11 @@
 /* شروق الشمس */
 
 .prayer-row.sunrise {
-    cursor: default;
+    cursor: pointer;
 }
 
 .prayer-row.sunrise:hover {
-    transform: none;
+    transform: translateY(-1px);
 }
 
 /* حالة عدم توفر الوقت */

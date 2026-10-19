@@ -863,6 +863,31 @@ html[data-theme="dark"] { background: var(--page) !important; }
   min-height: 64px;
 }
 
+/* بطاقات المواقيت قابلة للضغط وتحتفظ بنافذة الجدول الحالية */
+#page-home .prayer-list { gap: 9px; }
+#page-home .prayer-row {
+  min-height: 112px;
+  padding: 14px 9px;
+  border-color: rgba(111, 137, 182, .38) !important;
+  border-radius: 18px;
+  color: #f2eee5;
+  background: linear-gradient(145deg, #14243a, #0d192b) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 8px 18px rgba(5, 14, 28, .16);
+}
+#page-home button.prayer-row { cursor: pointer; }
+#page-home .prayer-row:hover { border-color: rgba(224, 194, 123, .72) !important; background: linear-gradient(145deg, #1b2b42, #101d31) !important; transform: translateY(-1px); }
+#page-home .prayer-row .prayer-title { color: #f3efe7; font-size: 14px; font-weight: 900; }
+#page-home .prayer-row .prayer-value { color: #e0bf72; font-size: 15px; font-weight: 900; }
+#page-home .prayer-row.next,
+#page-home .prayer-row.current { border-color: #dfbd69 !important; background: linear-gradient(145deg, #3b3020, #1e2024) !important; box-shadow: inset 0 0 0 1px rgba(224,194,123,.2), 0 10px 22px rgba(126, 88, 28, .2); }
+#page-home .prayer-row.next .prayer-title,
+#page-home .prayer-row.current .prayer-title,
+#page-home .prayer-row.next .prayer-value,
+#page-home .prayer-row.current .prayer-value { color: #f0cf80 !important; }
+#page-home .prayer-row.past { opacity: .7; }
+#page-home .prayer-row.sunrise-row { cursor: pointer; }
+@media (max-width: 420px) { #page-home .prayer-row { min-height: 92px; padding: 11px 6px; } #page-home .prayer-row .prayer-title { font-size: 12px; } #page-home .prayer-row .prayer-value { font-size: 13px; } }
+
 #page-home .daily-content.card {
   gap: 9px;
 }
