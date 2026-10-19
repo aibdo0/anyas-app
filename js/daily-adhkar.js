@@ -1,8 +1,9 @@
 (() => {
   "use strict";
+
   const byId = id => document.getElementById(id);
   const section = byId("dailyAdhkarSection");
-  const card = section?.querySelector(".daily-adhkar-card");
+  const card = byId("dailyAdhkarCard");
   const title = byId("dailyAdhkarHeading");
   const text = byId("dailyAdhkarText");
   const badge = byId("dailyAdhkarBadge");
@@ -10,25 +11,62 @@
   const openButton = byId("openDailyAdhkarButton");
   if (!section || !card || !title || !text || !badge || !hint || !openButton) return;
 
-  // الفترات نصف مفتوحة [من، إلى) حتى لا يحدث تداخل عند الدقائق الفاصلة.
-  // الوقت مأخوذ من ساعة الجهاز المحلية، وليس من مواقيت الصلاة أو منطقة زمنية ثابتة.
   const periods = [
-    { id: "awakening", title: "أذكار الاستيقاظ", badge: "الاستيقاظ", start: 270, end: 330, hint: "04:30 – 05:30", description: "ابدأ يومك بذكر الله بهدوء، ثم انتقل تلقائيًا إلى أذكار الصباح عند 05:30.", button: "افتح أذكار الاستيقاظ", action: "waking", icon: "☼" },
-    { id: "morning", title: "أذكار الصباح", badge: "الصباح", start: 330, end: 720, hint: "05:30 – 12:00", description: "ورد الصباح المناسب لبداية يومك، وسيبقى ظاهرًا حتى دخول وقت أذكار اليوم.", button: "افتح أذكار الصباح", action: "morning", icon: "☀" },
-    { id: "day", title: "أذكار اليوم", badge: "ورد مطلق", start: 720, end: 930, hint: "12:00 – 15:30", description: "أكثر من ذكر الله في وقت العمل والدراسة بما تيسّر لك من الأذكار المطلقة.", button: "افتح الأذكار العامة", action: "general", icon: "ذ" },
-    { id: "evening", title: "أذكار المساء", badge: "المساء", start: 930, end: 1200, hint: "15:30 – 20:00", description: "حان وقت أذكار المساء؛ اجعلها وقفة هادئة قبل دخول الليل.", button: "افتح أذكار المساء", action: "evening", icon: "◒" },
-    { id: "sleep", title: "أذكار النوم", badge: "النوم", start: 1200, end: 1560, hint: "20:00 – 02:00", description: "اختم يومك بأذكار النوم بهدوء.", button: "افتح أذكار النوم", action: "beforeSleep", icon: "☾" },
-    { id: "sahar", title: "الاستغفار في السحر", badge: "وقت السحر", start: 120, end: 270, hint: "02:00 – 04:30", description: "هذا وقت ثمين للاستغفار والدعاء؛ نسأل الله أن يرزقك فيه الخشوع والقبول.", button: "افتح عدّاد الاستغفار", action: "sahar", icon: "✦" }
+    { id: "awakening", title: "أذكار الاستيقاظ", badge: "متاح يدويًا", description: "ورد ثابت لمن استيقظ؛ ظهور البطاقة لا يعني أنك استيقظت أو أتممت الذكر.", button: "افتح أذكار الاستيقاظ", action: "awakening", icon: "☼" },
+    { id: "morning", title: "أذكار الصباح", badge: "الآن · اقتراح زمني", description: "ورد الصباح متاح الآن بحسب مواقيتك المحلية؛ اختر فتحه وتسجيل ما أنجزته فعلًا.", button: "افتح أذكار الصباح", action: "morning", icon: "☀" },
+    { id: "afterPrayer", title: "أذكار بعد الصلاة", badge: "بعد الفريضة", description: "ورد متاح بعد كل فريضة؛ لا يفترض التطبيق أنك صليت، ويمكن فتحه يدويًا في أي وقت.", button: "افتح أذكار بعد الصلاة", action: "afterPrayer", icon: "۞" },
+    { id: "evening", title: "أذكار المساء", badge: "الآن · اقتراح زمني", description: "ورد المساء متاح في وقته المناسب بحسب مواقيتك؛ لا يعني ظهوره أنك أتممت العبادة.", button: "افتح أذكار المساء", action: "evening", icon: "◒" },
+    { id: "beforeSleep", title: "أذكار النوم", badge: "متاح يدويًا", description: "ورد النوم متاح متى أردت؛ لا يفترض التطبيق أنك ذاهب إلى النوم لمجرد حلول الليل.", button: "افتح أذكار النوم", action: "beforeSleep", icon: "☾" }
   ];
 
-  function getMinutes(date = new Date()) {
-    return date.getHours() * 60 + date.getMinutes();
+  const getMinutes = (date = new Date()) => date.getHours() * 60 + date.getMinutes();
+  const timeToMinutes = value => {
+    const match = String(value || "").match(/(\d{1,2})\s*:\s*(\d{2})/);
+    return match ? Number(match[1]) * 60 + Number(match[2]) : null;
+  };
+  const prayerMinutes = key => timeToMinutes(window.todayTimings?.[key]);
+
+  function isAfterPrayerWindow(minutes) {
+    return ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].some(key => {
+      const start = prayerMinutes(key);
+      return start !== null && minutes >= start && minutes < start + 90;
+    });
   }
 
   function getCurrentPeriod(date = new Date()) {
     const minutes = getMinutes(date);
-    const comparableMinutes = minutes < 120 ? minutes + 1440 : minutes;
-    return periods.find(period => comparableMinutes >= period.start && comparableMinutes < period.end) || periods[0];
+    if (isAfterPrayerWindow(minutes)) return periods[2];
+    const fajr = prayerMinutes("Fajr");
+    const asr = prayerMinutes("Asr");
+    const isha = prayerMinutes("Isha");
+    if (fajr !== null && asr !== null && minutes >= fajr && minutes < asr) return periods[1];
+    if (asr !== null && isha !== null && minutes >= asr && minutes < isha) return periods[3];
+    if (isha !== null && (minutes >= isha || (fajr !== null && minutes < fajr))) return periods[4];
+    return periods[1];
+  }
+
+  function renderOverview() {
+    const overview = byId("dailyWirdOverview");
+    const total = byId("dailyWirdOverviewTotal");
+    const items = window.getWirdOverview?.() || [];
+    if (!overview || !items.length) return;
+    overview.replaceChildren();
+    let done = 0;
+    let count = 0;
+    items.forEach(item => {
+      done += item.done;
+      count += item.total;
+      const entry = document.createElement("button");
+      entry.type = "button";
+      entry.className = "daily-wird-item";
+      entry.setAttribute("aria-label", `فتح ${item.title}`);
+      const percent = item.total ? Math.round(item.done / item.total * 100) : 0;
+      const icon = item.id === "beforeSleep" ? "☾" : item.id === "evening" ? "◒" : item.id === "afterPrayer" ? "۞" : item.id === "awakening" ? "☼" : "☀";
+      entry.innerHTML = `<span class="daily-wird-item-icon" aria-hidden="true">${icon}</span><span class="daily-wird-item-copy"><strong>${item.title}</strong><small>${item.done} / ${item.total} أذكار</small><span class="daily-wird-item-track" aria-hidden="true"><i style="width:${percent}%"></i></span></span>`;
+      entry.addEventListener("click", () => window.openWirdCategory?.(item.id));
+      overview.appendChild(entry);
+    });
+    if (total) total.textContent = `${done} / ${count}`;
   }
 
   function showPeriod() {
@@ -41,31 +79,18 @@
     title.textContent = period.title;
     badge.textContent = period.badge;
     text.textContent = period.description;
-    hint.textContent = period.hint;
+    hint.textContent = period.id === "afterPrayer" ? "متاح بعد كل فريضة" : "متاح يدويًا دائمًا";
     openButton.textContent = period.button;
     const mark = card.querySelector(".daily-adhkar-mark");
     if (mark) mark.textContent = period.icon;
     openButton.dataset.adhkarAction = period.action;
+    renderOverview();
   }
 
-  openButton.addEventListener("click", () => {
-    const action = openButton.dataset.adhkarAction;
-    if (["morning", "evening", "beforeSleep"].includes(action)) {
-      window.openWirdCategory?.(action);
-      return;
-    }
-    if (action === "waking") {
-      window.openAzkarTopic?.(1, 0);
-      return;
-    }
-    window.goToPage?.("tasks");
-    window.setTimeout(() => {
-      const target = action === "sahar" ? document.querySelector('[data-goal-id="istighfar"]') : byId("dhikrGoalList");
-      target?.scrollIntoView({ behavior: "smooth", block: "center" });
-    }, 100);
-  });
-
-  showPeriod();
+  openButton.addEventListener("click", () => window.openWirdCategory?.(openButton.dataset.adhkarAction));
+  window.addEventListener("anyas:wird-progress", renderOverview);
+  window.addEventListener("anyas:azkar-progress", renderOverview);
+  document.addEventListener("DOMContentLoaded", () => { showPeriod(); window.setTimeout(renderOverview, 0); });
   window.setInterval(showPeriod, 30 * 1000);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) showPeriod(); });
   window.anyasDailyAdhkar = Object.freeze({ periods, getCurrentPeriod });

@@ -440,6 +440,8 @@ function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
             progress
           );
 
+          window.dispatchEvent(new CustomEvent("anyas:azkar-progress"));
+
           if (
             localStorage.getItem(
               "anyas_vibration"

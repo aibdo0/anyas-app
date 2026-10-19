@@ -1,6 +1,11 @@
 // ورد يومي مبني على أبواب حصن المسلم الموجودة في البيانات.
 (() => {
   const sections = {
+    awakening: {
+      title: "أذكار الاستيقاظ",
+      topicNumber: 1,
+      itemIndexes: [0, 1, 2, 3]
+    },
     morning: {
       title: "أذكار الصباح",
       topicNumber: 27,
@@ -57,7 +62,11 @@
   function sectionProgress(id) {
     const section = sections[id];
     const items = getItems(section);
-    const done = items.filter(({ index }) => progress[`${id}:${index}`] === true).length;
+    let topicProgress = {};
+    try {
+      topicProgress = JSON.parse(localStorage.getItem(`anyas_topic_${section.topicNumber}_${new Date().toDateString()}`) || "{}") || {};
+    } catch (_) { }
+    const done = items.filter(({ item, index }) => progress[`${id}:${index}`] === true || Number(topicProgress[index]) >= (Number(item.count) || 1)).length;
     return { done, total: items.length };
   }
 
@@ -96,6 +105,8 @@
       bar.style.width = `${percent}%`;
       bar.setAttribute("aria-valuenow", String(percent));
     }
+
+    window.dispatchEvent(new CustomEvent("anyas:wird-progress"));
 
     if (typeof window.updateDailyOverview === "function") {
       window.updateDailyOverview();
@@ -161,7 +172,7 @@
     const current = window.anyasDailyAdhkar?.getCurrentPeriod?.();
     const map = {
       morning: "morning",
-      awakening: "morning",
+      awakening: "awakening",
       evening: "evening",
       sleep: "beforeSleep",
       sahar: "beforeSleep",
@@ -179,6 +190,14 @@
     });
     if (target) setSectionOpen(target, true);
   }
+
+  window.getWirdSectionProgress = id => {
+    const state = sectionProgress(id);
+    return { id, title: sections[id]?.title || id, ...state };
+  };
+
+  window.getWirdOverview = () => ["awakening", "morning", "afterPrayer", "evening", "beforeSleep"]
+    .map(id => window.getWirdSectionProgress(id));
 
   function openWirdCategory(id) {
     if (!sections[id]) return;

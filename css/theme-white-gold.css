@@ -1336,6 +1336,43 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-home .daily-adhkar-hint { font-size: 10px; }
 #page-home .daily-adhkar-button { min-height: 36px; padding: 7px 11px; border-radius: 11px; font-size: 11px; }
 
+/* المرحلة الثانية: بطاقة الورد الذكي وأورادك اليوم */
+#page-home .daily-adhkar-card {
+  min-height: 238px;
+  padding: 20px 22px 17px !important;
+  border-color: rgba(118, 139, 184, .58) !important;
+  background-image: linear-gradient(90deg, rgba(13, 23, 40, .16) 0%, rgba(13, 23, 40, .48) 39%, rgba(13, 23, 40, .9) 70%, #0d1728 100%), url("../assets/anyas-night-background.webp") !important;
+  background-position: left center !important;
+  background-size: cover !important;
+  box-shadow: 0 16px 32px rgba(8, 18, 38, .26) !important;
+}
+#page-home .daily-adhkar-card .daily-adhkar-mark,
+#page-home .daily-adhkar-card .daily-adhkar-badge { color: #e7c878 !important; border-color: rgba(226, 198, 122, .38) !important; background: rgba(226, 198, 122, .09) !important; }
+#page-home .daily-adhkar-card .daily-adhkar-title,
+#page-home .daily-adhkar-card .daily-adhkar-text { color: #f4f1e9 !important; }
+#page-home .daily-adhkar-card .daily-adhkar-eyebrow,
+#page-home .daily-adhkar-card .daily-adhkar-hint { color: #b9c7df !important; }
+#page-home .daily-adhkar-card .daily-adhkar-text { border-inline-start-color: #d8b867 !important; background: rgba(255,255,255,.07) !important; }
+#page-home .daily-adhkar-card .daily-adhkar-footer { border-color: rgba(203, 218, 246, .18) !important; }
+#page-home .daily-wird-overview { margin-top: 0; padding: 13px 14px 14px; border: 1px solid rgba(100, 124, 169, .38); border-radius: 0 0 20px 20px; background: linear-gradient(145deg, #111e33, #0b1525); box-shadow: 0 12px 26px rgba(8, 18, 38, .2); }
+#page-home .daily-wird-overview-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+#page-home .daily-wird-overview-eyebrow { color: #9eafd0; font-size: 10px; font-weight: 700; }
+#page-home .daily-wird-overview-heading h2 { margin: 2px 0 0; color: #f5f0e4; font-size: 16px; font-weight: 900; }
+#page-home .daily-wird-overview-total { padding: 5px 9px; border: 1px solid rgba(224, 199, 132, .36); border-radius: 999px; color: #e6c777; background: rgba(224, 199, 132, .08); font-size: 10px; font-weight: 800; white-space: nowrap; }
+#page-home .daily-wird-overview-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 9px; }
+#page-home .daily-wird-item { display: flex; min-width: 0; min-height: 92px; flex-direction: column; align-items: stretch; gap: 7px; padding: 9px 8px; border: 1px solid rgba(111, 137, 182, .32); border-radius: 14px; color: #eef3ff; background: rgba(255,255,255,.045); font: inherit; text-align: right; cursor: pointer; transition: border-color .16s ease, transform .16s ease, background .16s ease; }
+#page-home .daily-wird-item:hover { border-color: rgba(226, 198, 122, .62); background: rgba(226, 198, 122, .08); }
+#page-home .daily-wird-item:active { transform: scale(.98); }
+#page-home .daily-wird-item-icon { color: #e4c273; font-size: 18px; line-height: 1; }
+#page-home .daily-wird-item-copy { display: grid; min-width: 0; gap: 4px; }
+#page-home .daily-wird-item-copy strong { overflow: hidden; color: #f3f0e7; font-size: 10px; font-weight: 800; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+#page-home .daily-wird-item-copy small { color: #aebbd2; font-size: 9px; }
+#page-home .daily-wird-item-track { display: block; height: 5px; overflow: hidden; border-radius: 999px; background: rgba(205, 219, 245, .16); }
+#page-home .daily-wird-item-track i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #d8b867, #8b6b32); transition: width .2s ease; }
+@media (max-width: 680px) { #page-home .daily-wird-overview-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 680px) { #page-home .daily-adhkar-card { min-height: 226px; padding: 16px 15px 14px !important; background-image: linear-gradient(90deg, rgba(13, 23, 40, .42), rgba(13, 23, 40, .91)), url("../assets/anyas-night-background.webp") !important; } }
+@media (max-width: 420px) { #page-home .daily-wird-overview { padding: 11px; } #page-home .daily-wird-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } #page-home .daily-wird-item { min-height: 82px; } }
+
 
 /* قائمة مواقيت الصلاة — شبكة أخف وأسهل للقراءة */
 #page-home .prayer-section {
