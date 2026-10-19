@@ -1,24 +1,94 @@
-/* Two home highlights only: full-width Ayah, then Hadith. */
+/* بطاقتا آية اليوم وحديث اليوم — تصميم بني القهوة والليل والذهب */
 #page-home .daily-content.card {
   display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  align-items: start;
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 18px;
   padding: 0;
   border: 0;
   background: transparent;
   box-shadow: none;
 }
-#page-home .daily-content.card > .content-block:first-child { grid-column: 1 / -1; }
-#page-home .daily-content.card > #dailyHadithBlock {
-  grid-column: 1 / -1;
-  align-self: start;
-  padding: 16px 19px;
-  border-radius: 20px;
-  background: linear-gradient(145deg,#fff,#fbfaf7);
-  box-shadow: 0 7px 22px rgba(75,61,38,.05);
+
+#page-home .daily-highlight-card {
+  display: flex;
+  grid-column: auto !important;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(218, 183, 103, .72);
+  border-radius: 24px;
+  color: #f6efe2;
+  background: #17130f;
+  box-shadow: 0 14px 34px rgba(32, 21, 10, .2);
 }
-#page-home #dailyHadithBlock .card-title { margin-bottom: 6px; color: var(--gold-dark); font-size: 14px; font-weight: 800; }
-#page-home #dailyHadithBlock .hadith-text { margin: 0; color: var(--ink); font-size: 16px; line-height: 1.85; overflow-wrap: anywhere; }
-#page-home #dailyHadithBlock .reference { margin-top: 5px; color: var(--muted); font-size: 11px; }
-:root[data-theme="dark"] #page-home .daily-content.card > #dailyHadithBlock { border-color: var(--line); background: var(--surface); }
+#page-home .daily-hadith-card { background: #101923; }
+#page-home .daily-highlight-media {
+  display: flex;
+  min-height: 112px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 18px 20px;
+  background: linear-gradient(180deg, rgba(24, 15, 8, .15), rgba(24, 15, 8, .88)), url("../assets/anyas-morning-background.webp") center 44% / cover;
+}
+#page-home .daily-hadith-card .daily-highlight-media { background: linear-gradient(180deg, rgba(8, 16, 25, .08), rgba(8, 16, 25, .9)), url("../assets/anyas-night-background.webp") center 42% / cover; }
+#page-home .daily-highlight-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 14px;
+  border: 1px solid rgba(235, 202, 129, .82);
+  border-radius: 999px;
+  color: #f4d893;
+  background: rgba(25, 17, 11, .78);
+  font-size: 14px;
+  font-weight: 900;
+}
+#page-home .daily-highlight-label::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #e2b95e; box-shadow: 0 0 0 4px rgba(226, 185, 94, .14); }
+#page-home .daily-highlight-icon { color: #f0cf80; font-size: 22px; line-height: 1; }
+#page-home .daily-highlight-body { display: flex; flex: 1; min-width: 0; flex-direction: column; padding: 20px 20px 17px; }
+#page-home .daily-highlight-body .card-title { margin: 0 0 10px; color: #e6bf70; font-size: 11px; font-weight: 800; text-align: center; }
+#page-home .daily-highlight-body .ayah,
+#page-home .daily-highlight-body .hadith-text { overflow-wrap: anywhere; color: #f8f0df; font-family: "Amiri", "Noto Naskh Arabic", serif; text-align: center; }
+#page-home .daily-highlight-body .ayah { font-size: clamp(25px, 3vw, 33px); line-height: 1.9; }
+#page-home .daily-highlight-body .hadith-text { font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; line-height: 1.85; }
+#page-home .daily-highlight-body .reference { margin: 11px 0 0; color: #dfc998; font-size: 12px; line-height: 1.7; text-align: center; }
+#page-home .daily-highlight-body .reference::after { display: block; width: 80%; height: 1px; margin: 13px auto 0; background: linear-gradient(90deg, transparent, rgba(218, 183, 103, .65), transparent); content: ""; }
+#page-home .daily-content-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 7px; margin-top: auto; padding-top: 19px; }
+#page-home .daily-content-action,
+#page-home .daily-full-hadith-button {
+  min-height: 38px;
+  padding: 7px 12px;
+  border: 1px solid rgba(207, 169, 87, .55);
+  border-radius: 999px;
+  color: #e5c783;
+  background: rgba(11, 10, 8, .28);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .18s ease, background .18s ease, border-color .18s ease;
+}
+#page-home .daily-content-action:hover,
+#page-home .daily-full-hadith-button:hover { border-color: #f0ce7c; background: rgba(194, 148, 58, .16); transform: translateY(-1px); }
+#page-home .daily-content-action.is-primary,
+#page-home .daily-full-hadith-button { color: #24180d; border-color: #e8be68; background: linear-gradient(135deg, #f4d38d, #c8953d); }
+#page-home .daily-content-action[aria-pressed="true"] { color: #24180d; border-color: #e8be68; background: #e6bd69; }
+#page-home .daily-full-hadith-button { display: block; margin: 13px auto 0; }
+#page-home .daily-full-hadith-button[hidden] { display: none; }
+#page-home .hadith-explanation { margin-top: 13px; padding: 11px 13px; border: 1px solid rgba(209, 175, 101, .35); border-radius: 14px; background: rgba(4, 10, 17, .34); }
+#page-home .hadith-explanation span { color: #e4bd6e; font-size: 10px; font-weight: 900; }
+#page-home .hadith-explanation p { margin: 5px 0 0; color: #d6d0c6; font-size: 12px; line-height: 1.85; }
+#page-home .daily-content-status { margin: 9px 2px 0; color: #d8b86f; font-size: 11px; text-align: center; }
+#page-home .daily-content-status[hidden] { display: none; }
+
+@media (max-width: 700px) {
+  #page-home .daily-content.card { grid-template-columns: minmax(0, 1fr); gap: 13px; }
+  #page-home .daily-highlight-media { min-height: 96px; }
+  #page-home .daily-highlight-body { padding: 17px 15px 14px; }
+  #page-home .daily-highlight-body .ayah { font-size: clamp(24px, 7vw, 31px); }
+  #page-home .daily-highlight-body .hadith-text { font-size: clamp(21px, 6vw, 28px); }
+}
+@media (prefers-reduced-motion: reduce) { #page-home .daily-content-action, #page-home .daily-full-hadith-button { transition: none; } }

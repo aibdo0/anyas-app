@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setupDailyQuran();
   setupDailyHadith();
+  setupDailyContentActions();
   setupDailyDhikr();
   setupPrayerTracking();
   setupPrayerReport();
@@ -688,7 +689,8 @@ async function setupDailyHadith() {
     const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
     if (cached?.hadeeth) {
       textElement.textContent = cached.hadeeth;
-      if (referenceElement) referenceElement.textContent = cached.grade || `اليوم ${day} هجريًا`;
+      if (referenceElement) referenceElement.textContent = [cached.attribution, cached.grade].filter(Boolean).join(" · ") || "HadeethEnc.com";
+      setDailyHadithExplanation(cached.explanation);
     } else {
       textElement.textContent = "سيُحمّل حديث اليوم عند توفر الاتصال، ثم يبقى محفوظًا على جهازك.";
     }
@@ -704,14 +706,88 @@ async function setupDailyHadith() {
     if (!response.ok) throw new Error(`HadeethEnc HTTP ${response.status}`);
     const hadith = await response.json();
     if (!hadith || !hadith.hadeeth) throw new Error("HadeethEnc returned no Arabic text");
-    try { localStorage.setItem(cacheKey, JSON.stringify({ hadeeth: hadith.hadeeth, grade: hadith.grade || "" })); } catch (_) { }
+    try { localStorage.setItem(cacheKey, JSON.stringify({ hadeeth: hadith.hadeeth, grade: hadith.grade || "", attribution: hadith.attribution || "", explanation: hadith.explanation || "" })); } catch (_) { }
     textElement.textContent = hadith.hadeeth;
     if (referenceElement) {
-      referenceElement.textContent = hadith.grade || "";
+      referenceElement.textContent = [hadith.attribution, hadith.grade].filter(Boolean).join(" · ") || "HadeethEnc.com";
     }
+    setDailyHadithExplanation(hadith.explanation);
   } catch (error) {
     console.info("الحديث يعرض من ذاكرة الجهاز عند الانقطاع:", error.message);
   }
+}
+
+
+function setDailyHadithExplanation(explanation) {
+  const panel = document.getElementById("dailyHadithExplanation");
+  const text = document.getElementById("dailyHadithExplanationText");
+  const button = document.getElementById("dailyHadithFullButton");
+  if (!panel || !text || !button) return;
+  const value = typeof explanation === "string" ? explanation.trim() : "";
+  text.textContent = value;
+  button.hidden = !value;
+  if (!value) panel.hidden = true;
+}
+
+function setupDailyContentActions() {
+  const status = document.getElementById("dailyContentStatus");
+  const day = typeof getHijriDayOfYear === "function" ? getHijriDayOfYear() : new Date().getDate();
+  const cards = document.querySelectorAll("[data-daily-content]");
+  if (!cards.length) return;
+  const setStatus = (message) => {
+    if (!status) return;
+    status.textContent = message;
+    status.hidden = false;
+    clearTimeout(setStatus.timer);
+    setStatus.timer = setTimeout(() => { status.hidden = true; }, 2600);
+  };
+  const getPayload = (card) => {
+    const kind = card.dataset.dailyContent;
+    const title = kind === "ayah" ? "آية اليوم" : "حديث اليوم";
+    const text = card.querySelector(kind === "ayah" ? ".ayah" : ".hadith-text")?.textContent.trim() || "";
+    const reference = card.querySelector(".reference")?.textContent.trim() || "";
+    return { kind, title, value: `${title}\n${text}\n${reference}`.trim() };
+  };
+  const copyText = async (value) => {
+    if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(value);
+    const area = document.createElement("textarea");
+    area.value = value; area.setAttribute("readonly", ""); area.style.position = "fixed"; area.style.opacity = "0";
+    document.body.appendChild(area); area.select(); document.execCommand("copy"); area.remove();
+  };
+  cards.forEach(card => {
+    const kind = card.dataset.dailyContent;
+    const saveKey = `anyas_daily_content_saved_${day}_${kind}`;
+    const saveButton = card.querySelector('[data-content-action="save"]');
+    if (saveButton) {
+      saveButton.setAttribute("aria-pressed", localStorage.getItem(saveKey) === "true" ? "true" : "false");
+      saveButton.addEventListener("click", () => {
+        const saved = saveButton.getAttribute("aria-pressed") !== "true";
+        localStorage.setItem(saveKey, String(saved));
+        saveButton.setAttribute("aria-pressed", String(saved));
+        saveButton.lastChild.textContent = saved ? " ♥" : " ♡";
+        setStatus(saved ? "تم حفظ المحتوى" : "أُزيل المحتوى من المحفوظات");
+      });
+    }
+    card.querySelector('[data-content-action="copy"]')?.addEventListener("click", async () => {
+      try { await copyText(getPayload(card).value); setStatus("تم نسخ المحتوى"); } catch (_) { setStatus("تعذّر النسخ تلقائيًا"); }
+    });
+    card.querySelector('[data-content-action="share"]')?.addEventListener("click", async () => {
+      const payload = getPayload(card);
+      try {
+        if (navigator.share) await navigator.share({ title: payload.title, text: payload.value });
+        else await copyText(payload.value);
+        setStatus(navigator.share ? "تم فتح خيارات المشاركة" : "تم نسخ المحتوى للمشاركة");
+      } catch (error) { if (error?.name !== "AbortError") setStatus("تعذّرت المشاركة؛ يمكنك نسخ المحتوى"); }
+    });
+  });
+  const fullButton = document.getElementById("dailyHadithFullButton");
+  fullButton?.addEventListener("click", () => {
+    const panel = document.getElementById("dailyHadithExplanation");
+    const expanded = fullButton.getAttribute("aria-expanded") === "true";
+    fullButton.setAttribute("aria-expanded", String(!expanded));
+    panel.hidden = expanded;
+    fullButton.firstChild.textContent = expanded ? "قراءة الحديث كاملًا " : "إخفاء شرح المصدر ";
+  });
 }
 
 

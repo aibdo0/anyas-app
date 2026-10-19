@@ -235,17 +235,37 @@
 <section class="section">
 
 <div class="daily-content card" id="dailyContentCard">
-  <div class="content-block">
-    <div class="card-title">آية اليوم</div>
-    <div class="ayah" id="dailyAyahText">﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾</div>
-    <div class="reference" id="dailyAyahReference">سورة الرعد — 28</div>
-  </div>
-  <div class="content-block" id="dailyHadithBlock">
-    <div class="card-title">حديث اليوم</div>
-    <div class="hadith-text" id="dailyHadithText">إنما الأعمال بالنيات</div>
-    <div class="reference" id="dailyHadithReference">متفق عليه</div>
-  </div>
+  <article class="content-block daily-highlight-card daily-ayah-card" data-daily-content="ayah">
+    <div class="daily-highlight-media" aria-hidden="true"><span class="daily-highlight-label">آية اليوم</span><span class="daily-highlight-icon">▥</span></div>
+    <div class="daily-highlight-body">
+      <div class="card-title">آية اليوم</div>
+      <div class="ayah" id="dailyAyahText">﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾</div>
+      <div class="reference" id="dailyAyahReference">سورة الرعد — 28</div>
+      <div class="daily-content-actions" data-content-actions="ayah" aria-label="إجراءات آية اليوم">
+        <button class="daily-content-action is-primary" type="button" data-content-action="listen" hidden>استماع <span aria-hidden="true">▶</span></button>
+        <button class="daily-content-action" type="button" data-content-action="save" aria-pressed="false">حفظ <span aria-hidden="true">♡</span></button>
+        <button class="daily-content-action" type="button" data-content-action="copy">نسخ <span aria-hidden="true">▣</span></button>
+        <button class="daily-content-action" type="button" data-content-action="share">مشاركة <span aria-hidden="true">↗</span></button>
+      </div>
+    </div>
+  </article>
+  <article class="content-block daily-highlight-card daily-hadith-card" id="dailyHadithBlock" data-daily-content="hadith">
+    <div class="daily-highlight-media" aria-hidden="true"><span class="daily-highlight-label">حديث اليوم</span><span class="daily-highlight-icon">▥</span></div>
+    <div class="daily-highlight-body">
+      <div class="card-title">حديث اليوم</div>
+      <div class="hadith-text" id="dailyHadithText">إنما الأعمال بالنيات</div>
+      <div class="reference" id="dailyHadithReference">متفق عليه</div>
+      <div class="hadith-explanation" id="dailyHadithExplanation" hidden><span>شرح المصدر</span><p id="dailyHadithExplanationText"></p></div>
+      <button class="daily-full-hadith-button" id="dailyHadithFullButton" type="button" hidden aria-expanded="false">قراءة الحديث كاملًا <span aria-hidden="true">▥</span></button>
+      <div class="daily-content-actions" data-content-actions="hadith" aria-label="إجراءات حديث اليوم">
+        <button class="daily-content-action" type="button" data-content-action="save" aria-pressed="false">حفظ <span aria-hidden="true">♡</span></button>
+        <button class="daily-content-action" type="button" data-content-action="copy">نسخ <span aria-hidden="true">▣</span></button>
+        <button class="daily-content-action" type="button" data-content-action="share">مشاركة <span aria-hidden="true">↗</span></button>
+      </div>
+    </div>
+  </article>
 </div>
+<p class="daily-content-status" id="dailyContentStatus" aria-live="polite" hidden></p>
 </section>
 
 <section class="section">
