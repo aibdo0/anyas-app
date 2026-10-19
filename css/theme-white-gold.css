@@ -1570,3 +1570,107 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+
+/* =========================================================
+   الهوية الفاخرة للواجهة الرئيسية — طبقة تنسيق موحّدة
+   لا تغيّر ترتيب الأقسام أو أحداثها؛ تضبط العرض والسطوح فقط.
+========================================================= */
+.app:has(#page-home) { max-width: 1180px; }
+#page-home {
+  width: min(100%, 1120px);
+  max-width: none;
+  margin-inline: auto;
+  padding: 22px clamp(16px, 3vw, 34px) calc(126px + env(safe-area-inset-bottom));
+  color: #f2ecdf;
+  background: radial-gradient(ellipse at 8% 12%, rgba(126, 88, 39, .12), transparent 26rem), radial-gradient(ellipse at 92% 62%, rgba(24, 53, 79, .12), transparent 28rem);
+}
+#page-home .section { margin: 20px 0; }
+#page-home .main-header {
+  min-height: 102px;
+  margin-bottom: 20px;
+  padding: 18px 22px 16px;
+  border-color: rgba(231, 199, 125, .34) !important;
+  border-radius: 25px;
+  background: radial-gradient(ellipse at 95% 0%, rgba(197, 150, 71, .24), transparent 25rem), linear-gradient(135deg, #17130f 0%, #272019 56%, #111923 100%) !important;
+  box-shadow: 0 18px 38px rgba(8, 9, 12, .22), inset 0 1px rgba(255,255,255,.06);
+}
+#page-home .home-brand { color: #f5e8ca !important; font-size: clamp(28px, 3vw, 36px); letter-spacing: -.04em; }
+#page-home .home-brand-mark { width: 28px; height: 28px; color: #f0cc7c; border-color: rgba(240,204,124,.72); background: rgba(240,204,124,.08); }
+#page-home .home-hijri-date, #page-home .home-gregorian-date { color: rgba(246,239,226,.72) !important; }
+#page-home .home-calendar-icon { stroke: #d5b064; }
+#page-home .home-header-actions { gap: 9px; }
+#page-home .theme-toggle, #page-home .notification-bell-button { width: 44px; height: 44px; border-radius: 14px; border-color: rgba(232,199,126,.3) !important; background: rgba(255,255,255,.055) !important; }
+#page-home .theme-toggle:hover, #page-home .notification-bell-button:hover { border-color: rgba(240,204,124,.7) !important; background: rgba(224,182,91,.13) !important; transform: translateY(-1px); }
+#page-home .next-prayer {
+  min-height: 252px !important;
+  margin: 0 0 22px !important;
+  padding: 22px 24px 17px !important;
+  border-radius: 27px !important;
+  border-color: rgba(229, 194, 118, .68) !important;
+  box-shadow: 0 20px 42px rgba(25, 17, 11, .27), inset 0 1px rgba(255,245,211,.12);
+}
+#page-home .next-prayer .prayer-hero-meta { margin-bottom: 3px; }
+#page-home .next-prayer .next-label { color: #f1d18c; font-size: 13px; font-weight: 800; }
+#page-home .next-prayer .prayer-city-chip { border-color: rgba(240,205,128,.46); color: #f3d691; background: rgba(16,13,10,.48); }
+#page-home .next-prayer .prayer-name { margin-top: 10px; font-size: clamp(30px, 4vw, 44px) !important; text-shadow: 0 4px 18px rgba(0,0,0,.26); }
+#page-home .next-prayer .prayer-time { font-size: clamp(36px, 5vw, 58px) !important; }
+#page-home .next-prayer .countdown-shell { padding: 8px 14px; border: 1px solid rgba(240,204,124,.3); border-radius: 14px; background: rgba(9,9,9,.22); }
+#page-home .next-prayer .countdown { color: #f2d38c; font-size: 16px; }
+#page-home .next-prayer .prayer-progress { height: 6px; margin-top: 18px; background: rgba(255,255,255,.16); }
+#page-home .next-prayer .prayer-progress-bar { background: linear-gradient(90deg, #a9792f, #f3d58c); }
+#page-home .daily-adhkar-section { margin-top: 0; }
+#page-home .daily-adhkar-card, #page-home .daily-wird-overview, #page-home .prayer-section, #page-home .upcoming-card, #page-home .nearby-mosque-card { box-shadow: 0 16px 34px rgba(18, 15, 11, .13); }
+#page-home .daily-adhkar-card { border-radius: 23px !important; }
+#page-home .daily-wird-overview { border-radius: 0 0 23px 23px; }
+#page-home .prayer-section { padding: 17px !important; border-radius: 23px !important; background: linear-gradient(145deg, rgba(42, 31, 21, .98), rgba(22, 27, 32, .98)) !important; border-color: rgba(206, 169, 91, .32) !important; }
+#page-home .prayer-section .section-title, #page-home .prayer-section .section-title-button { color: #f0d18b !important; }
+#page-home .prayer-section .more-button { color: #e8c67b; background: rgba(229,194,118,.1); border: 1px solid rgba(229,194,118,.2); }
+#page-home .prayer-section .prayer-row { min-height: 76px !important; border-color: rgba(125,150,181,.3) !important; background: linear-gradient(145deg, rgba(17,30,47,.92), rgba(12,20,32,.92)) !important; }
+#page-home .prayer-section .prayer-row .prayer-title { color: #ccd4e0; }
+#page-home .prayer-section .prayer-row .prayer-value { color: #e8c67b; }
+#page-home .nearby-mosque-card, #page-home .home-qibla-card { min-height: 70px; border-color: rgba(202,166,93,.32); color: #f0e7d6; background: linear-gradient(135deg, #272017, #181a1d) !important; }
+#page-home .nearby-mosque-title, #page-home .mosque-title { color: #e4bf70 !important; }
+#page-home .nearby-mosque-description, #page-home .mosque-description { color: rgba(239,233,220,.68); }
+#page-home .upcoming-card { padding: 17px 19px; border-color: rgba(202,166,93,.28); background: linear-gradient(135deg, #211b15, #151a20) !important; }
+#page-home .upcoming-label { color: #dcb669; }
+#page-home .upcoming-text { color: #eee6d7; }
+#page-home .bottom-nav {
+  width: min(calc(100% - 32px), 760px) !important;
+  min-height: 78px !important;
+  padding: 9px 13px 10px !important;
+  border: 1px solid rgba(223,188,111,.34) !important;
+  border-radius: 25px !important;
+  background: rgba(24, 22, 20, .96) !important;
+  box-shadow: 0 18px 42px rgba(5,5,5,.36), inset 0 1px rgba(255,255,255,.05) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+#page-home .bottom-nav .nav-item { min-height: 58px; border-radius: 16px; color: #c5ae7d !important; }
+#page-home .bottom-nav .nav-item:hover { background: rgba(228,192,111,.08) !important; }
+#page-home .bottom-nav .nav-item.active { color: #f2d38e !important; background: rgba(219,177,84,.16) !important; box-shadow: inset 0 0 0 1px rgba(230,192,105,.17); }
+#page-home .bottom-nav .nav-item.active .nav-icon { background: transparent !important; }
+#page-home .bottom-nav .nav-item .nav-icon svg { stroke: currentColor !important; }
+.bottom-nav { width: min(calc(100% - 32px), 760px) !important; min-height: 78px !important; padding: 9px 13px 10px !important; border: 1px solid rgba(223,188,111,.34) !important; border-radius: 25px !important; background: rgba(24,22,20,.96) !important; box-shadow: 0 18px 42px rgba(5,5,5,.36), inset 0 1px rgba(255,255,255,.05) !important; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.bottom-nav .nav-item { min-height: 58px; border-radius: 16px; color: #c5ae7d !important; }
+.bottom-nav .nav-item:hover { background: rgba(228,192,111,.08) !important; }
+.bottom-nav .nav-item.active { color: #f2d38e !important; background: rgba(219,177,84,.16) !important; box-shadow: inset 0 0 0 1px rgba(230,192,105,.17); }
+.bottom-nav .nav-item.active .nav-icon { background: transparent !important; }
+.bottom-nav .nav-item .nav-icon svg { stroke: currentColor !important; }
+#page-home :is(button, a):focus-visible { outline-color: #e9c778; box-shadow: 0 0 0 4px rgba(233,199,120,.2); }
+@media (min-width: 900px) {
+  #page-home .daily-adhkar-section { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: stretch; gap: 0; }
+  #page-home .daily-adhkar-card { border-radius: 23px 0 0 23px !important; }
+  #page-home .daily-wird-overview { margin-top: 0; border-radius: 0 23px 23px 0; }
+  #page-home .prayer-list { grid-template-columns: repeat(6, minmax(0,1fr)); }
+}
+@media (max-width: 680px) {
+  #page-home { padding-top: 14px; }
+  #page-home .main-header { min-height: 92px; padding: 15px 15px 13px; border-radius: 21px; }
+  #page-home .next-prayer { min-height: 218px !important; padding: 17px 16px 14px !important; border-radius: 22px !important; }
+  #page-home .next-prayer .prayer-name { margin-top: 4px; }
+  #page-home .section { margin: 15px 0; }
+  #page-home .prayer-section { padding: 12px !important; }
+  #page-home .prayer-section .prayer-row { min-height: 68px !important; }
+  .bottom-nav { width: calc(100% - 20px) !important; }
+}
