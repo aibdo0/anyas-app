@@ -63,12 +63,24 @@ function getDirectionName(degree) {
   return "شمال غربي";
 }
 
+function formatQiblaDegree(degree) {
+  return new Intl.NumberFormat("ar-EG", { useGrouping: false }).format(Math.round(degree));
+}
+
+function setQiblaState(state, label) {
+  const status = document.getElementById("qiblaStatus");
+  if (status) {
+    status.dataset.state = state;
+    status.textContent = label;
+  }
+}
+
 function updateHomeQiblaPreview() {
   const degreeElement = document.getElementById("homeQiblaDegree");
   const directionElement = document.getElementById("homeQiblaDirection");
   const statusElement = document.getElementById("homeQiblaStatus");
   if (qiblaBearing === null) return;
-  if (degreeElement) degreeElement.textContent = `${Math.round(qiblaBearing)}°`;
+  if (degreeElement) degreeElement.textContent = `${formatQiblaDegree(qiblaBearing)}°`;
   if (directionElement) directionElement.textContent = getDirectionName(qiblaBearing);
   if (statusElement) statusElement.textContent = "اتجاهك نحو القبلة";
 }
@@ -80,10 +92,8 @@ function updateQiblaInfo() {
 
   if (qiblaBearing === null) return;
 
-  const rounded = Math.round(qiblaBearing);
-
   if (degreeElement) {
-    degreeElement.textContent = `${rounded}°`;
+    degreeElement.textContent = `${formatQiblaDegree(qiblaBearing)}°`;
   }
 
   if (directionElement) {
@@ -190,9 +200,8 @@ function getHeading(event) {
       compassCardRotation = null;
       arrowRotation = null;
       updateArrow();
-      const status = document.getElementById("qiblaStatus");
       const message = document.getElementById("qiblaMessage");
-      if (status) status.textContent = "عدّل وضع الهاتف قليلًا";
+      setQiblaState("tilt-phone", "عدّل وضع الهاتف قليلًا");
       if (message) message.textContent = "اتجاه القبلة عمودي على الشاشة الآن؛ أمل الهاتف قليلًا ليظهر السهم.";
       return;
     }
@@ -203,9 +212,8 @@ function getHeading(event) {
     currentHeading = null;
     orientationWarningShown = false;
     updateArrow();
-    const status = document.getElementById("qiblaStatus");
     const message = document.getElementById("qiblaMessage");
-    if (status) status.textContent = "اتجاه القبلة متاح";
+    setQiblaState("ready", "الاتجاه متاح");
     if (message) message.textContent = "اتبع السهم؛ يظهر تقدير الدقة إذا كان جهازك يوفّره.";
     return;
   }
@@ -220,9 +228,8 @@ function getHeading(event) {
     arrowRotation = normalizeDegree(qiblaBearing);
     orientationWarningShown = false;
     updateArrow();
-    const status = document.getElementById("qiblaStatus");
     const message = document.getElementById("qiblaMessage");
-    if (status) status.textContent = "اتجاه القبلة متاح";
+    setQiblaState("ready", "الاتجاه متاح");
     if (message) message.textContent = "اتبع السهم؛ إذا ظهر تقدير الدقة منخفضًا فجرّب إرشادات المعايرة.";
     return;
   }
@@ -233,9 +240,8 @@ function getHeading(event) {
   if (!orientationWarningShown) {
     orientationWarningShown = true;
     updateCompassAccuracy(event);
-    const status = document.getElementById("qiblaStatus");
     const message = document.getElementById("qiblaMessage");
-    if (status) status.textContent = "مستشعر الشمال غير متاح";
+    setQiblaState("sensor-unavailable", "الحساس لا يوفر اتجاه الشمال");
     if (message) message.textContent = "المتصفح لم يوفّر اتجاهًا مطلقًا للبوصلة. اسمح بحساس الاتجاه أو استخدم متصفحًا يدعم البوصلة.";
   }
 }
@@ -252,19 +258,14 @@ function activateOrientation() {
     if (orientationDataReceived || orientationWarningShown) return;
     orientationWarningShown = true;
     updateCompassAccuracy(null);
-    const status = document.getElementById("qiblaStatus");
     const message = document.getElementById("qiblaMessage");
-    if (status) status.textContent = "مستشعر الشمال غير متاح";
+    setQiblaState("sensor-unavailable", "الحساس لا يوفر اتجاه الشمال");
     if (message) message.textContent = "المتصفح لم يوفّر اتجاهًا مطلقًا للبوصلة. اسمح بحساس الاتجاه أو استخدم متصفحًا يدعم البوصلة.";
   }, 3500);
 
   orientationStarted = true;
 
-  const status = document.getElementById("qiblaStatus");
-
-  if (status) {
-    status.textContent = "بانتظار بيانات البوصلة…";
-  }
+  setQiblaState("waiting-sensor", "تم تشغيل الحساس — بانتظار الاتجاه");
 }
 
 // بدء البوصلة
@@ -282,6 +283,7 @@ async function startOrientation() {
         activateOrientation();
       } else {
         updateCompassAccuracy(null);
+        setQiblaState("permission-required", "السماح بالحساس مطلوب");
         const message =
           document.getElementById("qiblaMessage");
 
@@ -295,6 +297,7 @@ async function startOrientation() {
     }
   } catch (error) {
     updateCompassAccuracy(null);
+    setQiblaState("sensor-unavailable", "تعذر تشغيل حساس الاتجاه");
     console.error(
       "حدث خطأ أثناء تشغيل البوصلة:",
       error
@@ -312,9 +315,6 @@ async function startOrientation() {
 
 // الحصول على موقع المستخدم
 function getLocation() {
-  const status =
-    document.getElementById("qiblaStatus");
-
   const message =
     document.getElementById("qiblaMessage");
 
@@ -333,16 +333,13 @@ function getLocation() {
     northProjectionAvailable = true;
     updateQiblaInfo();
     updateArrow();
-    if (status) status.textContent = "تم استخدام المدينة المختارة";
+    setQiblaState("location-ready", "تم تحديد الموقع — بانتظار الحساس");
     if (message) message.textContent = `اتجاه القبلة من ${savedLocation.city || "مدينتك"}. انتظر ضبط البوصلة ثم اتبع السهم.`;
     return;
   }
 
   if (!navigator.geolocation) {
-    if (status) {
-      status.textContent =
-        "الموقع الجغرافي غير مدعوم";
-    }
+    setQiblaState("location-unavailable", "الموقع الجغرافي غير متاح");
 
     if (message) {
       message.textContent =
@@ -352,10 +349,7 @@ function getLocation() {
     return;
   }
 
-  if (status) {
-    status.textContent =
-      "جاري تحديد موقعك...";
-  }
+  setQiblaState("locating", "جاري تحديد موقعك…");
 
   navigator.geolocation.getCurrentPosition(
     position => {
@@ -373,10 +367,7 @@ function getLocation() {
       updateQiblaInfo();
       updateArrow();
 
-      if (status) {
-        status.textContent =
-          "تم تحديد اتجاه القبلة";
-      }
+      setQiblaState("location-ready", "تم تحديد الموقع — بانتظار الحساس");
 
       if (message) {
         message.textContent =
@@ -391,10 +382,7 @@ function getLocation() {
         error
       );
 
-      if (status) {
-        status.textContent =
-          "تعذر تحديد موقعك";
-      }
+      setQiblaState("location-unavailable", "تعذر تحديد الموقع");
 
       if (message) {
         if (error.code === 1) {

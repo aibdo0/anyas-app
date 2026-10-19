@@ -635,3 +635,26 @@ html[lang="en"] #page-home .home-brand { letter-spacing: 0; }
 }
 #page-home .home-qibla-degree,
 #page-qibla .qibla-degree { min-width: 2ch; direction: ltr; unicode-bidi: isolate; }
+
+/* حالات البوصلة: الحالة مفهومة بصريًا ولا تعتمد على اللون وحده */
+#page-qibla .qibla-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(213,164,81,.45);
+  border-radius: 999px;
+  font-weight: 800;
+}
+#page-qibla .qibla-status::before { content: ""; width: 7px; height: 7px; flex: 0 0 7px; border-radius: 50%; background: #d5a451; box-shadow: 0 0 0 3px rgba(213,164,81,.12); }
+#page-qibla .qibla-status[data-state="ready"] { color: #f1d18a; border-color: rgba(117,185,126,.65); }
+#page-qibla .qibla-status[data-state="ready"]::before { background: #75b97e; box-shadow: 0 0 0 3px rgba(117,185,126,.14); }
+#page-qibla .qibla-status[data-state="location-unavailable"],
+#page-qibla .qibla-status[data-state="sensor-unavailable"],
+#page-qibla .qibla-status[data-state="permission-required"] { color: #f1c6a5; border-color: rgba(201,119,83,.65); }
+#page-qibla .qibla-status[data-state="location-unavailable"]::before,
+#page-qibla .qibla-status[data-state="sensor-unavailable"]::before,
+#page-qibla .qibla-status[data-state="permission-required"]::before { background: #c97753; box-shadow: 0 0 0 3px rgba(201,119,83,.14); }
+#page-qibla .qibla-status[data-state="locating"]::before,
+#page-qibla .qibla-status[data-state="waiting-sensor"]::before { animation: qibla-status-pulse 1.35s ease-in-out infinite; }
+@keyframes qibla-status-pulse { 50% { opacity: .35; transform: scale(.72); } }
+@media (prefers-reduced-motion: reduce) { #page-qibla .qibla-status[data-state]::before { animation: none; } }

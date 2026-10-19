@@ -687,8 +687,8 @@ aria-label="اتجاه القبلة"
 
 <div class="qibla-heading"><span class="qibla-heading-icon" aria-hidden="true">⌖</span><h2>اتجاه القبلة</h2></div>
 
-<div class="qibla-status" id="qiblaStatus" role="status" aria-live="polite" aria-atomic="true">
-جاري تجهيز البوصلة...
+<div class="qibla-status" id="qiblaStatus" data-state="idle" role="status" aria-live="polite" aria-atomic="true">
+اضغط «معايرة البوصلة» للبدء
 </div>
 
 <p class="qibla-prompt">اتجاهك نحو القبلة</p>
@@ -720,7 +720,7 @@ type="button"
 class="qibla-message"
 id="qiblaMessage"
 >
-اسمح للتطبيق باستخدام موقعك واتجاه الجهاز لتحديد القبلة.
+سيطلب التطبيق موقعك وحساس اتجاه الجهاز لحساب القبلة فعليًا.
 </div>
 
 <details class="qibla-calibration">
