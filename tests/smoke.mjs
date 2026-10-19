@@ -94,6 +94,16 @@ check("PWA install and offline shell are configured", () => {
   assert.match(index, /addEventListener\("offline"/);
 });
 
+check("home header centers Anias branding and preserves accessible controls", () => {
+  assert.match(index, /class="home-header-top"/);
+  assert.match(index, /class="home-brand" aria-label="أنياس"/);
+  assert.match(index, /class="home-brand-mark"/);
+  assert.match(index, /id="themeToggle"/);
+  assert.match(index, /id="notificationBellButton"/);
+  assert.match(read("css/app-design-system.css"), /home-header-top/);
+  assert.match(read("css/app-design-system.css"), /home-brand \{/);
+});
+
 check("keyboard and screen-reader accessibility basics are present", () => {
   assert.match(index, /class="skip-link" href="#page-home"/);
   for (const match of index.matchAll(/<img\b([^>]*)>/gi)) assert.match(match[1], /\balt=/, "every image needs alt text");

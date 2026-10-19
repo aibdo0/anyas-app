@@ -116,28 +116,26 @@
 <main class="page active" id="page-home">
 
 <header class="main-header">
-
-<div class="home-greeting" id="homeGreeting">السلام عليكم يا أخي المسلم</div>
-
-<div class="home-brand">أنياس</div>
-
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
-  <span id="themeToggleIcon" aria-hidden="true">☾</span>
-</button>
-
-<button class="notification-bell-button" id="notificationBellButton" type="button" aria-label="الإشعارات" title="الإشعارات">
-  <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-    <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
-  </svg>
-  <span class="notification-badge" id="notificationBadge" aria-live="polite" hidden>0</span>
-</button>
-
-<div class="date-line">
-<span id="todayHijri">--</span>
-<span class="date-separator">•</span>
-<span id="todayDate">اليوم</span>
-</div>
-
+  <div class="home-header-top">
+    <div class="home-greeting" id="homeGreeting">السلام عليكم يا أخي المسلم</div>
+    <div class="home-brand" aria-label="أنياس"><span class="home-brand-mark" aria-hidden="true">✦</span><span>أنياس</span></div>
+    <div class="home-header-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
+        <span id="themeToggleIcon" aria-hidden="true">☾</span>
+      </button>
+      <button class="notification-bell-button" id="notificationBellButton" type="button" aria-label="الإشعارات" title="الإشعارات">
+        <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+        </svg>
+        <span class="notification-badge" id="notificationBadge" aria-live="polite" hidden>0</span>
+      </button>
+    </div>
+  </div>
+  <div class="date-line">
+    <span id="todayHijri">--</span>
+    <span class="date-separator">•</span>
+    <span id="todayDate">اليوم</span>
+  </div>
 </header>
 
 
