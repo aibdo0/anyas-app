@@ -94,13 +94,24 @@ check("PWA install and offline shell are configured", () => {
   assert.match(index, /addEventListener\("offline"/);
 });
 
+check("home header shows dynamic Hijri and Gregorian dates without greeting settings", () => {
+  assert.doesNotMatch(index, /السلام عليكم يا أخي المسلم/);
+  assert.doesNotMatch(index, /id="userNameInput"/);
+  assert.doesNotMatch(enhancements, /function initGreeting\(\)/);
+  assert.match(index, /class="home-brand-block"/);
+  assert.match(index, /class="home-date-stack"/);
+  assert.match(index, /class="home-calendar-icon"/);
+  assert.match(appjs, /year: "numeric"/);
+  assert.match(appjs, /formatNumber = value/);
+});
+
 check("home header centers Anias branding and preserves accessible controls", () => {
   assert.match(index, /class="home-header-top"/);
   assert.match(index, /class="home-brand" aria-label="أنياس"/);
   assert.match(index, /class="home-brand-mark"/);
   assert.match(index, /id="themeToggle"/);
   assert.match(index, /id="notificationBellButton"/);
-  assert.match(index, /home-header-top[\s\S]*notificationBellButton[\s\S]*home-brand[\s\S]*themeToggle/);
+  assert.match(index, /class="home-brand-block"[\s\S]*id="notificationBellButton"[\s\S]*id="themeToggle"/);
   assert.match(read("css/app-design-system.css"), /home-header-top/);
   assert.match(read("css/app-design-system.css"), /home-brand \{/);
 });

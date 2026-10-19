@@ -348,22 +348,28 @@ html[lang="en"] #page-settings .settings-section-toggle { text-align: left; }
 }
 
 
-/* هيدر أنياس: الاسم في المنتصف مع مساحة متوازنة للأدوات */
-#page-home .main-header { padding: 14px 16px 12px; }
-#page-home .home-header-top { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 10px; min-height: 48px; }
-#page-home .home-greeting { min-width: 0; margin-top: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; }
-#page-home .home-brand { grid-column: 2; display: inline-flex; align-items: center; justify-content: center; gap: 7px; margin: 0; color: #fff !important; font-size: clamp(24px, 7vw, 30px); font-weight: 900; letter-spacing: -.04em; white-space: nowrap; text-shadow: 0 2px 14px rgba(0,0,0,.18); }
+/* هيدر أنياس: الاسم والتاريخ يمينًا، وأدوات التطبيق يسارًا */
+#page-home .main-header { padding: 15px 16px 14px; }
+#page-home .home-header-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+#page-home .home-brand-block { display: grid; min-width: 0; justify-items: start; gap: 5px; }
+#page-home .home-brand { display: inline-flex; align-items: center; gap: 7px; margin: 0; color: #fff !important; font-size: clamp(25px, 7vw, 31px); font-weight: 900; letter-spacing: -.04em; line-height: 1.1; white-space: nowrap; text-shadow: 0 2px 14px rgba(0,0,0,.18); }
 #page-home .home-brand-mark { display: grid; width: 23px; height: 23px; place-items: center; border: 1px solid rgba(240,209,140,.65); border-radius: 50%; color: var(--ania-hero-accent); background: rgba(255,255,255,.09); font-size: 13px; line-height: 1; }
-#page-home .home-header-top > .theme-toggle, #page-home .home-header-top > .notification-bell-button { position: relative; inset: auto; display: grid; width: 38px; height: 38px; border-radius: 12px; }
-#page-home .home-header-top > .notification-bell-button { grid-column: 1; justify-self: start; }
-#page-home .home-header-top > .theme-toggle { grid-column: 3; justify-self: end; }
-#page-home .home-header-top #themeToggleIcon { width: 30px; height: 30px; font-size: 26px; }
-#page-home .date-line { margin-top: 8px; text-align: center; }
+#page-home .home-date-stack { display: grid; gap: 2px; min-width: 0; color: rgba(255,255,255,.78); }
+#page-home .home-hijri-date, #page-home .home-gregorian-date { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#page-home .home-hijri-date { display: inline-flex; align-items: center; gap: 6px; color: #f0d18c; font-size: 11px; font-weight: 800; }
+#page-home .home-gregorian-date { color: rgba(255,255,255,.72); font-size: 10px; }
+#page-home .home-calendar-icon { width: 14px; height: 14px; flex: 0 0 14px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.6; }
+#page-home .home-header-actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+#page-home .home-header-actions .theme-toggle, #page-home .home-header-actions .notification-bell-button { position: relative; inset: auto; display: grid; flex: 0 0 38px; width: 38px; height: 38px; border-radius: 12px; }
+#page-home .home-header-actions #themeToggleIcon { width: 30px; height: 30px; font-size: 26px; }
 @media (max-width: 390px) {
   #page-home .main-header { padding-inline: 12px; }
-  #page-home .home-header-top { gap: 6px; }
+  #page-home .home-header-top { gap: 9px; }
   #page-home .home-brand { gap: 5px; font-size: 23px; }
-  #page-home .home-brand-mark { width: 20px; height: 20px; border-radius: 7px; font-size: 11px; }
-  #page-home .home-header-top > .theme-toggle, #page-home .home-header-top > .notification-bell-button { width: 34px; height: 34px; border-radius: 10px; }
+  #page-home .home-brand-mark { width: 20px; height: 20px; font-size: 11px; }
+  #page-home .home-header-actions { gap: 4px; }
+  #page-home .home-header-actions .theme-toggle, #page-home .home-header-actions .notification-bell-button { flex-basis: 34px; width: 34px; height: 34px; border-radius: 10px; }
+  #page-home .home-hijri-date { font-size: 10px; }
+  #page-home .home-gregorian-date { font-size: 9px; }
 }
 html[lang="en"] #page-home .home-brand { letter-spacing: 0; }

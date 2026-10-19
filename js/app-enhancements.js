@@ -57,25 +57,6 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     render();
   }
 
-  function initGreeting() {
-    const input = byId("userNameInput");
-    const greeting = byId("homeGreeting");
-    const saved = localStorage.getItem("anyas_user_name") || "أخي المسلم";
-    const render = () => {
-      const name = (input?.value || saved || "أخي المسلم").trim() || "أخي المسلم";
-      if (greeting) greeting.textContent = `السلام عليكم يا ${name}`;
-    };
-    if (input) {
-      input.value = saved === "أخي المسلم" ? "" : saved;
-      input.addEventListener("input", () => {
-        const value = input.value.trim();
-        localStorage.setItem("anyas_user_name", value || "أخي المسلم");
-        render();
-      });
-    }
-    render();
-  }
-
   function openPage(id) {
     if (typeof window.goToPage === "function") window.goToPage(id);
     else document.getElementById(`page-${id}`)?.classList.add("active");
@@ -677,7 +658,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    initGreeting(); initOfflineMode(); initCityPicker(); initPrayerSchedule(); initPrayerShare(); initNotificationsList();
+    initOfflineMode(); initCityPicker(); initPrayerSchedule(); initPrayerShare(); initNotificationsList();
     byId("mosquesBackButton")?.addEventListener("click", () => openPage("home"));
     updateFridayPrayerLabel(); updatePrayerMoment(); setInterval(updatePrayerMoment, 5000);
   });

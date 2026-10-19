@@ -206,17 +206,13 @@ function updateDate() {
     document.getElementById("todayDate");
 
   if (dateElement) {
-
-    dateElement.textContent =
-      today.toLocaleDateString(
-        "ar-EG",
-        {
-          weekday: "long",
-          day: "numeric",
-          month: "long"
-        }
-      );
-
+    const english = document.documentElement.lang === "en";
+    dateElement.textContent = today.toLocaleDateString(english ? "en-GB" : "ar-EG", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
   }
 
   const hijriElement =
@@ -235,8 +231,8 @@ function updateDate() {
     if (hijri) {
 
       const monthName = hijri.monthName || String(hijri.month);
-      hijriElement.textContent =
-        hijri.day + " " + monthName + " " + hijri.year + " هـ";
+      const formatNumber = value => document.documentElement.lang === "en" ? String(value) : String(value).replace(/\d/g, digit => "٠١٢٣٤٥٦٧٨٩"[digit]);
+      hijriElement.textContent = `${formatNumber(hijri.day)} ${monthName} ${formatNumber(hijri.year)} ${document.documentElement.lang === "en" ? "AH" : "هـ"}`;
 
     }
 
