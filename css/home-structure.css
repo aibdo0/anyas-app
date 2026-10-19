@@ -3,6 +3,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
+  grid-auto-rows: 1fr;
   gap: 18px;
   padding: 0;
   border: 0;
@@ -25,15 +26,21 @@
 }
 #page-home .daily-hadith-card { background: #101923 !important; }
 #page-home .daily-highlight-media {
+  position: relative;
   display: flex;
   min-height: 112px;
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
   padding: 18px 20px;
-  background: linear-gradient(180deg, rgba(24, 15, 8, .15), rgba(24, 15, 8, .88)), url("../assets/anyas-morning-background.webp") center 44% / cover;
+  background-color: #25170d;
+  background-image: linear-gradient(180deg, rgba(25, 15, 8, .76), rgba(25, 15, 8, .95)), url("../assets/anyas-morning-background.webp");
+  background-position: center 44%;
+  background-size: cover;
+  background-blend-mode: normal;
 }
-#page-home .daily-hadith-card .daily-highlight-media { background: linear-gradient(180deg, rgba(8, 16, 25, .08), rgba(8, 16, 25, .9)), url("../assets/anyas-night-background.webp") center 42% / cover; }
+#page-home .daily-highlight-media::after { position: absolute; inset: auto 18px 11px; color: rgba(240, 204, 124, .42); content: "✦  ◇  ✦"; font-size: 12px; letter-spacing: .55em; text-align: center; }
+#page-home .daily-hadith-card .daily-highlight-media { background-color: #0d1826; background-image: linear-gradient(180deg, rgba(8, 16, 25, .7), rgba(8, 16, 25, .95)), url("../assets/anyas-night-background.webp"); background-position: center 42%; background-size: cover; }
 #page-home .daily-highlight-label {
   display: inline-flex;
   align-items: center;
@@ -52,6 +59,8 @@
 #page-home .daily-highlight-body .card-title { margin: 0 0 10px; color: #e6bf70; font-size: 11px; font-weight: 800; text-align: center; }
 #page-home .daily-highlight-body .ayah,
 #page-home .daily-highlight-body .hadith-text { overflow-wrap: anywhere; color: #f8f0df; font-family: "Amiri", "Noto Naskh Arabic", serif; text-align: center; }
+#page-home .daily-highlight-body .ayah,
+#page-home .daily-highlight-body .hadith-text { direction: rtl; unicode-bidi: plaintext; }
 #page-home .daily-highlight-body .ayah { font-size: clamp(25px, 3vw, 33px); line-height: 1.9; }
 #page-home .daily-highlight-body .hadith-text { font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; line-height: 1.85; }
 #page-home .daily-highlight-body .reference { margin: 11px 0 0; color: #dfc998; font-size: 12px; line-height: 1.7; text-align: center; }
@@ -86,6 +95,7 @@
 
 @media (max-width: 700px) {
   #page-home .daily-content.card { grid-template-columns: minmax(0, 1fr); gap: 13px; }
+  #page-home .daily-content.card { grid-auto-rows: auto; }
   #page-home .daily-highlight-media { min-height: 96px; }
   #page-home .daily-highlight-body { padding: 17px 15px 14px; }
   #page-home .daily-highlight-body .ayah { font-size: clamp(24px, 7vw, 31px); }
