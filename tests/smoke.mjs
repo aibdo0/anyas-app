@@ -94,6 +94,21 @@ check("PWA install and offline shell are configured", () => {
   assert.match(index, /addEventListener\("offline"/);
 });
 
+check("next prayer card keeps live data hooks with the premium mosque design", () => {
+  assert.match(index, /class="next-prayer"/);
+  assert.match(index, /id="openCityPickerButton"/);
+  assert.match(index, /id="nextPrayerName"/);
+  assert.match(index, /id="nextPrayerTime"/);
+  assert.match(index, /id="countdown"/);
+  assert.match(index, /class="prayer-time-icon"/);
+  assert.match(index, /id="prayerProgressBar"/);
+  const design = read("css/app-design-system.css");
+  assert.match(design, /prayer-card-ornament/);
+  assert.match(design, /url\("\.\.\/assets\/prayer-hero\.jpg"\)/);
+  assert.match(design, /countdown-shell/);
+  assert.match(design, /prayer-progress-bar/);
+});
+
 check("home header shows dynamic Hijri and Gregorian dates without greeting settings", () => {
   assert.doesNotMatch(index, /السلام عليكم يا أخي المسلم/);
   assert.doesNotMatch(index, /id="userNameInput"/);
