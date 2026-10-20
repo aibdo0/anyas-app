@@ -564,10 +564,24 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
 
   let mosqueSearchSequence = 0;
   let activeMosqueController = null;
-  function setMosqueStatus(kind, title, message = "") {
+  function setMosqueLocationStatus(kind, title, message = "", label = "") {
+    const card = byId("mosquesLocationStatus");
+    const heading = byId("mosquesLocationStatusTitle");
+    const detail = byId("mosquesLocationStatusDetail");
+    const locationLabel = byId("mosquesLocationLabel");
+    if (!card) return;
+    card.className = `mosques-location-card is-${kind}`;
+    card.setAttribute("aria-busy", String(kind === "loading"));
+    if (heading) heading.textContent = title;
+    if (detail) detail.textContent = message;
+    if (locationLabel) locationLabel.textContent = label;
+  }
+  function setMosqueStatus(kind, title, message = "", options = {}) {
     const status = byId("mosquesStatus");
     const retry = byId("mosquesRetryButton");
     const manual = byId("mosquesManualLocationButton");
+    const permissionNotice = byId("mosquesPermissionNotice");
+    const resultsHeading = byId("mosquesResultsHeading");
     if (!status) return;
     status.replaceChildren();
     status.className = `mosque-state-card is-${kind}`;
@@ -591,7 +605,9 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     }
     status.append(copy);
     if (retry) retry.hidden = kind !== "error" && kind !== "empty";
-    if (manual) manual.hidden = kind !== "error";
+    if (manual) manual.hidden = kind !== "error" || !options.showLocationHelp;
+    if (permissionNotice) permissionNotice.hidden = !options.showLocationHelp;
+    if (resultsHeading) resultsHeading.hidden = kind !== "results";
   }
   function isValidMosqueLocation(location) {
     const latitude = Number(location?.latitude);
@@ -640,6 +656,8 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     const retry = byId("mosquesRetryButton");
     const manual = byId("mosquesManualLocationButton");
     if (!list) return;
+    const headerSubtitle = byId("mosquesHeaderSubtitle");
+    if (headerSubtitle) headerSubtitle.textContent = english ? "Find a nearby mosque using your current location" : "ابحث عن أقرب مسجد لموقعك الحالي";
     const requestId = ++mosqueSearchSequence;
     activeMosqueController?.abort();
     const controller = typeof AbortController === "function" ? new AbortController() : null;
@@ -648,8 +666,10 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     if (mapButton) mapButton.hidden = true;
     if (retry) retry.hidden = true;
     if (manual) manual.hidden = true;
-    setMosqueStatus("loading", english ? "Finding your location…" : "جارٍ تحديد موقعك…", english ? "Nearby mosques will be searched using your device location." : "سيتم البحث حول إحداثيات جهازك الفعلية.");
+    setMosqueLocationStatus("loading", english ? "Finding your current location…" : "جارٍ تحديد موقعك الحالي…", english ? "Allow location access for accurate nearby results." : "يرجى السماح بالوصول إلى الموقع للحصول على نتائج دقيقة.", english ? "Location permission is requested only for this search." : "يُطلب إذن الموقع لهذا البحث فقط.");
+    setMosqueStatus("loading", english ? "Searching for nearby mosques…" : "جارٍ البحث عن أقرب المساجد…", english ? "This may take a few seconds while map data is checked." : "قد تستغرق العملية بضع ثوانٍ أثناء التحقق من بيانات الخريطة.");
     const stillCurrent = () => requestId === mosqueSearchSequence;
+    let locationResolved = false;
     try {
       if (navigator.onLine === false) throw Object.assign(new Error("OFFLINE"), { kind: "offline" });
       const location = options.location && isValidMosqueLocation(options.location)
@@ -657,13 +677,21 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
         : await requestMosqueLocation();
       if (!stillCurrent()) return;
       if (!isValidMosqueLocation(location)) throw Object.assign(new Error("INVALID_LOCATION"), { kind: "location" });
+      locationResolved = true;
       const latitude = Number(location.latitude);
       const longitude = Number(location.longitude);
       const city = location.city || (english ? "your selected location" : "الموقع المحدد يدويًا");
       const label = byId("mosquesLocationLabel");
-      if (label) label.textContent = options.location
+      const locationLabel = options.location
         ? (english ? `Near ${city}` : `حول ${city}`)
         : (english ? "Near your current location" : "حول موقعك الحالي");
+      const locationMessage = options.location
+        ? (english ? `Searching around ${city} using the selected coordinates.` : `سيُجرى البحث حول ${city} باستخدام الإحداثيات المحددة.`)
+        : (english ? "The search is centered on your device's current coordinates." : "سيُجرى البحث حول إحداثيات موقعك الفعلية.");
+      setMosqueLocationStatus(options.location ? "manual" : "ready", options.location
+        ? (english ? "Using your selected location" : "يتم استخدام الموقع المحدد يدويًا")
+        : (english ? "Your current location is ready" : "تم تحديد موقعك الحالي"), locationMessage, locationLabel);
+      if (label) label.textContent = locationLabel;
       const radius = 15000;
       const query = `[out:json][timeout:15];(nwr[amenity=mosque](around:${radius},${latitude},${longitude});nwr[amenity=place_of_worship][religion=muslim](around:${radius},${latitude},${longitude});nwr[amenity=place_of_worship][religion=islam](around:${radius},${latitude},${longitude});nwr[building=mosque](around:${radius},${latitude},${longitude}););out center tags;`;
       const mapUrl = `https://www.google.com/maps/search/${encodeURIComponent("مسجد")}/@${latitude},${longitude},15z`;
@@ -753,6 +781,10 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
         return;
       }
       const statusTitle = english ? `Found ${places.length} nearby mosque${places.length === 1 ? "" : "s"}` : `عُثر على ${toArabic(places.length)} مسجد قريب`;
+      const resultsTitle = byId("mosquesResultsTitle");
+      const resultCount = byId("mosquesResultCount");
+      if (resultsTitle) resultsTitle.textContent = english ? "Nearby mosques" : "أقرب المساجد";
+      if (resultCount) resultCount.textContent = english ? `${places.length} found` : `${toArabic(places.length)} نتائج`;
       setMosqueStatus("results", statusTitle, english ? `Results from OpenStreetMap within ${radius / 1000} km.` : "المسافات المباشرة محسوبة من إحداثيات بيانات الخريطة.");
       if (mapButton) mapButton.hidden = false;
       const favoriteKey = "anyas_favorite_mosque";
@@ -766,10 +798,6 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
         const item = document.createElement("article");
         item.className = "mosque-result";
         item.dataset.mosqueKey = key;
-        const icon = document.createElement("span");
-        icon.className = "mosque-result-icon";
-        icon.setAttribute("aria-hidden", "true");
-        icon.textContent = "م";
         const info = document.createElement("span");
         info.className = "mosque-result-info";
         const title = document.createElement("strong");
@@ -819,7 +847,15 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
           call.setAttribute("aria-label", `${call.textContent}: ${name}`);
           actions.append(call);
         }
-        item.append(icon, info, actions);
+        const photo = document.createElement("img");
+        photo.className = "mosque-result-photo";
+        photo.src = "assets/prayer-hero.jpg";
+        photo.alt = "";
+        photo.setAttribute("aria-hidden", "true");
+        photo.loading = index < 3 ? "eager" : "lazy";
+        photo.decoding = "async";
+        photo.style.objectPosition = `${[14, 34, 52][index % 3]}% center`;
+        item.append(info, actions, photo);
         list.appendChild(item);
         if (index === 0) {
           const address = [tags["addr:street"], tags["addr:housenumber"], tags["addr:city"]].filter(Boolean).join("، ") || (english ? "Address not available in map data" : "العنوان غير متاح في بيانات الخريطة");
@@ -848,8 +884,24 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
             ? (english ? "Check location services and retry, or choose a location manually." : "تحقق من تفعيل خدمات الموقع ثم أعد المحاولة، أو اختر موقعًا يدويًا.")
             : error?.kind === "timeout"
               ? (english ? "The map service took too long to respond. Please retry." : "استغرقت خدمة الخرائط وقتًا أطول من المهلة المحددة. أعد المحاولة.")
-              : (english ? "Check your connection and retry. No estimated or fabricated results are shown." : "تحقق من الاتصال ثم أعد المحاولة. لا نعرض نتائج وهمية أو تقديرية.");
-      setMosqueStatus("error", title, message);
+            : (english ? "Check your connection and retry. No estimated or fabricated results are shown." : "تحقق من الاتصال ثم أعد المحاولة. لا نعرض نتائج وهمية أو تقديرية.");
+      const showLocationHelp = !offline && locationFailed;
+      if (showLocationHelp) {
+        const permissionTitle = denied
+          ? (english ? "Location access is blocked" : "لم يتمكن التطبيق من الوصول إلى موقعك")
+          : (english ? "Your location is unavailable" : "تعذر تحديد موقعك الحالي");
+        const permissionMessage = english
+          ? "Allow location access in your browser settings, or choose a location manually."
+          : "اسمح بالوصول إلى الموقع أو اختر موقعًا يدويًا لمتابعة البحث.";
+        setMosqueLocationStatus("error", permissionTitle, permissionMessage, english ? "Location permission is needed for nearby results." : "الموقع مطلوب لعرض أقرب المساجد بدقة.");
+        const noticeTitle = byId("mosquesPermissionTitle");
+        const noticeDetail = byId("mosquesPermissionDetail");
+        if (noticeTitle) noticeTitle.textContent = permissionTitle;
+        if (noticeDetail) noticeDetail.textContent = permissionMessage;
+      } else if (!locationResolved && offline) {
+        setMosqueLocationStatus("offline", english ? "Location search needs a connection" : "البحث عن موقعك يحتاج اتصالًا", message, "");
+      }
+      setMosqueStatus("error", title, message, { showLocationHelp });
     } finally {
       if (requestId === mosqueSearchSequence) activeMosqueController = null;
     }

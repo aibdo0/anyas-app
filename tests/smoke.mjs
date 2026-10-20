@@ -314,6 +314,17 @@ check("mosque search supports local favorites and contact actions", () => {
   assert.match(read("css/theme-white-gold.css"), /\.mosque-result-actions/);
 });
 
+check("mosque page follows the reference layout with local imagery and live location panels", () => {
+  const mosqueCss = read("css/theme-white-gold.css");
+  assert.match(index, /class="[^"]*mosque-page-header/);
+  assert.match(index, /id="mosquesLocationStatus"/);
+  assert.match(index, /id="mosquesResultsHeading"/);
+  assert.match(index, /id="mosquesPermissionNotice"/);
+  assert.match(enhancements, /photo\.src = "assets\/prayer-hero\.jpg"/);
+  assert.match(mosqueCss, /grid-template-areas: "info actions photo"/);
+  assert.match(mosqueCss, /\.mosque-result-photo/);
+});
+
 check("mosque search shows coordinate distance without estimated walking time", () => {
   assert.match(enhancements, /straight-line distance/);
   assert.match(enhancements, /مسافة مباشرة/);

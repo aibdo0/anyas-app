@@ -1,4 +1,4 @@
-const CACHE_NAME = "anyas-shell-v1.1.7";
+const CACHE_NAME = "anyas-shell-v1.1.8";
 const CORE_ASSETS = [
   "./",
   "./index.html",
