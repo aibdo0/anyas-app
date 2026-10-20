@@ -137,6 +137,11 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
       window.loadPrayerTimes?.(safeLocation.latitude, safeLocation.longitude);
       window.dispatchEvent(new CustomEvent("anyas:location-updated", { detail: safeLocation }));
       renderLocalCities();
+      if (window.anyasReturnToMosquesAfterManualLocation) {
+        window.anyasReturnToMosquesAfterManualLocation = false;
+        window.openMosqueDirectory?.({ location: safeLocation });
+        return;
+      }
       openPage("home");
     };
     const renderButtons = (container, cities) => {
@@ -557,125 +562,306 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     }
   }
 
-  async function openMosqueDirectory() {
-    openPage("mosques");
-    const list = byId("mosquesList");
-    const location = currentCoordinates();
+  let mosqueSearchSequence = 0;
+  let activeMosqueController = null;
+  function setMosqueStatus(kind, title, message = "") {
+    const status = byId("mosquesStatus");
+    const retry = byId("mosquesRetryButton");
+    const manual = byId("mosquesManualLocationButton");
+    if (!status) return;
+    status.replaceChildren();
+    status.className = `mosque-state-card is-${kind}`;
+    status.dataset.state = kind;
+    status.setAttribute("aria-busy", String(kind === "loading"));
+    if (kind === "loading") {
+      const spinner = document.createElement("span");
+      spinner.className = "mosque-spinner";
+      spinner.setAttribute("aria-hidden", "true");
+      status.append(spinner);
+    }
+    const copy = document.createElement("span");
+    copy.className = "mosque-state-copy";
+    const heading = document.createElement("strong");
+    heading.textContent = title;
+    copy.append(heading);
+    if (message) {
+      const detail = document.createElement("small");
+      detail.textContent = message;
+      copy.append(detail);
+    }
+    status.append(copy);
+    if (retry) retry.hidden = kind !== "error" && kind !== "empty";
+    if (manual) manual.hidden = kind !== "error";
+  }
+  function isValidMosqueLocation(location) {
     const latitude = Number(location?.latitude);
     const longitude = Number(location?.longitude);
-    const cityName = location?.city || "موقعك الحالي";
-    if (!list || location?.latitude == null || location?.longitude == null || !Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-      if (list) list.textContent = "حدّد مدينتك أولًا لعرض المساجد القريبة.";
-      return;
-    }
+    return Number.isFinite(latitude) && Number.isFinite(longitude) && Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180;
+  }
+  function requestMosqueLocation() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject(Object.assign(new Error("GEOLOCATION_UNAVAILABLE"), { code: 0 }));
+        return;
+      }
+      let settled = false;
+      const timeout = window.setTimeout(() => {
+        if (settled) return;
+        settled = true;
+        reject(Object.assign(new Error("LOCATION_TIMEOUT"), { code: 3 }));
+      }, 12000);
+      const finish = (callback, value) => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timeout);
+        callback(value);
+      };
+      try {
+        navigator.geolocation.getCurrentPosition(
+          position => finish(resolve, {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            city: "موقعك الحالي",
+            accuracy: position.coords.accuracy
+          }),
+          error => finish(reject, error || new Error("LOCATION_UNAVAILABLE")),
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+        );
+      } catch (error) {
+        finish(reject, error);
+      }
+    });
+  }
+  async function openMosqueDirectory(options = {}) {
+    openPage("mosques");
+    const english = document.documentElement.lang === "en";
+    const list = byId("mosquesList");
     const mapButton = byId("openMosquesMapButton");
-    if (mapButton) mapButton.textContent = document.documentElement.lang === "en" ? "Open all mosques on the map" : "فتح كل المساجد على الخريطة";
-    const mosqueMapUrl = `https://www.google.com/maps/search/${encodeURIComponent("مسجد")}/@${latitude},${longitude},15z`;
-    if (mapButton) mapButton.onclick = () => window.open(mosqueMapUrl, "_blank");
-    list.textContent = `جارٍ البحث عن مساجد قرب ${cityName}…`;
-
-    const isMosque = place => {
-      const tags = place.tags || {};
-      const amenity = String(tags.amenity || "").toLowerCase();
-      const building = String(tags.building || "").toLowerCase();
-      const religion = String(tags.religion || "").toLowerCase().split(/[;,]/).map(value => value.trim()).filter(Boolean);
-      const isMuslim = religion.length > 0 && religion.every(value => value === "muslim" || value === "islam");
-      if (religion.length && !isMuslim) return false;
-      return amenity === "mosque" || building === "mosque" || (amenity === "place_of_worship" && isMuslim);
-    };
-    const distanceMeters = (lat1, lon1, lat2, lon2) => {
-      const radians = degrees => degrees * Math.PI / 180;
-      const dLat = radians(lat2 - lat1), dLon = radians(lon2 - lon1);
-      const a = Math.sin(dLat / 2) ** 2 + Math.cos(radians(lat1)) * Math.cos(radians(lat2)) * Math.sin(dLon / 2) ** 2;
-      const bounded = Math.min(1, Math.max(0, a));
-      return 6371000 * 2 * Math.atan2(Math.sqrt(bounded), Math.sqrt(1 - bounded));
-    };
-    const fetchOverpass = async query => {
-      let lastError;
-      for (const endpoint of ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]) {
-        try {
-          const response = await fetch(endpoint, { method: "POST", body: query });
-          if (!response.ok) throw new Error(`Overpass HTTP ${response.status}`);
-          return await response.json();
-        } catch (error) {
-          lastError = error;
-        }
-      }
-      throw lastError || new Error("تعذر الاتصال بخدمة الخرائط");
-    };
+    const retry = byId("mosquesRetryButton");
+    const manual = byId("mosquesManualLocationButton");
+    if (!list) return;
+    const requestId = ++mosqueSearchSequence;
+    activeMosqueController?.abort();
+    const controller = typeof AbortController === "function" ? new AbortController() : null;
+    activeMosqueController = controller;
+    list.replaceChildren();
+    if (mapButton) mapButton.hidden = true;
+    if (retry) retry.hidden = true;
+    if (manual) manual.hidden = true;
+    setMosqueStatus("loading", english ? "Finding your location…" : "جارٍ تحديد موقعك…", english ? "Nearby mosques will be searched using your device location." : "سيتم البحث حول إحداثيات جهازك الفعلية.");
+    const stillCurrent = () => requestId === mosqueSearchSequence;
     try {
-      let candidates = [];
-      for (const radius of [5000, 15000, 30000]) {
-        const query = `[out:json][timeout:25];(nwr[amenity=mosque](around:${radius},${latitude},${longitude});nwr[amenity=place_of_worship][religion=muslim](around:${radius},${latitude},${longitude});nwr[amenity=place_of_worship][religion=islam](around:${radius},${latitude},${longitude});nwr[building=mosque](around:${radius},${latitude},${longitude}););out center tags;`;
-        const data = await fetchOverpass(query);
-        candidates = (data.elements || []).filter(isMosque);
-        if (candidates.length) break;
+      if (navigator.onLine === false) throw Object.assign(new Error("OFFLINE"), { kind: "offline" });
+      const location = options.location && isValidMosqueLocation(options.location)
+        ? options.location
+        : await requestMosqueLocation();
+      if (!stillCurrent()) return;
+      if (!isValidMosqueLocation(location)) throw Object.assign(new Error("INVALID_LOCATION"), { kind: "location" });
+      const latitude = Number(location.latitude);
+      const longitude = Number(location.longitude);
+      const city = location.city || (english ? "your selected location" : "الموقع المحدد يدويًا");
+      const label = byId("mosquesLocationLabel");
+      if (label) label.textContent = options.location
+        ? (english ? `Near ${city}` : `حول ${city}`)
+        : (english ? "Near your current location" : "حول موقعك الحالي");
+      const radius = 15000;
+      const query = `[out:json][timeout:15];(nwr[amenity=mosque](around:${radius},${latitude},${longitude});nwr[amenity=place_of_worship][religion=muslim](around:${radius},${latitude},${longitude});nwr[amenity=place_of_worship][religion=islam](around:${radius},${latitude},${longitude});nwr[building=mosque](around:${radius},${latitude},${longitude}););out center tags;`;
+      const mapUrl = `https://www.google.com/maps/search/${encodeURIComponent("مسجد")}/@${latitude},${longitude},15z`;
+      if (mapButton) {
+        mapButton.hidden = false;
+        mapButton.textContent = english ? "Open nearby mosques on the map" : "عرض المساجد القريبة على الخريطة";
+        mapButton.onclick = () => window.open(mapUrl, "_blank", "noopener");
       }
+      setMosqueStatus("loading", english ? "Searching nearby mosques…" : "جارٍ البحث عن المساجد القريبة…", english ? "Checking OpenStreetMap data. This may take a few seconds." : "يتم التحقق من بيانات OpenStreetMap؛ قد يستغرق ذلك بضع ثوانٍ.");
+      const endpoints = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"];
+      let data;
+      let lastError;
+      const searchPromise = (async () => {
+        for (const endpoint of endpoints) {
+          if (controller?.signal.aborted) throw new Error("SEARCH_ABORTED");
+          const requestController = typeof AbortController === "function" ? new AbortController() : null;
+          const abortRequest = () => requestController?.abort();
+          controller?.signal.addEventListener("abort", abortRequest, { once: true });
+          const requestTimer = window.setTimeout(() => requestController?.abort(), 8000);
+          try {
+            const response = await fetch(endpoint, {
+              method: "POST",
+              body: query,
+              headers: { "Content-Type": "text/plain;charset=UTF-8", Accept: "application/json" },
+              ...(requestController ? { signal: requestController.signal } : {})
+            });
+            if (!response.ok) throw new Error(`OVERPASS_HTTP_${response.status}`);
+            data = await response.json();
+            if (!Array.isArray(data?.elements)) throw new Error("INVALID_MAP_DATA");
+            return data;
+          } catch (error) {
+            lastError = requestController?.signal.aborted && !controller?.signal.aborted
+              ? Object.assign(new Error("SEARCH_TIMEOUT"), { kind: "timeout" })
+              : error;
+            if (controller?.signal.aborted) throw error;
+          } finally {
+            window.clearTimeout(requestTimer);
+            controller?.signal.removeEventListener("abort", abortRequest);
+          }
+        }
+        throw lastError || new Error("MAP_SERVICE_UNAVAILABLE");
+      })();
+      let overallTimer;
+      const timeoutPromise = new Promise((resolve, reject) => {
+        overallTimer = window.setTimeout(() => {
+          controller?.abort();
+          reject(Object.assign(new Error("SEARCH_TIMEOUT"), { kind: "timeout" }));
+        }, 18000);
+      });
+      try {
+        await Promise.race([searchPromise, timeoutPromise]);
+      } finally {
+        window.clearTimeout(overallTimer);
+      }
+      if (!stillCurrent()) return;
+      const isMosque = place => {
+        const tags = place.tags || {};
+        const amenity = String(tags.amenity || "").toLowerCase();
+        const building = String(tags.building || "").toLowerCase();
+        const religions = String(tags.religion || "").toLowerCase().split(/[;,]/).map(value => value.trim()).filter(Boolean);
+        if (religions.length && !religions.every(value => value === "muslim" || value === "islam")) return false;
+        return amenity === "mosque" || building === "mosque" || (amenity === "place_of_worship" && religions.length > 0);
+      };
+      const distanceMeters = (lat1, lon1, lat2, lon2) => {
+        const radians = degrees => degrees * Math.PI / 180;
+        const dLat = radians(lat2 - lat1);
+        const dLon = radians(lon2 - lon1);
+        const a = Math.sin(dLat / 2) ** 2 + Math.cos(radians(lat1)) * Math.cos(radians(lat2)) * Math.sin(dLon / 2) ** 2;
+        const bounded = Math.min(1, Math.max(0, a));
+        return 6371000 * 2 * Math.atan2(Math.sqrt(bounded), Math.sqrt(1 - bounded));
+      };
       const seen = new Set();
-      const places = candidates.map(place => {
+      const places = (data.elements || []).filter(isMosque).map(place => {
         const lat = Number(place.lat ?? place.center?.lat);
         const lon = Number(place.lon ?? place.center?.lon);
         return { place, lat, lon, distance: distanceMeters(latitude, longitude, lat, lon) };
       }).filter(result => {
-        if (!Number.isFinite(result.lat) || !Number.isFinite(result.lon)) return false;
+        if (!Number.isFinite(result.lat) || !Number.isFinite(result.lon) || Math.abs(result.lat) > 90 || Math.abs(result.lon) > 180) return false;
         const key = result.place.id ? `${result.place.type || "place"}/${result.place.id}` : `${result.lat},${result.lon}`;
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
       }).sort((a, b) => a.distance - b.distance).slice(0, 12);
       list.replaceChildren();
-      if (!places.length) { list.textContent = `لم نجد مسجدًا مسجّلًا قرب ${cityName}. جرّب الخريطة أو اختر المدينة مرة أخرى.`; return; }
+      if (!places.length) {
+        setMosqueStatus("empty", english ? "No mapped mosques found nearby" : "لم نعثر على مساجد مسجّلة بالقرب منك", english ? "No matching mosque data was returned for the 15 km search area. You can retry or check the map." : "لم تُرجع بيانات OpenStreetMap مساجد ضمن نطاق البحث البالغ ١٥ كم. يمكنك إعادة المحاولة أو فتح الخريطة.");
+        return;
+      }
+      const statusTitle = english ? `Found ${places.length} nearby mosque${places.length === 1 ? "" : "s"}` : `عُثر على ${toArabic(places.length)} مسجد قريب`;
+      setMosqueStatus("results", statusTitle, english ? `Results from OpenStreetMap within ${radius / 1000} km.` : "المسافات المباشرة محسوبة من إحداثيات بيانات الخريطة.");
+      if (mapButton) mapButton.hidden = false;
       const favoriteKey = "anyas_favorite_mosque";
-      const readFavorite = () => { try { return JSON.parse(localStorage.getItem(favoriteKey) || "null"); } catch (error) { return null; } };
-      const writeFavorite = value => value ? localStorage.setItem(favoriteKey, JSON.stringify(value)) : localStorage.removeItem(favoriteKey);
-      places.forEach(({ place, lat, lon, distance }) => {
-      const tags = place.tags || {};
-      const name = tags["name:ar"] || tags.name || "مسجد قريب";
+      const readFavorite = () => { try { return JSON.parse(localStorage.getItem(favoriteKey) || "null"); } catch (_) { return null; } };
+      const writeFavorite = value => { try { value ? localStorage.setItem(favoriteKey, JSON.stringify(value)) : localStorage.removeItem(favoriteKey); } catch (_) { /* المفضلة اختيارية */ } };
+      places.forEach(({ place, lat, lon, distance }, index) => {
+        const tags = place.tags || {};
+        const name = tags["name:ar"] || tags.name || (english ? "Nearby mosque" : "مسجد قريب");
         const phone = tags.phone || tags["contact:phone"] || "";
         const key = place.id ? `${place.type || "place"}/${place.id}` : `${lat},${lon}`;
-        const item = document.createElement("div"); item.className = "mosque-result"; item.dataset.mosqueKey = key;
-        const icon = document.createElement("span"); icon.className = "mosque-result-icon"; icon.textContent = "م";
+        const item = document.createElement("article");
+        item.className = "mosque-result";
+        item.dataset.mosqueKey = key;
+        const icon = document.createElement("span");
+        icon.className = "mosque-result-icon";
+        icon.setAttribute("aria-hidden", "true");
+        icon.textContent = "م";
         const info = document.createElement("span");
-        const title = document.createElement("strong"); title.textContent = name;
+        info.className = "mosque-result-info";
+        const title = document.createElement("strong");
+        title.textContent = name;
         const details = document.createElement("small");
-        const distanceText = distance < 1000 ? `${toArabic(Math.max(10, Math.round(distance / 10) * 10))} م` : `${toArabic((distance / 1000).toFixed(1))} كم`;
-        const walkingMinutes = Math.max(1, Math.round(distance / 80));
-        const walkingText = walkingMinutes < 60
-          ? (document.documentElement.lang === "en" ? `${walkingMinutes} min walking` : `${toArabic(walkingMinutes)} دقيقة مشيًا`)
-          : (document.documentElement.lang === "en" ? `${Math.floor(walkingMinutes / 60)}h ${walkingMinutes % 60}m walking` : `${toArabic(Math.floor(walkingMinutes / 60))} س و${toArabic(walkingMinutes % 60)} د مشيًا`);
-      details.textContent = document.documentElement.lang === "en"
-          ? `About ${distance < 1000 ? `${Math.max(10, Math.round(distance / 10) * 10)} m` : `${(distance / 1000).toFixed(1)} km`} · ${walkingText}`
-          : `يبعد تقريبًا ${distanceText} · ${walkingText}`;
-      if (places[0]?.place === place) {
-        const address = [tags["addr:street"], tags["addr:housenumber"], tags["addr:city"]].filter(Boolean).join("، ") || "العنوان غير متاح في بيانات الخريطة";
-        updateHomeMosqueSummary({ name, address, distanceText });
-      }
+        const distanceText = distance < 1000
+          ? `${toArabic(Math.round(distance / 10) * 10)} ${english ? "m" : "م"}`
+          : `${toArabic((distance / 1000).toFixed(1))} ${english ? "km" : "كم"}`;
+        details.textContent = english ? `${distanceText} · straight-line distance` : `${distanceText} · مسافة مباشرة`;
         item.dataset.distanceMeters = String(Math.round(distance));
-        item.dataset.walkingMinutes = String(walkingMinutes);
         info.append(title, details);
-        const actions = document.createElement("span"); actions.className = "mosque-result-actions";
-        const directions = document.createElement("a"); directions.className = "mosque-result-link"; directions.target = "_blank"; directions.rel = "noopener"; directions.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`; directions.textContent = document.documentElement.lang === "en" ? "Directions" : "الاتجاهات"; directions.setAttribute("aria-label", `${directions.textContent}: ${name}`);
-        const favorite = document.createElement("button"); favorite.type = "button"; favorite.className = "mosque-favorite-button"; favorite.setAttribute("aria-label", name); favorite.setAttribute("aria-pressed", String(readFavorite()?.key === key));
-        const renderFavorite = () => { const active = readFavorite()?.key === key; favorite.textContent = active ? "★" : "☆"; favorite.setAttribute("aria-pressed", String(active)); favorite.title = active ? (document.documentElement.lang === "en" ? "Remove favorite" : "إزالة من المفضلة") : (document.documentElement.lang === "en" ? "Save favorite" : "حفظ كمفضل"); };
+        const actions = document.createElement("span");
+        actions.className = "mosque-result-actions";
+        const directions = document.createElement("a");
+        directions.className = "mosque-result-link mosque-directions-link";
+        directions.target = "_blank";
+        directions.rel = "noopener";
+        directions.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=walking`;
+        directions.textContent = english ? "Directions" : "الاتجاهات";
+        directions.setAttribute("aria-label", `${directions.textContent}: ${name}`);
+        const favorite = document.createElement("button");
+        favorite.type = "button";
+        favorite.className = "mosque-favorite-button";
+        favorite.setAttribute("aria-label", english ? `Save ${name} as favorite` : `حفظ ${name} كمفضل`);
+        const renderFavorite = () => {
+          const active = readFavorite()?.key === key;
+          favorite.textContent = active ? "★" : "☆";
+          favorite.setAttribute("aria-pressed", String(active));
+          favorite.title = active ? (english ? "Remove favorite" : "إزالة من المفضلة") : (english ? "Save favorite" : "حفظ كمفضل");
+        };
         favorite.addEventListener("click", () => {
           const active = readFavorite()?.key === key;
           writeFavorite(active ? null : { key, name, lat, lon, phone });
-          document.querySelectorAll(".mosque-favorite-button").forEach(button => { button.setAttribute("aria-pressed", "false"); if (button !== favorite) button.textContent = "☆"; });
+          list.querySelectorAll(".mosque-favorite-button").forEach(button => {
+            button.setAttribute("aria-pressed", "false");
+            if (button !== favorite) button.textContent = "☆";
+          });
           renderFavorite();
         });
-        renderFavorite(); actions.append(directions, favorite);
-        if (phone) { const call = document.createElement("a"); call.className = "mosque-result-link"; call.href = `tel:${phone}`; call.textContent = document.documentElement.lang === "en" ? "Call" : "اتصال"; call.setAttribute("aria-label", `${call.textContent}: ${name}`); actions.append(call); }
+        renderFavorite();
+        actions.append(directions, favorite);
+        if (phone) {
+          const call = document.createElement("a");
+          call.className = "mosque-result-link";
+          call.href = `tel:${phone}`;
+          call.textContent = english ? "Call" : "اتصال";
+          call.setAttribute("aria-label", `${call.textContent}: ${name}`);
+          actions.append(call);
+        }
         item.append(icon, info, actions);
         list.appendChild(item);
+        if (index === 0) {
+          const address = [tags["addr:street"], tags["addr:housenumber"], tags["addr:city"]].filter(Boolean).join("، ") || (english ? "Address not available in map data" : "العنوان غير متاح في بيانات الخريطة");
+          const visibleDistance = distance < 1000 ? `${toArabic(Math.round(distance / 10) * 10)} م` : `${toArabic((distance / 1000).toFixed(1))} كم`;
+          updateHomeMosqueSummary({ name, address, distanceText: visibleDistance });
+        }
       });
     } catch (error) {
-      list.textContent = `تعذر تحميل مساجد قرب ${cityName} الآن. استخدم زر الخريطة للبحث المباشر.`;
+      if (!stillCurrent()) return;
+      list.replaceChildren();
+      const denied = Number(error?.code) === 1;
+      const locationFailed = [0, 1, 2, 3].includes(Number(error?.code)) || error?.kind === "location";
+      const offline = navigator.onLine === false || error?.kind === "offline" || error?.name === "TypeError";
+      const title = offline
+        ? (english ? "No internet connection" : "لا يوجد اتصال بالإنترنت")
+        : denied
+          ? (english ? "Location permission is blocked" : "إذن الموقع مرفوض")
+          : locationFailed
+            ? (english ? "Could not get your current location" : "تعذر تحديد موقعك الحالي")
+            : (english ? "Mosque search could not be completed" : "تعذر إكمال البحث عن المساجد");
+      const message = offline
+        ? (english ? "Connect to the internet, then retry. No sample results are shown." : "اتصل بالإنترنت ثم أعد المحاولة. لن نعرض نتائج افتراضية.")
+        : denied
+          ? (english ? "Allow location access in your browser settings, or choose a location manually." : "اسمح للتطبيق بالوصول إلى موقعك من إعدادات المتصفح، أو اختر موقعًا يدويًا.")
+          : locationFailed
+            ? (english ? "Check location services and retry, or choose a location manually." : "تحقق من تفعيل خدمات الموقع ثم أعد المحاولة، أو اختر موقعًا يدويًا.")
+            : error?.kind === "timeout"
+              ? (english ? "The map service took too long to respond. Please retry." : "استغرقت خدمة الخرائط وقتًا أطول من المهلة المحددة. أعد المحاولة.")
+              : (english ? "Check your connection and retry. No estimated or fabricated results are shown." : "تحقق من الاتصال ثم أعد المحاولة. لا نعرض نتائج وهمية أو تقديرية.");
+      setMosqueStatus("error", title, message);
+    } finally {
+      if (requestId === mosqueSearchSequence) activeMosqueController = null;
     }
   }
-
   document.addEventListener("DOMContentLoaded", () => {
     initOfflineMode(); initCityPicker(); initPrayerSchedule(); initPrayerShare(); initNotificationsList();
     byId("mosquesBackButton")?.addEventListener("click", () => openPage("home"));
+    byId("mosquesRetryButton")?.addEventListener("click", () => openMosqueDirectory());
+    byId("mosquesManualLocationButton")?.addEventListener("click", () => {
+      window.anyasReturnToMosquesAfterManualLocation = true;
+      openPage("city-picker");
+    });
     updateFridayPrayerLabel(); updatePrayerMoment(); setInterval(updatePrayerMoment, 5000);
   });
   window.updatePrayerMoment = updatePrayerMoment;

@@ -46,7 +46,7 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261020-images-1">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261020-mosque-1">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20261003-1">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20261020-images-1">
@@ -2231,8 +2231,26 @@ data-audio="fajrAudio"
 </main>
 
 <main class="page" id="page-mosques">
-  <header class="plain-header"><button class="back-button" id="mosquesBackButton" type="button">رجوع</button><div class="brand">أقرب مسجد</div><div class="date" id="mosquesLocationLabel">حول موقعك الحالي</div></header>
-  <section class="mosques-card"><div id="mosquesList" class="mosques-list" aria-live="polite"><div class="schedule-loading">جارٍ البحث عن المساجد…</div></div><button id="openMosquesMapButton" class="secondary-action" type="button">فتح النتائج على الخريطة</button></section>
+  <header class="plain-header mosque-page-header">
+    <button class="back-button mosque-back-button" id="mosquesBackButton" type="button"><span aria-hidden="true">‹</span><span>رجوع</span></button>
+    <div class="mosque-page-heading">
+      <span class="mosque-page-eyebrow">دليل قريب منك</span>
+      <h1 class="brand">أقرب مسجد</h1>
+      <div class="date" id="mosquesLocationLabel">سيتم تحديد موقعك الحالي عند فتح الصفحة</div>
+    </div>
+    <span class="mosque-page-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg></span>
+  </header>
+  <section class="mosques-card" aria-label="المساجد القريبة">
+    <div id="mosquesStatus" class="mosque-state-card is-idle" role="status" aria-live="polite" aria-busy="false" data-state="idle">
+      <span class="mosque-state-copy"><strong>مساجد حولك، بدقة موقع جهازك</strong><small>لا نستخدم مدينة افتراضية أو نتائج تقديرية.</small></span>
+    </div>
+    <div id="mosquesList" class="mosques-list" aria-live="polite"></div>
+    <div class="mosque-page-actions">
+      <button id="mosquesRetryButton" class="mosque-action-button mosque-retry-button" type="button" hidden>إعادة المحاولة</button>
+      <button id="mosquesManualLocationButton" class="mosque-action-button mosque-manual-button" type="button" hidden>تحديد موقع يدويًا</button>
+      <button id="openMosquesMapButton" class="mosque-action-button mosque-map-button" type="button" hidden>عرض المساجد القريبة على الخريطة</button>
+    </div>
+  </section>
 </main>
 
 <main class="page" id="page-notifications">
@@ -2342,7 +2360,7 @@ type="button"
 <script src="js/optional-audio.js?v=20261013-1"></script>
 <script src="js/settings.js?v=20261013-1"></script>
 <script src="js/qibla.js?v=20261008-1"></script>
-<script src="js/app-enhancements.js?v=20261013-3"></script>
+<script src="js/app-enhancements.js?v=20261020-mosque-1"></script>
 <script src="js/daily-devotions.js?v=20261003-1"></script>
 <script src="js/app.js?v=20261012-2"></script>
 <script src="js/about.js?v=20261002-2"></script>

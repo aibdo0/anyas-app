@@ -314,11 +314,37 @@ check("mosque search supports local favorites and contact actions", () => {
   assert.match(read("css/theme-white-gold.css"), /\.mosque-result-actions/);
 });
 
-check("mosque search shows distance, walking time, and directions", () => {
-  assert.match(enhancements, /walkingMinutes = Math\.max\(1, Math\.round\(distance \/ 80\)\)/);
-  assert.match(enhancements, /walkingMinutes/);
+check("mosque search shows coordinate distance without estimated walking time", () => {
+  assert.match(enhancements, /straight-line distance/);
+  assert.match(enhancements, /مسافة مباشرة/);
+  assert.doesNotMatch(enhancements, /walkingMinutes|دقيقة مشيًا/);
   assert.match(enhancements, /maps\/dir\/\?api=1&destination=/);
   assert.match(enhancements, /openMosquesMapButton/);
+});
+
+check("mosque search uses device GPS and never borrows the prayer fallback city", () => {
+  const start = enhancements.indexOf("async function openMosqueDirectory");
+  const end = enhancements.indexOf('document.addEventListener("DOMContentLoaded", () => {', start);
+  const mosqueSearch = enhancements.slice(start, end);
+  assert.match(mosqueSearch, /requestMosqueLocation\(\)/);
+  assert.match(enhancements, /navigator\.geolocation\.getCurrentPosition/);
+  assert.match(enhancements, /timeout: 10000/);
+  assert.match(enhancements, /\}, 12000\)/);
+  assert.doesNotMatch(mosqueSearch, /currentCoordinates\(\)|FALLBACK_LATITUDE|FALLBACK_LONGITUDE|Safaga|سفاجا/);
+  assert.match(enhancements, /anyasReturnToMosquesAfterManualLocation/);
+});
+
+check("mosque search times out, handles denial/offline, and exposes retry and manual location", () => {
+  assert.match(enhancements, /\}, 18000\)/);
+  assert.match(enhancements, /requestTimer = window\.setTimeout\(\(\) => requestController\?\.abort\(\), 8000\)/);
+  assert.match(enhancements, /OVERPASS_HTTP_/);
+  assert.match(enhancements, /إذن الموقع مرفوض/);
+  assert.match(enhancements, /لا يوجد اتصال بالإنترنت/);
+  assert.match(enhancements, /mosquesRetryButton/);
+  assert.match(enhancements, /mosquesManualLocationButton/);
+  assert.match(index, /id="mosquesRetryButton"[^>]+hidden/);
+  assert.match(index, /id="mosquesManualLocationButton"[^>]+hidden/);
+  assert.match(index, /id="mosquesStatus"[^>]+aria-live="polite"/);
 });
 
 check("worship statistics use local prayer, wird, and devotion data", () => {

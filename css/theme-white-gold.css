@@ -1721,3 +1721,144 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   #page-home .daily-adhkar-card[data-adhkar-period] { background-position: 68% center !important; }
   #page-home #nearbyMosqueButton, #page-home #openQiblaButton { min-height: 104px; }
 }
+
+/* صفحة أقرب مسجد — هوية داكنة متناسقة مع الرئيسية */
+#page-mosques {
+  min-height: 100vh;
+  padding: 14px 14px calc(112px + env(safe-area-inset-bottom));
+  color: #f5efe5;
+  background: radial-gradient(ellipse at 92% 0%, rgba(173,126,54,.13), transparent 34rem), #09131f;
+}
+#page-mosques .mosque-page-header {
+  display: grid;
+  width: min(100%, 720px);
+  min-height: 132px;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  align-items: center;
+  gap: 13px;
+  margin: 0 auto 14px;
+  padding: 15px 16px;
+  border: 1px solid rgba(221,185,111,.48);
+  border-radius: 22px;
+  color: #f5efe5;
+  text-align: right;
+  background: linear-gradient(110deg, rgba(8,16,27,.84), rgba(39,29,19,.82)), url("../assets/anyas-night-background.webp") center 39% / cover;
+  box-shadow: 0 14px 32px rgba(0,0,0,.25), inset 0 0 0 1px rgba(241,209,138,.04);
+}
+#page-mosques .mosque-back-button {
+  position: static;
+  order: 0;
+  display: inline-flex;
+  min-width: 78px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 0;
+  padding: 7px 10px;
+  border: 1px solid rgba(224,190,117,.48);
+  border-radius: 13px;
+  color: #f1d18a;
+  background: rgba(13,20,30,.64);
+  font-size: 13px;
+  font-weight: 800;
+}
+#page-mosques .mosque-back-button span:first-child { font-size: 27px; line-height: .7; }
+#page-mosques .mosque-page-heading { min-width: 0; }
+#page-mosques .mosque-page-eyebrow { display: block; margin-bottom: 2px; color: #d3ad67; font-size: 11px; font-weight: 800; }
+#page-mosques .mosque-page-heading .brand { margin: 0; color: #f1d18a !important; font-size: clamp(23px, 6vw, 30px); line-height: 1.2; }
+#page-mosques .mosque-page-heading .brand::before { display: none !important; content: none !important; }
+#page-mosques .mosque-page-heading .date { margin-top: 5px; color: rgba(245,239,229,.76) !important; font-size: 12px; line-height: 1.45; }
+#page-mosques .mosque-page-mark { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid rgba(228,190,112,.52); border-radius: 14px; color: #f1d18a; background: rgba(173,126,54,.15); }
+#page-mosques .mosque-page-mark svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+#page-mosques .mosques-card {
+  display: grid;
+  width: min(100%, 720px);
+  gap: 12px;
+  margin: 0 auto;
+  padding: 13px;
+  border: 1px solid rgba(221,185,111,.42) !important;
+  border-radius: 21px;
+  color: #f5efe5 !important;
+  background: linear-gradient(150deg, rgba(14,26,41,.98), rgba(23,24,27,.98)) !important;
+  box-shadow: 0 16px 34px rgba(0,0,0,.25), inset 0 0 0 1px rgba(241,209,138,.035);
+}
+#page-mosques .mosque-state-card {
+  display: flex;
+  min-height: 74px;
+  align-items: center;
+  gap: 13px;
+  padding: 14px;
+  border: 1px solid rgba(221,185,111,.28);
+  border-radius: 16px;
+  color: #f5efe5;
+  background: linear-gradient(115deg, rgba(11,26,43,.94), rgba(44,33,21,.62));
+}
+#page-mosques .mosque-state-card.is-error { border-color: rgba(221,185,111,.52); background: linear-gradient(115deg, rgba(30,33,38,.98), rgba(53,37,22,.72)); }
+#page-mosques .mosque-state-card.is-results { border-color: rgba(221,185,111,.28); }
+#page-mosques .mosque-state-copy { display: grid; min-width: 0; gap: 4px; }
+#page-mosques .mosque-state-copy strong { color: #f1d18a; font-size: 15px; font-weight: 900; line-height: 1.45; }
+#page-mosques .mosque-state-copy small { color: rgba(245,239,229,.72); font-size: 12px; line-height: 1.65; }
+#page-mosques .mosque-spinner { width: 25px; height: 25px; flex: 0 0 25px; border: 3px solid rgba(241,209,138,.22); border-top-color: #f1d18a; border-radius: 50%; animation: mosque-spin .8s linear infinite; }
+@keyframes mosque-spin { to { transform: rotate(360deg); } }
+#page-mosques .mosques-list { display: grid; gap: 9px; }
+#page-mosques .mosque-result {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 36px minmax(0,1fr);
+  align-items: center;
+  gap: 8px 10px;
+  padding: 12px;
+  border: 1px solid rgba(207,174,107,.32);
+  border-radius: 16px;
+  color: #f5efe5 !important;
+  background: linear-gradient(135deg, rgba(10,21,35,.98), rgba(32,27,22,.95)) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.025);
+}
+#page-mosques .mosque-result-icon { width: 34px; height: 34px; border: 1px solid rgba(225,190,115,.5); border-radius: 11px; color: #f1d18a; background: rgba(173,126,54,.17); }
+#page-mosques .mosque-result-info { display: grid; min-width: 0; gap: 4px; }
+#page-mosques .mosque-result strong { overflow-wrap: anywhere; color: #f7f2e8; font-size: 15px; line-height: 1.45; }
+#page-mosques .mosque-result small { color: #dbbb79; font-size: 12px; line-height: 1.45; }
+#page-mosques .mosque-result-actions { grid-column: 1 / -1; display: flex; min-width: 0; align-items: center; justify-content: flex-start; gap: 8px; }
+#page-mosques .mosque-result-link, #page-mosques .mosque-favorite-button, #page-mosques .mosque-action-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border: 1px solid rgba(223,188,111,.55);
+  border-radius: 12px;
+  color: #f1d18a;
+  background: linear-gradient(135deg, rgba(70,48,25,.88), rgba(29,25,21,.96));
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+}
+#page-mosques .mosque-favorite-button { width: 44px; min-width: 44px; padding: 6px; font-size: 19px; }
+#page-mosques .mosque-favorite-button[aria-pressed="true"] { color: #f5d991; background: rgba(173,126,54,.3); }
+#page-mosques .mosque-page-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+#page-mosques .mosque-action-button[hidden] { display: none; }
+#page-mosques .mosque-retry-button { color: #101722; background: linear-gradient(135deg, #f1d18a, #c99a4b); }
+#page-mosques :is(button,a):focus-visible { outline: 2px solid #f1d18a; outline-offset: 3px; }
+@media (max-width: 390px) {
+  #page-mosques { padding: 10px 11px calc(108px + env(safe-area-inset-bottom)); }
+  #page-mosques .mosque-page-header { min-height: 116px; grid-template-columns: auto minmax(0,1fr) auto; gap: 8px; margin-bottom: 11px; padding: 12px 10px; border-radius: 19px; }
+  #page-mosques .mosque-back-button { min-width: 66px; min-height: 42px; gap: 2px; padding-inline: 7px; font-size: 12px; }
+  #page-mosques .mosque-page-mark { width: 38px; height: 38px; }
+  #page-mosques .mosques-card { gap: 10px; padding: 10px; border-radius: 18px; }
+  #page-mosques .mosque-state-card { min-height: 68px; padding: 11px; }
+  #page-mosques .mosque-result { padding: 10px; }
+  #page-mosques .mosque-page-actions { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); }
+  #page-mosques .mosque-action-button { width: 100%; padding-inline: 9px; }
+}
+@media (prefers-reduced-motion: reduce) { #page-mosques .mosque-spinner { animation-duration: 1.6s; } }
+body:has(#page-mosques.active) { background-color: #09131f; }
+:root body #page-mosques.page.active .mosque-page-header.plain-header #mosquesBackButton.back-button.mosque-back-button {
+  color: #f1d18a !important;
+  background: rgba(10,19,31,.88) !important;
+  border: 1px solid rgba(223,188,111,.68) !important;
+  box-shadow: none !important;
+}
