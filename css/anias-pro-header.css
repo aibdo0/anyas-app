@@ -1,0 +1,190 @@
+/* Anias header redesign, scoped to the home header only. */
+#page-home .main-header.anias-pro-header {
+  --header-brown: #21150F;
+  --header-chocolate: #352115;
+  --header-copper: #583820;
+  --header-gold: #D8A96C;
+  --header-gold-light: #F1D3A0;
+  --header-line: rgba(216, 169, 108, .35);
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 142px;
+  margin: 0 0 18px;
+  padding: 18px 20px;
+  overflow: hidden;
+  isolation: isolate;
+  box-sizing: border-box;
+  border: 1px solid var(--header-line);
+  border-radius: 28px;
+  color: var(--header-gold-light);
+  background:
+    radial-gradient(ellipse 48% 180% at 52% 35%, rgba(88, 56, 32, .62), transparent 70%),
+    linear-gradient(110deg, var(--header-brown), var(--header-chocolate) 52%, #24170f);
+  box-shadow: 0 12px 28px rgba(33, 21, 15, .2), inset 0 1px 0 rgba(241, 211, 160, .08);
+}
+
+#page-home .main-header.anias-pro-header::before {
+  position: absolute;
+  z-index: -2;
+  top: -88px;
+  left: 38%;
+  width: 330px;
+  height: 310px;
+  border: 1px solid rgba(216, 169, 108, .14);
+  border-bottom: 0;
+  border-radius: 52% 52% 0 0;
+  box-shadow: 0 0 0 13px rgba(216, 169, 108, .035), 0 0 0 26px rgba(216, 169, 108, .025);
+  content: "";
+  transform: rotate(10deg);
+  pointer-events: none;
+}
+
+#page-home .main-header.anias-pro-header::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image: linear-gradient(45deg, transparent 46%, rgba(216, 169, 108, .045) 47%, rgba(216, 169, 108, .045) 53%, transparent 54%), linear-gradient(-45deg, transparent 46%, rgba(216, 169, 108, .045) 47%, rgba(216, 169, 108, .045) 53%, transparent 54%);
+  background-position: 58% 10%;
+  background-size: 28px 28px;
+  content: "";
+  opacity: .42;
+  pointer-events: none;
+}
+
+#page-home .anias-pro-header .home-header-top {
+  position: relative;
+  z-index: 1;
+  min-height: 104px;
+  height: 104px;
+  direction: rtl;
+}
+
+#page-home .anias-pro-header .home-brand {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0;
+  color: var(--header-gold-light) !important;
+  font-family: "Tajawal", "Amiri", sans-serif;
+  text-decoration: none;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+#page-home .anias-pro-header .home-brand-mark {
+  display: block;
+  width: clamp(62px, 8vw, 76px);
+  height: clamp(62px, 8vw, 76px);
+  flex: 0 0 clamp(62px, 8vw, 76px);
+  border: 1px solid var(--header-line);
+  border-radius: 20px;
+  object-fit: contain;
+  background: rgba(33, 21, 15, .58);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .18), inset 0 0 0 1px rgba(241, 211, 160, .06);
+}
+
+#page-home .anias-pro-header .home-brand-copy {
+  display: grid;
+  gap: 5px;
+  text-align: right;
+}
+
+#page-home .anias-pro-header .home-brand-name {
+  color: var(--header-gold-light) !important;
+  font-size: clamp(30px, 5vw, 38px);
+  font-weight: 900;
+  line-height: 1;
+}
+
+#page-home .anias-pro-header .home-brand-tagline {
+  color: var(--header-gold);
+  font-size: clamp(13px, 2vw, 16px);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+#page-home .anias-pro-header .home-header-settings,
+#page-home .anias-pro-header .theme-toggle,
+#page-home .anias-pro-header .notification-bell-button {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--header-line);
+  border-radius: 17px;
+  color: var(--header-gold-light);
+  background: rgba(88, 56, 32, .34);
+  box-shadow: inset 0 1px 0 rgba(241, 211, 160, .06), 0 5px 14px rgba(0, 0, 0, .1);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: transform .18s ease, background .18s ease, border-color .18s ease;
+}
+
+#page-home .anias-pro-header .home-header-settings { left: 148px; z-index: 2; }
+#page-home .anias-pro-header .theme-toggle { left: 20px; z-index: 2; font-size: 27px; line-height: 1; }
+#page-home .anias-pro-header .notification-bell-button { left: 84px; z-index: 2; }
+
+#page-home .anias-pro-header .home-header-settings:hover,
+#page-home .anias-pro-header .theme-toggle:hover,
+#page-home .anias-pro-header .notification-bell-button:hover {
+  background: rgba(216, 169, 108, .18);
+  border-color: rgba(241, 211, 160, .62);
+  transform: translateY(-50%) scale(1.03);
+}
+
+#page-home .anias-pro-header .home-header-settings:active,
+#page-home .anias-pro-header .theme-toggle:active,
+#page-home .anias-pro-header .notification-bell-button:active { transform: translateY(-50%) scale(.96); }
+
+#page-home .anias-pro-header .home-header-settings svg,
+#page-home .anias-pro-header .notification-bell-icon {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#page-home .anias-pro-header .notification-badge { top: -5px; right: -5px; }
+#page-home .anias-pro-header .home-greeting,
+#page-home .anias-pro-header .date-line { display: none !important; }
+
+@media (max-width: 560px) {
+  #page-home .main-header.anias-pro-header { min-height: 132px; padding: 14px 15px; border-radius: 25px; }
+  #page-home .anias-pro-header .home-header-top { min-height: 102px; height: 102px; }
+  #page-home .anias-pro-header .home-brand { gap: 9px; }
+  #page-home .anias-pro-header .home-brand-mark { width: 62px; height: 62px; flex-basis: 62px; border-radius: 17px; }
+  #page-home .anias-pro-header .home-brand-name { font-size: clamp(27px, 8vw, 34px); }
+  #page-home .anias-pro-header .home-brand-tagline { font-size: clamp(11px, 3.2vw, 14px); }
+  #page-home .anias-pro-header .home-header-settings,
+  #page-home .anias-pro-header .theme-toggle,
+  #page-home .anias-pro-header .notification-bell-button { width: 44px; height: 44px; min-width: 44px; border-radius: 15px; }
+  #page-home .anias-pro-header .home-header-settings { left: 122px; }
+  #page-home .anias-pro-header .theme-toggle { left: 15px; font-size: 23px; }
+  #page-home .anias-pro-header .notification-bell-button { left: 67px; }
+}
+
+@media (max-width: 380px) {
+  #page-home .main-header.anias-pro-header { padding-inline: 11px; }
+  #page-home .anias-pro-header .home-brand { gap: 7px; }
+  #page-home .anias-pro-header .home-brand-mark { width: 55px; height: 55px; flex-basis: 55px; }
+  #page-home .anias-pro-header .home-brand-name { font-size: 25px; }
+  #page-home .anias-pro-header .home-brand-tagline { font-size: 10px; }
+  #page-home .anias-pro-header .home-header-settings { left: 108px; }
+  #page-home .anias-pro-header .theme-toggle { left: 10px; }
+  #page-home .anias-pro-header .notification-bell-button { left: 59px; }
+  #page-home .anias-pro-header .home-header-settings,
+  #page-home .anias-pro-header .theme-toggle,
+  #page-home .anias-pro-header .notification-bell-button { width: 40px; height: 40px; min-width: 40px; border-radius: 13px; }
+}

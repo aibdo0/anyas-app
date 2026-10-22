@@ -56,6 +56,7 @@
 <link rel="stylesheet" href="css/app-design-system.css?v=20261013-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
+<link rel="stylesheet" href="css/anias-pro-header.css?v=20261022-3">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -115,29 +116,35 @@
 
 <main class="page active" id="page-home">
 
-<header class="main-header">
+<header class="main-header anias-pro-header">
+  <div class="home-header-top">
+    <button class="home-header-settings nav-item" data-page="settings" type="button" aria-label="الإعدادات" title="الإعدادات">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"/>
+        <path d="m19.4 15 .1.1a1.7 1.7 0 0 1-2.4 2.4l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a1.7 1.7 0 0 1-3.4 0v-.2a1.7 1.7 0 0 0-2.9-1.2l-.1.1a1.7 1.7 0 0 1-2.4-2.4l.1-.1a1.7 1.7 0 0 0-1.2-2.9H4a1.7 1.7 0 0 1 0-3.4h.2a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a1.7 1.7 0 0 1 2.4-2.4l.1.1a1.7 1.7 0 0 0 2.9-1.2V2a1.7 1.7 0 0 1 3.4 0v.2a1.7 1.7 0 0 0 2.9 1.2l.1-.1a1.7 1.7 0 0 1 2.4 2.4l-.1.1a1.7 1.7 0 0 0-1.2 2.9h.2a1.7 1.7 0 0 1 0 3.4h-.2a1.7 1.7 0 0 0-1.2 2.9Z"/>
+      </svg>
+    </button>
 
-<div class="home-greeting" id="homeGreeting">السلام عليكم يا أخي المسلم</div>
+    <a class="home-brand" href="./index.html" aria-label="أنياس - الرئيسية">
+      <img class="home-brand-mark" src="assets/anyas-app-icon.png" alt="">
+      <span class="home-brand-copy">
+        <span class="home-brand-name">أنياس</span>
+        <span class="home-brand-tagline">عِلْمٌ يُنْتَفَعُ بِهِ</span>
+      </span>
+    </a>
 
-<div class="home-brand">أنياس</div>
-
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
-  <span id="themeToggleIcon" aria-hidden="true">☾</span>
-</button>
-
-<button class="notification-bell-button" id="notificationBellButton" type="button" aria-label="الإشعارات" title="الإشعارات">
-  <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-    <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
-  </svg>
-  <span class="notification-badge" id="notificationBadge" aria-live="polite" hidden>0</span>
-</button>
-
-<div class="date-line">
-<span id="todayHijri">--</span>
-<span class="date-separator">•</span>
-<span id="todayDate">اليوم</span>
-</div>
-
+    <div class="home-header-actions" role="group" aria-label="إجراءات التطبيق">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
+        <span id="themeToggleIcon" aria-hidden="true">☾</span>
+      </button>
+      <button class="notification-bell-button" id="notificationBellButton" type="button" aria-label="الإشعارات" title="الإشعارات">
+        <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+        </svg>
+        <span class="notification-badge" id="notificationBadge" aria-live="polite" hidden>0</span>
+      </button>
+    </div>
+  </div>
 </header>
 
 
