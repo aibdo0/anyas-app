@@ -348,13 +348,14 @@ html[lang="en"] #page-settings .settings-section-toggle { text-align: left; }
 }
 
 
-/* أنياس: رأس بسيط باسم التطبيق وأيقونة إعدادات واحدة ظاهرة. */
+/* الصفحة الرئيسية: شعار نصي بسيط وإعدادات مع الإشعارات فقط. */
 #page-home .main-header {
   position: relative !important;
+  isolation: auto !important;
   display: block !important;
-  min-height: 72px !important;
-  margin: 0 0 14px !important;
-  padding: 0 !important;
+  min-height: 68px !important;
+  margin: 0 0 16px !important;
+  padding: 10px 88px !important;
   overflow: visible !important;
   border: 0 !important;
   border-radius: 0 !important;
@@ -363,42 +364,21 @@ html[lang="en"] #page-settings .settings-section-toggle { text-align: left; }
   box-shadow: none !important;
 }
 #page-home .main-header::after { display: none !important; }
-#page-home .home-greeting { display: none !important; }
+#page-home .home-greeting,
+#page-home .date-line[hidden] { display: none !important; }
 #page-home .home-brand-block { display: flex !important; min-width: 0; justify-content: center !important; }
 #page-home .home-brand {
   display: flex !important;
-  flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0 !important;
   margin: 0 !important;
   color: #665638 !important;
   font-family: "Tajawal", sans-serif;
-  font-size: 27px !important;
+  font-size: 29px !important;
   font-weight: 900 !important;
-  line-height: 1.05 !important;
+  line-height: 1.2 !important;
   text-align: center;
   text-shadow: none !important;
-}
-#page-home .home-brand-mark {
-  display: grid !important;
-  width: 42px !important;
-  height: 36px !important;
-  place-items: center !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  color: #9b7438 !important;
-  background: transparent !important;
-}
-#page-home .home-brand-mark svg {
-  display: block;
-  width: 40px;
-  height: 36px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.65;
 }
 #page-home .home-brand-name { display: block; color: #665638 !important; font-size: inherit !important; line-height: inherit; }
 #page-home .home-header-actions {
@@ -408,16 +388,20 @@ html[lang="en"] #page-settings .settings-section-toggle { text-align: left; }
   z-index: 5;
   display: flex !important;
   align-items: center !important;
+  gap: 7px !important;
+  direction: ltr;
   transform: translateY(-50%);
 }
-#page-home .home-header-actions .theme-toggle,
-#page-home .home-header-actions .notification-bell-button { display: none !important; }
-#page-home .home-header-actions .home-header-settings {
-  position: static !important;
+#page-home .home-header-actions .theme-toggle { display: none !important; }
+#page-home .home-header-actions .home-header-settings,
+#page-home .home-header-actions .notification-bell-button {
+  position: relative !important;
+  inset: auto !important;
   display: grid !important;
   width: 40px !important;
   height: 40px !important;
   min-width: 40px !important;
+  min-height: 40px !important;
   flex: 0 0 40px !important;
   place-items: center !important;
   margin: 0 !important;
@@ -429,241 +413,20 @@ html[lang="en"] #page-settings .settings-section-toggle { text-align: left; }
   box-shadow: 0 3px 12px rgba(49, 38, 20, .07) !important;
   cursor: pointer;
 }
+#page-home .home-header-actions .home-header-settings::after { display: none !important; content: none !important; }
 #page-home .home-header-settings svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
+#page-home .notification-bell-icon { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+#page-home .notification-badge { position: absolute; top: -4px; right: -4px; display: grid; min-width: 17px; height: 17px; place-items: center; padding: 0 3px; border: 1px solid #fffdf8; border-radius: 99px; color: #fff; background: #a64632; font-size: 10px; font-weight: 800; line-height: 1; }
+#page-home .notification-badge[hidden] { display: none !important; }
 :root[data-theme="dark"] #page-home .home-brand,
 :root[data-theme="dark"] #page-home .home-brand-name { color: #ead7ae !important; }
-:root[data-theme="dark"] #page-home .home-header-settings { border-color: #574831 !important; color: #ead7ae !important; background: #29241c !important; }
-
-/* كارت الصلاة: صورة مسجد يمينًا، تفاصيل الصلاة يسارًا، ومعلومات المدينة والتاريخ والوقت أسفلًا. */
-#page-home .next-prayer {
-  position: relative !important;
-  isolation: isolate !important;
-  display: flex !important;
-  min-height: 340px !important;
-  flex-direction: column !important;
-  align-items: stretch !important;
-  justify-content: flex-start !important;
-  gap: 0 !important;
-  margin: 0 0 16px !important;
-  padding: 20px 20px 13px !important;
-  overflow: hidden !important;
-  border: 1px solid rgba(214, 173, 98, .66) !important;
-  border-radius: 27px !important;
-  color: #fff7e7 !important;
-  background: #211b13 !important;
-  background-image: none !important;
-  box-shadow: 0 16px 34px rgba(42, 31, 19, .2), inset 0 0 0 1px rgba(255, 238, 194, .06) !important;
-}
-#page-home .next-prayer::before {
-  z-index: 3 !important;
-  inset: 9px !important;
-  border: 1px solid rgba(240, 209, 140, .13) !important;
-  border-radius: 21px !important;
-  pointer-events: none;
-}
-#page-home .next-prayer::after { display: none !important; }
-#page-home .prayer-hero-image {
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  right: 0;
-  width: 48%;
-  height: calc(100% - 74px);
-  overflow: hidden;
-  clip-path: ellipse(90% 88% at 100% 50%);
-  background-color: #49341f;
-  background-image: linear-gradient(180deg, rgba(21, 16, 11, .06), rgba(23, 16, 10, .18)), url("../assets/prayer-hero.jpg");
-  background-position: center 45%;
-  background-size: cover;
-  filter: brightness(1.18) saturate(1.18);
-}
-#page-home .next-prayer .prayer-hero-meta {
-  position: absolute !important;
-  top: 25px !important;
-  left: 22px !important;
-  right: auto !important;
-  z-index: 2 !important;
-  display: flex !important;
-  width: auto !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  margin: 0 !important;
-}
-#page-home .next-prayer .next-label {
-  display: inline-flex !important;
-  min-height: 38px;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 15px;
-  border: 1px solid rgba(214, 173, 98, .75);
-  border-radius: 22px;
-  color: #fff3d5 !important;
-  background: rgba(58, 45, 27, .9);
-  font-size: 13px !important;
-  font-weight: 800;
-}
-#page-home .next-label-icon { color: #f0d18c; font-size: 15px; }
-#page-home .prayer-card-content {
-  position: relative !important;
-  z-index: 2 !important;
-  display: flex !important;
-  width: 57%;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  gap: 12px !important;
-  margin: 64px auto 18px 0 !important;
-  padding: 0 !important;
-  direction: ltr;
-  text-align: left !important;
-}
-#page-home .next-prayer .prayer-name {
-  width: 100%;
-  margin: 0 !important;
-  color: #fffaf0 !important;
-  font-size: clamp(29px, 7vw, 39px) !important;
-  font-weight: 900 !important;
-  line-height: 1.2 !important;
-  text-align: left;
-  direction: rtl;
-  text-shadow: 0 3px 18px rgba(0, 0, 0, .35);
-}
-#page-home .next-prayer .countdown-shell {
-  display: inline-flex !important;
-  min-width: 0 !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 9px;
-  margin: 0 !important;
-  padding: 5px 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  direction: rtl;
-}
-#page-home .next-prayer .countdown-label { color: rgba(255, 242, 213, .78) !important; font-size: 13px !important; }
-#page-home .next-prayer .countdown { margin: 0 !important; color: #fff0cb !important; font-size: clamp(23px, 6vw, 31px) !important; font-variant-numeric: tabular-nums; letter-spacing: .02em; direction: ltr; unicode-bidi: isolate; }
-#page-home .next-prayer .prayer-state-note { color: rgba(255, 242, 213, .75) !important; font-size: 10px; }
-#page-home .prayer-info-bar {
-  position: relative;
-  z-index: 4;
-  display: grid;
-  width: 100%;
-  min-height: 72px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: stretch;
-  margin-top: auto;
-  overflow: hidden;
-  border: 1px solid rgba(214, 173, 98, .61);
-  border-radius: 22px;
-  color: #f8edda;
-  background: rgba(55, 43, 27, .95);
-  box-shadow: 0 8px 20px rgba(13, 10, 7, .2);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  direction: ltr;
-}
-#page-home .prayer-info-cell {
-  display: flex !important;
-  min-width: 0 !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  padding: 8px 10px !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  color: #f8edda !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  text-align: right;
-  direction: rtl;
-}
-#page-home .prayer-info-cell:nth-child(n + 2) { border-left: 1px solid rgba(230, 205, 155, .22) !important; }
-#page-home #openCityPickerButton {
-  max-width: none !important;
-  min-height: 0 !important;
-  font-family: inherit;
-  font-size: inherit !important;
-  font-weight: 700 !important;
-  white-space: normal !important;
-  cursor: pointer;
-}
-#page-home .city-chip-icon,
-#page-home .prayer-info-icon,
-#page-home .prayer-time-icon,
-#page-home .home-calendar-icon {
-  width: 23px;
-  height: 23px;
-  flex: 0 0 23px;
-  color: #e7c174 !important;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.7;
-}
-#page-home .city-chip-icon { display: grid; place-items: center; font-size: 22px; }
-#page-home .home-date-stack { display: grid; min-width: 0; gap: 2px; color: rgba(244, 231, 206, .78) !important; text-align: center; }
-#page-home .prayer-info-copy { display: grid; min-width: 0; gap: 2px; text-align: right; }
-#page-home .prayer-info-copy strong,
-#page-home .home-gregorian-date {
-  display: block;
-  max-width: 100%;
-  overflow: hidden;
-  color: #fff8e8 !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  line-height: 1.3;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-#page-home .prayer-info-copy small,
-#page-home .home-hijri-date { display: block; overflow: hidden; color: rgba(244, 231, 206, .74) !important; font-size: 9px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
-#page-home .prayer-date-cell .home-gregorian-date { font-size: 10px !important; text-align: center; white-space: normal; }
-#page-home .prayer-date-cell .home-hijri-date { text-align: center; }
-#page-home .prayer-info-copy .prayer-time { color: #fff4d8 !important; font-size: 16px !important; direction: ltr; unicode-bidi: isolate; }
-#page-home .prayer-time-row { min-width: 0 !important; margin: 0 !important; padding: 8px 10px !important; border: 0 !important; }
-#page-home .next-prayer .prayer-progress { display: none !important; }
-
-@media (min-width: 760px) {
-  #page-home .next-prayer { min-height: 350px !important; padding: 21px 24px 14px !important; }
-  #page-home .prayer-hero-image { width: 47%; height: calc(100% - 78px); }
-  #page-home .prayer-card-content { width: 54%; }
-}
+:root[data-theme="dark"] #page-home .home-header-settings,
+:root[data-theme="dark"] #page-home .notification-bell-button { border-color: #574831 !important; color: #ead7ae !important; background: #29241c !important; }
+:root[data-theme="dark"] #page-home .notification-badge { border-color: #29241c; }
 @media (max-width: 600px) {
-  #page-home .main-header { min-height: 64px !important; margin-bottom: 12px !important; }
-  #page-home .home-brand-mark { width: 36px !important; height: 30px !important; }
-  #page-home .home-brand-mark svg { width: 35px; height: 30px; }
-  #page-home .home-brand { font-size: 25px !important; }
-  #page-home .home-header-settings { width: 37px !important; height: 37px !important; min-width: 37px !important; flex-basis: 37px !important; }
-  #page-home .next-prayer { min-height: 310px !important; padding: 15px 14px 12px !important; border-radius: 23px !important; }
-  #page-home .prayer-hero-image { width: 51%; height: calc(100% - 78px); }
-  #page-home .next-prayer .prayer-hero-meta { top: 19px !important; left: 15px !important; }
-  #page-home .next-prayer .next-label { min-height: 34px; padding: 5px 10px; font-size: 11px !important; }
-  #page-home .prayer-card-content { width: 58%; gap: 9px !important; margin-top: 51px !important; margin-bottom: 15px !important; }
-  #page-home .next-prayer .prayer-name { font-size: clamp(25px, 7vw, 32px) !important; }
-  #page-home .next-prayer .countdown { font-size: clamp(20px, 5.5vw, 25px) !important; }
-  #page-home .prayer-info-bar { min-height: 66px; border-radius: 18px; }
-  #page-home .prayer-info-cell { gap: 5px !important; padding: 6px 5px !important; }
-  #page-home .city-chip-icon,
-  #page-home .prayer-info-icon,
-  #page-home .prayer-time-icon,
-  #page-home .home-calendar-icon { width: 19px; height: 19px; flex-basis: 19px; }
-  #page-home .prayer-info-copy strong { font-size: 11px !important; }
-  #page-home .prayer-info-copy small,
-  #page-home .home-hijri-date { font-size: 9px; }
-  #page-home .prayer-info-copy .prayer-time { font-size: 13px !important; }
-  #page-home .prayer-date-cell .home-gregorian-date { font-size: 10px !important; }
+  #page-home .main-header { min-height: 62px !important; margin-bottom: 13px !important; padding: 8px 90px !important; }
+  #page-home .home-brand { font-size: 26px !important; }
+  #page-home .home-header-actions { gap: 6px !important; }
+  #page-home .home-header-actions .home-header-settings,
+  #page-home .home-header-actions .notification-bell-button { width: 37px !important; height: 37px !important; min-width: 37px !important; min-height: 37px !important; flex-basis: 37px !important; }
 }
-@media (max-width: 380px) {
-  #page-home .next-prayer { min-height: 296px !important; }
-  #page-home .prayer-hero-image { width: 53%; }
-  #page-home .prayer-card-content { width: 60%; }
-  #page-home .prayer-info-cell { gap: 4px !important; padding-inline: 4px !important; }
-  #page-home .prayer-info-copy strong { font-size: 10px !important; }
-  #page-home .prayer-info-copy small,
-  #page-home .home-hijri-date { font-size: 8px; }
-  #page-home .prayer-date-cell .home-gregorian-date { font-size: 9px !important; }
-}
-
-#page-home .home-header-actions .home-header-settings::after { display: none !important; content: none !important; }
