@@ -373,10 +373,10 @@ html[lang="en"] #page-settings .settings-section-toggle { text-align: left; }
   justify-content: center !important;
   margin: 0 !important;
   color: #665638 !important;
-  font-family: "Amiri", "Tajawal", serif !important;
-  font-size: 37px !important;
+  font-family: "Aref Ruqaa", "Amiri", serif !important;
+  font-size: 39px !important;
   font-weight: 700 !important;
-  line-height: 1.05 !important;
+  line-height: 1 !important;
   text-align: center;
   text-shadow: 0 1px 0 rgba(255, 255, 255, .65) !important;
 }
@@ -425,7 +425,7 @@ html[lang="en"] #page-settings .settings-section-toggle { text-align: left; }
 :root[data-theme="dark"] #page-home .notification-badge { border-color: #29241c; }
 @media (max-width: 600px) {
   #page-home .main-header { min-height: 62px !important; margin-bottom: 13px !important; padding: 8px 90px !important; }
-  #page-home .home-brand { font-size: 34px !important; }
+  #page-home .home-brand { font-size: 36px !important; }
   #page-home .home-header-actions { gap: 6px !important; }
   #page-home .home-header-actions .home-header-settings,
   #page-home .home-header-actions .notification-bell-button { width: 37px !important; height: 37px !important; min-width: 37px !important; min-height: 37px !important; flex-basis: 37px !important; }
