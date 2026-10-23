@@ -116,54 +116,50 @@
 <main class="page active" id="page-home">
 
 <header class="main-header">
-
-<div class="home-greeting" id="homeGreeting">السلام عليكم يا أخي المسلم</div>
-
-<div class="home-brand">أنياس</div>
-
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق">
-  <span id="themeToggleIcon" aria-hidden="true">☾</span>
-</button>
-
-<button class="notification-bell-button" id="notificationBellButton" type="button" aria-label="الإشعارات" title="الإشعارات">
-  <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-    <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
-  </svg>
-  <span class="notification-badge" id="notificationBadge" aria-live="polite" hidden>0</span>
-</button>
-
-<div class="date-line">
-<span id="todayHijri">--</span>
-<span class="date-separator">•</span>
-<span id="todayDate">اليوم</span>
-</div>
-
+  <div class="home-greeting" id="homeGreeting" hidden>السلام عليكم يا أخي المسلم</div>
+  <div class="home-brand-block">
+    <div class="home-brand" aria-label="أنياس">
+      <span class="home-brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" focusable="false"><path d="M7 43h34M10 43V23h28v20M16 23a8 8 0 0 1 16 0M24 15V5m-3 4 3-4 3 4M5 23V11l5-4 5 4v12m18 0V11l5-4 5 4v12M20 43V31h8v12"/></svg>
+      </span>
+      <span class="home-brand-name">أنياس</span>
+    </div>
+  </div>
+  <div class="home-header-actions">
+    <button class="home-header-settings nav-item" data-page="settings" type="button" aria-label="الإعدادات" title="الإعدادات">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3.5"/><path d="m19.4 15 .1.1a1.7 1.7 0 0 1-2.4 2.4l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a1.7 1.7 0 0 1-3.4 0v-.2a1.7 1.7 0 0 0-2.9-1.2l-.1.1a1.7 1.7 0 0 1-2.4-2.4l.1-.1a1.7 1.7 0 0 0-1.2-2.9H4a1.7 1.7 0 0 1 0-3.4h.2a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a1.7 1.7 0 0 1 2.4-2.4l.1.1a1.7 1.7 0 0 0 2.9-1.2V2a1.7 1.7 0 0 1 3.4 0v.2a1.7 1.7 0 0 0 2.9 1.2l.1-.1a1.7 1.7 0 0 1 2.4 2.4l-.1.1a1.7 1.7 0 0 0 1.2 2.9h.2a1.7 1.7 0 0 1 0 3.4h-.2a1.7 1.7 0 0 0-1.2 2.9Z"/></svg>
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="التبديل بين الوضعين الداكن والفاتح" title="تغيير مظهر التطبيق"><span id="themeToggleIcon" aria-hidden="true">☾</span></button>
+    <button class="notification-bell-button" id="notificationBellButton" type="button" aria-label="الإشعارات" title="الإشعارات">
+      <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
+      <span class="notification-badge" id="notificationBadge" aria-live="polite" hidden>0</span>
+    </button>
+  </div>
 </header>
 
 
 <section class="next-prayer" aria-label="الصلاة القادمة">
-
-<div class="prayer-hero-meta">
-  <div class="next-label">الصلاة القادمة</div>
-  <button class="prayer-city-chip" id="openCityPickerButton" type="button" aria-label="تغيير المدينة"><span aria-hidden="true">⌖</span><span id="prayerHeroCity">القاهرة</span></button>
-</div>
-
-<div class="prayer-name" id="nextPrayerName">
-الفجر
-</div>
-
-<div class="prayer-time" id="nextPrayerTime">
---
-</div>
-
-<div class="countdown" id="countdown">
---:--:--
-</div>
-
-<div class="prayer-progress" aria-hidden="true">
-<div class="prayer-progress-bar" id="prayerProgressBar"></div>
-</div>
-
+  <div class="prayer-hero-image" aria-hidden="true"></div>
+  <div class="prayer-hero-meta"><div class="next-label"><span class="next-label-icon" aria-hidden="true">✦</span> الصلاة القادمة</div></div>
+  <div class="prayer-card-content">
+    <div class="prayer-name" id="nextPrayerName">الفجر</div>
+    <div class="countdown-shell"><span class="countdown-label">بعد</span><div class="countdown" id="countdown">--:--:--</div></div>
+  </div>
+  <div class="prayer-info-bar">
+    <button class="prayer-info-cell prayer-city-chip" id="openCityPickerButton" type="button" aria-label="تغيير المدينة">
+      <span class="city-chip-icon" aria-hidden="true">⌖</span>
+      <span class="prayer-info-copy"><strong id="prayerHeroCity">القاهرة</strong><small>المدينة الحالية</small></span>
+    </button>
+    <div class="prayer-info-cell prayer-date-cell">
+      <svg class="home-calendar-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M7 14h2m3 0h2m3 0h1M7 18h2m3 0h2"/></svg>
+      <div class="date-line home-date-stack"><strong class="home-gregorian-date" id="todayDate">اليوم</strong><small class="home-hijri-date" id="todayHijri">--</small></div>
+    </div>
+    <div class="prayer-info-cell prayer-time-row">
+      <svg class="prayer-time-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span class="prayer-info-copy"><strong class="prayer-time" id="nextPrayerTime">--</strong><small>موعد الصلاة</small></span>
+    </div>
+  </div>
+  <div class="prayer-progress" aria-hidden="true"><div class="prayer-progress-bar" id="prayerProgressBar"></div></div>
 </section>
 
 
