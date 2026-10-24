@@ -23,7 +23,7 @@ python3 -m http.server 8080
 ## الاختبارات
 
 ```bash
-for file in js/*.js data/*.js; do node --check "$file"; done
+for file in $(find js data -type f -name '*.js' | sort); do node --check "$file"; done
 node tests/smoke.mjs
 ```
 

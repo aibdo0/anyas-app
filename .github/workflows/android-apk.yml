@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v5
       - name: Check JavaScript syntax
         run: |
-          for file in js/*.js data/*.js; do
+          for file in $(find js data -type f -name '*.js' | sort); do
             node --check "$file"
           done
       - name: Run app smoke tests

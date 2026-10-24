@@ -32,18 +32,18 @@ const CORE_ASSETS = [
   "./data/daily-hadith-ids.js",
   "./data/daily-devotions.js",
   "./js/vendor/adhan.umd.min.js",
-  "./js/prayer.js",
-  "./js/daily-adhkar.js",
-  "./js/friday.js",
-  "./js/favorites.js",
-  "./js/azkar.js",
-  "./js/wird.js",
-  "./js/settings.js",
-  "./js/qibla.js",
-  "./js/app-enhancements.js",
-  "./js/daily-devotions.js",
-  "./js/app.js",
-  "./js/about.js"
+  "./js/features/prayer.js",
+  "./js/features/daily-adhkar.js",
+  "./js/features/friday.js",
+  "./js/features/favorites.js",
+  "./js/features/azkar.js",
+  "./js/features/wird.js",
+  "./js/features/settings.js",
+  "./js/features/qibla.js",
+  "./js/services/app-enhancements.js",
+  "./js/features/daily-devotions.js",
+  "./js/core/app.js",
+  "./js/features/about.js"
 ];
 
 self.addEventListener("install", event => {

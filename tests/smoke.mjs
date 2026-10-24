@@ -13,11 +13,11 @@ const check = (name, fn) => {
 };
 
 const index = read("index.html");
-const settings = read("js/settings.js");
-const prayer = read("js/prayer.js");
-const appjs = read("js/app.js");
-const enhancements = read("js/app-enhancements.js");
-const qibla = read("js/qibla.js");
+const settings = read("js/features/settings.js");
+const prayer = read("js/features/prayer.js");
+const appjs = read("js/core/app.js");
+const enhancements = read("js/services/app-enhancements.js");
+const qibla = read("js/features/qibla.js");
 const commonCities = read("data/common-cities.js");
 const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java");
 const serviceWorker = read("sw.js");
@@ -131,7 +131,7 @@ check("Asr madhab selection is persisted and applied", () => {
   assert.match(index, /id="asrMadhabSelect"/);
   assert.match(index, /value="shafi"/);
   assert.match(index, /value="hanafi"/);
-  assert.match(read("js/app.js"), /anyas_asr_madhab/);
+  assert.match(read("js/core/app.js"), /anyas_asr_madhab/);
   assert.match(prayer, /function getAsrMadhab/);
   assert.match(prayer, /Madhab\.Hanafi/);
   assert.match(prayer, /Madhab\.Shafi/);
@@ -142,7 +142,7 @@ check("Asr madhab selection is persisted and applied", () => {
 check("audio mute state is visible and persisted", () => {
   assert.match(index, /id="audioMuteToggle"[^>]+aria-pressed="false"/);
   assert.match(index, /id="audioVolumeStatus"[^>]+aria-live="polite"/);
-  const settingsText = read("js/settings.js");
+  const settingsText = read("js/features/settings.js");
   assert.match(settingsText, /anyas_audio_muted/);
   assert.match(settingsText, /audioMuteToggle/);
   assert.match(settingsText, /effectiveVolume = window\.anyasAudioMuted/);
@@ -153,7 +153,7 @@ check("12 and 24 hour time formats are persisted and applied", () => {
   assert.match(index, /id="timeFormatSelect"/);
   assert.match(index, /option value="12"/);
   assert.match(index, /option value="24"/);
-  assert.match(read("js/app.js"), /anyas_time_format/);
+  assert.match(read("js/core/app.js"), /anyas_time_format/);
   assert.match(prayer, /function getTimeFormat/);
   assert.match(prayer, /function format24Hour/);
   assert.match(prayer, /getTimeFormat\(\) === "24"/);
@@ -182,7 +182,7 @@ check("qibla shows sensor accuracy when available and offers calibration help", 
 
 check("full reminder test covers notification and sound", () => {
   assert.match(index, /id="testReminderButton"/);
-  const settingsText = read("js/settings.js");
+  const settingsText = read("js/features/settings.js");
   assert.match(settingsText, /testReminderButton/);
   assert.match(settingsText, /testNotificationAndSound/);
   assert.match(settingsText, /anyas-reminder-test/);
@@ -231,7 +231,7 @@ check("encrypted backups use local AES-GCM with password-protected import", () =
 });
 
 check("English and accessibility states cover the new audio and mosque controls", () => {
-  const optionalAudio = read("js/optional-audio.js");
+  const optionalAudio = read("js/services/optional-audio.js");
   assert.match(optionalAudio, /document\.documentElement\.lang === "en"/);
   assert.match(enhancements, /Directions/);
   assert.match(index, /id="clearOptionalAudioButton"/);
@@ -239,7 +239,7 @@ check("English and accessibility states cover the new audio and mosque controls"
 });
 
 check("optional audio manager shows sizes and can clear all downloads", () => {
-  const optionalAudio = read("js/optional-audio.js");
+  const optionalAudio = read("js/services/optional-audio.js");
   assert.match(index, /id="optionalAudioUsage"/);
   assert.match(index, /id="clearOptionalAudioButton"/);
   assert.match(index, /١٢٫١ م\.ب/);
@@ -249,11 +249,11 @@ check("optional audio manager shows sizes and can clear all downloads", () => {
 });
 
 check("optional audio downloads are cached and excluded from Android web assets", () => {
-  const optionalAudio = read("js/optional-audio.js");
+  const optionalAudio = read("js/services/optional-audio.js");
   const gradle = read("android/app/build.gradle");
   assert.match(index, /id="optionalAudioManager"/);
   assert.match(index, /data-download-audio=/);
-  assert.match(index, /js\/optional-audio\.js/);
+  assert.match(index, /js\/services\/optional-audio\.js/);
   assert.match(optionalAudio, /caches\.open\(CACHE_NAME\)/);
   assert.match(optionalAudio, /raw\.githubusercontent\.com/);
   assert.match(optionalAudio, /isAndroid\(\) \? remoteUrl/);
@@ -324,7 +324,7 @@ check("Android prayer widget shows the next prayer and refreshes", () => {
   assert.match(widget, /ReminderScheduler\.PREFS/);
   assert.match(widget, /manager\.updateAppWidget/);
   assert.match(read("android/app/src/main/java/com/anyas/app/MainActivity.java"), /PrayerWidgetProvider\.updateAll/);
-  assert.match(read("js/settings.js"), /city: document\.getElementById\("prayerHeroCity"\)/);
+  assert.match(read("js/features/settings.js"), /city: document\.getElementById\("prayerHeroCity"\)/);
 });
 
 console.log(`Smoke tests passed: ${passed.length}`);
