@@ -4,6 +4,9 @@ on:
     branches:
       - main
       - android/apk-wrapper
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 permissions:
   contents: read

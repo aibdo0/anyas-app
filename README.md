@@ -40,6 +40,7 @@ gradle --no-daemon -p android assembleDebug
 ## ملاحظات تنظيمية
 
 - تفاصيل تقسيم الملفات ومسؤولية كل مجلد موجودة في [`docs/PROJECT-STRUCTURE.md`](docs/PROJECT-STRUCTURE.md).
+- خطوات بناء وإصدار Android موثقة في [`docs/ANDROID-RELEASE.md`](docs/ANDROID-RELEASE.md)، وتفاصيل التغييرات في [`CHANGELOG.md`](CHANGELOG.md).
 - حافظ على المسارات الحالية للملفات لأن الواجهة وService Worker يعتمدان عليها.
 - أضف أي محتوى أو ملف صوتي جديد إلى المصدر المناسب ثم حدّث المراجع والاختبارات.
 - راجع `data/SOURCES.md` قبل نشر محتوى أو أصول جديدة، وتأكد من توثيق مصدر وترخيص كل أصل جديد.
