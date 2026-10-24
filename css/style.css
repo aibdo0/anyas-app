@@ -216,24 +216,6 @@ body {
     top: 1px;
 }
 
-/* الأدعية */
-.nav-item[data-page="duas"] .nav-icon::before {
-    content: "د";
-
-    width: 25px;
-    height: 25px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1.8px solid currentColor;
-    border-radius: 50%;
-
-    font-size: 13px;
-    font-weight: 800;
-}
-
 /* الأذكار */
 .nav-item[data-page="azkar"] .nav-icon::before {
     content: "ذ";
@@ -328,10 +310,6 @@ body {
 
 .nav-item[data-page="tasks"]::after { content: "يوم المسلم"; }
 .nav-item[data-page="more"]::after { content: "المزيد"; }
-
-.nav-item[data-page="duas"]::after {
-    content: "الأدعية";
-}
 
 .nav-item[data-page="azkar"]::after {
     content: "حصن المسلم";

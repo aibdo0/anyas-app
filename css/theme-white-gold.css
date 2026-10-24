@@ -171,10 +171,6 @@ button.prayer-row:hover { border-color: #decda8; background: #fcf9f3; transform:
 .upcoming-label { color: var(--gold); font-size: 13px; font-weight: 800; }
 .upcoming-text { color: var(--ink); font-weight: 700; }
 .card, .settings-card, .worship-card, .weekly-report-card, .qibla-card, .traveler-card { border-radius: 20px; }
-#duasList { display: grid; gap: 11px; }
-.dua-item { padding: 16px 17px; border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: 0 7px 20px rgba(56,49,40,.045); }
-.dua-title { margin-bottom: 7px; color: var(--gold-dark); font-size: 15px; font-weight: 800; }
-.dua-text { color: var(--ink); font-family: "Amiri", "Noto Naskh Arabic", serif; font-size: 21px; line-height: 2; }
 #categoryGrid { display: grid; grid-template-columns: minmax(0,1fr); gap: 11px; }
 .category-card {
   display: flex; min-height: 68px; align-items: center; justify-content: space-between; gap: 12px;
@@ -277,7 +273,6 @@ button.prayer-row:hover { border-color: #decda8; background: #fcf9f3; transform:
   .main-header { margin-bottom: 22px; }
   .prayer-tracker { grid-template-columns: repeat(5,minmax(0,1fr)); }
   .prayer-track-item { flex-direction: column; align-items: flex-start; }
-  #duasList { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .bottom-nav { bottom: 18px; }
 }
 @media (max-width: 360px) {
