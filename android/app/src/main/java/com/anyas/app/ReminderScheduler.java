@@ -26,18 +26,16 @@ final class ReminderScheduler {
             JSONObject schedules = data.optJSONObject("schedules");
             boolean sound = data.optBoolean("sound", true);
             float masterVolume = (float) Math.max(0d, Math.min(100d, data.optDouble("volume", 100d))) / 100f;
-            String morningVoice = data.optString("morningVoice", "mishary");
-            String eveningVoice = data.optString("eveningVoice", "mishary");
             String ayatVoice = data.optString("ayatVoice", "mishary");
             AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             cancelKnown(context, alarm);
             List<Reminder> reminders = new ArrayList<>();
 
-            addCustomizableDaily(reminders, enabled, schedules, "notifyWardAwakening", "أذكار الاستيقاظ", "04:30", "03:00", "11:59", "adhkar-wakeup-mishary-alafasy.mp3");
-            addCustomizableDaily(reminders, enabled, schedules, "notifyWardMorning", "أذكار الصباح", "05:30", "04:00", "11:59", "ahmed".equals(morningVoice) ? "adhkar-morning-ahmed-al-nafis.mp3" : "adhkar-morning-mishary-alafasy.mp3");
+            addCustomizableDaily(reminders, enabled, schedules, "notifyWardAwakening", "أذكار الاستيقاظ", "04:30", "03:00", "11:59", null);
+            addCustomizableDaily(reminders, enabled, schedules, "notifyWardMorning", "أذكار الصباح", "05:30", "04:00", "11:59", null);
             addDaily(reminders, enabled, "notifyWardGeneral", "أذكار اليوم", "12:00", null);
-            addCustomizableDaily(reminders, enabled, schedules, "notifyWardEvening", "أذكار المساء", "15:30", "12:00", "23:59", "ahmed".equals(eveningVoice) ? "adhkar-evening-ahmed-al-nafis.mp3" : "adhkar-evening-mishary-alafasy.mp3");
-            addCustomizableDaily(reminders, enabled, schedules, "notifyWardSleep", "أذكار النوم", "20:00", "18:00", "23:59", "adhkar-sleep-mishary-alafasy.mp3");
+            addCustomizableDaily(reminders, enabled, schedules, "notifyWardEvening", "أذكار المساء", "15:30", "12:00", "23:59", null);
+            addCustomizableDaily(reminders, enabled, schedules, "notifyWardSleep", "أذكار النوم", "20:00", "18:00", "23:59", null);
             addDaily(reminders, enabled, "notifyWardSahar", "استغفار السحر", "02:00", "qiyam-al-layl-reminder.mp3");
             addDaily(reminders, enabled, "notifyHadith", "حديث اليوم", "12:30", "hadith-reminder.mp3");
             addDaily(reminders, enabled, "notifyBaqiyat", "الباقيات الصالحات", "14:00", "baqiyat-as-salihat-reminder.mp3");

@@ -256,7 +256,16 @@ check("optional audio downloads are cached and excluded from Android web assets"
   assert.match(index, /js\/optional-audio\.js/);
   assert.match(optionalAudio, /caches\.open\(CACHE_NAME\)/);
   assert.match(optionalAudio, /raw\.githubusercontent\.com/);
+  assert.match(optionalAudio, /isAndroid\(\) \? remoteUrl/);
   assert.doesNotMatch(gradle, /include 'audio\/\*\*'/);
+  for (const file of [
+    "adhkar-morning-mishary-alafasy.mp3",
+    "adhkar-evening-mishary-alafasy.mp3",
+    "adhkar-wakeup-mishary-alafasy.mp3",
+    "adhkar-sleep-mishary-alafasy.mp3",
+    "adhkar-morning-ahmed-al-nafis.mp3",
+    "adhkar-evening-ahmed-al-nafis.mp3",
+  ]) assert.match(gradle, new RegExp(`exclude 'audio/${file.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}'`));
 });
 
 check("compressed audio stays playable and within the app size budget", () => {

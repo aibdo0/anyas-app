@@ -90,8 +90,8 @@
         audio.dataset.audioResolving = "true";
         try {
           const found = await useCachedAudio(audio, audio.dataset.audioSource);
-          if (!found) {
-            audio.src = source(audio.dataset.audioSource);
+            if (!found) {
+              audio.src = isAndroid() ? remoteUrl(audio.dataset.audioSource) : source(audio.dataset.audioSource);
             audio.load();
           }
           await audio.play();

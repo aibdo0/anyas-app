@@ -51,6 +51,12 @@ dependencies {
 tasks.register('syncWebAssets', Copy) {
     from(webRoot) {
         include 'index.html', 'css/**', 'js/**', 'data/**', 'assets/**', 'audio/**'
+        exclude 'audio/adhkar-morning-mishary-alafasy.mp3'
+        exclude 'audio/adhkar-evening-mishary-alafasy.mp3'
+        exclude 'audio/adhkar-wakeup-mishary-alafasy.mp3'
+        exclude 'audio/adhkar-sleep-mishary-alafasy.mp3'
+        exclude 'audio/adhkar-morning-ahmed-al-nafis.mp3'
+        exclude 'audio/adhkar-evening-ahmed-al-nafis.mp3'
     }
     into layout.projectDirectory.dir('src/main/assets')
 }

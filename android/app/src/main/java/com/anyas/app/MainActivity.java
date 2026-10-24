@@ -256,10 +256,7 @@ public class MainActivity extends Activity {
         @JavascriptInterface public String testNotificationAndSound(String soundFile, double volume) {
             if (!aboutPermissionGranted("notifications")) return "permission_required";
             if (volume <= 0d) return "volume_muted";
-            String safeSound;
-            if ("adhkar-morning-ahmed-al-nafis.mp3".equals(soundFile)) safeSound = soundFile;
-            else if ("adhkar-morning-mishary-alafasy.mp3".equals(soundFile)) safeSound = soundFile;
-            else return "invalid_audio";
+            String safeSound = "qiyam-al-layl-reminder.mp3";
 
             ReminderScheduler.createChannels(MainActivity.this);
             if (Build.VERSION.SDK_INT >= 26) {
