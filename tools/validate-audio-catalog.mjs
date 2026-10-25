@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const catalogPath = path.join(root, "data/audio-catalog.json");
+const catalogPath = path.join(root, "data/config/audio-catalog.json");
 const catalog = JSON.parse(fs.readFileSync(catalogPath, "utf8"));
 const entries = catalog.audio;
 if (!Array.isArray(entries) || entries.length === 0) throw new Error("audio catalog is empty");

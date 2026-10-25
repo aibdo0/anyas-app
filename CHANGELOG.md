@@ -12,9 +12,10 @@
 - إعادة ترتيب JavaScript إلى `core` و`features` و`services` مع تحديث Service Worker والاختبارات.
 - إعادة ترتيب CSS إلى `base` و`theme` و`components` و`pages` مع تحديث مسارات الأصول.
 - تصنيف الصوتيات إلى أذان وقرآن وتذكيرات وأذكار، وتنظيم الصور والأيقونات داخل `assets`.
-- إضافة `data/audio-catalog.json` وربط Gradle وJavaScript به مع فحص تلقائي للمسارات والموارد.
+- إضافة `data/config/audio-catalog.json` وربط Gradle وJavaScript به مع فحص تلقائي للمسارات والموارد.
 - تقسيم الصور إلى `assets/images/heroes` و`assets/images/backgrounds` وتحديث كل المراجع.
 - تنظيم أيقونة التطبيق وعائلات الخطوط داخل مجلدات مستقلة مع الحفاظ على ملفات التراخيص.
+- تقسيم بيانات المشروع إلى `config` و`content` و`locations` وتحديث الـPWA والاختبارات.
 
 ### التحقق
 

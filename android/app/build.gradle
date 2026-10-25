@@ -3,11 +3,11 @@ import groovy.json.JsonSlurper
 plugins { id 'com.android.application' }
 
 def webRoot = rootProject.projectDir.parentFile
-def appVersionSource = new File(webRoot, 'data/app-version.js').text
+def appVersionSource = new File(webRoot, 'data/config/app-version.js').text
 def appVersionMatch = appVersionSource =~ /window\.ANIAS_APP_VERSION\s*=\s*"([^"]+)"/
 def appVersionCodeMatch = appVersionSource =~ /window\.ANIAS_VERSION_CODE\s*=\s*(\d+)/
 if (!appVersionMatch.find() || !appVersionCodeMatch.find()) {
-    throw new GradleException('Missing centralized Anias version data in data/app-version.js')
+    throw new GradleException('Missing centralized Anias version data in data/config/app-version.js')
 }
 def centralizedVersionName = appVersionMatch.group(1)
 def centralizedVersionCode = Integer.parseInt(appVersionCodeMatch.group(1))
@@ -63,7 +63,7 @@ tasks.register('syncReminderAudio') {
         def targetDir = file('src/main/res/raw')
         targetDir.mkdirs()
 
-        def catalogFile = new File(webRoot, 'data/audio-catalog.json')
+        def catalogFile = new File(webRoot, 'data/config/audio-catalog.json')
         if (!catalogFile.isFile()) throw new GradleException("Missing audio catalog: ${catalogFile}")
         def catalog = new JsonSlurper().parse(catalogFile)
         def bundledEntries = catalog.audio.findAll { it.bundled && it.androidResource }

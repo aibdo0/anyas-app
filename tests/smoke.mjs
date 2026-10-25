@@ -18,7 +18,7 @@ const prayer = read("js/features/prayer.js");
 const appjs = read("js/core/app.js");
 const enhancements = read("js/services/app-enhancements.js");
 const qibla = read("js/features/qibla.js");
-const commonCities = read("data/common-cities.js");
+const commonCities = read("data/locations/common-cities.js");
 const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java");
 const serviceWorker = read("sw.js");
 
@@ -50,7 +50,7 @@ check("common cities and recent city history work offline", () => {
   assert.match(enhancements, /navigator\.onLine/);
   assert.match(enhancements, /commonCities\.filter/);
   assert.match(enhancements, /slice\(0, 5\)/);
-  assert.match(index, /data\/common-cities\.js/);
+  assert.match(index, /data\/locations\/common-cities\.js/);
 });
 
 check("external services use timeout and bounded retry handling", () => {
@@ -262,12 +262,12 @@ check("optional audio downloads are cached and excluded from Android web assets"
 });
 
 check("audio catalog centralizes web and Android audio paths", () => {
-  const catalog = JSON.parse(read("data/audio-catalog.json"));
+  const catalog = JSON.parse(read("data/config/audio-catalog.json"));
   assert.ok(Array.isArray(catalog.audio) && catalog.audio.length >= 30);
   assert.ok(catalog.audio.some(entry => entry.id === "reminder.hadith" && entry.androidResource === "hadith_reminder"));
   assert.ok(catalog.audio.some(entry => entry.id === "adhkar.morning.mishary" && entry.bundled === false));
   assert.match(index, /js\/services\/audio-catalog\.js/);
-  assert.match(read("android/app/build.gradle"), /data\/audio-catalog\.json/);
+  assert.match(read("android/app/build.gradle"), /data\/config\/audio-catalog\.json/);
 });
 
 check("compressed audio stays playable and within the app size budget", () => {
