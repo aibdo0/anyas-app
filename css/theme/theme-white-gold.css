@@ -660,7 +660,7 @@ html[data-theme="dark"] { background: var(--page) !important; }
 .next-prayer {
   min-height: 235px; display: flex; flex-direction: column; justify-content: center; gap: 3px;
   border: 1px solid rgba(255,255,255,.22) !important; color: #fff !important;
-  background-image: linear-gradient(105deg,rgba(19,17,14,.48),rgba(22,19,15,.55) 48%,rgba(18,16,13,.72)),url("../../assets/images/prayer-hero.jpg") !important;
+  background-image: linear-gradient(105deg,rgba(19,17,14,.48),rgba(22,19,15,.55) 48%,rgba(18,16,13,.72)),url("../../assets/images/heroes/prayer-hero.jpg") !important;
   background-position: center 48% !important; background-size: cover !important;
   box-shadow: 0 15px 36px rgba(31,25,16,.2) !important;
 }
@@ -796,14 +796,14 @@ html[data-theme="dark"] { background: var(--page) !important; }
 :root[data-theme="dark"] .qibla-arrow { color: #d0b276; }
 :root[data-theme="dark"] body .next-prayer {
   color: #fff !important; border-color: rgba(255,255,255,.22) !important;
-  background-image: linear-gradient(105deg,rgba(19,17,14,.08),rgba(22,19,15,.24) 48%,rgba(18,16,13,.65)),url("../../assets/images/prayer-hero.jpg") !important;
+  background-image: linear-gradient(105deg,rgba(19,17,14,.08),rgba(22,19,15,.24) 48%,rgba(18,16,13,.65)),url("../../assets/images/heroes/prayer-hero.jpg") !important;
   background-position: center 48% !important; background-size: cover !important;
 }
 :root[data-theme="dark"] body .page .back-button { color: var(--ink) !important; border-color: var(--line) !important; background: var(--surface) !important; }
 
 :root[data-theme="light"] body .next-prayer {
   color: #fff !important; border-color: rgba(255,255,255,.22) !important;
-  background-image: linear-gradient(105deg,rgba(19,17,14,.08),rgba(22,19,15,.24) 48%,rgba(18,16,13,.65)),url("../../assets/images/prayer-hero.jpg") !important;
+  background-image: linear-gradient(105deg,rgba(19,17,14,.08),rgba(22,19,15,.24) 48%,rgba(18,16,13,.65)),url("../../assets/images/heroes/prayer-hero.jpg") !important;
   background-position: center 48% !important; background-size: cover !important;
 }
 :root[data-theme="light"] body .next-prayer .prayer-name,
@@ -1060,12 +1060,12 @@ html[lang="en"] .location-setting-actions { justify-content: flex-start; }
   background-attachment: fixed;
   background-position: center top;
   background-size: cover;
-  background-image: linear-gradient(rgba(255,255,255,.16), rgba(255,255,255,.16)), url("../../assets/images/anyas-morning-background.webp");
+  background-image: linear-gradient(rgba(255,255,255,.16), rgba(255,255,255,.16)), url("../../assets/images/backgrounds/anyas-morning-background.webp");
   transition: background-color .7s ease, background-image .7s ease;
 }
 :root[data-auto-background="true"][data-time-scene="night"] body {
   background-color: #0e1824;
-  background-image: linear-gradient(rgba(5,12,22,.12), rgba(5,12,22,.12)), url("../../assets/images/anyas-night-background.webp");
+  background-image: linear-gradient(rgba(5,12,22,.12), rgba(5,12,22,.12)), url("../../assets/images/backgrounds/anyas-night-background.webp");
 }
 .setting-info { min-width: 0; }
 @media(max-width:420px) { .about-hero { gap: 10px; padding: 13px; } .about-app-icon { width: 48px; height: 48px; flex-basis: 48px; } .about-version { padding-inline: 7px; font-size: 10px; } }
@@ -1159,7 +1159,7 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-tasks .daily-overview-card {
   color: #fff !important;
   border-color: rgba(225, 195, 132, .38) !important;
-  background-image: linear-gradient(105deg, rgba(14, 22, 36, .88), rgba(18, 27, 43, .68) 55%, rgba(67, 50, 29, .48)), url("../../assets/images/anyas-tasks-hero.jpg") !important;
+  background-image: linear-gradient(105deg, rgba(14, 22, 36, .88), rgba(18, 27, 43, .68) 55%, rgba(67, 50, 29, .48)), url("../../assets/images/heroes/anyas-tasks-hero.jpg") !important;
   background-position: center, center;
   background-size: cover, cover;
   box-shadow: 0 14px 32px rgba(19, 25, 36, .22);
@@ -1188,7 +1188,7 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   border: 1px solid rgba(224, 194, 132, .38);
   border-radius: 23px;
   color: #fff;
-  background-image: linear-gradient(105deg, rgba(12, 19, 30, .87), rgba(16, 25, 42, .6) 53%, rgba(34, 25, 18, .2)), url("../../assets/images/anyas-hisn-hero.jpg");
+  background-image: linear-gradient(105deg, rgba(12, 19, 30, .87), rgba(16, 25, 42, .6) 53%, rgba(34, 25, 18, .2)), url("../../assets/images/heroes/anyas-hisn-hero.jpg");
   background-position: center;
   background-size: cover;
   box-shadow: 0 14px 32px rgba(19, 25, 36, .18);
@@ -1211,7 +1211,7 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   border: 1px solid rgba(224, 194, 132, .38);
   border-radius: 23px;
   color: #fff;
-  background-image: linear-gradient(105deg, rgba(35, 28, 18, .82), rgba(55, 45, 28, .58) 54%, rgba(15, 24, 39, .28)), url("../../assets/images/anyas-more-hero.jpg");
+  background-image: linear-gradient(105deg, rgba(35, 28, 18, .82), rgba(55, 45, 28, .58) 54%, rgba(15, 24, 39, .28)), url("../../assets/images/heroes/anyas-more-hero.jpg");
   background-position: center;
   background-size: cover;
   box-shadow: 0 14px 32px rgba(19, 25, 36, .18);
@@ -1234,7 +1234,7 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
   border: 1px solid rgba(224, 194, 132, .38);
   border-radius: 23px;
   color: #fff;
-  background-image: linear-gradient(105deg, rgba(13, 18, 27, .86), rgba(25, 29, 37, .62) 54%, rgba(69, 51, 25, .26)), url("../../assets/images/anyas-more-tools-hero.jpg");
+  background-image: linear-gradient(105deg, rgba(13, 18, 27, .86), rgba(25, 29, 37, .62) 54%, rgba(69, 51, 25, .26)), url("../../assets/images/heroes/anyas-more-tools-hero.jpg");
   background-position: center;
   background-size: cover;
   box-shadow: 0 14px 32px rgba(19, 25, 36, .18);
@@ -1351,14 +1351,14 @@ html[lang="en"] .prayer-time, html[lang="en"] .prayer-value { direction: ltr; }
 #page-home .daily-adhkar-card[data-adhkar-period="morning"] {
   color: #fff !important;
   border-color: rgba(255, 220, 137, .72) !important;
-  background-image: linear-gradient(90deg, rgba(18, 33, 43, .25), rgba(18, 24, 31, .82)), url("../../assets/images/anyas-morning-background.webp") !important;
+  background-image: linear-gradient(90deg, rgba(18, 33, 43, .25), rgba(18, 24, 31, .82)), url("../../assets/images/backgrounds/anyas-morning-background.webp") !important;
   background-size: cover !important;
   background-position: center !important;
 }
 #page-home .daily-adhkar-card[data-adhkar-period="evening"] {
   color: #fff !important;
   border-color: rgba(250, 177, 108, .72) !important;
-  background-image: linear-gradient(90deg, rgba(38, 24, 32, .28), rgba(26, 22, 29, .85)), url("../../assets/images/prayer-hero.jpg") !important;
+  background-image: linear-gradient(90deg, rgba(38, 24, 32, .28), rgba(26, 22, 29, .85)), url("../../assets/images/heroes/prayer-hero.jpg") !important;
   background-size: cover !important;
   background-position: center 48% !important;
 }

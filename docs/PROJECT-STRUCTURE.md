@@ -19,7 +19,8 @@
 | `audio/quran/` | تسجيلات آية الكرسي |
 | `audio/reminders/` | أصوات التذكيرات القصيرة |
 | `audio/adhkar/` | تسجيلات الأذكار الطويلة الاختيارية |
-| `assets/images/` | صور الخلفيات والواجهات |
+| `assets/images/heroes/` | صور واجهات الصفحات الرئيسية |
+| `assets/images/backgrounds/` | خلفيات الصباح والليل والأقسام العامة |
 | `assets/icons/` | أيقونات التطبيق |
 | `assets/fonts/` | الخطوط المحلية وتراخيصها |
 | `data/audio-catalog.json` | المصدر المركزي لمسارات الصوت وسياسة تضمينه في Android |
