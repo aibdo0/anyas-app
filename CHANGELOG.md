@@ -10,6 +10,7 @@
 - اعتماد GitHub Actions لفحوصات JavaScript واختبارات smoke وبناء APK.
 - إخراج تسجيلات الأذكار الطويلة من APK وتحميلها عند الطلب لتقليل الحجم.
 - إعادة ترتيب JavaScript إلى `core` و`features` و`services` مع تحديث Service Worker والاختبارات.
+- إعادة ترتيب CSS إلى `base` و`theme` و`components` و`pages` مع تحديث مسارات الأصول.
 
 ### التحقق
 

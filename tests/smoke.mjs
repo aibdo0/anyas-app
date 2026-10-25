@@ -101,7 +101,7 @@ check("keyboard and screen-reader accessibility basics are present", () => {
     const visibleText = match[2].replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, "").trim();
     if (!visibleText) assert.match(match[1], /(aria-label|title)=/, "icon-only buttons need an accessible name");
   }
-  assert.match(read("css/theme-white-gold.css"), /prefers-reduced-motion/);
+  assert.match(read("css/theme/theme-white-gold.css"), /prefers-reduced-motion/);
 });
 
 check("FAQ answers are available without JavaScript", () => {
@@ -109,7 +109,7 @@ check("FAQ answers are available without JavaScript", () => {
   assert.ok((index.match(/<details>/g) || []).length >= 5, "FAQ should contain at least five answers");
   assert.match(index, /كيف أغيّر المدينة؟/);
   assert.match(index, /هل يعمل أنياس بدون إنترنت؟/);
-  assert.match(read("css/theme-white-gold.css"), /\.faq-list details/);
+  assert.match(read("css/theme/theme-white-gold.css"), /\.faq-list details/);
 });
 
 check("offline mode responds to connectivity and retains local prayer refresh", () => {
@@ -124,7 +124,7 @@ check("prayer data freshness is visible and cached", () => {
   assert.match(prayer, /setDataStatus\("online"\)/);
   assert.match(prayer, /setDataStatus\("cache"/);
   assert.match(prayer, /setDataStatus\("local"\)/);
-  assert.match(read("css/theme-white-gold.css"), /\.prayer-data-status/);
+  assert.match(read("css/theme/theme-white-gold.css"), /\.prayer-data-status/);
 });
 
 check("Asr madhab selection is persisted and applied", () => {
@@ -146,7 +146,7 @@ check("audio mute state is visible and persisted", () => {
   assert.match(settingsText, /anyas_audio_muted/);
   assert.match(settingsText, /audioMuteToggle/);
   assert.match(settingsText, /effectiveVolume = window\.anyasAudioMuted/);
-  assert.match(read("css/audio-library.css"), /\.audio-mute-toggle/);
+  assert.match(read("css/components/audio-library.css"), /\.audio-mute-toggle/);
 });
 
 check("12 and 24 hour time formats are persisted and applied", () => {
@@ -174,7 +174,7 @@ check("qibla shows sensor accuracy when available and offers calibration help", 
   assert.match(qibla, /webkitCompassAccuracy/);
   assert.match(qibla, /dataset\.accuracyDegrees/);
   assert.match(qibla, /لا يوفّر هذا المتصفح تقديرًا رقميًا لدقة البوصلة/);
-  const theme = read("css/theme-white-gold.css");
+  const theme = read("css/theme/theme-white-gold.css");
   assert.match(theme, /\.qibla-accuracy\[data-accuracy="good"\]/);
   assert.match(theme, /\.qibla-calibration summary/);
   assert.match(theme, /prefers-reduced-motion/);
@@ -216,7 +216,7 @@ check("notification inbox can filter unread items only", () => {
   assert.match(enhancements, /filterAll\?\.addEventListener\("click"/);
   assert.match(enhancements, /filterUnread\?\.addEventListener\("click"/);
   assert.match(enhancements, /لا توجد إشعارات غير مقروءة/);
-  assert.match(read("css/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
+  assert.match(read("css/theme/theme-white-gold.css"), /notification-list-actions button\[aria-pressed="true"\]/);
 });
 
 check("encrypted backups use local AES-GCM with password-protected import", () => {
@@ -283,7 +283,7 @@ check("mosque search supports local favorites and contact actions", () => {
   assert.match(enhancements, /mosque-favorite-button/);
   assert.match(enhancements, /aria-pressed/);
   assert.match(enhancements, /tel:\$\{phone\}/);
-  assert.match(read("css/theme-white-gold.css"), /\.mosque-result-actions/);
+  assert.match(read("css/theme/theme-white-gold.css"), /\.mosque-result-actions/);
 });
 
 check("mosque search shows distance, walking time, and directions", () => {
@@ -301,7 +301,7 @@ check("worship statistics use local prayer, wird, and devotion data", () => {
   assert.match(appjs, /anyas_wird_progress_/);
   assert.match(appjs, /anyas_devotions_hijri_/);
   assert.match(appjs, /updateWorshipStats\(days\)/);
-  assert.match(read("css/home.css"), /\.worship-stats-grid/);
+  assert.match(read("css/pages/home.css"), /\.worship-stats-grid/);
 });
 
 check("Android app shortcuts open prayer, Qibla, tasbeeh, and adhkar", () => {
