@@ -24,6 +24,7 @@ python3 -m http.server 8080
 
 ```bash
 for file in $(find js data -type f -name '*.js' | sort); do node --check "$file"; done
+node tools/validate-audio-catalog.mjs
 node tests/smoke.mjs
 ```
 

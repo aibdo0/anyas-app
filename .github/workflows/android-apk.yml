@@ -25,6 +25,8 @@ jobs:
           for file in $(find js data -type f -name '*.js' | sort); do
             node --check "$file"
           done
+      - name: Validate audio catalog
+        run: node tools/validate-audio-catalog.mjs
       - name: Run app smoke tests
         run: node tests/smoke.mjs
       - uses: actions/setup-java@v5

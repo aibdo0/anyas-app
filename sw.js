@@ -26,6 +26,7 @@ const CORE_ASSETS = [
   "./css/components/first-run-onboarding.css",
   "./css/pages/privacy.css",
   "./data/app-version.js",
+  "./data/audio-catalog.json",
   "./data/azkar-topics.js",
   "./data/azkar-benefits.js",
   "./data/daily-quran.js",
@@ -41,6 +42,8 @@ const CORE_ASSETS = [
   "./js/features/settings.js",
   "./js/features/qibla.js",
   "./js/services/app-enhancements.js",
+  "./js/services/audio-catalog.js",
+  "./js/services/optional-audio.js",
   "./js/features/daily-devotions.js",
   "./js/core/app.js",
   "./js/features/about.js"

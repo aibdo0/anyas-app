@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 plugins { id 'com.android.application' }
 
 def webRoot = rootProject.projectDir.parentFile
@@ -61,38 +63,26 @@ tasks.register('syncReminderAudio') {
         def targetDir = file('src/main/res/raw')
         targetDir.mkdirs()
 
-        // Only duplicate MP3s referenced by Android background reminder entry points.
-        def javaAudioSources = [
-            file('src/main/java/com/anyas/app/ReminderScheduler.java'),
-            file('src/main/java/com/anyas/app/RainReceiver.java')
-        ]
-        def reminderAudioNames = new LinkedHashSet()
-        javaAudioSources.each { javaSource ->
-            if (!javaSource.isFile()) throw new GradleException("Missing reminder audio source: ${javaSource}")
-            def matcher = javaSource.text =~ /"([^"]+\.mp3)"/
-            matcher.each { match -> reminderAudioNames.add(match[1]) }
-        }
-        if (reminderAudioNames.isEmpty()) throw new GradleException('No Android reminder audio files were found.')
-
-        def locateAudio = { name ->
-            fileTree(sourceDir).matching { include "**/${name}" }.files.find { it.isFile() }
-        }
-        def missingAudio = reminderAudioNames.findAll { name -> locateAudio(name) == null }
-        if (!missingAudio.isEmpty()) throw new GradleException("Missing reminder audio files: ${missingAudio.join(', ')}")
+        def catalogFile = new File(webRoot, 'data/audio-catalog.json')
+        if (!catalogFile.isFile()) throw new GradleException("Missing audio catalog: ${catalogFile}")
+        def catalog = new JsonSlurper().parse(catalogFile)
+        def bundledEntries = catalog.audio.findAll { it.bundled && it.androidResource }
+        if (bundledEntries.isEmpty()) throw new GradleException('No bundled Android audio entries were found.')
+        def duplicateResources = bundledEntries.groupBy { it.androidResource }.findAll { key, values -> values.size() > 1 }.keySet()
+        if (!duplicateResources.isEmpty()) throw new GradleException("Duplicate Android audio resources: ${duplicateResources.join(', ')}")
 
         // Remove stale generated MP3 copies from previous builds, keeping non-MP3 resources intact.
         (targetDir.listFiles()?.findAll { it.isFile() && it.name.toLowerCase().endsWith('.mp3') } ?: []).each { existing ->
             if (!existing.delete()) throw new GradleException("Could not remove stale reminder audio: ${existing}")
         }
 
-        reminderAudioNames.sort().each { audioName ->
-            def source = locateAudio(audioName)
-            def base = audioName.substring(0, audioName.length() - 4)
-            def safe = base.toLowerCase().replaceAll('[^a-z0-9_]', '_')
+        bundledEntries.sort { a, b -> a.androidResource <=> b.androidResource }.each { entry ->
+            def source = new File(webRoot, entry.webPath)
+            if (!source.isFile()) throw new GradleException("Missing catalog audio source: ${entry.webPath}")
             copy {
                 from source
                 into targetDir
-                rename { safe + '.mp3' }
+                rename { entry.androidResource + '.mp3' }
             }
         }
     }

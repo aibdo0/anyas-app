@@ -452,8 +452,8 @@ function setupAyatKursiVoices() {
 // =====================================================
 
 const DEFAULT_MUEZZIN_SOURCES = {
-  adhanAudio: "audio/adhan/adhan.mp3?v=20261002-1",
-  fajrAudio: "audio/adhan/fajr.mp3"
+  adhanAudio: `${window.AnyasAudioCatalog.path("adhan.default")}?v=20261002-1`,
+  fajrAudio: window.AnyasAudioCatalog.path("adhan.fajr")
 };
 
 const MAX_MUEZZIN_FILE_SIZE = 15 * 1024 * 1024;
@@ -624,8 +624,8 @@ function setupAdhkarAudioControls() {
 
 function setupAdhkarVoiceChoices() {
   const choices = [
-    { id: "morningWardVoice", storage: "anyas_morningWardVoice", audioId: "morningWardAudio", mishary: "audio/adhkar/adhkar-morning-mishary-alafasy.mp3?v=20261003-1", ahmed: "audio/adhkar/adhkar-morning-ahmed-al-nafis.mp3" },
-    { id: "eveningWardVoice", storage: "anyas_eveningWardVoice", audioId: "eveningWardAudio", mishary: "audio/adhkar/adhkar-evening-mishary-alafasy.mp3?v=20261003-1", ahmed: "audio/adhkar/adhkar-evening-ahmed-al-nafis.mp3" }
+    { id: "morningWardVoice", storage: "anyas_morningWardVoice", audioId: "morningWardAudio", mishary: `${window.AnyasAudioCatalog.path("adhkar.morning.mishary")}?v=20261003-1`, ahmed: window.AnyasAudioCatalog.path("adhkar.morning.ahmedAlNafis") },
+    { id: "eveningWardVoice", storage: "anyas_eveningWardVoice", audioId: "eveningWardAudio", mishary: `${window.AnyasAudioCatalog.path("adhkar.evening.mishary")}?v=20261003-1`, ahmed: window.AnyasAudioCatalog.path("adhkar.evening.ahmedAlNafis") }
   ];
   choices.forEach(choice => {
     const select = document.getElementById(choice.id);
