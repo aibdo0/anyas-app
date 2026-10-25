@@ -93,7 +93,7 @@
     const key = `anyas_friday_notice_${id}_${dateKey(target)}`;
     if (localStorage.getItem(key) === "true") return;
     localStorage.setItem(key, "true");
-    new Notification(title, { body, tag: `anyas-${id}`, icon: "assets/icons/anyas-app-icon.png", badge: "assets/icons/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+    new Notification(title, { body, tag: `anyas-${id}`, icon: "assets/icons/app/anyas-app-icon.png", badge: "assets/icons/app/anyas-app-icon.png", dir: "rtl", lang: "ar" });
     if (typeof recordAnyasNotification === "function") recordAnyasNotification(title, body, `anyas-${id}`);
     playNotificationSound();
   }

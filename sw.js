@@ -3,7 +3,7 @@ const CORE_ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./assets/icons/anyas-app-icon.png",
+  "./assets/icons/app/anyas-app-icon.png",
   "./assets/images/backgrounds/anyas-morning-background.webp",
   "./assets/images/backgrounds/anyas-night-background.webp",
   "./assets/images/heroes/prayer-hero.jpg",

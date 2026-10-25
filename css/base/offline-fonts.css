@@ -1,7 +1,7 @@
-@font-face { font-family: 'Tajawal'; font-style: normal; font-weight: 400; font-display: swap; src: url('../../assets/fonts/Tajawal-400.ttf') format('truetype'); }
-@font-face { font-family: 'Tajawal'; font-style: normal; font-weight: 500; font-display: swap; src: url('../../assets/fonts/Tajawal-500.ttf') format('truetype'); }
-@font-face { font-family: 'Tajawal'; font-style: normal; font-weight: 700; font-display: swap; src: url('../../assets/fonts/Tajawal-700.ttf') format('truetype'); }
-@font-face { font-family: 'Tajawal'; font-style: normal; font-weight: 800; font-display: swap; src: url('../../assets/fonts/Tajawal-800.ttf') format('truetype'); }
-@font-face { font-family: 'Amiri'; font-style: normal; font-weight: 400; font-display: swap; src: url('../../assets/fonts/Amiri-400.ttf') format('truetype'); }
-@font-face { font-family: 'Amiri'; font-style: normal; font-weight: 700; font-display: swap; src: url('../../assets/fonts/Amiri-700.ttf') format('truetype'); }
-@font-face { font-family: 'Aref Ruqaa'; font-style: normal; font-weight: 700; font-display: swap; src: url('../../assets/fonts/ArefRuqaa-Bold.ttf') format('truetype'); }
+@font-face { font-family: 'Tajawal'; font-style: normal; font-weight: 400; font-display: swap; src: url('../../assets/fonts/tajawal/Tajawal-400.ttf') format('truetype'); }
+@font-face { font-family: 'Tajawal'; font-style: normal; font-weight: 500; font-display: swap; src: url('../../assets/fonts/tajawal/Tajawal-500.ttf') format('truetype'); }
+@font-face { font-family: 'Tajawal'; font-style: normal; font-weight: 700; font-display: swap; src: url('../../assets/fonts/tajawal/Tajawal-700.ttf') format('truetype'); }
+@font-face { font-family: 'Tajawal'; font-style: normal; font-weight: 800; font-display: swap; src: url('../../assets/fonts/tajawal/Tajawal-800.ttf') format('truetype'); }
+@font-face { font-family: 'Amiri'; font-style: normal; font-weight: 400; font-display: swap; src: url('../../assets/fonts/amiri/Amiri-400.ttf') format('truetype'); }
+@font-face { font-family: 'Amiri'; font-style: normal; font-weight: 700; font-display: swap; src: url('../../assets/fonts/amiri/Amiri-700.ttf') format('truetype'); }
+@font-face { font-family: 'Aref Ruqaa'; font-style: normal; font-weight: 700; font-display: swap; src: url('../../assets/fonts/aref-ruqaa/ArefRuqaa-Bold.ttf') format('truetype'); }

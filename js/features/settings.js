@@ -318,7 +318,7 @@ function setupAdhanSettings() {
       if (permission === "granted") {
         const title = "اختبار تذكير أنياس";
         const body = "إذا ظهر هذا التنبيه وعمل الصوت، فالتذكيرات جاهزة.";
-        new Notification(title, { body, tag: "anyas-reminder-test", icon: "assets/icons/anyas-app-icon.png" });
+        new Notification(title, { body, tag: "anyas-reminder-test", icon: "assets/icons/app/anyas-app-icon.png" });
         recordAnyasNotification(title, body, "anyas-reminder-test");
         if (audioTestStatus) audioTestStatus.textContent = "تم اختبار التذكير كاملًا: الإشعار والصوت.";
       } else if (audioTestStatus) audioTestStatus.textContent = "تم اختبار الصوت، لكن إذن الإشعارات غير مفعّل.";
@@ -757,7 +757,7 @@ function checkDailyAdhkarNotifications() {
     window.anyasDailyNotificationFired[firedKey] = true;
 
     if ("Notification" in window && Notification.permission === "granted") {
-      new Notification(item.title, { body: item.body, tag: `anyas-${item.key}`, icon: "assets/icons/anyas-app-icon.png", badge: "assets/icons/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+      new Notification(item.title, { body: item.body, tag: `anyas-${item.key}`, icon: "assets/icons/app/anyas-app-icon.png", badge: "assets/icons/app/anyas-app-icon.png", dir: "rtl", lang: "ar" });
       recordAnyasNotification(item.title, item.body, `anyas-${item.key}`);
     }
     if (localStorage.getItem("anyas_notificationSound") !== "false" && item.audioId) {
@@ -796,7 +796,7 @@ function checkPrayerReminderNotifications() {
       const names = { Fajr: "الفجر", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" };
       const title = `اقتربت صلاة ${names[prayer]}`;
       const body = "تبقّى ربع ساعة على موعد الصلاة.";
-      new Notification(title, { body, tag: `anyas-prayer-${prayer}`, icon: "assets/icons/anyas-app-icon.png", badge: "assets/icons/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+      new Notification(title, { body, tag: `anyas-prayer-${prayer}`, icon: "assets/icons/app/anyas-app-icon.png", badge: "assets/icons/app/anyas-app-icon.png", dir: "rtl", lang: "ar" });
       recordAnyasNotification(title, body, `anyas-prayer-${prayer}`);
     }
     if (localStorage.getItem("anyas_notificationSound") !== "false") {
@@ -812,7 +812,7 @@ function fireOptionalReminder(id, key, title, body, audioId, dayKey = new Date()
   if (localStorage.getItem(firedKey) === "true") return;
   localStorage.setItem(firedKey, "true");
   if ("Notification" in window && Notification.permission === "granted") {
-    new Notification(title, { body, tag: `anyas-${key}`, icon: "assets/icons/anyas-app-icon.png", badge: "assets/icons/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+    new Notification(title, { body, tag: `anyas-${key}`, icon: "assets/icons/app/anyas-app-icon.png", badge: "assets/icons/app/anyas-app-icon.png", dir: "rtl", lang: "ar" });
     recordAnyasNotification(title, body, `anyas-${key}`);
   }
   if (localStorage.getItem("anyas_notificationSound") !== "false" && audioId) {

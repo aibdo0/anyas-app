@@ -21,8 +21,10 @@
 | `audio/adhkar/` | تسجيلات الأذكار الطويلة الاختيارية |
 | `assets/images/heroes/` | صور واجهات الصفحات الرئيسية |
 | `assets/images/backgrounds/` | خلفيات الصباح والليل والأقسام العامة |
-| `assets/icons/` | أيقونات التطبيق |
-| `assets/fonts/` | الخطوط المحلية وتراخيصها |
+| `assets/icons/app/` | أيقونات التطبيق الأساسية |
+| `assets/fonts/tajawal/` | أوزان خط Tajawal وتراخيصه |
+| `assets/fonts/amiri/` | أوزان خط Amiri وتراخيصه |
+| `assets/fonts/aref-ruqaa/` | خط Aref Ruqaa وترخيصه |
 | `data/audio-catalog.json` | المصدر المركزي لمسارات الصوت وسياسة تضمينه في Android |
 | `tools/validate-audio-catalog.mjs` | فحص وجود الملفات وعدم تكرار الموارد والمسارات القديمة |
 | `css/` | التنسيقات العامة وتنسيقات الصفحات والنظام البصري |
