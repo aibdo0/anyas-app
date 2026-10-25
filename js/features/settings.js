@@ -318,7 +318,7 @@ function setupAdhanSettings() {
       if (permission === "granted") {
         const title = "اختبار تذكير أنياس";
         const body = "إذا ظهر هذا التنبيه وعمل الصوت، فالتذكيرات جاهزة.";
-        new Notification(title, { body, tag: "anyas-reminder-test", icon: "assets/anyas-app-icon.png" });
+        new Notification(title, { body, tag: "anyas-reminder-test", icon: "assets/icons/anyas-app-icon.png" });
         recordAnyasNotification(title, body, "anyas-reminder-test");
         if (audioTestStatus) audioTestStatus.textContent = "تم اختبار التذكير كاملًا: الإشعار والصوت.";
       } else if (audioTestStatus) audioTestStatus.textContent = "تم اختبار الصوت، لكن إذن الإشعارات غير مفعّل.";
@@ -452,8 +452,8 @@ function setupAyatKursiVoices() {
 // =====================================================
 
 const DEFAULT_MUEZZIN_SOURCES = {
-  adhanAudio: "audio/adhan.mp3?v=20261002-1",
-  fajrAudio: "audio/fajr.mp3"
+  adhanAudio: "audio/adhan/adhan.mp3?v=20261002-1",
+  fajrAudio: "audio/adhan/fajr.mp3"
 };
 
 const MAX_MUEZZIN_FILE_SIZE = 15 * 1024 * 1024;
@@ -624,8 +624,8 @@ function setupAdhkarAudioControls() {
 
 function setupAdhkarVoiceChoices() {
   const choices = [
-    { id: "morningWardVoice", storage: "anyas_morningWardVoice", audioId: "morningWardAudio", mishary: "audio/adhkar-morning-mishary-alafasy.mp3?v=20261003-1", ahmed: "audio/adhkar-morning-ahmed-al-nafis.mp3" },
-    { id: "eveningWardVoice", storage: "anyas_eveningWardVoice", audioId: "eveningWardAudio", mishary: "audio/adhkar-evening-mishary-alafasy.mp3?v=20261003-1", ahmed: "audio/adhkar-evening-ahmed-al-nafis.mp3" }
+    { id: "morningWardVoice", storage: "anyas_morningWardVoice", audioId: "morningWardAudio", mishary: "audio/adhkar/adhkar-morning-mishary-alafasy.mp3?v=20261003-1", ahmed: "audio/adhkar/adhkar-morning-ahmed-al-nafis.mp3" },
+    { id: "eveningWardVoice", storage: "anyas_eveningWardVoice", audioId: "eveningWardAudio", mishary: "audio/adhkar/adhkar-evening-mishary-alafasy.mp3?v=20261003-1", ahmed: "audio/adhkar/adhkar-evening-ahmed-al-nafis.mp3" }
   ];
   choices.forEach(choice => {
     const select = document.getElementById(choice.id);
@@ -757,7 +757,7 @@ function checkDailyAdhkarNotifications() {
     window.anyasDailyNotificationFired[firedKey] = true;
 
     if ("Notification" in window && Notification.permission === "granted") {
-      new Notification(item.title, { body: item.body, tag: `anyas-${item.key}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+      new Notification(item.title, { body: item.body, tag: `anyas-${item.key}`, icon: "assets/icons/anyas-app-icon.png", badge: "assets/icons/anyas-app-icon.png", dir: "rtl", lang: "ar" });
       recordAnyasNotification(item.title, item.body, `anyas-${item.key}`);
     }
     if (localStorage.getItem("anyas_notificationSound") !== "false" && item.audioId) {
@@ -796,7 +796,7 @@ function checkPrayerReminderNotifications() {
       const names = { Fajr: "الفجر", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" };
       const title = `اقتربت صلاة ${names[prayer]}`;
       const body = "تبقّى ربع ساعة على موعد الصلاة.";
-      new Notification(title, { body, tag: `anyas-prayer-${prayer}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+      new Notification(title, { body, tag: `anyas-prayer-${prayer}`, icon: "assets/icons/anyas-app-icon.png", badge: "assets/icons/anyas-app-icon.png", dir: "rtl", lang: "ar" });
       recordAnyasNotification(title, body, `anyas-prayer-${prayer}`);
     }
     if (localStorage.getItem("anyas_notificationSound") !== "false") {
@@ -812,7 +812,7 @@ function fireOptionalReminder(id, key, title, body, audioId, dayKey = new Date()
   if (localStorage.getItem(firedKey) === "true") return;
   localStorage.setItem(firedKey, "true");
   if ("Notification" in window && Notification.permission === "granted") {
-    new Notification(title, { body, tag: `anyas-${key}`, icon: "assets/anyas-app-icon.png", badge: "assets/anyas-app-icon.png", dir: "rtl", lang: "ar" });
+    new Notification(title, { body, tag: `anyas-${key}`, icon: "assets/icons/anyas-app-icon.png", badge: "assets/icons/anyas-app-icon.png", dir: "rtl", lang: "ar" });
     recordAnyasNotification(title, body, `anyas-${key}`);
   }
   if (localStorage.getItem("anyas_notificationSound") !== "false" && audioId) {

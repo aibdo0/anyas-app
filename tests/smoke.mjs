@@ -258,19 +258,16 @@ check("optional audio downloads are cached and excluded from Android web assets"
   assert.match(optionalAudio, /raw\.githubusercontent\.com/);
   assert.match(optionalAudio, /isAndroid\(\) \? remoteUrl/);
   assert.doesNotMatch(gradle, /include 'audio\/\*\*'/);
-  for (const file of [
-    "adhkar-morning-mishary-alafasy.mp3",
-    "adhkar-evening-mishary-alafasy.mp3",
-    "adhkar-wakeup-mishary-alafasy.mp3",
-    "adhkar-sleep-mishary-alafasy.mp3",
-    "adhkar-morning-ahmed-al-nafis.mp3",
-    "adhkar-evening-ahmed-al-nafis.mp3",
-  ]) assert.match(gradle, new RegExp(`exclude 'audio/${file.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}'`));
+  assert.match(gradle, /exclude 'audio\/adhkar\/\*\*'/);
 });
 
 check("compressed audio stays playable and within the app size budget", () => {
   const audioDir = path.join(root, "audio");
-  const audioFiles = fs.readdirSync(audioDir).filter(file => /\.(mp3|m4a)$/i.test(file));
+  const audioFiles = fs.readdirSync(audioDir, { withFileTypes: true })
+    .flatMap(entry => entry.isDirectory()
+      ? fs.readdirSync(path.join(audioDir, entry.name)).map(file => path.join(entry.name, file))
+      : [entry.name])
+    .filter(file => /\.(mp3|m4a)$/i.test(file));
   assert.ok(audioFiles.length >= 30);
   for (const file of audioFiles) {
     assert.ok(fs.statSync(path.join(audioDir, file)).size <= 16_000_000, `${file} exceeds audio size budget`);

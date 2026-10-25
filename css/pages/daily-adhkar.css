@@ -50,7 +50,7 @@
 
 .daily-adhkar-card[data-adhkar-period="morning"] {
   border-color: rgba(255, 220, 137, .72);
-  background-image: linear-gradient(90deg, rgba(18, 33, 43, .25), rgba(18, 24, 31, .82)), url("../../assets/anyas-morning-background.webp");
+  background-image: linear-gradient(90deg, rgba(18, 33, 43, .25), rgba(18, 24, 31, .82)), url("../../assets/images/anyas-morning-background.webp");
   box-shadow: 0 16px 34px rgba(105, 74, 25, .24);
 }
 .daily-adhkar-card[data-adhkar-period="morning"]::after {
@@ -67,7 +67,7 @@
 
 .daily-adhkar-card[data-adhkar-period="evening"] {
   border-color: rgba(250, 177, 108, .72);
-  background-image: linear-gradient(90deg, rgba(38, 24, 32, .28), rgba(26, 22, 29, .85)), url("../../assets/prayer-hero.jpg");
+  background-image: linear-gradient(90deg, rgba(38, 24, 32, .28), rgba(26, 22, 29, .85)), url("../../assets/images/prayer-hero.jpg");
   background-position: center 48%;
   box-shadow: 0 16px 34px rgba(126, 54, 28, .25);
 }
