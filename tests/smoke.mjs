@@ -359,6 +359,9 @@ check("Android Qibla compass uses phone sensors and magnetic declination correct
   assert.match(compass, /GeomagneticField/);
   assert.match(compass, /حرّكه على شكل رقم 8/);
   assert.match(compass, /NativeQiblaCompass\(/);
+  assert.match(compass, /المؤشر المباشر/);
+  assert.match(compass, /اتجاه الهاتف/);
+  assert.match(compass, /semantics \{ contentDescription/);
 });
 
 check("Android prayer widget shows the next prayer and refreshes", () => {
