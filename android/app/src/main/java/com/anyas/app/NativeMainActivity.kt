@@ -1,7 +1,6 @@
 package com.anyas.app
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -234,10 +233,7 @@ private fun AnyasNativeApp(initialRoute: String?) {
                                 preferences.edit().putString("asr_madhab", selected.name).apply()
                             },
                             onReminderSettingsChange = { reminderSettings = it },
-                            onRequestNotificationPermission = requestNotificationPermission,
-                            onOpenLegacy = {
-                                context.startActivity(Intent(context, MainActivity::class.java))
-                            }
+                            onRequestNotificationPermission = requestNotificationPermission
                         )
                     }
                 }
@@ -479,8 +475,7 @@ private fun MorePage(
     onMethodChange: (NativeCalculationMethod) -> Unit,
     onMadhabChange: (NativeAsrMadhab) -> Unit,
     onReminderSettingsChange: (NativeReminderSettings) -> Unit,
-    onRequestNotificationPermission: () -> Unit,
-    onOpenLegacy: () -> Unit
+    onRequestNotificationPermission: () -> Unit
 ) {
     val qiblaBearing = remember(city) {
         runCatching { Qibla(Coordinates(city.latitude, city.longitude)).direction }.getOrDefault(0.0)
@@ -516,16 +511,6 @@ private fun MorePage(
             onRequestNotificationPermission = onRequestNotificationPermission,
             notificationsAllowed = notificationsAllowed
         )
-        Card(colors = CardDefaults.cardColors(containerColor = Color(0xFFF0EBDD)), shape = RoundedCornerShape(20.dp)) {
-            Column(Modifier.padding(16.dp)) {
-                Text("التحويل جارٍ على مراحل", color = DeepGreen, fontWeight = FontWeight.Bold)
-                Text("هذه النسخة تنقل الرئيسية والمواقيت والأذكار والمسبحة والتذكيرات إلى Kotlin. بقية الأدوات والويدجت وبعض خدمات الخلفية ما زالت قيد النقل.", color = Muted, fontSize = 13.sp, lineHeight = 22.sp, modifier = Modifier.padding(top = 6.dp))
-                Spacer(Modifier.height(12.dp))
-                OutlinedButton(onClick = onOpenLegacy, modifier = Modifier.fillMaxWidth()) {
-                    Text("فتح بقية الميزات مؤقتًا")
-                }
-            }
-        }
     }
 }
 
