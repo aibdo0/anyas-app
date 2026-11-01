@@ -18,6 +18,7 @@
 | `android/app/src/main/java/com/anyas/app/ReminderScheduler.kt` | إعادة جدولة التنبيهات محليًا، مع واجهة Java متوافقة للمكونات القديمة |
 | `android/app/src/main/java/com/anyas/app/ReminderReceiver.kt` | استقبال المنبهات وبناء إشعارات Android وفتح الواجهة الأصلية |
 | `android/app/src/main/java/com/anyas/app/ReminderPlayerService.kt` | تشغيل وإيقاف صوت التذكير وإدارة إشعار الخدمة الأمامي |
+| `android/app/src/main/java/com/anyas/app/NotificationHistory.kt` | سجل الإشعارات المحلي وواجهات ثابتة متوافقة مع النشاط القديم |
 | `android/app/src/main/java/com/anyas/app/MainActivity.java` | الواجهة القديمة المعتمدة على WebView أثناء نقل الميزات المتبقية |
 | `android/app/src/main/java/com/anyas/app/BootReceiver.kt` و`RainReceiver.kt` | إعادة الجدولة عند الإقلاع وفحص تنبيه المطر |
 | `android/app/src/main/java/com/anyas/app/PrayerWidgetProvider.kt` | ويدجت مواقيت الصلاة وفتح النشاط الأصلي |

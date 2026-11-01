@@ -21,6 +21,7 @@ const qibla = read("js/features/qibla.js");
 const commonCities = read("data/locations/common-cities.js");
 const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.kt");
 const nativeReminderSettings = read("android/app/src/main/java/com/anyas/app/NativeReminderSettings.kt");
+const notificationHistory = read("android/app/src/main/java/com/anyas/app/NotificationHistory.kt");
 const serviceWorker = read("sw.js");
 
 check("reminder settings expose a test notification button", () => {
@@ -214,6 +215,15 @@ check("notification inbox supports marking all items read", () => {
   assert.match(enhancements, /markAll\?\.addEventListener\("click", \(\) => render\(true\)\)/);
   assert.match(enhancements, /localStorage\.setItem\("anyas_notification_history"/);
   assert.match(enhancements, /markNotificationHistoryRead/);
+});
+
+check("Android notification history remains available through Kotlin static APIs", () => {
+  assert.match(notificationHistory, /object NotificationHistory/);
+  for (const method of ["record", "getJson", "delete", "clear", "markAllRead"]) {
+    assert.match(notificationHistory, new RegExp(`@JvmStatic\\s+fun ${method}\\(`));
+  }
+  assert.match(notificationHistory, /MAX_ITEMS = 100/);
+  assert.match(notificationHistory, /DUPLICATE_WINDOW_MS = 90_000L/);
 });
 
 check("notification inbox can filter unread items only", () => {
