@@ -1,6 +1,10 @@
 import groovy.json.JsonSlurper
 
-plugins { id 'com.android.application' }
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.compose'
+}
 
 def webRoot = rootProject.projectDir.parentFile
 def appVersionSource = new File(webRoot, 'data/config/app-version.js').text
@@ -20,6 +24,20 @@ def hasReleaseSigning = [releaseStoreFile, releaseStorePassword, releaseKeyAlias
 android {
     namespace 'com.anyas.app'
     compileSdk 35
+
+    buildFeatures { compose true }
+
+    sourceSets {
+        main { assets.srcDir(layout.buildDirectory.dir('generated/nativeAzkarAssets')) }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
+    }
+
+    kotlinOptions { jvmTarget = '17' }
 
     defaultConfig {
         applicationId 'com.anyas.app'
@@ -48,6 +66,14 @@ android {
 
 dependencies {
     implementation 'androidx.webkit:webkit:1.12.1'
+    implementation 'androidx.activity:activity-compose:1.9.3'
+    implementation platform('androidx.compose:compose-bom:2024.12.01')
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation 'androidx.compose.material3:material3'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+    implementation 'com.batoulapps.adhan:adhan:1.2.1'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
 }
 
 tasks.register('syncWebAssets', Copy) {
@@ -57,6 +83,22 @@ tasks.register('syncWebAssets', Copy) {
     }
     into layout.projectDirectory.dir('src/main/assets')
 }
+
+tasks.register('syncNativeAzkarContent') {
+    def sourceFile = new File(webRoot, 'data/content/azkar-topics.js')
+    def outputFile = layout.buildDirectory.file('generated/nativeAzkarAssets/azkar-topics.json').get().asFile
+    inputs.file(sourceFile)
+    outputs.file(outputFile)
+    doLast {
+        def source = sourceFile.getText('UTF-8')
+        def start = source.indexOf('[')
+        def end = source.lastIndexOf(']')
+        if (start < 0 || end <= start) throw new GradleException('Could not extract the Azkar JSON array.')
+        outputFile.parentFile.mkdirs()
+        outputFile.setText(source.substring(start, end + 1), 'UTF-8')
+    }
+}
+
 tasks.register('syncReminderAudio') {
     doLast {
         def sourceDir = new File(webRoot, 'audio')
@@ -87,4 +129,4 @@ tasks.register('syncReminderAudio') {
         }
     }
 }
-tasks.named('preBuild').configure { dependsOn('syncWebAssets', 'syncReminderAudio') }
+tasks.named('preBuild').configure { dependsOn('syncWebAssets', 'syncReminderAudio', 'syncNativeAzkarContent') }
