@@ -2,8 +2,13 @@ package com.anyas.app
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
+import android.view.Surface
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -47,6 +52,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -60,23 +66,109 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.batoulapps.adhan.Coordinates
-import com.batoulapps.adhan.Qibla
 import kotlinx.coroutines.delay
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class NativeMainActivity : ComponentActivity() {
+class NativeMainActivity : ComponentActivity(), SensorEventListener {
+    private lateinit var sensorManager: SensorManager
+    private var rotationVectorSensor: Sensor? = null
+    private var accelerometerSensor: Sensor? = null
+    private var magneticFieldSensor: Sensor? = null
+    private val accelerometerValues = FloatArray(3)
+    private val magneticFieldValues = FloatArray(3)
+    private var hasAccelerometerReading = false
+    private var hasMagneticFieldReading = false
+    private val compassHeading = mutableFloatStateOf(Float.NaN)
+    private val compassAccuracy = mutableIntStateOf(SensorManager.SENSOR_STATUS_UNRELIABLE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { AnyasNativeApp(intent.getStringExtra("anyas_page")) }
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+            ?: sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR)
+        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        magneticFieldSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+        setContent {
+            AnyasNativeApp(
+                initialRoute = intent.getStringExtra("anyas_page"),
+                magneticHeading = compassHeading.floatValue,
+                sensorAccuracy = compassAccuracy.intValue,
+                sensorAvailable = rotationVectorSensor != null || (accelerometerSensor != null && magneticFieldSensor != null)
+            )
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val rotationSensor = rotationVectorSensor
+        if (rotationSensor != null) {
+            sensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_UI)
+        } else {
+            accelerometerSensor?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI) }
+            magneticFieldSensor?.let { sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI) }
+        }
+    }
+
+    override fun onPause() {
+        sensorManager.unregisterListener(this)
+        super.onPause()
+    }
+
+    override fun onSensorChanged(event: SensorEvent) {
+        when (event.sensor.type) {
+            Sensor.TYPE_ROTATION_VECTOR, Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR -> {
+                val matrix = FloatArray(9)
+                SensorManager.getRotationMatrixFromVector(matrix, event.values)
+                updateCompassHeading(matrix)
+            }
+            Sensor.TYPE_ACCELEROMETER -> {
+                event.values.copyInto(accelerometerValues)
+                hasAccelerometerReading = true
+                updateFallbackCompass()
+            }
+            Sensor.TYPE_MAGNETIC_FIELD -> {
+                event.values.copyInto(magneticFieldValues)
+                hasMagneticFieldReading = true
+                updateFallbackCompass()
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        compassAccuracy.intValue = accuracy
+    }
+
+    private fun updateFallbackCompass() {
+        if (!hasAccelerometerReading || !hasMagneticFieldReading) return
+        val matrix = FloatArray(9)
+        if (SensorManager.getRotationMatrix(matrix, null, accelerometerValues, magneticFieldValues)) {
+            updateCompassHeading(matrix)
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun updateCompassHeading(matrix: FloatArray) {
+        val (axisX, axisY) = when (windowManager.defaultDisplay.rotation) {
+            Surface.ROTATION_90 -> SensorManager.AXIS_Y to SensorManager.AXIS_MINUS_X
+            Surface.ROTATION_180 -> SensorManager.AXIS_MINUS_X to SensorManager.AXIS_MINUS_Y
+            Surface.ROTATION_270 -> SensorManager.AXIS_MINUS_Y to SensorManager.AXIS_X
+            else -> SensorManager.AXIS_X to SensorManager.AXIS_Y
+        }
+        val remapped = FloatArray(9)
+        if (!SensorManager.remapCoordinateSystem(matrix, axisX, axisY, remapped)) return
+        val orientation = FloatArray(3)
+        SensorManager.getOrientation(remapped, orientation)
+        val degrees = Math.toDegrees(orientation[0].toDouble()).toFloat()
+        compassHeading.floatValue = ((degrees % 360f) + 360f) % 360f
     }
 }
 
 private enum class NativePage(val label: String, val symbol: String) {
     HOME("الرئيسية", "⌂"),
     PRAYERS("الصلاة", "◷"),
+    QIBLA("القبلة", "◉"),
     AZKAR("الأذكار", "ذ"),
     TASBEEH("التسبيح", "●"),
     MORE("المزيد", "•••")
@@ -90,7 +182,12 @@ internal val Ink = Color(0xFF202A26)
 internal val Muted = Color(0xFF68736D)
 
 @Composable
-private fun AnyasNativeApp(initialRoute: String?) {
+private fun AnyasNativeApp(
+    initialRoute: String?,
+    magneticHeading: Float,
+    sensorAccuracy: Int,
+    sensorAvailable: Boolean
+) {
     val context = LocalContext.current
     val preferences = remember { context.getSharedPreferences("anyas_native", android.content.Context.MODE_PRIVATE) }
     var page by remember {
@@ -98,7 +195,7 @@ private fun AnyasNativeApp(initialRoute: String?) {
             when (initialRoute) {
                 "tasbeeh" -> NativePage.TASBEEH
                 "azkar" -> NativePage.AZKAR
-                "qibla" -> NativePage.MORE
+                "qibla" -> NativePage.QIBLA
                 else -> NativePage.HOME
             }
         )
@@ -200,6 +297,12 @@ private fun AnyasNativeApp(initialRoute: String?) {
                             madhab = madhab,
                             times = prayerTimes,
                             onChooseCity = { showCityPicker = true }
+                        )
+                        NativePage.QIBLA -> NativeQiblaPage(
+                            city = city,
+                            magneticHeading = magneticHeading,
+                            sensorAccuracy = sensorAccuracy,
+                            sensorAvailable = sensorAvailable
                         )
                         NativePage.AZKAR -> AzkarPage(
                             selectedTopic = selectedTopic,
@@ -477,9 +580,6 @@ private fun MorePage(
     onReminderSettingsChange: (NativeReminderSettings) -> Unit,
     onRequestNotificationPermission: () -> Unit
 ) {
-    val qiblaBearing = remember(city) {
-        runCatching { Qibla(Coordinates(city.latitude, city.longitude)).direction }.getOrDefault(0.0)
-    }
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(18.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -496,13 +596,6 @@ private fun MorePage(
                 NativeAsrMadhab.entries.forEach { option ->
                     SelectionRow(option.title, madhab == option, onClick = { onMadhabChange(option) })
                 }
-            }
-        }
-        Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
-            Column(Modifier.padding(16.dp)) {
-                Text("اتجاه القبلة", color = DeepGreen, fontWeight = FontWeight.Bold)
-                Text("${String.format(Locale("ar"), "%.1f", qiblaBearing)}° من الشمال الحقيقي", color = Green, fontSize = 23.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 8.dp))
-                Text("يُحسب الاتجاه حسب المدينة المختارة. البوصلة الحية ستُنقل في مرحلة لاحقة.", color = Muted, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
             }
         }
         NativeReminderSettingsPanel(

@@ -336,6 +336,7 @@ check("Android app shortcuts open prayer, Qibla, tasbeeh, and adhkar", () => {
   assert.match(manifest, /\.NativeMainActivity/);
   for (const page of ["home", "qibla", "tasbeeh", "azkar"]) assert.match(shortcuts, new RegExp(`android:value="${page}"`));
   assert.match(activity, /intent\.getStringExtra\("anyas_page"\)/);
+  assert.match(activity, /"qibla" -> NativePage\.QIBLA/);
   assert.equal(exists("android/app/src/main/java/com/anyas/app/MainActivity.java"), false);
 });
 
@@ -345,6 +346,19 @@ check("Android native build excludes legacy WebView and duplicate PWA assets", (
   assert.doesNotMatch(manifest, /android:name="\.MainActivity"|ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION|REQUEST_IGNORE_BATTERY_OPTIMIZATIONS/);
   assert.doesNotMatch(gradle, /androidx\.webkit|syncWebAssets|index\.html|css\/\*\*/);
   assert.equal(exists("android/app/src/main/assets/index.html"), false);
+});
+
+check("Android Qibla compass uses phone sensors and magnetic declination correction", () => {
+  const activity = read("android/app/src/main/java/com/anyas/app/NativeMainActivity.kt");
+  const compass = read("android/app/src/main/java/com/anyas/app/NativeQiblaCompass.kt");
+  assert.match(activity, /SensorEventListener/);
+  assert.match(activity, /Sensor\.TYPE_ROTATION_VECTOR/);
+  assert.match(activity, /Sensor\.TYPE_GEOMAGNETIC_ROTATION_VECTOR/);
+  assert.match(activity, /remapCoordinateSystem/);
+  assert.match(activity, /unregisterListener\(this\)/);
+  assert.match(compass, /GeomagneticField/);
+  assert.match(compass, /حرّكه على شكل رقم 8/);
+  assert.match(compass, /NativeQiblaCompass\(/);
 });
 
 check("Android prayer widget shows the next prayer and refreshes", () => {
