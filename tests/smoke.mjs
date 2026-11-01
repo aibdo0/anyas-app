@@ -266,7 +266,7 @@ check("optional audio manager shows sizes and can clear all downloads", () => {
   assert.match(optionalAudio, /caches\.delete\(CACHE_NAME\)/);
 });
 
-check("optional audio downloads are cached and excluded from Android web assets", () => {
+check("optional audio stays remote and PWA assets are not copied into Android", () => {
   const optionalAudio = read("js/services/optional-audio.js");
   const gradle = read("android/app/build.gradle");
   assert.match(index, /id="optionalAudioManager"/);
@@ -275,8 +275,8 @@ check("optional audio downloads are cached and excluded from Android web assets"
   assert.match(optionalAudio, /caches\.open\(CACHE_NAME\)/);
   assert.match(optionalAudio, /raw\.githubusercontent\.com/);
   assert.match(optionalAudio, /isAndroid\(\) \? remoteUrl/);
-  assert.doesNotMatch(gradle, /include 'audio\/\*\*'/);
-  assert.match(gradle, /exclude 'audio\/adhkar\/\*\*'/);
+  assert.doesNotMatch(gradle, /syncWebAssets|include 'audio\/\*\*'/);
+  assert.match(gradle, /catalog\.audio\.findAll \{ it\.bundled && it\.androidResource \}/);
 });
 
 check("audio catalog centralizes web and Android audio paths", () => {
@@ -331,12 +331,20 @@ check("worship statistics use local prayer, wird, and devotion data", () => {
 check("Android app shortcuts open prayer, Qibla, tasbeeh, and adhkar", () => {
   const manifest = read("android/app/src/main/AndroidManifest.xml");
   const shortcuts = read("android/app/src/main/res/xml/shortcuts.xml");
-  const activity = read("android/app/src/main/java/com/anyas/app/MainActivity.java");
+  const activity = read("android/app/src/main/java/com/anyas/app/NativeMainActivity.kt");
   assert.match(manifest, /android\.app\.shortcuts/);
+  assert.match(manifest, /\.NativeMainActivity/);
   for (const page of ["home", "qibla", "tasbeeh", "azkar"]) assert.match(shortcuts, new RegExp(`android:value="${page}"`));
-  assert.match(activity, /shortcutPage\(Intent intent\)/);
-  assert.match(activity, /openPendingShortcut/);
-  assert.match(activity, /onNewIntent/);
+  assert.match(activity, /intent\.getStringExtra\("anyas_page"\)/);
+  assert.equal(exists("android/app/src/main/java/com/anyas/app/MainActivity.java"), false);
+});
+
+check("Android native build excludes legacy WebView and duplicate PWA assets", () => {
+  const manifest = read("android/app/src/main/AndroidManifest.xml");
+  const gradle = read("android/app/build.gradle");
+  assert.doesNotMatch(manifest, /android:name="\.MainActivity"|ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION|REQUEST_IGNORE_BATTERY_OPTIMIZATIONS/);
+  assert.doesNotMatch(gradle, /androidx\.webkit|syncWebAssets|index\.html|css\/\*\*/);
+  assert.equal(exists("android/app/src/main/assets/index.html"), false);
 });
 
 check("Android prayer widget shows the next prayer and refreshes", () => {
@@ -348,7 +356,6 @@ check("Android prayer widget shows the next prayer and refreshes", () => {
   assert.match(widget, /ReminderScheduler\.PREFS/);
   assert.match(widget, /manager\.updateAppWidget/);
   assert.match(widget, /NativeMainActivity::class\.java/);
-  assert.match(read("android/app/src/main/java/com/anyas/app/MainActivity.java"), /PrayerWidgetProvider\.updateAll/);
   assert.match(read("js/features/settings.js"), /city: document\.getElementById\("prayerHeroCity"\)/);
 });
 
