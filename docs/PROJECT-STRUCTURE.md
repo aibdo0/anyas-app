@@ -1,47 +1,36 @@
 # هيكل مشروع أنياس
 
-المشروع عبارة عن تطبيق ويب تقدمي (PWA) يعمل أيضًا داخل غلاف Android. لذلك تبقى ملفات الويب في جذر المستودع، بينما يحتوي `android/` على طبقة التطبيق الأصلية فقط.
+يحتوي المستودع على نسخة ويب تقدمية (PWA) ونسخة Android يجري نقلها على مراحل من غلاف WebView إلى واجهة Kotlin أصلية. تبقى ملفات الويب مصدرًا مستقلًا لنسخة PWA، كما تظل الواجهة القديمة متاحة مؤقتًا داخل Android للميزات التي لم تُنقل.
 
 ## المجلدات الأساسية
 
 | المسار | المسؤولية |
 | --- | --- |
-| `index.html` | نقطة دخول الواجهة وكل الصفحات والحالات الأساسية |
-| `js/core/` | تشغيل التطبيق واللغة والتخزين المشترك |
-| `js/features/` | ميزات الصلاة والأذكار والقبلة والمهام والإعدادات |
+| `index.html` و`js/` و`css/` | واجهة PWA ووظائفها وتنسيقاتها |
+| `js/core/` | تشغيل الويب واللغة والتخزين |
+| `js/features/` | ميزات الصلاة والأذكار والقبلة والمهام والإعدادات للويب |
 | `js/services/` | الصوت والكاش والتكاملات والخدمات المشتركة |
-| `js/vendor/` | المكتبات الخارجية المحلية |
-| `css/base/` | القواعد العامة والخطوط المشتركة |
-| `css/theme/` | الثيم والألوان العامة |
-| `css/components/` | مكونات الواجهة القابلة لإعادة الاستخدام |
-| `css/pages/` | تنسيقات الصفحات والأقسام المتخصصة |
-| `audio/adhan/` | أصوات الأذان والصلوات الأساسية |
-| `audio/quran/` | تسجيلات آية الكرسي |
-| `audio/reminders/` | أصوات التذكيرات القصيرة |
-| `audio/adhkar/` | تسجيلات الأذكار الطويلة الاختيارية |
-| `assets/images/heroes/` | صور واجهات الصفحات الرئيسية |
-| `assets/images/backgrounds/` | خلفيات الصباح والليل والأقسام العامة |
-| `assets/icons/app/` | أيقونات التطبيق الأساسية |
-| `assets/fonts/tajawal/` | أوزان خط Tajawal وتراخيصه |
-| `assets/fonts/amiri/` | أوزان خط Amiri وتراخيصه |
-| `assets/fonts/aref-ruqaa/` | خط Aref Ruqaa وترخيصه |
-| `data/config/` | إعدادات الإصدار والكتالوج والترجمات العامة |
-| `data/content/` | محتوى الأذكار والورد والقرآن ومصادره |
-| `data/locations/` | المدن والبيانات المساعدة للموقع |
-| `tools/validate-audio-catalog.mjs` | فحص وجود الملفات وعدم تكرار الموارد والمسارات القديمة |
-| `css/` | التنسيقات العامة وتنسيقات الصفحات والنظام البصري |
-| `data/` | البيانات المحلية والترجمات والمصادر وإصدار التطبيق |
-| `assets/` | الصور والخطوط وأيقونة التطبيق |
-| `audio/` | التسجيلات الصوتية التي يشير إليها التطبيق |
-| `android/` | غلاف Android، الإشعارات، التذكيرات، الاختصارات والويدجت |
-| `tests/` | اختبارات smoke وتحقق التكامل بين الويب وAndroid |
+| `data/content/` | محتوى الأذكار والقرآن ومصادره |
+| `data/config/` و`data/locations/` | إعدادات الإصدار والصوت والمدن |
+| `android/app/src/main/java/com/anyas/app/NativeMainActivity.kt` | واجهة Android الأصلية والتنقل بـJetpack Compose |
+| `android/app/src/main/java/com/anyas/app/NativePrayerCore.kt` | نماذج المدينة، وحساب المواقيت والقبلة، وقراءة محتوى الأذكار في Kotlin |
+| `android/app/src/main/java/com/anyas/app/NativeReminderSettings.kt` | حفظ واستيراد إعدادات التنبيهات وبناء لوحة التفضيلات الأصلية |
+| `android/app/src/main/java/com/anyas/app/ReminderScheduler.kt` | إعادة جدولة التنبيهات محليًا، مع واجهة Java متوافقة للمكونات القديمة |
+| `android/app/src/main/java/com/anyas/app/ReminderReceiver.kt` | استقبال المنبهات وبناء إشعارات Android وفتح الواجهة الأصلية |
+| `android/app/src/main/java/com/anyas/app/ReminderPlayerService.kt` | تشغيل وإيقاف صوت التذكير وإدارة إشعار الخدمة الأمامي |
+| `android/app/src/main/java/com/anyas/app/MainActivity.java` | الواجهة القديمة المعتمدة على WebView أثناء نقل الميزات المتبقية |
+| `android/app/src/main/java/com/anyas/app/BootReceiver.kt` و`RainReceiver.kt` | إعادة الجدولة عند الإقلاع وفحص تنبيه المطر |
+| `android/app/src/main/java/com/anyas/app/PrayerWidgetProvider.kt` | ويدجت مواقيت الصلاة وفتح النشاط الأصلي |
+| `android/app/src/main/res/` | موارد Android الأصلية مثل الأيقونات والاختصارات والودجت |
+| `tests/` | اختبارات smoke الحالية للتكامل |
 | `.github/` | سير عمل GitHub Actions وقوالب المساهمة |
-| `docs/` | ملاحظات البنية والتطوير والنشر |
+| `docs/` | توثيق التطوير والبنية والإصدار |
 
 ## قواعد مهمة
 
-1. لا تنقل ملفات `index.html` أو `js/` أو `css/` أو `data/` أو `assets/` أو `audio/` دون تحديث كل المراجع وService Worker واختبارات smoke.
-2. ملفات `android/app/src/main/assets/` و`android/app/src/main/res/raw/` ناتجة عن البناء ومُستثناة من Git؛ المصدر الحقيقي لها هو جذر المشروع.
-3. أي ملف صوتي جديد يجب أن يكون له مرجع واضح في JavaScript أو Android، وأن يمر عبر اختبار الحجم والتشغيل.
-4. ضع البيانات الجديدة في `data/` بدل تضمينها في ملفات الواجهة عندما تكون كبيرة أو قابلة لإعادة الاستخدام.
-5. شغّل فحوصات JavaScript واختبارات smoke قبل فتح Pull Request.
+1. تعمل واجهة Android الجديدة محليًا، وتستخدم مكتبة Adhan Java من كود Kotlin لحساب مواقيت الصلاة. لا تستبدل الحساب المحلي بطلب شبكة إلزامي.
+2. لا تحذف `MainActivity.java` أو أصول الويب من Android حتى تُنقل الميزات المتبقية ويُتحقق من إعدادات المستخدم والتذكيرات والويدجت.
+3. ملفات `android/app/src/main/assets/` و`android/app/src/main/res/raw/` ناتجة عن البناء؛ المصدر الحقيقي لها في جذر المستودع.
+4. ينشئ Gradle نسخة JSON محلية من `data/content/azkar-topics.js` للاستخدام الأصلي. عدّل المصدر، لا الملف المولّد.
+5. أي محتوى جديد يحتاج مصدرًا وترخيصًا موثقين في `data/content/SOURCES.md`.
+6. شغّل فحوصات JavaScript واختبارات smoke، ثم ابنِ APK Android قبل دمج التغييرات.

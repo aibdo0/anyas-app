@@ -19,7 +19,8 @@ const appjs = read("js/core/app.js");
 const enhancements = read("js/services/app-enhancements.js");
 const qibla = read("js/features/qibla.js");
 const commonCities = read("data/locations/common-cities.js");
-const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.java");
+const scheduler = read("android/app/src/main/java/com/anyas/app/ReminderScheduler.kt");
+const nativeReminderSettings = read("android/app/src/main/java/com/anyas/app/NativeReminderSettings.kt");
 const serviceWorker = read("sw.js");
 
 check("reminder settings expose a test notification button", () => {
@@ -30,10 +31,17 @@ check("reminder settings expose a test notification button", () => {
 
 check("web reminder keys are represented in Android scheduling", () => {
   const webKeys = [...settings.matchAll(/id:\s*"([^"]+)"/g)].map(match => match[1]);
-  const androidKeys = [...scheduler.matchAll(/(?:addDaily|addCustomizableDaily|addWeekly)\(reminders,?\s*(?:enabled,\s*)?(?:schedules,\s*)?"([^"]+)"/g)].map(match => match[1]);
+  const nativeReminderSource = `${scheduler}\n${nativeReminderSettings}`;
+  const androidKeys = [...nativeReminderSource.matchAll(/"(notify[A-Za-z0-9_]+)"/g)].map(match => match[1]);
   const missing = webKeys.filter(key => key.startsWith("notify") && !androidKeys.includes(key));
   assert.deepEqual(missing, [], `missing Android reminder keys: ${missing.join(", ")}`);
-  assert.match(scheduler, /scheduleOne\(context, alarm, reminder/);
+  assert.match(scheduler, /scheduleOne\(context, alarm, it,/);
+});
+
+check("native reminder preferences save and reschedule alarms", () => {
+  assert.match(nativeReminderSettings, /NativeReminderSettingsPanel/);
+  assert.match(nativeReminderSettings, /putString\("settings", data\.toString\(\)\)/);
+  assert.match(scheduler, /@JvmStatic\s+fun scheduleSaved/);
 });
 
 check("manual city selection persists and is read on startup", () => {
@@ -190,14 +198,14 @@ check("full reminder test covers notification and sound", () => {
 });
 
 check("Android reminders use one compact card with a remove-and-stop action", () => {
-  const receiver = read("android/app/src/main/java/com/anyas/app/ReminderReceiver.java");
-  const player = read("android/app/src/main/java/com/anyas/app/ReminderPlayerService.java");
+  const receiver = read("android/app/src/main/java/com/anyas/app/ReminderReceiver.kt");
+  const player = read("android/app/src/main/java/com/anyas/app/ReminderPlayerService.kt");
   assert.match(receiver, /manager\.notify\(ReminderScheduler\.requestCode\(id\), buildNotification/);
   assert.doesNotMatch(receiver, /setLargeIcon|setSubText\("أنياس"\)/);
   assert.match(receiver, /addAction\([^\n]+إزالة وإيقاف الصوت/);
   assert.match(receiver, /ReminderScheduler\.scheduleSaved\(context\)/);
-  assert.match(player, /ACTION_DISMISS\.equals\(intent\.getAction\(\)\)/);
-  assert.match(player, /if \(key\.equals\(notificationKey\)\)[\s\S]*?releasePlayer\(\)[\s\S]*?stopForeground\(true\)/);
+  assert.match(player, /intent\?\.action == ACTION_DISMISS/);
+  assert.match(player, /if \(key == notificationKey\)[\s\S]*?releasePlayer\(\)[\s\S]*?stopForeground\(true\)/);
 });
 
 check("notification inbox supports marking all items read", () => {
@@ -322,13 +330,14 @@ check("Android app shortcuts open prayer, Qibla, tasbeeh, and adhkar", () => {
 });
 
 check("Android prayer widget shows the next prayer and refreshes", () => {
-  const widget = read("android/app/src/main/java/com/anyas/app/PrayerWidgetProvider.java");
+  const widget = read("android/app/src/main/java/com/anyas/app/PrayerWidgetProvider.kt");
   const manifest = read("android/app/src/main/AndroidManifest.xml");
   assert.match(manifest, /PrayerWidgetProvider/);
   assert.match(read("android/app/src/main/res/layout/widget_prayer.xml"), /widgetPrayerName/);
   assert.match(read("android/app/src/main/res/xml/prayer_widget_info.xml"), /updatePeriodMillis/);
   assert.match(widget, /ReminderScheduler\.PREFS/);
   assert.match(widget, /manager\.updateAppWidget/);
+  assert.match(widget, /NativeMainActivity::class\.java/);
   assert.match(read("android/app/src/main/java/com/anyas/app/MainActivity.java"), /PrayerWidgetProvider\.updateAll/);
   assert.match(read("js/features/settings.js"), /city: document\.getElementById\("prayerHeroCity"\)/);
 });
