@@ -343,7 +343,7 @@ check("Android app shortcuts open prayer, Qibla, tasbeeh, and adhkar", () => {
 check("Android native build excludes legacy WebView and duplicate PWA assets", () => {
   const manifest = read("android/app/src/main/AndroidManifest.xml");
   const gradle = read("android/app/build.gradle");
-  assert.doesNotMatch(manifest, /android:name="\.MainActivity"|ACCESS_FINE_LOCATION|ACCESS_COARSE_LOCATION|REQUEST_IGNORE_BATTERY_OPTIMIZATIONS/);
+  assert.doesNotMatch(manifest, /android:name="\.MainActivity"|REQUEST_IGNORE_BATTERY_OPTIMIZATIONS/);
   assert.doesNotMatch(gradle, /androidx\.webkit|syncWebAssets|index\.html|css\/\*\*/);
   assert.equal(exists("android/app/src/main/assets/index.html"), false);
 });
@@ -362,6 +362,21 @@ check("Android Qibla compass uses phone sensors and magnetic declination correct
   assert.match(compass, /المؤشر المباشر/);
   assert.match(compass, /اتجاه الهاتف/);
   assert.match(compass, /semantics \{ contentDescription/);
+});
+
+check("Android Qibla page offers privacy-aware nearby mosque search and walking directions", () => {
+  const manifest = read("android/app/src/main/AndroidManifest.xml");
+  const compass = read("android/app/src/main/java/com/anyas/app/NativeQiblaCompass.kt");
+  const nearby = read("android/app/src/main/java/com/anyas/app/NativeNearbyMosques.kt");
+  assert.match(manifest, /android\.permission\.ACCESS_COARSE_LOCATION/);
+  assert.match(manifest, /android\.permission\.ACCESS_FINE_LOCATION/);
+  assert.match(compass, /NearbyMosquesSection\(\)/);
+  assert.match(nearby, /RequestMultiplePermissions/);
+  assert.match(nearby, /OpenStreetMap/);
+  assert.match(nearby, /around:\$RADIUS_METERS/);
+  assert.match(nearby, /travelmode=walking/);
+  assert.match(nearby, /دون حفظها داخل التطبيق/);
+  assert.match(nearby, /Dispatchers\.IO/);
 });
 
 check("Android prayer widget shows the next prayer and refreshes", () => {

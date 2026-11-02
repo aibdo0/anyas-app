@@ -15,6 +15,7 @@
 | `android/app/src/main/java/com/anyas/app/NativeMainActivity.kt` | واجهة Android الأصلية والتنقل بـJetpack Compose |
 | `android/app/src/main/java/com/anyas/app/NativePrayerCore.kt` | نماذج المدينة، وحساب المواقيت والقبلة، وقراءة محتوى الأذكار في Kotlin |
 | `android/app/src/main/java/com/anyas/app/NativeQiblaCompass.kt` | صفحة البوصلة الحية ورسم اتجاه القبلة ومؤشرات الدقة والمعايرة |
+| `android/app/src/main/java/com/anyas/app/NativeNearbyMosques.kt` | البحث الاختياري عن المساجد عبر OpenStreetMap وحساب المسافات وفتح اتجاهات المشي |
 | `android/app/src/main/java/com/anyas/app/NativeReminderSettings.kt` | حفظ واستيراد إعدادات التنبيهات وبناء لوحة التفضيلات الأصلية |
 | `android/app/src/main/java/com/anyas/app/ReminderScheduler.kt` | جدولة التنبيهات محليًا وتحديث الويدجت |
 | `android/app/src/main/java/com/anyas/app/ReminderReceiver.kt` | استقبال المنبهات وبناء إشعارات Android وفتح الواجهة الأصلية |

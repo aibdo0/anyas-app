@@ -60,6 +60,7 @@ internal fun NativeQiblaPage(
             Text("اتبع المؤشر الذهبي لمعرفة اتجاه القبلة مباشرة.", color = Muted, fontSize = 13.sp)
         }
         NativeQiblaCompass(city, magneticHeading, sensorAccuracy, sensorAvailable)
+        NearbyMosquesSection()
     }
 }
 
