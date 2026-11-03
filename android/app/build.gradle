@@ -4,6 +4,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.compose'
+    id 'org.jetbrains.kotlin.kapt'
 }
 
 def webRoot = rootProject.projectDir.parentFile
@@ -71,8 +72,16 @@ dependencies {
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.compose.material3:material3'
     debugImplementation 'androidx.compose.ui:ui-tooling'
+    implementation 'androidx.room:room-runtime:2.6.1'
+    implementation 'androidx.room:room-ktx:2.6.1'
+    kapt 'androidx.room:room-compiler:2.6.1'
     implementation 'com.batoulapps.adhan:adhan:1.2.1'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.2'
+}
+
+kapt {
+    correctErrorTypes = true
+    arguments { arg("room.schemaLocation", "$projectDir/schemas") }
 }
 
 tasks.register('syncNativeAzkarContent') {

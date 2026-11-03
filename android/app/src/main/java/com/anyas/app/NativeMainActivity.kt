@@ -247,8 +247,8 @@ private fun AnyasNativeApp(
     val prayerTimes = remember(city, method, madhab, dayKey) {
         runCatching { NativePrayerCalculator.forDate(city, method, madhab, currentTime) }.getOrDefault(emptyList())
     }
-    LaunchedEffect(city, prayerTimes, reminderSettings) {
-        NativeReminderCatalog.saveAndSchedule(context, city, prayerTimes, reminderSettings)
+    LaunchedEffect(city, method, madhab, prayerTimes, reminderSettings) {
+        NativeReminderCatalog.saveAndSchedule(context, city, prayerTimes, reminderSettings, method, madhab)
     }
 
     androidx.compose.runtime.CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
@@ -392,7 +392,7 @@ private fun HomePage(
         Text(NativePrayerCalculator.formattedArabicDate(now), color = Muted, fontSize = 13.sp)
         Text("السلام عليكم", color = DeepGreen, fontSize = 22.sp, fontWeight = FontWeight.Bold)
 
-        val nextPrayer = prayerTimes.firstOrNull { it.epochMillis > now }
+        val nextPrayer = prayerTimes.firstOrNull { it.name != "الشروق" && it.epochMillis > now }
         val next = nextPrayer ?: runCatching {
             val tomorrow = Calendar.getInstance().apply { timeInMillis = now; add(Calendar.DAY_OF_YEAR, 1) }
             NativePrayerCalculator.forDate(city, method, madhab, tomorrow.timeInMillis).firstOrNull()

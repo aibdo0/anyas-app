@@ -15,6 +15,7 @@ class ReminderPlayerService : Service() {
     private val handler = Handler(Looper.getMainLooper())
     private var testStop: Runnable? = null
     private var activeStartId = 0
+    private var latestStartId = 0
     private var notificationKey: String? = null
     private var notificationTitle: String? = null
     private var notificationBody: String? = null
@@ -33,6 +34,7 @@ class ReminderPlayerService : Service() {
         val volume = (intent?.getFloatExtra("volume", 1f) ?: 1f).coerceIn(0f, 1f)
         val testDurationMs = intent?.getIntExtra("testDurationMs", 0) ?: 0
         activeStartId = startId
+        latestStartId = startId
         notificationKey = key?.takeIf { it.isNotBlank() } ?: "audio-playback"
         notificationTitle = title.takeIf { it.isNotBlank() } ?: "صوت التذكير"
         notificationBody = body?.takeIf { it.isNotBlank() } ?: "حان وقت تذكيرك. افتح أنياس للتفاصيل."
@@ -79,11 +81,14 @@ class ReminderPlayerService : Service() {
         }
         val manager = getSystemService(NOTIFICATION_SERVICE) as? android.app.NotificationManager
         manager?.cancel(ReminderScheduler.requestCode(key))
-        if (key == notificationKey) {
-            releasePlayer()
-            notificationRestored = true
-            stopForeground(true)
+        latestStartId = startId
+        if (key != notificationKey) {
+            if (notificationKey == null) stopSelfResult(startId)
+            return
         }
+        releasePlayer()
+        notificationRestored = true
+        stopForeground(true)
         stopSelfResult(startId)
     }
 
@@ -101,7 +106,7 @@ class ReminderPlayerService : Service() {
             ReminderReceiver.restoreReminderNotification(this, key, title, body)
             notificationRestored = true
         }
-        stopSelfResult(startId)
+        stopSelfResult(latestStartId)
     }
 
     private fun rawName(file: String?): String {
