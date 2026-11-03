@@ -1,5 +1,4 @@
 {
-  "version": 1,
   "audio": [
     {"id": "adhan.default", "category": "adhan", "webPath": "audio/adhan/adhan.mp3", "bundled": true, "androidResource": null},
     {"id": "adhan.fajr", "category": "adhan", "webPath": "audio/adhan/fajr.mp3", "bundled": true, "androidResource": null},

@@ -5,4 +5,3 @@ android/app/src/main/res/raw/
 *.jks
 *.keystore
 android/key.properties
-android/anyas-release.jks
