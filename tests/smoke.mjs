@@ -460,5 +460,27 @@ check("dismissing another reminder keeps active playback alive", () => {
   assert.match(service, /stopSelfResult\(latestStartId\)/);
 });
 
+check("native home renders source-backed daily Quran verse by Hijri day", () => {
+  const source = read("data/content/daily-quran.js");
+  const first = source.indexOf("[");
+  const last = source.lastIndexOf("]");
+  assert.ok(first >= 0 && last > first, "daily Quran source array is missing");
+  const verses = JSON.parse(source.slice(first, last + 1));
+  const content = read("android/app/src/main/java/com/anyas/app/NativeDailyQuran.kt");
+  const gradle = read("android/app/build.gradle");
+  const activity = read("android/app/src/main/java/com/anyas/app/NativeMainActivity.kt");
+  assert.equal(verses.length, 355, "expected the 355 existing daily Quran selections");
+  assert.match(gradle, /syncNativeDailyQuranContent/);
+  assert.match(gradle, /daily-quran\.json/);
+  assert.match(content, /HijrahDate\.from\(localDate\)/);
+  assert.match(content, /ChronoField\.DAY_OF_YEAR/);
+  assert.match(content, /Copyright \(C\) 2007-2021 Tanzil Project/);
+  assert.match(activity, /NativeDailyQuranContent\.forDate/);
+  assert.match(activity, /dailyVerse\.text/);
+  assert.match(activity, /hijri_adjustment_days/);
+  assert.match(activity, /المصدر والترخيص/);
+  assert.match(activity, /openUri\(NativeDailyQuranContent\.TANZIL_URL\)/);
+});
+
 console.log(`Smoke tests passed: ${passed.length}`);
 for (const name of passed) console.log(`✓ ${name}`);

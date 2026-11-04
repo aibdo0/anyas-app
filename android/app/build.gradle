@@ -99,6 +99,33 @@ tasks.register('syncNativeAzkarContent') {
     }
 }
 
+tasks.register('syncNativeDailyQuranContent') {
+    def sourceFile = new File(webRoot, 'data/content/daily-quran.js')
+    def outputFile = layout.buildDirectory.file('generated/nativeAzkarAssets/daily-quran.json').get().asFile
+    inputs.file(sourceFile)
+    outputs.file(outputFile)
+    doLast {
+        def source = sourceFile.getText('UTF-8')
+        def start = source.indexOf('[')
+        def end = source.lastIndexOf(']')
+        if (start < 0 || end <= start) throw new GradleException('Could not extract the daily Quran selection array.')
+        def json = source.substring(start, end + 1)
+        def verses = new JsonSlurper().parseText(json)
+        if (!(verses instanceof List) || verses.size() != 355) {
+            throw new GradleException("Expected 355 source Quran selections, found ${verses instanceof List ? verses.size() : 'non-list'}.")
+        }
+        verses.eachWithIndex { verse, index ->
+            if (!(verse.surah instanceof Number) || !(verse.ayah instanceof Number) ||
+                !(verse.surahName instanceof String) || verse.surahName.trim().isEmpty() ||
+                !(verse.text instanceof String) || verse.text.trim().isEmpty()) {
+                throw new GradleException("Invalid daily Quran source record at index ${index}.")
+            }
+        }
+        outputFile.parentFile.mkdirs()
+        outputFile.setText(json, 'UTF-8')
+    }
+}
+
 tasks.register('syncReminderAudio') {
     doLast {
         def sourceDir = new File(webRoot, 'audio')
@@ -129,4 +156,4 @@ tasks.register('syncReminderAudio') {
         }
     }
 }
-tasks.named('preBuild').configure { dependsOn('syncReminderAudio', 'syncNativeAzkarContent') }
+tasks.named('preBuild').configure { dependsOn('syncReminderAudio', 'syncNativeAzkarContent', 'syncNativeDailyQuranContent') }
