@@ -84,6 +84,26 @@ check("Room schema seeds all source-backed azkar and valid daily-wird references
   }
 });
 
+check("native adhkar screen reads and increments progress through Room with safe legacy import", () => {
+  const activity = read("android/app/src/main/java/com/anyas/app/NativeMainActivity.kt");
+  const repository = read("android/app/src/main/java/com/anyas/app/NativeAzkarProgressRepository.kt");
+  const dao = read("android/app/src/main/java/com/anyas/app/NativeWirdDatabase.kt");
+  const roomTest = read("android/app/src/test/java/com/anyas/app/NativeAzkarProgressRepositoryTest.kt");
+  assert.match(activity, /NativeAzkarProgressRepository\(database\)/);
+  assert.match(activity, /progressRepository\.observeTopicProgress\(localDate, it\.number\)/);
+  assert.match(activity, /progressRepository\.increment\(localDate, selectedTopic\.number, index, item\.count\)/);
+  assert.match(activity, /progressFlow\.collectAsState/);
+  assert.doesNotMatch(activity, /preferences\.edit\(\)\.putInt\(key, progress\)/);
+  assert.match(repository, /preferences\.all\.entries/);
+  assert.match(repository, /database\.withTransaction/);
+  assert.match(repository, /dao\.getImportRun\(IMPORT_ID\)/);
+  assert.match(repository, /dao\.insertTopicProgressIfAbsent/);
+  assert.doesNotMatch(repository, /preferences\.edit\(\)\.clear/);
+  assert.match(roomTest, /legacyProgressIsImportedOnceAndRoomProgressSurvivesReopen/);
+  assert.match(roomTest, /database!!\.close\(\)/);
+  assert.match(roomTest, /assertEquals\(listOf\(3, 3, 1\), rows\.map \{ it\.count \}\)/);
+});
+
 check("saved reminder settings retain the inputs needed to recalculate prayer times", () => {
   assert.match(nativeReminderSettings, /\.put\("latitude", city\.latitude\)/);
   assert.match(nativeReminderSettings, /\.put\("longitude", city\.longitude\)/);

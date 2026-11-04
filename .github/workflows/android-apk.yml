@@ -43,6 +43,8 @@ jobs:
           test -x "$SDKMANAGER"
           yes | "$SDKMANAGER" --licenses >/dev/null
           "$SDKMANAGER" 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Run Android unit tests
+        run: gradle --no-daemon -p android testDebugUnitTest
       - name: Build debug APK
         run: gradle --no-daemon -p android assembleDebug
       - uses: actions/upload-artifact@v5
