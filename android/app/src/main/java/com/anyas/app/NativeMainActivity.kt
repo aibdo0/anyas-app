@@ -60,6 +60,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -190,6 +191,14 @@ private fun AnyasNativeApp(
 ) {
     val context = LocalContext.current
     val preferences = remember { context.getSharedPreferences("anyas_native", android.content.Context.MODE_PRIVATE) }
+    var hijriAdjustmentDays by remember {
+        mutableIntStateOf(preferences.getInt("hijri_adjustment_days", 0).coerceIn(-3, 3))
+    }
+    var showQuranSource by remember { mutableStateOf(false) }
+    val uriHandler = LocalUriHandler.current
+    val dailyQuranVerses = remember(context) {
+        runCatching { NativeDailyQuranContent.read(context) }.getOrDefault(emptyList())
+    }
     var page by remember {
         mutableStateOf(
             when (initialRoute) {
@@ -244,6 +253,9 @@ private fun AnyasNativeApp(
         val calendar = Calendar.getInstance().apply { timeInMillis = currentTime }
         "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.DAY_OF_YEAR)}"
     }
+    val dailyQuranVerse = remember(dayKey, hijriAdjustmentDays, dailyQuranVerses) {
+        NativeDailyQuranContent.forDate(dailyQuranVerses, currentTime, hijriAdjustmentDays)
+    }
     val prayerTimes = remember(city, method, madhab, dayKey) {
         runCatching { NativePrayerCalculator.forDate(city, method, madhab, currentTime) }.getOrDefault(emptyList())
     }
@@ -287,6 +299,8 @@ private fun AnyasNativeApp(
                             madhab = madhab,
                             prayerTimes = prayerTimes,
                             now = currentTime,
+                            dailyVerse = dailyQuranVerse,
+                            onOpenQuranSource = { showQuranSource = true },
                             onOpenPrayers = { page = NativePage.PRAYERS },
                             onOpenAzkar = { page = NativePage.AZKAR },
                             onOpenTasbeeh = { page = NativePage.TASBEEH }
@@ -327,6 +341,7 @@ private fun AnyasNativeApp(
                             prayerTimes = prayerTimes,
                             reminderSettings = reminderSettings,
                             notificationsAllowed = notificationsAllowed,
+                            hijriAdjustmentDays = hijriAdjustmentDays,
                             onMethodChange = { selected ->
                                 method = selected
                                 preferences.edit().putString("calculation_method", selected.name).apply()
@@ -336,7 +351,11 @@ private fun AnyasNativeApp(
                                 preferences.edit().putString("asr_madhab", selected.name).apply()
                             },
                             onReminderSettingsChange = { reminderSettings = it },
-                            onRequestNotificationPermission = requestNotificationPermission
+                            onRequestNotificationPermission = requestNotificationPermission,
+                            onHijriAdjustmentChange = { value ->
+                                hijriAdjustmentDays = value.coerceIn(-3, 3)
+                                preferences.edit().putInt("hijri_adjustment_days", hijriAdjustmentDays).apply()
+                            }
                         )
                     }
                 }
@@ -353,6 +372,24 @@ private fun AnyasNativeApp(
                 NativeCities.save(context, chosen)
                 showCityPicker = false
             }
+        )
+    }
+    if (showQuranSource) {
+        AlertDialog(
+            onDismissRequest = { showQuranSource = false },
+            title = { Text("مصدر النص القرآني") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("آيات اليوم من مشروع تنزيل (Tanzil)، بالنص العثماني دون تعديل.")
+                    Text(NativeDailyQuranContent.TANZIL_NOTICE, fontSize = 11.sp, lineHeight = 16.sp)
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { uriHandler.openUri(NativeDailyQuranContent.TANZIL_URL) }) {
+                    Text("فتح موقع Tanzil")
+                }
+            },
+            dismissButton = { TextButton(onClick = { showQuranSource = false }) { Text("إغلاق") } }
         )
     }
 }
@@ -381,6 +418,8 @@ private fun HomePage(
     madhab: NativeAsrMadhab,
     prayerTimes: List<NativePrayerTime>,
     now: Long,
+    dailyVerse: NativeDailyQuranVerse?,
+    onOpenQuranSource: () -> Unit,
     onOpenPrayers: () -> Unit,
     onOpenAzkar: () -> Unit,
     onOpenTasbeeh: () -> Unit
@@ -417,6 +456,24 @@ private fun HomePage(
                 prayerTimes.forEachIndexed { index, item ->
                     PrayerTimeRow(item)
                     if (index < prayerTimes.lastIndex) Spacer(Modifier.height(1.dp))
+                }
+            }
+        }
+
+        SectionTitle("آية اليوم", action = "المصدر والترخيص", onAction = onOpenQuranSource)
+        Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(22.dp)) {
+            Column(Modifier.fillMaxWidth().padding(18.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                if (dailyVerse == null) {
+                    Text("تعذر تحميل آية اليوم من المحتوى المحلي.", color = Muted, textAlign = TextAlign.Center)
+                } else {
+                    Text("﴿${dailyVerse.text}﴾", color = Ink, fontSize = 20.sp, lineHeight = 38.sp, textAlign = TextAlign.Center)
+                    Spacer(Modifier.height(10.dp))
+                    Text(
+                        "سورة ${dailyVerse.surahName} — آية ${dailyVerse.ayah} · اليوم ${dailyVerse.hijriDay} هجريًا",
+                        color = Green,
+                        fontSize = 13.sp,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }
@@ -575,10 +632,12 @@ private fun MorePage(
     prayerTimes: List<NativePrayerTime>,
     reminderSettings: NativeReminderSettings,
     notificationsAllowed: Boolean,
+    hijriAdjustmentDays: Int,
     onMethodChange: (NativeCalculationMethod) -> Unit,
     onMadhabChange: (NativeAsrMadhab) -> Unit,
     onReminderSettingsChange: (NativeReminderSettings) -> Unit,
-    onRequestNotificationPermission: () -> Unit
+    onRequestNotificationPermission: () -> Unit,
+    onHijriAdjustmentChange: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(18.dp),
@@ -595,6 +654,30 @@ private fun MorePage(
                 Text("مذهب صلاة العصر", color = DeepGreen, fontWeight = FontWeight.Bold)
                 NativeAsrMadhab.entries.forEach { option ->
                     SelectionRow(option.title, madhab == option, onClick = { onMadhabChange(option) })
+                }
+            }
+        }
+        Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(20.dp)) {
+            Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text("تصحيح التاريخ الهجري", color = DeepGreen, fontWeight = FontWeight.Bold)
+                Text("يؤثر على اختيار آية اليوم. النطاق من −3 إلى +3 أيام.", color = Muted, fontSize = 12.sp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextButton(
+                        enabled = hijriAdjustmentDays > -3,
+                        onClick = { onHijriAdjustmentChange(hijriAdjustmentDays - 1) }
+                    ) { Text("− يوم") }
+                    Text(
+                        if (hijriAdjustmentDays == 0) "بدون تعديل" else "${if (hijriAdjustmentDays > 0) "+" else ""}$hijriAdjustmentDays يوم",
+                        color = Ink
+                    )
+                    TextButton(
+                        enabled = hijriAdjustmentDays < 3,
+                        onClick = { onHijriAdjustmentChange(hijriAdjustmentDays + 1) }
+                    ) { Text("+ يوم") }
                 }
             }
         }
