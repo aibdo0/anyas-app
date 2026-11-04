@@ -22,6 +22,13 @@ object ReminderScheduler {
         try {
             val raw = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("settings", "{}") ?: "{}"
             val data = JSONObject(raw)
+            val refreshedPrayers = recalculatePrayerTimes(data)
+            if (refreshedPrayers != null) {
+                data.put("prayers", refreshedPrayers)
+                context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                    .edit().putString("settings", data.toString()).apply()
+                PrayerWidgetProvider.updateAll(context)
+            }
             val enabledSettings = data.optJSONObject("enabled")
             val prayers = data.optJSONObject("prayers")
             val schedules = data.optJSONObject("schedules")
@@ -110,6 +117,41 @@ object ReminderScheduler {
         } catch (_: Exception) {
             // Invalid or incomplete saved settings should not crash app startup or a receiver.
         }
+    }
+
+    private fun recalculatePrayerTimes(data: JSONObject): JSONObject? {
+        val latitude = data.optDouble("latitude", Double.NaN)
+        val longitude = data.optDouble("longitude", Double.NaN)
+        if (!latitude.isFinite() || latitude !in -90.0..90.0 || !longitude.isFinite() || longitude !in -180.0..180.0) return null
+
+        return runCatching {
+            val city = NativeCity(
+                data.optString("city", "مدينة محفوظة"),
+                data.optString("country", "مدينة محفوظة"),
+                latitude,
+                longitude
+            )
+            val method = NativeCalculationMethod.entries.firstOrNull {
+                it.name == data.optString("calculationMethod", "EGYPTIAN")
+            } ?: NativeCalculationMethod.EGYPTIAN
+            val madhab = NativeAsrMadhab.entries.firstOrNull {
+                it.name == data.optString("asrMadhab", "SHAFI")
+            } ?: NativeAsrMadhab.SHAFI
+            JSONObject().apply {
+                NativePrayerCalculator.forDate(city, method, madhab).forEach { prayer ->
+                    val key = when (prayer.name) {
+                        "الفجر" -> "Fajr"
+                        "الشروق" -> "Sunrise"
+                        "الظهر" -> "Dhuhr"
+                        "العصر" -> "Asr"
+                        "المغرب" -> "Maghrib"
+                        "العشاء" -> "Isha"
+                        else -> null
+                    }
+                    if (key != null) put(key, NativePrayerCalculator.formatTime(prayer.epochMillis))
+                }
+            }
+        }.getOrNull()
     }
 
     private fun addDaily(list: MutableList<Reminder>, enabled: JSONObject?, key: String, title: String, time: String, soundFile: String?) {

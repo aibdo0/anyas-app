@@ -45,6 +45,54 @@ check("native reminder preferences save and reschedule alarms", () => {
   assert.match(scheduler, /@JvmStatic\s+fun scheduleSaved/);
 });
 
+check("Room schema seeds all source-backed azkar and valid daily-wird references", () => {
+  const database = read("android/app/src/main/java/com/anyas/app/NativeWirdDatabase.kt");
+  const gradle = read("android/app/build.gradle");
+  const azkarSource = read("data/content/azkar-topics.js");
+  const first = azkarSource.indexOf("[");
+  const last = azkarSource.lastIndexOf("]");
+  assert.ok(first >= 0 && last > first, "azkar source array is missing");
+  const topics = JSON.parse(azkarSource.slice(first, last + 1));
+  const byNumber = new Map(topics.map(topic => [topic.number, topic]));
+  const definitions = [...database.matchAll(/SectionSeed\("([^\"]+)",\s*"[^\"]+",\s*(\d+),\s*(\(0\.\.\d+\)\.toList\(\)(?:\s*\+\s*\d+)?|listOf\([\d, ]+\)),\s*\d+\)/g)];
+
+  assert.match(gradle, /androidx\.room:room-runtime:2\.6\.1/);
+  assert.match(gradle, /androidx\.room:room-ktx:2\.6\.1/);
+  assert.match(gradle, /room\.schemaLocation/);
+  assert.match(database, /@Database\([\s\S]*?version = 1/);
+  assert.match(database, /exportSchema = true/);
+  assert.doesNotMatch(database, /fallbackToDestructiveMigration/);
+  assert.match(database, /wird_item_progress/);
+  assert.match(database, /topic_dhikr_progress/);
+  assert.match(database, /daily_dhikr_progress/);
+  assert.match(database, /daily_sunnah_progress/);
+  assert.match(database, /legacy_import_runs/);
+  assert.match(database, /legacy_import_raw/);
+  assert.equal(definitions.length, 4, "expected the four existing daily wird sections");
+
+  for (const [, id, rawTopicNumber, rawIndexes] of definitions) {
+    const topicNumber = Number(rawTopicNumber);
+    const topic = byNumber.get(topicNumber);
+    assert.ok(topic, `${id} points to missing topic ${topicNumber}`);
+    const indexes = rawIndexes.startsWith("listOf(")
+      ? [...rawIndexes.matchAll(/\d+/g)].map(match => Number(match[0]))
+      : [...Array(Number(rawIndexes.match(/\.\.(\d+)/)[1]) + 1).keys(), ...(rawIndexes.match(/\+\s*(\d+)/) ? [Number(rawIndexes.match(/\+\s*(\d+)/)[1])] : [])];
+    assert.equal(new Set(indexes).size, indexes.length, `${id} contains a duplicate source index`);
+    for (const itemIndex of indexes) {
+      assert.ok(topic.items[itemIndex], `${id} refers to missing item ${topicNumber}:${itemIndex}`);
+    }
+  }
+});
+
+check("saved reminder settings retain the inputs needed to recalculate prayer times", () => {
+  assert.match(nativeReminderSettings, /\.put\("latitude", city\.latitude\)/);
+  assert.match(nativeReminderSettings, /\.put\("longitude", city\.longitude\)/);
+  assert.match(nativeReminderSettings, /\.put\("calculationMethod", calculationMethod\.name\)/);
+  assert.match(nativeReminderSettings, /\.put\("asrMadhab", asrMadhab\.name\)/);
+  assert.match(scheduler, /recalculatePrayerTimes\(data\)/);
+  assert.match(scheduler, /NativePrayerCalculator\.forDate\(city, method, madhab\)/);
+});
+
 check("manual city selection persists and is read on startup", () => {
   assert.match(enhancements, /localStorage\.setItem\("anyas_manual_location", JSON\.stringify\(safeLocation\)\)/);
   assert.match(prayer, /JSON\.parse\(localStorage\.getItem\("anyas_manual_location"/);
@@ -206,7 +254,8 @@ check("Android reminders use one compact card with a remove-and-stop action", ()
   assert.match(receiver, /addAction\([^\n]+إزالة وإيقاف الصوت/);
   assert.match(receiver, /ReminderScheduler\.scheduleSaved\(context\)/);
   assert.match(player, /intent\?\.action == ACTION_DISMISS/);
-  assert.match(player, /if \(key == notificationKey\)[\s\S]*?releasePlayer\(\)[\s\S]*?stopForeground\(true\)/);
+  assert.match(player, /if \(key != notificationKey\) \{[\s\S]*?return/);
+  assert.match(player, /releasePlayer\(\)[\s\S]*?notificationRestored = true[\s\S]*?stopForeground\(true\)/);
 });
 
 check("notification inbox supports marking all items read", () => {
@@ -389,6 +438,26 @@ check("Android prayer widget shows the next prayer and refreshes", () => {
   assert.match(widget, /manager\.updateAppWidget/);
   assert.match(widget, /NativeMainActivity::class\.java/);
   assert.match(read("js/features/settings.js"), /city: document\.getElementById\("prayerHeroCity"\)/);
+});
+
+check("native home next prayer excludes sunrise", () => {
+  const activity = read("android/app/src/main/java/com/anyas/app/NativeMainActivity.kt");
+  assert.match(activity, /prayerTimes\.firstOrNull \{ it\.name != "الشروق" && it\.epochMillis > now \}/);
+});
+
+check("system date changes refresh saved prayer times and the widget", () => {
+  const manifest = read("android/app/src/main/AndroidManifest.xml");
+  const receiver = read("android/app/src/main/java/com/anyas/app/BootReceiver.kt");
+  assert.match(manifest, /android\.intent\.action\.DATE_CHANGED/);
+  assert.match(receiver, /ReminderScheduler\.scheduleSaved\(context\)/);
+  assert.match(receiver, /PrayerWidgetProvider\.updateAll\(context\)/);
+});
+
+check("dismissing another reminder keeps active playback alive", () => {
+  const service = read("android/app/src/main/java/com/anyas/app/ReminderPlayerService.kt");
+  assert.match(service, /private var latestStartId = 0/);
+  assert.match(service, /if \(key != notificationKey\) \{[\s\S]*?if \(notificationKey == null\) stopSelfResult\(startId\)[\s\S]*?return/);
+  assert.match(service, /stopSelfResult\(latestStartId\)/);
 });
 
 console.log(`Smoke tests passed: ${passed.length}`);

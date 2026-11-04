@@ -139,7 +139,9 @@ internal object NativeReminderCatalog {
         context: Context,
         city: NativeCity,
         prayerTimes: List<NativePrayerTime>,
-        settings: NativeReminderSettings
+        settings: NativeReminderSettings,
+        calculationMethod: NativeCalculationMethod,
+        asrMadhab: NativeAsrMadhab
     ) {
         try {
             val enabled = JSONObject()
@@ -161,8 +163,11 @@ internal object NativeReminderCatalog {
                 .put("enabled", enabled)
                 .put("prayers", prayers)
                 .put("city", city.name)
+                .put("country", city.country)
                 .put("latitude", city.latitude)
                 .put("longitude", city.longitude)
+                .put("calculationMethod", calculationMethod.name)
+                .put("asrMadhab", asrMadhab.name)
                 .put("schedules", schedules)
                 .put("morningVoice", settings.morningVoice)
                 .put("eveningVoice", settings.eveningVoice)
