@@ -6,6 +6,8 @@ import androidx.room.Database
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Room
@@ -186,11 +188,20 @@ data class WirdContentRow(
 
 @Dao
 interface NativeWirdDao {
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertTopics(topics: List<AzkarTopicEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertDhikrItems(items: List<DhikrItemEntity>)
+
     @Query("SELECT * FROM azkar_topics ORDER BY topicNumber")
     fun observeTopics(): Flow<List<AzkarTopicEntity>>
 
     @Query("SELECT * FROM dhikr_items WHERE topicNumber = :topicNumber ORDER BY itemIndex")
     fun observeTopicItems(topicNumber: Int): Flow<List<DhikrItemEntity>>
+
+    @Query("SELECT * FROM dhikr_items ORDER BY topicNumber, itemIndex")
+    suspend fun getAllDhikrItems(): List<DhikrItemEntity>
 
     @Query(
         """SELECT section_items.sectionId AS sectionId,
@@ -230,8 +241,17 @@ interface NativeWirdDao {
     @Query("SELECT * FROM topic_dhikr_progress WHERE localDate = :localDate")
     suspend fun getTopicProgressForDate(localDate: String): List<TopicDhikrProgressEntity>
 
+    @Query("SELECT * FROM topic_dhikr_progress WHERE localDate = :localDate AND topicNumber = :topicNumber")
+    fun observeTopicProgress(localDate: String, topicNumber: Int): Flow<List<TopicDhikrProgressEntity>>
+
+    @Query("SELECT * FROM topic_dhikr_progress WHERE localDate = :localDate AND topicNumber = :topicNumber AND itemIndex = :itemIndex LIMIT 1")
+    suspend fun getTopicProgress(localDate: String, topicNumber: Int, itemIndex: Int): TopicDhikrProgressEntity?
+
     @Upsert
     suspend fun saveTopicProgress(progress: TopicDhikrProgressEntity)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertTopicProgressIfAbsent(progress: List<TopicDhikrProgressEntity>): List<Long>
 
     @Query("SELECT * FROM daily_dhikr_progress WHERE hijriDateKey = :hijriDateKey")
     suspend fun getDailyDhikrProgress(hijriDateKey: String): List<DailyDhikrProgressEntity>

@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,6 +49,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -55,6 +57,7 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -67,9 +70,12 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.text.SimpleDateFormat
 
 class NativeMainActivity : ComponentActivity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
@@ -244,6 +250,7 @@ private fun AnyasNativeApp(
         val calendar = Calendar.getInstance().apply { timeInMillis = currentTime }
         "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.DAY_OF_YEAR)}"
     }
+    val localDate = remember(dayKey) { SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date(currentTime)) }
     val prayerTimes = remember(city, method, madhab, dayKey) {
         runCatching { NativePrayerCalculator.forDate(city, method, madhab, currentTime) }.getOrDefault(emptyList())
     }
@@ -307,7 +314,8 @@ private fun AnyasNativeApp(
                         NativePage.AZKAR -> AzkarPage(
                             selectedTopic = selectedTopic,
                             onSelectTopic = { selectedTopic = it },
-                            preferences = preferences
+                            preferences = preferences,
+                            localDate = localDate
                         )
                         NativePage.TASBEEH -> TasbeehPage(
                             count = tasbeehCount,
@@ -481,10 +489,31 @@ private fun PrayerTimeRow(item: NativePrayerTime) {
 private fun AzkarPage(
     selectedTopic: NativeAzkarTopic?,
     onSelectTopic: (NativeAzkarTopic?) -> Unit,
-    preferences: android.content.SharedPreferences
+    preferences: android.content.SharedPreferences,
+    localDate: String
 ) {
     val context = LocalContext.current
     val topics = remember { NativeAzkarRepository.read(context) }
+    val database = remember(context) { AniasDatabase.get(context) }
+    val progressRepository = remember(database) { NativeAzkarProgressRepository(database) }
+    val coroutineScope = rememberCoroutineScope()
+    var storageIssue by remember { mutableStateOf(false) }
+    var storageReady by remember { mutableStateOf(false) }
+    val progressFlow = remember(selectedTopic?.number, localDate, progressRepository) {
+        selectedTopic?.let { progressRepository.observeTopicProgress(localDate, it.number) }
+            ?: flowOf(emptyList())
+    }
+    val progressRows by progressFlow.collectAsState(initial = emptyList())
+    val progressByIndex = remember(progressRows) { progressRows.associateBy { it.itemIndex } }
+
+    LaunchedEffect(progressRepository, preferences, localDate) {
+        storageReady = false
+        val migrated = runCatching {
+            progressRepository.importLegacyProgress(preferences, localDate)
+        }.isSuccess
+        storageIssue = !migrated
+        storageReady = migrated
+    }
     if (selectedTopic == null) {
         Column(modifier = Modifier.fillMaxSize().padding(horizontal = 18.dp, vertical = 12.dp)) {
             Text("حصن المسلم", color = DeepGreen, fontSize = 24.sp, fontWeight = FontWeight.Bold)
@@ -514,10 +543,14 @@ private fun AzkarPage(
             TextButton(onClick = { onSelectTopic(null) }) { Text("‹  كل الأبواب") }
             Text(selectedTopic.title, color = DeepGreen, fontSize = 21.sp, fontWeight = FontWeight.Bold)
             Text(selectedTopic.description, color = Muted, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp, bottom = 8.dp))
+            if (storageIssue) {
+                Text("تعذر الوصول إلى سجل التقدم المحلي. أعد فتح الصفحة للمحاولة مجددًا.", color = Muted, fontSize = 12.sp)
+            } else if (!storageReady) {
+                Text("جارٍ تحميل سجل التقدم المحلي…", color = Muted, fontSize = 12.sp)
+            }
             LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp), contentPadding = PaddingValues(bottom = 16.dp)) {
-                items(selectedTopic.items) { item ->
-                    val key = "dhikr_${selectedTopic.number}_${item.id}"
-                    var progress by remember(selectedTopic.number, item.id) { mutableIntStateOf(preferences.getInt(key, 0)) }
+                itemsIndexed(selectedTopic.items) { index, item ->
+                    val progress = progressByIndex[index]?.count?.coerceIn(0, item.count) ?: 0
                     Card(colors = CardDefaults.cardColors(containerColor = Color.White), shape = RoundedCornerShape(18.dp)) {
                         Column(Modifier.fillMaxWidth().padding(16.dp)) {
                             Text(item.text, color = Ink, fontSize = 17.sp, lineHeight = 30.sp, textAlign = TextAlign.Start)
@@ -525,14 +558,27 @@ private fun AzkarPage(
                             Row(horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                                 Text("التكرار ${progress.coerceAtMost(item.count)} / ${item.count}", color = Muted, fontSize = 12.sp)
                                 Button(
+                                    enabled = storageReady && progress < item.count,
                                     onClick = {
                                         if (progress < item.count) {
-                                            progress += 1
-                                            preferences.edit().putInt(key, progress).apply()
+                                            coroutineScope.launch {
+                                                val saved = runCatching {
+                                                    progressRepository.increment(localDate, selectedTopic.number, index, item.count)
+                                                }.isSuccess
+                                                if (!saved) storageIssue = true
+                                            }
                                         }
                                     },
                                     colors = ButtonDefaults.buttonColors(containerColor = if (progress >= item.count) Gold else Green)
-                                ) { Text(if (progress >= item.count) "اكتمل" else "تم الذكر") }
+                                ) {
+                                    Text(
+                                        when {
+                                            !storageReady -> "جارٍ التحميل"
+                                            progress >= item.count -> "اكتمل"
+                                            else -> "تم الذكر"
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
