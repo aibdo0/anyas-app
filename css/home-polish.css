@@ -115,3 +115,15 @@ html[lang="en"] #page-home .next-prayer .countdown::before { content: "Remaining
 #page-home .daily-content.card > .content-block.expanded .ayah,
 #page-home .daily-content.card > .content-block.expanded .hadith-text,
 #page-home .daily-content.card > #dailyHadithBlock.expanded .hadith-text { display: block; -webkit-line-clamp: unset; overflow: visible; }
+
+/* الإعدادات: بطاقة «صوت يرافق يومك» كانت فاتحة وعنوانها غير مقروء في الداكن */
+:root[data-theme="dark"] #page-settings .audio-library-intro {
+  border-color: rgba(222,192,126,.22) !important;
+  background: linear-gradient(120deg, rgba(222,192,126,.14), var(--surface) 80%) !important;
+  box-shadow: none !important;
+}
+:root[data-theme="dark"] #page-settings .audio-library-intro-icon { background: rgba(255,255,255,.06) !important; color: #e3c98f; box-shadow: none; }
+:root[data-theme="dark"] #page-settings .audio-library-intro-copy small { color: #e3c98f; }
+:root[data-theme="dark"] #page-settings .audio-library-intro-copy strong { color: #fff; }
+:root[data-theme="dark"] #page-settings .audio-library-intro-copy span { color: rgba(255,255,255,.7); }
+#page-settings .audio-library-heading h2 { font-size: 20px !important; letter-spacing: 0; }
