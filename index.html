@@ -57,7 +57,7 @@
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/home-header.css?v=20261124-1">
-<link rel="stylesheet" href="css/home-polish.css?v=20261124-5">
+<link rel="stylesheet" href="css/home-polish.css?v=20261124-8">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -178,6 +178,11 @@
       <span class="daily-adhkar-badge" id="dailyAdhkarBadge">الصباح</span>
     </div>
     <p class="daily-adhkar-text" id="dailyAdhkarText">يُحدَّد الورد المناسب اعتمادًا على ساعة جهازك المحلية.</p>
+    <button class="home-continue-card" id="homeContinueCard" type="button" hidden>
+      <span class="home-continue-icon" aria-hidden="true">▶</span>
+      <span class="home-continue-copy"><strong data-continue-title>كمّل من وقفت</strong><small data-continue-meta></small></span>
+      <span class="home-continue-arrow" aria-hidden="true">‹</span>
+    </button>
     <div class="daily-adhkar-footer">
       <span class="daily-adhkar-hint" id="dailyAdhkarHint">يُحدّث تلقائيًا</span>
       <button class="daily-adhkar-button" id="openDailyAdhkarButton" type="button">افتح الأذكار</button>
@@ -191,22 +196,6 @@
     <p id="homeFridayText">تظهر هنا تذكيرات سورة الكهف وصلاة الجمعة والصلاة على النبي ﷺ.</p>
     <div class="friday-feature-meta" id="homeFridayMeta">من مغرب الخميس إلى نهاية يوم الجمعة</div>
     <button class="friday-feature-button" id="homeFridayAction" type="button">افتح مهام الجمعة</button>
-  </div>
-</section>
-
-<section class="section home-extras-section">
-  <button class="home-continue-card" id="homeContinueCard" type="button" hidden>
-    <span class="home-continue-icon" aria-hidden="true">▶</span>
-    <span class="home-continue-copy"><strong data-continue-title>كمّل من وقفت</strong><small data-continue-meta></small></span>
-    <span class="home-continue-arrow" aria-hidden="true">‹</span>
-  </button>
-  <div class="home-quick-tasbeeh" id="homeQuickTasbeeh">
-    <div class="home-quick-info">
-      <button class="home-quick-dhikr" type="button" data-q-dhikr aria-label="تغيير الذكر">سبحان الله</button>
-      <div class="home-quick-count"><strong data-q-count aria-live="polite">٠</strong><span data-q-goal>من ١٠٠</span></div>
-      <div class="home-quick-track" aria-hidden="true"><span data-q-bar></span></div>
-    </div>
-    <button class="home-quick-add" type="button" data-q-add aria-label="سبّح">+</button>
   </div>
 </section>
 
@@ -261,13 +250,16 @@
     <div class="card-title">آية اليوم</div>
     <div class="ayah" id="dailyAyahText">﴿ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ ﴾</div>
     <div class="reference" id="dailyAyahReference">سورة الرعد — 28</div>
+    <button class="daily-share-button" type="button" data-share-daily="ayah" aria-label="مشاركة آية اليوم كصورة">مشاركة كصورة</button>
   </div>
   <div class="content-block" id="dailyHadithBlock">
     <div class="card-title">حديث اليوم</div>
     <div class="hadith-text" id="dailyHadithText">إنما الأعمال بالنيات</div>
     <div class="reference" id="dailyHadithReference">متفق عليه</div>
+    <button class="daily-share-button" type="button" data-share-daily="hadith" aria-label="مشاركة حديث اليوم كصورة">مشاركة كصورة</button>
   </div>
 </div>
+<p class="prayer-share-status" id="homeShareStatus" aria-live="polite" hidden></p>
 </section>
 
 <section class="section">
@@ -2334,6 +2326,7 @@ type="button"
 <script src="js/app-enhancements.js?v=20261013-3"></script>
 <script src="js/daily-devotions.js?v=20261124-1"></script>
 <script src="js/home-extras.js?v=20261124-1"></script>
+<script src="js/share-image.js?v=20261124-1"></script>
 <script src="js/app.js?v=20261012-2"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script>

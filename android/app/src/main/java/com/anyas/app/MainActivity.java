@@ -23,7 +23,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import androidx.core.content.FileProvider;
 import androidx.webkit.WebViewAssetLoader;
+import android.util.Base64;
+import java.io.File;
+import java.io.FileOutputStream;
 import org.json.JSONObject;
 import java.util.Calendar;
 
@@ -198,6 +202,23 @@ public class MainActivity extends Activity {
     }
 
     public class NativeBridge {
+        // مشاركة صورة PNG (base64) عبر قائمة المشاركة في أندرويد.
+        @JavascriptInterface public void shareImage(String base64Png, String title) {
+            try {
+                byte[] bytes = Base64.decode(base64Png, Base64.DEFAULT);
+                File dir = new File(getCacheDir(), "shared");
+                if (!dir.exists() && !dir.mkdirs()) return;
+                File file = new File(dir, "anyas-share.png");
+                try (FileOutputStream out = new FileOutputStream(file)) { out.write(bytes); }
+                Uri uri = FileProvider.getUriForFile(MainActivity.this, getPackageName() + ".fileprovider", file);
+                Intent send = new Intent(Intent.ACTION_SEND);
+                send.setType("image/png");
+                send.putExtra(Intent.EXTRA_STREAM, uri);
+                send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                Intent chooser = Intent.createChooser(send, title == null ? "مشاركة" : title);
+                runOnUiThread(() -> startActivity(chooser));
+            } catch (Exception ignored) { /* فشل المشاركة لا يوقف التطبيق */ }
+        }
         @JavascriptInterface public String getNotificationHistory() {
             return NotificationHistory.getJson(MainActivity.this);
         }

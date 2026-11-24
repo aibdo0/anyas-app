@@ -42,6 +42,7 @@ const CORE_ASSETS = [
   "./js/daily-adhkar.js",
   "./js/home-expand.js",
   "./js/home-extras.js",
+  "./js/share-image.js",
   "./js/quiet-hours.js?v=20261014-1",
   "./js/friday.js?v=20261014-1",
   "./js/favorites.js",

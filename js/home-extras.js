@@ -1,4 +1,4 @@
-// الصفحة الرئيسية: خلفية البطاقة بحسب الوقت، «كمّل من وقفت»، وعدّاد تسبيح سريع.
+// الصفحة الرئيسية: خلفية البطاقة بحسب الوقت، و«كمّل من وقفت».
 (function () {
   "use strict";
   var root = document.documentElement;
@@ -40,26 +40,7 @@
       card.hidden = false;
       return;
     }
-    var t = window.anyasTasbeeh && window.anyasTasbeeh.current();
-    if (t && t.count > 0 && t.count < t.goal) {
-      card.dataset.target = "tasbeeh";
-      title.textContent = "كمّل التسبيح: " + t.label;
-      meta.textContent = num(t.count) + " من " + num(t.goal);
-      card.hidden = false;
-      return;
-    }
     card.hidden = true;
-  }
-
-  // 3) تسبيح سريع
-  function renderQuick() {
-    var box = document.getElementById("homeQuickTasbeeh");
-    var t = window.anyasTasbeeh && window.anyasTasbeeh.current();
-    if (!box || !t) return;
-    box.querySelector("[data-q-dhikr]").textContent = t.label;
-    box.querySelector("[data-q-count]").textContent = num(t.count);
-    box.querySelector("[data-q-goal]").textContent = "من " + num(t.goal);
-    box.querySelector("[data-q-bar]").style.width = Math.min(100, Math.round(t.count / t.goal * 100)) + "%";
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -74,19 +55,8 @@
       else if (target === "tasbeeh" && window.goToPage) window.goToPage("tasbeeh");
     });
 
-    var box = document.getElementById("homeQuickTasbeeh");
-    if (box) {
-      box.querySelector("[data-q-add]").addEventListener("click", function () {
-        if (window.anyasTasbeeh) window.anyasTasbeeh.increment();
-        try { if (navigator.vibrate && localStorage.getItem("anyas_vibration") === "true") navigator.vibrate(25); } catch (e) {}
-      });
-      box.querySelector("[data-q-dhikr]").addEventListener("click", function () {
-        if (window.anyasTasbeeh) window.anyasTasbeeh.cycle();
-      });
-    }
-    document.addEventListener("anyas:tasbeeh", function () { renderQuick(); renderContinue(); });
     document.addEventListener("anyas:wird-progress", renderContinue);
     // تأخير بسيط حتى تنتهي بقية السكربتات من التهيئة
-    setTimeout(function () { renderQuick(); renderContinue(); }, 0);
+    setTimeout(function () { renderContinue(); }, 0);
   });
 })();
