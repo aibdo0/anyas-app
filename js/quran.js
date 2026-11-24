@@ -101,7 +101,7 @@
     updateResume();
     renderList($("quranSearch").value || "");
   }
-  var SHEETS = ["quranNotesSheet", "quranListView", "quranSettings", "quranSearchSheet", "quranVerseSheet", "quranFavSheet"];
+  var SHEETS = ["quranSavedSheet", "quranNotesSheet", "quranListView", "quranSettings", "quranSearchSheet", "quranVerseSheet", "quranFavSheet"];
   function closeSheet() {
     SHEETS.forEach(function (id) { if ($(id)) $(id).hidden = true; });
     $("quranBackdrop").hidden = true;
@@ -265,6 +265,23 @@
       return '<button type="button" class="quran-find-row" data-fs="' + p[0] + '" data-fa="' + p[1] + '"><span class="quran-find-ref">' + refLabel(k) + '</span><span class="quran-find-text">' + plainVerse(Number(p[0]), Number(p[1])) + "</span></button>";
     }).join("") : '<p class="quran-empty">لا توجد آيات مفضلة بعد. اضغط على آية ثم النجمة.</p>';
   }
+  function renderSaved(which) {
+    document.querySelectorAll("#quranSavedSeg button").forEach(function (b) { b.classList.toggle("is-on", b.dataset.sv === which); });
+    var box = $("quranSavedList"), PG = window.ANIAS_QURAN_PAGES, Q = window.ANIAS_QURAN;
+    if (which === "fav") {
+      var favs = getFavs();
+      box.innerHTML = favs.length ? favs.map(function (k) {
+        var p = k.split(":");
+        return '<button type="button" class="quran-find-row" data-fs="' + p[0] + '" data-fa="' + p[1] + '"><span class="quran-find-ref">' + refLabel(k) + '</span><span class="quran-find-text">' + plainVerse(Number(p[0]), Number(p[1])) + "</span></button>";
+      }).join("") : '<p class="quran-empty">لا توجد آيات مفضلة بعد. اضغط على آية ثم النجمة.</p>';
+    } else {
+      var m = getMark();
+      if (m) {
+        var st = PG.pages[m - 1];
+        box.innerHTML = '<button type="button" class="quran-find-row" data-fs="' + st[0] + '" data-fa="' + st[1] + '"><span class="quran-find-ref">فاصل الصفحة</span><span class="quran-find-text">صفحة ' + ar(m) + " · سورة " + Q.names[st[0] - 1] + "</span></button>";
+      } else box.innerHTML = '<p class="quran-empty">لا يوجد فاصل صفحة بعد. اضغط على العلامة في الشريط لحفظ مكانك.</p>';
+    }
+  }
   function goVerse(s1, a1) {
     openPage(pageOfAyah(s1, a1));
     sel = { s: s1, a: a1 };
@@ -378,6 +395,13 @@
       syncToolbar();
     });
     $("quranTbGear").addEventListener("click", openSettings);
+    $("quranTbIndex").addEventListener("click", function () { openSheet(); setSeg("surah"); });
+    $("quranTbSaved").addEventListener("click", function () { renderSaved("mark"); showOnly("quranSavedSheet"); });
+    $("quranSavedGrip").addEventListener("click", closeSheet);
+    $("quranSavedSeg").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-sv]");
+      if (b) renderSaved(b.dataset.sv);
+    });
     $("quranTbSearch").addEventListener("click", function () { showOnly("quranSearchSheet"); $("quranFind").focus(); });
     $("quranTbMark").addEventListener("click", function () {
       try { if (getMark() === cur) localStorage.removeItem(KS.mark); else localStorage.setItem(KS.mark, String(cur)); } catch (e) {}
