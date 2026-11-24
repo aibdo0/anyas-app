@@ -88,3 +88,32 @@
 #page-quran.quran-plain .quran-end::before { content: "﴿"; }
 #page-quran.quran-plain .quran-end::after { content: "﴾"; }
 :root[data-theme="dark"] #page-quran.quran-plain .quran-page { background: transparent; box-shadow: none; border-color: transparent; }
+/* شريط الأدوات */
+.quran-toolbar { position: fixed; z-index: 1050; inset-inline: 12px; bottom: calc(104px + env(safe-area-inset-bottom)); max-width: 640px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 6px 10px; border-radius: 22px; background: rgba(247,241,220,.97); border: 1px solid #d8c9a0; box-shadow: 0 8px 24px rgba(40,30,10,.25); color: #3b2d17; }
+.quran-toolbar[hidden] { display: none; }
+.quran-toolbar button { width: 42px; height: 42px; display: grid; place-items: center; border: 0; border-radius: 14px; background: none; color: #8a6a3f; cursor: pointer; padding: 0; }
+.quran-toolbar svg, .quran-verse-head svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.quran-toolbar button.is-on svg, .quran-verse-head button.is-on svg { fill: currentColor; }
+.quran-tb-page { flex: 1; text-align: center; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+:root[data-theme="dark"] .quran-toolbar { background: rgba(32,34,36,.97); border-color: #44474a; color: #eadfca; box-shadow: 0 8px 24px rgba(0,0,0,.5); }
+:root[data-theme="dark"] .quran-toolbar button { color: #d1a95f; }
+/* تظليل الآية */
+.quran-ayah { cursor: pointer; border-radius: 6px; -webkit-tap-highlight-color: transparent; }
+.quran-ayah.quran-sel { background: rgba(255, 214, 51, .55); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+:root[data-theme="dark"] .quran-ayah.quran-sel { background: rgba(214, 170, 40, .45); }
+/* ورقة الآية والبحث */
+.quran-versesheet { height: auto !important; max-height: 60vh; padding-bottom: calc(110px + env(safe-area-inset-bottom)); overflow-y: auto; }
+.quran-verse-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.quran-verse-head h2 { flex: 1; margin: 0; text-align: center; font-size: 18px; color: #2f8f86; }
+.quran-verse-head button { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid #d8c9a0; border-radius: 14px; background: none; color: #8a6a3f; cursor: pointer; padding: 0; }
+.quran-verse-text { margin: 14px 0 8px; font-family: 'Amiri', serif; font-size: 24px; line-height: 2.1; text-align: center; }
+.quran-verse-note { margin: 4px 0 0; text-align: center; font-size: 13px; opacity: .65; }
+.quran-find-count { margin: 2px 0 6px; text-align: center; font-size: 13px; opacity: .7; }
+.quran-searchsheet, .quran-favsheet { height: 78vh !important; }
+.quran-find-row { display: block; width: 100%; padding: 12px 4px; border: 0; border-bottom: 1px solid #d8c9a0; background: none; text-align: right; color: inherit; font: inherit; cursor: pointer; }
+.quran-find-ref { display: block; font-size: 13px; color: #8a6a3f; margin-bottom: 4px; }
+.quran-find-text { display: block; font-family: 'Amiri', serif; font-size: 20px; line-height: 1.9; }
+.quran-searchsheet .quran-list, .quran-favsheet .quran-list { flex: 1; overflow-y: auto; }
+:root[data-theme="dark"] .quran-find-row { border-bottom-color: #44474a; }
+:root[data-theme="dark"] .quran-find-ref, :root[data-theme="dark"] .quran-verse-head button { color: #d1a95f; border-color: #44474a; }
+:root[data-theme="dark"] .quran-verse-head h2 { color: #3fa59b; }

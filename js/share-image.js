@@ -133,7 +133,35 @@
     }
   }
 
-  window.anyasShareImage = { render: render, share: share };
+  async function shareCustom(text, ref, notify) {
+    var tell = notify || function () {};
+    if (!String(text || "").trim()) return;
+    tell("جارٍ تجهيز الصورة…");
+    try {
+      var canvas = await render("ayah", text, ref);
+      if (window.AnyasAndroid && typeof window.AnyasAndroid.shareImage === "function") {
+        window.AnyasAndroid.shareImage(toBase64(canvas), ref || "آية");
+        tell("");
+        return;
+      }
+      var blob = await toBlob(canvas);
+      var file = new File([blob], "anyas-ayah.png", { type: "image/png" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: ref || "آية" });
+        tell("");
+      } else {
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob); a.download = "anyas-ayah.png";
+        document.body.appendChild(a); a.click(); a.remove();
+        tell("تم حفظ الصورة.");
+      }
+    } catch (e) {
+      if (e && e.name === "AbortError") { tell(""); return; }
+      tell("تعذرت مشاركة الصورة. حاول مرة أخرى.");
+    }
+  }
+
+  window.anyasShareImage = { render: render, share: share, shareCustom: shareCustom };
 
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("[data-share-daily]").forEach(function (btn) {

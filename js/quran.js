@@ -10,7 +10,7 @@
     return String(n).replace(/\d/g, function (d) { return "٠١٢٣٤٥٦٧٨٩"[d]; });
   }
   function norm(t) {
-    return String(t).replace(/[\u064B-\u065F\u0670\u0640]/g, "").replace(/[أإآٱ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي");
+    return String(t).replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g, "").replace(/[أإآٱ]/g, "ا").replace(/ة/g, "ه").replace(/[ىئ]/g, "ي").replace(/ؤ/g, "و").replace(/\s+/g, " ").trim();
   }
   function load() {
     if (window.ANIAS_QURAN && window.ANIAS_QURAN_PAGES) return Promise.resolve(window.ANIAS_QURAN);
@@ -67,15 +67,107 @@
   }
 
   function openSheet() {
-    $("quranListView").hidden = false;
-    $("quranBackdrop").hidden = false;
+    showOnly("quranListView");
     updateResume();
     renderList($("quranSearch").value || "");
   }
+  var SHEETS = ["quranListView", "quranSettings", "quranSearchSheet", "quranVerseSheet", "quranFavSheet"];
   function closeSheet() {
-    $("quranListView").hidden = true;
-    $("quranSettings").hidden = true;
+    SHEETS.forEach(function (id) { if ($(id)) $(id).hidden = true; });
     $("quranBackdrop").hidden = true;
+    clearSel();
+  }
+  function showOnly(id) {
+    SHEETS.forEach(function (x) { $(x).hidden = x !== id; });
+    $("quranBackdrop").hidden = false;
+  }
+  var KS = { mark: "anyas_quran_bookmark", fav: "anyas_quran_favs" };
+  function getMark() { try { return Number(localStorage.getItem(KS.mark)) || 0; } catch (e) { return 0; } }
+  function getFavs() { try { return JSON.parse(localStorage.getItem(KS.fav) || "[]"); } catch (e) { return []; } }
+  function setFavs(v) { try { localStorage.setItem(KS.fav, JSON.stringify(v)); } catch (e) {} }
+  var sel = null;
+  function clearSel() {
+    sel = null;
+    document.querySelectorAll(".quran-sel").forEach(function (e) { e.classList.remove("quran-sel"); });
+  }
+  function applySel() {
+    document.querySelectorAll(".quran-sel").forEach(function (e) { e.classList.remove("quran-sel"); });
+    if (!sel) return;
+    var el = document.querySelector('.quran-ayah[data-s="' + sel.s + '"][data-a="' + sel.a + '"]');
+    if (el) el.classList.add("quran-sel");
+  }
+  function pageOfAyah(s1, a1) {
+    var pg = 1;
+    window.ANIAS_QURAN_PAGES.pages.forEach(function (p, k) { if (p[0] < s1 || (p[0] === s1 && p[1] <= a1)) pg = k + 1; });
+    return pg;
+  }
+  function syncToolbar() {
+    var Q = window.ANIAS_QURAN, PG = window.ANIAS_QURAN_PAGES;
+    if (!Q || !PG || !cur) return;
+    var st = PG.pages[cur - 1];
+    $("quranTbPage").textContent = "صفحة " + ar(cur) + " · " + Q.names[st[0] - 1];
+    var on = getMark() === cur;
+    $("quranTbMark").setAttribute("aria-pressed", on ? "true" : "false");
+    $("quranTbMark").classList.toggle("is-on", on);
+  }
+  function selectVerse(s1, a1) {
+    var Q = window.ANIAS_QURAN;
+    sel = { s: s1, a: a1 };
+    applySel();
+    var t = Q.ayahs[s1 - 1][a1 - 1];
+    var B = Q.ayahs[0][0];
+    if (a1 === 1 && s1 !== 1 && s1 !== 9 && t.indexOf(B + " ") === 0) t = t.slice(B.length + 1);
+    $("quranVerseRef").textContent = "سورة " + Q.names[s1 - 1] + " · آية " + ar(a1);
+    $("quranVerseText").textContent = t;
+    $("quranVerseNote").textContent = "التفسير قيد التجهيز وسيُضاف في إصدار قادم.";
+    var fav = getFavs().indexOf(s1 + ":" + a1) >= 0;
+    $("quranFav").setAttribute("aria-pressed", fav ? "true" : "false");
+    $("quranFav").classList.toggle("is-on", fav);
+    SHEETS.forEach(function (x) { $(x).hidden = x !== "quranVerseSheet"; });
+    $("quranBackdrop").hidden = true;
+    $("quranVerseSheet").hidden = false;
+    var el = document.querySelector(".quran-sel");
+    if (el) {
+      var r = el.getBoundingClientRect();
+      if (r.bottom > window.innerHeight * 0.5 || r.top < 80) window.scrollBy({ top: r.top - window.innerHeight * 0.18, behavior: "auto" });
+    }
+  }
+  function refLabel(key) {
+    var Q = window.ANIAS_QURAN, p = key.split(":");
+    return "سورة " + Q.names[p[0] - 1] + " · آية " + ar(p[1]);
+  }
+  function plainVerse(s1, a1) {
+    var Q = window.ANIAS_QURAN, t = Q.ayahs[s1 - 1][a1 - 1], B = Q.ayahs[0][0];
+    if (a1 === 1 && s1 !== 1 && s1 !== 9 && t.indexOf(B + " ") === 0) t = t.slice(B.length + 1);
+    return t;
+  }
+  var normCache = null;
+  function doFind(q) {
+    var Q = window.ANIAS_QURAN, out = $("quranFindList"), term = norm(q);
+    if (!normCache) normCache = Q.ayahs.map(function (arr, i) { return arr.map(function (t, k) { return norm(i !== 0 && i !== 8 && k === 0 ? t.replace(Q.ayahs[0][0], "") : t); }); });
+    if (term.length < 2) { out.innerHTML = ""; $("quranFindCount").textContent = term ? "اكتب حرفين على الأقل." : ""; return; }
+    var hits = [], total = 0;
+    for (var i = 0; i < 114; i++) for (var k = 0; k < normCache[i].length; k++) {
+      if (normCache[i][k].indexOf(term) >= 0) { total++; if (hits.length < 80) hits.push([i + 1, k + 1]); }
+    }
+    $("quranFindCount").textContent = total ? ("النتائج: " + ar(total) + (total > 80 ? " (أول ٨٠ نتيجة)" : "")) : "لا توجد نتائج.";
+    out.innerHTML = hits.map(function (h) {
+      return '<button type="button" class="quran-find-row" data-fs="' + h[0] + '" data-fa="' + h[1] + '"><span class="quran-find-ref">' + refLabel(h[0] + ":" + h[1]) + '</span><span class="quran-find-text">' + plainVerse(h[0], h[1]) + "</span></button>";
+    }).join("");
+  }
+  function renderFavs() {
+    var favs = getFavs();
+    $("quranFavList").innerHTML = favs.length ? favs.map(function (k) {
+      var p = k.split(":");
+      return '<button type="button" class="quran-find-row" data-fs="' + p[0] + '" data-fa="' + p[1] + '"><span class="quran-find-ref">' + refLabel(k) + '</span><span class="quran-find-text">' + plainVerse(Number(p[0]), Number(p[1])) + "</span></button>";
+    }).join("") : '<p class="quran-empty">لا توجد آيات مفضلة بعد. اضغط على آية ثم النجمة.</p>';
+  }
+  function goVerse(s1, a1) {
+    openPage(pageOfAyah(s1, a1));
+    sel = { s: s1, a: a1 };
+    applySel();
+    var el = document.querySelector(".quran-sel");
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: "center" });
   }
   var ORN = "anyas_quran_ornaments";
   function ornOn() {
@@ -87,9 +179,7 @@
     $("quranOrnToggle").setAttribute("aria-checked", on ? "true" : "false");
   }
   function openSettings() {
-    $("quranListView").hidden = true;
-    $("quranSettings").hidden = false;
-    $("quranBackdrop").hidden = false;
+    showOnly("quranSettings");
     applyOrn();
   }
 
@@ -102,6 +192,14 @@
       b.textContent = "آخر قراءة: صفحة " + ar(pg) + " · سورة " + Q.names[first[0] - 1];
       b.dataset.page = pg;
     } else b.hidden = true;
+    var m = getMark(), mr = $("quranMarkRow");
+    if (m && window.ANIAS_QURAN_PAGES) {
+      mr.hidden = false; mr.dataset.page = m;
+      mr.textContent = "علامتك: صفحة " + ar(m) + " · سورة " + Q.names[window.ANIAS_QURAN_PAGES.pages[m - 1][0] - 1];
+    } else mr.hidden = true;
+    var fr = $("quranFavRow"), fc = getFavs().length;
+    fr.hidden = !fc;
+    fr.textContent = "الآيات المفضلة (" + ar(fc) + ")";
   }
 
   function juzOf(s1, a1) {
@@ -128,7 +226,7 @@
       for (; a <= n && (s < en[0] || a < en[1]); a++) {
         var t = Q.ayahs[s - 1][a - 1];
         if (a === 1 && s !== 1 && s !== 9 && t.indexOf(BISM + " ") === 0) t = t.slice(BISM.length + 1);
-        txt += '<span class="quran-ayah">' + t + ' <span class="quran-end">' + ar(a) + "</span></span> ";
+        txt += '<span class="quran-ayah" data-s="' + s + '" data-a="' + a + '">' + t + ' <span class="quran-end">' + ar(a) + "</span></span> ";
       }
       body += '<p class="quran-text">' + txt + "</p>";
       if (a > n) { s++; a = 1; } else break;
@@ -142,6 +240,8 @@
     $("quranPrev").hidden = pg === 1;
     $("quranNext").hidden = pg === 604;
     setLast({ p: pg });
+    applySel();
+    syncToolbar();
     if (!keepScroll) window.scrollTo(0, 0);
   }
 
@@ -159,8 +259,42 @@
         });
       });
     });
-    ["quranBackdrop", "quranListView", "quranSettings"].forEach(function (id) { document.body.appendChild($(id)); });
-    document.querySelectorAll(".nav-item").forEach(function (n) { n.addEventListener("click", closeSheet); });
+    ["quranBackdrop", "quranToolbar"].concat(SHEETS).forEach(function (id) { document.body.appendChild($(id)); });
+    document.querySelectorAll(".nav-item").forEach(function (n) { n.addEventListener("click", function () { closeSheet(); $("quranToolbar").hidden = true; }); });
+    $("quranReader").addEventListener("click", function (e) {
+      var v = e.target.closest(".quran-ayah");
+      if (v) { selectVerse(Number(v.dataset.s), Number(v.dataset.a)); return; }
+      var tb = $("quranToolbar");
+      tb.hidden = !tb.hidden;
+      syncToolbar();
+    });
+    $("quranTbGear").addEventListener("click", openSettings);
+    $("quranTbSearch").addEventListener("click", function () { showOnly("quranSearchSheet"); $("quranFind").focus(); });
+    $("quranTbMark").addEventListener("click", function () {
+      try { if (getMark() === cur) localStorage.removeItem(KS.mark); else localStorage.setItem(KS.mark, String(cur)); } catch (e) {}
+      syncToolbar();
+    });
+    $("quranFind").addEventListener("input", function (e) { doFind(e.target.value); });
+    $("quranMarkRow").addEventListener("click", function () { openPage(Number($("quranMarkRow").dataset.page)); });
+    $("quranFavRow").addEventListener("click", function () { renderFavs(); showOnly("quranFavSheet"); });
+    ["quranSearchGrip", "quranVerseGrip", "quranFavGrip"].forEach(function (id) { $(id).addEventListener("click", closeSheet); });
+    document.addEventListener("click", function (e) {
+      var r = e.target.closest(".quran-find-row");
+      if (r) goVerse(Number(r.dataset.fs), Number(r.dataset.fa));
+    });
+    $("quranFav").addEventListener("click", function () {
+      if (!sel) return;
+      var k = sel.s + ":" + sel.a, f = getFavs(), i = f.indexOf(k);
+      if (i >= 0) f.splice(i, 1); else f.push(k);
+      setFavs(f);
+      var on = i < 0;
+      $("quranFav").setAttribute("aria-pressed", on ? "true" : "false");
+      $("quranFav").classList.toggle("is-on", on);
+    });
+    $("quranShare").addEventListener("click", function () {
+      if (!sel || !window.anyasShareImage) return;
+      window.anyasShareImage.shareCustom(plainVerse(sel.s, sel.a), refLabel(sel.s + ":" + sel.a), function (m) { $("quranVerseNote").textContent = m || "التفسير قيد التجهيز وسيُضاف في إصدار قادم."; });
+    });
     applyOrn();
     $("quranGear").addEventListener("click", openSettings);
     $("quranSetGrip").addEventListener("click", closeSheet);

@@ -59,7 +59,7 @@
 <link rel="stylesheet" href="css/app-design-system.css?v=20261013-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/welcome.css?v=20261124-2">
-<link rel="stylesheet" href="css/quran.css?v=20261124-8">
+<link rel="stylesheet" href="css/quran.css?v=20261124-9">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/home-header.css?v=20261124-1">
 <link rel="stylesheet" href="css/home-polish.css?v=20261124-9">
@@ -2037,6 +2037,30 @@ data-audio="fajrAudio"
   </section>
   <p class="quran-credit">نص المصحف وترقيم الصفحات من <a href="https://tanzil.net/" target="_blank" rel="noopener">مشروع تنزيل (Tanzil)</a>، بدون تغيير.</p>
   <div class="quran-backdrop" id="quranBackdrop" hidden></div>
+  <div class="quran-toolbar" id="quranToolbar" hidden>
+    <button type="button" id="quranTbGear" aria-label="إعدادات القرآن"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button>
+    <button type="button" id="quranTbSearch" aria-label="بحث في القرآن"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>
+    <span class="quran-tb-page" id="quranTbPage"></span>
+    <button type="button" id="quranTbMark" aria-label="حفظ المكان" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-4-6 4V5a1 1 0 0 1 1-1Z"/></svg></button>
+  </div>
+  <section class="quran-sheet quran-searchsheet" id="quranSearchSheet" role="dialog" aria-label="بحث في القرآن" hidden>
+    <div class="quran-grip" id="quranSearchGrip" aria-hidden="true"></div>
+    <h2 class="quran-sheet-title">بحث في القرآن</h2>
+    <input type="search" class="quran-search" id="quranFind" placeholder="كلمة أو جملة (بدون تشكيل)" aria-label="بحث في نص القرآن" autocomplete="off">
+    <p class="quran-find-count" id="quranFindCount"></p>
+    <div class="quran-list" id="quranFindList"></div>
+  </section>
+  <section class="quran-sheet quran-versesheet" id="quranVerseSheet" role="dialog" aria-label="الآية" hidden>
+    <div class="quran-grip" id="quranVerseGrip" aria-hidden="true"></div>
+    <div class="quran-verse-head"><button type="button" id="quranFav" aria-label="إضافة إلى المفضلة" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="m12 3 2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7Z"/></svg></button><h2 id="quranVerseRef"></h2><button type="button" id="quranShare" aria-label="مشاركة الآية كصورة"><svg viewBox="0 0 24 24"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></button></div>
+    <p class="quran-verse-text" id="quranVerseText"></p>
+    <p class="quran-verse-note" id="quranVerseNote"></p>
+  </section>
+  <section class="quran-sheet quran-favsheet" id="quranFavSheet" role="dialog" aria-label="الآيات المفضلة" hidden>
+    <div class="quran-grip" id="quranFavGrip" aria-hidden="true"></div>
+    <h2 class="quran-sheet-title">الآيات المفضلة</h2>
+    <div class="quran-list" id="quranFavList"></div>
+  </section>
   <section class="quran-sheet quran-settings" id="quranSettings" role="dialog" aria-label="إعدادات القرآن" hidden>
     <div class="quran-grip" id="quranSetGrip" aria-hidden="true"></div>
     <h2 class="quran-sheet-title">إعدادات القرآن</h2>
@@ -2050,6 +2074,8 @@ data-audio="fajrAudio"
     <h2 class="quran-sheet-title">فهرس السور</h2>
     <input type="search" class="quran-search" id="quranSearch" placeholder="ابحث باسم السورة أو رقمها" aria-label="بحث عن سورة" autocomplete="off">
     <button type="button" class="quran-resume" id="quranResume" aria-label="كمّل القراءة" hidden></button>
+    <button type="button" class="quran-resume" id="quranMarkRow" aria-label="العلامة المحفوظة" hidden></button>
+    <button type="button" class="quran-resume" id="quranFavRow" aria-label="الآيات المفضلة" hidden></button>
     <div class="quran-list" id="quranList"></div>
   </section>
 </main>
@@ -2380,8 +2406,8 @@ type="button"
 <script src="js/app-enhancements.js?v=20261013-3"></script>
 <script src="js/daily-devotions.js?v=20261124-1"></script>
 <script src="js/home-extras.js?v=20261124-1"></script>
-<script src="js/share-image.js?v=20261124-1"></script>
-<script src="js/quran.js?v=20261124-8"></script>
+<script src="js/share-image.js?v=20261124-2"></script>
+<script src="js/quran.js?v=20261124-9"></script>
 <script src="js/app.js?v=20261124-5"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script>
