@@ -257,13 +257,15 @@ function openAzkarTopic(number, focusIndex = null, options = null) {
       || `${topic.number}. ${topic.title || "باب الأذكار"}`;
   }
 
+  window.__zikrIdx = 0;
+  if (Number.isInteger(focusIndex)) {
+    const ix = options?.itemIndexes ? options.itemIndexes.indexOf(focusIndex) : focusIndex;
+    window.__zikrIdx = Math.max(ix, 0);
+  }
   renderAzkarTopic(topic.number, options?.itemIndexes || null, options?.title || null);
 
   if (Number.isInteger(focusIndex)) {
-    requestAnimationFrame(() => {
-      document.querySelector(`[data-zikr-index="${focusIndex}"]`)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    // التمرير الأفقي إلى الذكر يتم داخل setupZikrPager
   }
 
 }
@@ -379,7 +381,7 @@ function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
     .map((item, sourceIndex) => ({ item, sourceIndex }))
     .filter(entry => !itemIndexes || itemIndexes.includes(entry.sourceIndex));
 
-  items.forEach(({ item: zikr, sourceIndex }) => {
+  items.forEach(({ item: zikr, sourceIndex }, pos) => {
 
     const count =
       Number(zikr.count) || 1;
@@ -496,6 +498,7 @@ function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
             navigator.vibrate(30);
           }
 
+          window.__zikrIdx = newProgress >= count ? Math.min(pos + 1, items.length - 1) : pos;
           renderAzkarTopic(number, itemIndexes, titleOverride);
 
         }
@@ -506,6 +509,8 @@ function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
     list.appendChild(card);
 
   });
+
+  setupZikrPager(list, items.length);
 
   if (itemIndexes) {
     document.getElementById("azkarTopicNavigation")?.replaceChildren();
@@ -716,3 +721,49 @@ document.addEventListener(
   window.addEventListener("pageshow", update);
   update();
 })();
+
+
+// عرض الأذكار ذكرًا ذكرًا: يمرَّر أفقيًا بالإصبع.
+function setupZikrPager(list, total) {
+  let bar = document.getElementById("azkarPager");
+  if (!bar) {
+    bar = document.createElement("div");
+    bar.id = "azkarPager";
+    bar.className = "azkar-pager";
+    bar.innerHTML = '<button type="button" class="azkar-pager-btn" data-dir="-1" aria-label="الذكر السابق">›</button><span class="azkar-pager-pos" aria-live="polite"></span><button type="button" class="azkar-pager-btn" data-dir="1" aria-label="الذكر التالي">‹</button>';
+    list.parentNode.insertBefore(bar, list);
+    bar.addEventListener("click", e => {
+      const b = e.target.closest(".azkar-pager-btn");
+      if (!b) return;
+      const n = Math.max(0, Math.min((list.children.length || 1) - 1, (window.__zikrIdx || 0) + Number(b.dataset.dir)));
+      goZikr(list, n, true);
+    });
+    list.addEventListener("scroll", () => {
+      const w = list.clientWidth || 1;
+      const n = Math.round(Math.abs(list.scrollLeft) / (w + 12));
+      if (n !== window.__zikrIdx && n < list.children.length) { window.__zikrIdx = n; paintPager(list); }
+    }, { passive: true });
+  }
+  list.classList.add("azkar-pager-list");
+  bar.hidden = total < 2;
+  const n = Math.min(window.__zikrIdx || 0, Math.max(total - 1, 0));
+  window.__zikrIdx = n;
+  goZikr(list, n, false);
+}
+
+function goZikr(list, n, smooth) {
+  window.__zikrIdx = n;
+  const card = list.children[n];
+  if (card) {
+    const w = list.clientWidth || 0;
+    list.scrollTo({ left: -(n * (w + 12)), behavior: smooth ? "smooth" : "auto" });
+  }
+  paintPager(list);
+}
+
+function paintPager(list) {
+  const pos = document.querySelector("#azkarPager .azkar-pager-pos");
+  if (!pos) return;
+  const toAr = v => String(v).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+  pos.textContent = `${toAr((window.__zikrIdx || 0) + 1)} من ${toAr(list.children.length)}`;
+}

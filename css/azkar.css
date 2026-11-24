@@ -265,3 +265,11 @@
 
 .azkar-priority-heading[hidden], .azkar-favorites[hidden] { display: none; }
 .azkar-priority-section.no-favs:has(#azkarFridayCard[hidden]) { display: none; }
+
+#azkarList.azkar-pager-list { display: flex !important; flex-direction: row; gap: 12px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 0 !important; background: none !important; border: 0 !important; box-shadow: none !important; align-items: flex-start; overscroll-behavior-x: contain; }
+#azkarList.azkar-pager-list::-webkit-scrollbar { display: none; }
+#azkarList.azkar-pager-list > .zikr-card { flex: 0 0 100%; min-width: 100%; box-sizing: border-box; scroll-snap-align: start; scroll-snap-stop: always; border: 1px solid var(--line, rgba(160,130,90,.35)) !important; border-radius: 20px; }
+.azkar-pager { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; }
+.azkar-pager[hidden] { display: none; }
+.azkar-pager-pos { font-weight: 800; font-size: 15px; opacity: .85; }
+.azkar-pager-btn { width: 44px; height: 38px; border-radius: 12px; border: 1px solid rgba(160,130,90,.4); background: transparent; color: inherit; font-size: 22px; line-height: 1; cursor: pointer; }
