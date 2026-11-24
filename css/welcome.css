@@ -1,0 +1,40 @@
+/* شاشة الترحيب: هوية أنياس الرسمية (بني داكن + ذهبي نحاسي). الداكن هو الأساس. */
+.first-run-overlay:has(.welcome-step:not([hidden])) {
+  background: radial-gradient(120% 80% at 50% 28%, #2a1b11 0%, #180f09 60%, #0f0905 100%);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.first-run-overlay:has(.welcome-step:not([hidden])) .first-run-card {
+  width: min(100%, 420px); max-height: none; padding: 8px 18px; border: 0; background: transparent; box-shadow: none; text-align: center; overflow: visible;
+}
+.first-run-overlay:has(.welcome-step:not([hidden])) .first-run-brand-row { display: none; }
+.welcome-step { display: flex; flex-direction: column; align-items: center; }
+.welcome-mark { width: min(62vw, 250px); height: auto; margin-bottom: 14px; filter: drop-shadow(0 8px 24px rgba(0,0,0,.45)); }
+.welcome-title { color: #f3e3cf; font-size: clamp(24px, 6.4vw, 30px); text-align: center; }
+.welcome-tagline { margin: 6px 0 0; color: #d9b48d; font-family: Amiri, "Tajawal", serif; font-size: 20px; font-weight: 700; letter-spacing: .02em; }
+.welcome-line { max-width: 300px; margin: 12px auto 28px; color: rgba(243,227,207,.72); text-align: center; }
+.welcome-actions { width: 100%; max-width: 320px; }
+.welcome-start {
+  width: 100%; min-height: 54px; border-radius: 16px; font-size: 18px; font-weight: 900; letter-spacing: .02em;
+  color: #2b1a0e !important; background: linear-gradient(135deg, #ecd0ad, #c0906a) !important;
+  box-shadow: 0 10px 26px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.35) !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .welcome-mark { animation: welcome-rise .8s ease-out both; }
+  .welcome-title, .welcome-tagline, .welcome-line, .welcome-actions { animation: welcome-rise .8s ease-out .15s both; }
+}
+@keyframes welcome-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* الفاتح: نفس التكوين على ورق كريمي بدفء بني */
+:root[data-theme="light"] .first-run-overlay:has(.welcome-step:not([hidden])) {
+  background: radial-gradient(120% 80% at 50% 28%, #fffaf1 0%, #f6efe3 62%, #ece0cd 100%);
+}
+:root[data-theme="light"] .welcome-mark { filter: drop-shadow(0 6px 16px rgba(90,60,30,.18)); }
+:root[data-theme="light"] .welcome-mark text, :root[data-theme="light"] .welcome-mark path[fill="url(#wg)"] { filter: none; }
+:root[data-theme="light"] .welcome-title { color: #3a2716; }
+:root[data-theme="light"] .welcome-tagline { color: #8d5f3a; }
+:root[data-theme="light"] .welcome-line { color: #6b5742; }
+:root[data-theme="light"] .welcome-start { color: #fff !important; background: linear-gradient(135deg, #8a5a36, #6a4226) !important; box-shadow: 0 8px 20px rgba(90,60,30,.28) !important; }
+
+:root[data-theme="light"] .welcome-mark .wg-a { stop-color: #a8754a; }
+:root[data-theme="light"] .welcome-mark .wg-b { stop-color: #6e4528; }
+:root[data-theme="light"] .welcome-mark .w-rule { stroke: #8d5f3a; }

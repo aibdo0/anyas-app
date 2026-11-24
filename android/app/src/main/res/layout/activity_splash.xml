@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F4ED">
+    android:background="#180F09">
 
     <ImageView
         android:id="@+id/splashArtwork"
@@ -27,6 +27,7 @@
         android:layout_marginTop="150dp"
         android:layout_marginEnd="40dp"
         android:gravity="center"
+        android:visibility="gone"
         android:text="ألا بذكر الله تطمئن القلوب"
         android:textColor="#806034"
         android:textSize="15sp"
