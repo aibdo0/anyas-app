@@ -114,7 +114,12 @@
 
     const dailyTask = document.getElementById("dailyWirdTask");
     if (dailyTask) dailyTask.dataset.complete = String(total > 0 && done === total);
+    document.dispatchEvent(new CustomEvent("anyas:wird-progress"));
   }
+
+  window.anyasWird = {
+    sections: () => Object.keys(sections).map(id => ({ id, title: sections[id].title, ...sectionProgress(id) }))
+  };
 
   function renderSection(id) {
     const section = sections[id];

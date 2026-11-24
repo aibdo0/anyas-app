@@ -139,7 +139,25 @@
     if (countElement) countElement.textContent = number(count);
     if (goalElement) goalElement.textContent = `من ${number(selected.goal)}`;
     if (progressElement) progressElement.style.width = `${Math.min(100, Math.round(count / selected.goal * 100))}%`;
+    document.dispatchEvent(new CustomEvent("anyas:tasbeeh"));
   }
+
+  window.anyasTasbeeh = {
+    current() {
+      const selected = getSelectedDhikr();
+      if (!selected) return null;
+      return { id: selected.id, label: selected.label, goal: selected.goal, count: Math.max(0, Number(state.counts[selected.id]) || 0) };
+    },
+    increment() { const selected = getSelectedDhikr(); if (selected) increment(selected.id); },
+    cycle() {
+      const list = catalog.adhkar;
+      if (!list.length) return;
+      const i = list.findIndex(item => item.id === getSelectedDhikr().id);
+      selectedDhikr = list[(i + 1) % list.length].id;
+      renderTasbeeh();
+      renderTasksTasbeeh();
+    }
+  };
 
   function updateDailyOverview() {
     const prayerCount = document.querySelectorAll(".prayer-track-item.completed").length;
