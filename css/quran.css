@@ -30,3 +30,61 @@
 :root[data-theme="dark"] .quran-bism, :root[data-theme="dark"] .quran-text { color: #f4ead8; }
 :root[data-theme="dark"] .quran-end { color: #e3bf84; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20 1l4 4 5.7-.8 1 5.6 5.5 1.5-1.8 5.4 3.6 4.4-4.3 3.6 1 5.6-5.7.4-2.6 5.1-5.2-2.4L14.9 39l-2.6-5.1-5.7-.4 1-5.6-4.3-3.6 3.6-4.4-1.8-5.4L10.4 10.6l1-5.6L17.1 5z' fill='%232a2418' stroke='%23b08a4f' stroke-width='1.6'/%3E%3Ccircle cx='20' cy='20' r='12' fill='none' stroke='%232f8f86' stroke-width='1.2'/%3E%3C/svg%3E"); }
 :root[data-theme="dark"] .quran-nav button { background: #2c2015; color: #f1e6d3; border-color: rgba(214,176,112,.25); }
+.quran-surah-banner { margin: 6px 0 4px; padding: 7px 12px; text-align: center; font-family: 'Amiri', serif; font-size: 22px; color: #6b5120; border-top: 1px solid #cdb987; border-bottom: 1px solid #cdb987; background: linear-gradient(90deg, transparent, rgba(205,185,135,.28), transparent); }
+:root[data-theme="dark"] .quran-surah-banner { color: #e3bf84; border-color: rgba(214,176,112,.35); background: linear-gradient(90deg, transparent, rgba(214,176,112,.12), transparent); }
+.quran-text + .quran-surah-banner { margin-top: 12px; }
+/* فهرس السور كورقة تنزلق فوق صفحة القراءة */
+.quran-backdrop { position: fixed; inset: 0; z-index: 1100; background: rgba(0,0,0,.5); }
+.quran-sheet { position: fixed; z-index: 1101; inset-inline: 0; bottom: 0; max-width: 680px; margin: 0 auto; height: 78vh; display: flex; flex-direction: column; padding: 8px 18px 0; border-radius: 26px 26px 0 0; background: #f7f1dc; color: #3b2d17; box-shadow: 0 -12px 40px rgba(0,0,0,.35); animation: quranSheetUp .26s ease-out; }
+.quran-sheet[hidden], .quran-backdrop[hidden] { display: none !important; }
+@keyframes quranSheetUp { from { transform: translateY(100%); } to { transform: none; } }
+.quran-grip { align-self: center; width: 54px; height: 6px; margin: 6px 0 14px; border-radius: 4px; background: #cdb987; cursor: pointer; }
+.quran-sheet-title { margin: 0 0 10px; text-align: center; font-size: 19px; color: #2f8f86; font-weight: 700; }
+.quran-sheet .quran-search { margin: 0 0 6px; padding: 9px 14px; border-radius: 12px; font-size: 15px; background: #efe6cc; border: 1px solid #d8c9a0; }
+.quran-sheet .quran-resume { margin: 0 0 4px; padding: 8px 4px; background: none; color: #8a6a3f; font-weight: 600; font-size: 14px; text-align: center; border-radius: 0; }
+.quran-sheet .quran-list { display: block; flex: 1; overflow-y: auto; padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+.quran-sheet .quran-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 16px 4px; border: 0; border-bottom: 1px solid #d8c9a0; border-radius: 0; background: none; color: #8a6a3f; text-align: right; }
+.quran-sheet .quran-num { width: auto; height: auto; min-width: 24px; background: none; color: #6b5a3a; font-size: 16px; font-weight: 500; border-radius: 0; }
+.quran-sheet .quran-name { font-family: 'Amiri', serif; font-size: 22px; font-weight: 400; color: #9a7436; }
+:root[data-theme="dark"] .quran-sheet { background: #26282a; color: #eadfca; box-shadow: 0 -12px 40px rgba(0,0,0,.6); }
+:root[data-theme="dark"] .quran-grip { background: #55585a; }
+:root[data-theme="dark"] .quran-sheet-title { color: #3fa59b; }
+:root[data-theme="dark"] .quran-sheet .quran-search { background: #1d1f20; border-color: #44474a; color: #eadfca; }
+:root[data-theme="dark"] .quran-sheet .quran-resume { color: #d1a95f; }
+:root[data-theme="dark"] .quran-sheet .quran-row { border-bottom-color: #44474a; background: none; color: #d1a95f; }
+:root[data-theme="dark"] .quran-sheet .quran-num { background: none; color: #b9b2a4; }
+:root[data-theme="dark"] .quran-sheet .quran-name { color: #c9a45e; }
+
+.quran-gear { position: absolute; top: 14px; inset-inline-end: 14px; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 14px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.1); color: #f0d7a4; cursor: pointer; padding: 0; }
+.quran-gear svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#page-quran .plain-header { position: relative; }
+.quran-sheet { height: auto; max-height: 78vh; }
+.quran-sheet#quranListView { height: 78vh; }
+.quran-sheet .quran-list { scrollbar-width: none; }
+.quran-sheet .quran-list::-webkit-scrollbar { display: none; }
+.quran-setting-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 4px calc(26px + env(safe-area-inset-bottom)); border-top: 1px solid #d8c9a0; }
+.quran-setting-row strong { display: block; font-size: 17px; }
+.quran-setting-row small { opacity: .65; font-size: 13px; }
+.quran-switch { flex: none; width: 52px; height: 30px; padding: 3px; border-radius: 16px; border: 0; background: #c9bfa6; cursor: pointer; display: flex; justify-content: flex-start; transition: background .2s; }
+.quran-switch span { width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .2s; }
+.quran-switch[aria-checked="true"] { background: #2f8f86; }
+.quran-switch[aria-checked="true"] span { transform: translateX(-22px); }
+:root[data-theme="dark"] .quran-setting-row { border-top-color: #44474a; }
+:root[data-theme="dark"] .quran-switch { background: #55585a; }
+:root[data-theme="dark"] .quran-switch[aria-checked="true"] { background: #b08a4f; }
+/* إطار المصحف المزخرف (الزخرفة مفعّلة) */
+#page-quran:not(.quran-plain) .quran-page { padding: 34px 34px 18px; }
+#page-quran:not(.quran-plain) .quran-page::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 20px; pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='%23f3ead0'/%3E%3Cpath d='M10 1.5 18.5 10 10 18.5 1.5 10Z' fill='%232f8f86' stroke='%23b08a4f' stroke-width='1'/%3E%3Cpath d='M10 5.5 14.5 10 10 14.5 5.5 10Z' fill='%23f3ead0' stroke='%23b08a4f' stroke-width='.8'/%3E%3Ccircle cx='10' cy='10' r='1.6' fill='%23b08a4f'/%3E%3C/svg%3E") 0 0 / 20px 20px repeat; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); mask-composite: exclude; }
+#page-quran:not(.quran-plain) .quran-page::after { content: ""; position: absolute; inset: 20px; border: 1.5px solid #b08a4f; pointer-events: none; }
+#page-quran:not(.quran-plain) .quran-pills { margin-top: 22px; position: relative; z-index: 1; }
+#page-quran:not(.quran-plain) .quran-pageno { position: relative; z-index: 1; }
+:root[data-theme="dark"] #page-quran:not(.quran-plain) .quran-page::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='%23231a10'/%3E%3Cpath d='M10 1.5 18.5 10 10 18.5 1.5 10Z' fill='%23b08a4f' stroke='%23e3bf84' stroke-width='1'/%3E%3Cpath d='M10 5.5 14.5 10 10 14.5 5.5 10Z' fill='%23231a10' stroke='%23b08a4f' stroke-width='.8'/%3E%3Ccircle cx='10' cy='10' r='1.6' fill='%23b08a4f'/%3E%3C/svg%3E"); }
+:root[data-theme="dark"] #page-quran:not(.quran-plain) .quran-page::after { border-color: #c9a45e; }
+/* بدون زخرفة: صفحة نظيفة وأرقام آيات بسيطة */
+#page-quran.quran-plain .quran-page { padding: 14px; box-shadow: none; border-color: transparent; background: transparent; }
+#page-quran.quran-plain .quran-pill, #page-quran.quran-plain .quran-pageno span { background: transparent; border-color: transparent; }
+#page-quran.quran-plain .quran-surah-banner { border: 0; background: none; }
+#page-quran.quran-plain .quran-end { background: none; min-width: 0; height: auto; line-height: inherit; font-size: .62em; color: inherit; opacity: .75; margin: 0 3px; }
+#page-quran.quran-plain .quran-end::before { content: "﴿"; }
+#page-quran.quran-plain .quran-end::after { content: "﴾"; }
+:root[data-theme="dark"] #page-quran.quran-plain .quran-page { background: transparent; box-shadow: none; border-color: transparent; }

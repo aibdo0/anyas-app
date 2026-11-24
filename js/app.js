@@ -337,7 +337,7 @@ function goToPage(pageId) {
 
       nav.classList.toggle(
         "active",
-        target === navPage
+        target === (document.querySelector(`.nav-item[data-page="${pageId}"]`) ? pageId : navPage)
       );
 
     });

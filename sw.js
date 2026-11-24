@@ -28,8 +28,8 @@ const CORE_ASSETS = [
   "./css/app-design-system.css",
   "./css/first-run-onboarding.css",
   "./css/welcome.css",
-  "./css/quran.css?v=20261124-4",
-  "./js/quran.js?v=20261124-4",
+  "./css/quran.css?v=20261124-8",
+  "./js/quran.js?v=20261124-8",
   "./data/quran-full.js",
   "./data/quran-pages.js",
   "./assets/icons/icon-192.png",
@@ -64,7 +64,7 @@ const CORE_ASSETS = [
   "./js/qibla.js",
   "./js/app-enhancements.js",
   "./js/daily-devotions.js",
-  "./js/app.js",
+  "./js/app.js?v=20261124-5",
   "./js/about.js",
   "./js/optional-audio.js",
   "./js/duas.js",
@@ -97,7 +97,7 @@ async function versionedAssetsFromIndex() {
 
 // One missing file must not block the whole install.
 async function precache(cache, urls) {
-  await Promise.all(urls.map(url => cache.add(url).catch(error => console.info("sw: skipped", url, error && error.message))));
+  await Promise.all(urls.map(url => cache.add(new Request(url, { cache: "reload" })).catch(error => console.info("sw: skipped", url, error && error.message))));
 }
 
 self.addEventListener("install", event => {

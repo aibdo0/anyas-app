@@ -59,7 +59,7 @@
 <link rel="stylesheet" href="css/app-design-system.css?v=20261013-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/welcome.css?v=20261124-2">
-<link rel="stylesheet" href="css/quran.css?v=20261124-4">
+<link rel="stylesheet" href="css/quran.css?v=20261124-8">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/home-header.css?v=20261124-1">
 <link rel="stylesheet" href="css/home-polish.css?v=20261124-9">
@@ -2026,20 +2026,32 @@ data-audio="fajrAudio"
 
 <main class="page" id="page-quran">
   <header class="plain-header">
-    <button class="back-button" type="button" id="quranBack" data-back-more hidden>السور</button>
+    <button class="back-button" type="button" id="quranBack" aria-label="فهرس السور">فهرس السور</button>
     <div class="brand" id="quranTitle">القرآن الكريم</div>
-    <div class="date" id="quranSub">اختر سورة للقراءة</div>
+    <div class="date" id="quranSub">اقرأ المصحف</div>
+    <button class="quran-gear" type="button" id="quranGear" aria-label="إعدادات القرآن"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button>
   </header>
-  <section id="quranListView">
-    <button type="button" class="quran-resume" id="quranResume" aria-label="كمّل القراءة" hidden></button>
+  <section id="quranReadView">
+    <div class="quran-reader" id="quranReader"></div>
+    <div class="quran-nav"><button type="button" id="quranNext">الصفحة التالية</button><button type="button" id="quranPrev">الصفحة السابقة</button></div>
+  </section>
+  <p class="quran-credit">نص المصحف وترقيم الصفحات من <a href="https://tanzil.net/" target="_blank" rel="noopener">مشروع تنزيل (Tanzil)</a>، بدون تغيير.</p>
+  <div class="quran-backdrop" id="quranBackdrop" hidden></div>
+  <section class="quran-sheet quran-settings" id="quranSettings" role="dialog" aria-label="إعدادات القرآن" hidden>
+    <div class="quran-grip" id="quranSetGrip" aria-hidden="true"></div>
+    <h2 class="quran-sheet-title">إعدادات القرآن</h2>
+    <div class="quran-setting-row">
+      <div><strong>الزخرفة</strong><small>إطار المصحف وعلامات الآيات المزخرفة</small></div>
+      <button type="button" class="quran-switch" id="quranOrnToggle" role="switch" aria-checked="true" aria-label="الزخرفة"><span></span></button>
+    </div>
+  </section>
+  <section class="quran-sheet" id="quranListView" role="dialog" aria-label="فهرس السور" hidden>
+    <div class="quran-grip" id="quranGrip" aria-hidden="true"></div>
+    <h2 class="quran-sheet-title">فهرس السور</h2>
     <input type="search" class="quran-search" id="quranSearch" placeholder="ابحث باسم السورة أو رقمها" aria-label="بحث عن سورة" autocomplete="off">
+    <button type="button" class="quran-resume" id="quranResume" aria-label="كمّل القراءة" hidden></button>
     <div class="quran-list" id="quranList"></div>
   </section>
-  <section id="quranReadView" hidden>
-    <div class="quran-reader" id="quranReader"></div>
-    <div class="quran-nav"><button type="button" id="quranNext">السورة التالية</button><button type="button" id="quranPrev">السورة السابقة</button></div>
-  </section>
-  <p class="quran-credit">نص المصحف من <a href="https://tanzil.net/" target="_blank" rel="noopener">مشروع تنزيل (Tanzil)</a>، بدون تغيير.</p>
 </main>
 
 <main class="page" id="page-more">
@@ -2369,8 +2381,8 @@ type="button"
 <script src="js/daily-devotions.js?v=20261124-1"></script>
 <script src="js/home-extras.js?v=20261124-1"></script>
 <script src="js/share-image.js?v=20261124-1"></script>
-<script src="js/quran.js?v=20261124-4"></script>
-<script src="js/app.js?v=20261012-2"></script>
+<script src="js/quran.js?v=20261124-8"></script>
+<script src="js/app.js?v=20261124-5"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script>
   if ("serviceWorker" in navigator && window.isSecureContext) {
