@@ -139,7 +139,7 @@
     if (countElement) countElement.textContent = number(count);
     if (goalElement) goalElement.textContent = `من ${number(selected.goal)}`;
     if (progressElement) progressElement.style.width = `${Math.min(100, Math.round(count / selected.goal * 100))}%`;
-    document.dispatchEvent(new CustomEvent("anyas:tasbeeh"));
+    if (typeof Event === "function") document.dispatchEvent(new Event("anyas:tasbeeh"));
   }
 
   window.anyasTasbeeh = {

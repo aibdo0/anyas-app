@@ -114,7 +114,7 @@
 
     const dailyTask = document.getElementById("dailyWirdTask");
     if (dailyTask) dailyTask.dataset.complete = String(total > 0 && done === total);
-    document.dispatchEvent(new CustomEvent("anyas:wird-progress"));
+    if (typeof Event === "function") document.dispatchEvent(new Event("anyas:wird-progress"));
   }
 
   window.anyasWird = {
