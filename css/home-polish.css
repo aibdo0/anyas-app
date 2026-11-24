@@ -108,3 +108,10 @@ html[lang="en"] #page-home .next-prayer .countdown::before { content: "Remaining
 #page-home .next-prayer .prayer-time { font-size: 24px; font-weight: 700; line-height: 1.2; margin-top: 2px; color: #f6e6bf; text-shadow: 0 2px 12px rgba(0,0,0,.55); font-variant-numeric: tabular-nums; }
 #page-home .next-prayer .countdown { margin-top: 14px; font-size: 15px; padding: 6px 14px; }
 #page-home .next-prayer .prayer-city-chip { font-size: 13px; padding: 6px 12px; }
+
+/* الضغط على الآية/الحديث يعرض النص كاملًا */
+#page-home .daily-content.card > .content-block { cursor: pointer; }
+#page-home .daily-content.card > .content-block.expanded { grid-column: 1 / -1; }
+#page-home .daily-content.card > .content-block.expanded .ayah,
+#page-home .daily-content.card > .content-block.expanded .hadith-text,
+#page-home .daily-content.card > #dailyHadithBlock.expanded .hadith-text { display: block; -webkit-line-clamp: unset; overflow: visible; }
