@@ -53,3 +53,58 @@ html[lang="en"] #page-home .next-prayer .countdown::before { content: "Remaining
 @media (prefers-reduced-motion: reduce) {
   #page-home * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
 }
+
+/* 6) المواقيت كشريط واحد مدمج بدل شبكة 2×3 (طلب المالك). نفس الألوان والحالات (التالية/الماضية). */
+#page-home .prayer-section { padding-block: 12px 12px; }
+#page-home .prayer-section .section-heading { margin-bottom: 8px; }
+#page-home .prayer-section .more-button { padding: 6px 12px; font-size: 12px; border-radius: 11px; min-height: 0; }
+#page-home .prayer-section .prayer-list {
+  display: flex; flex-direction: row; gap: 5px;
+  overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; padding: 2px;
+}
+#page-home .prayer-section .prayer-list::-webkit-scrollbar { display: none; }
+#page-home .prayer-section .prayer-row {
+  flex: 1 0 48px; min-width: 48px; min-height: 0; scroll-snap-align: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  padding: 9px 3px 8px; border-radius: 14px; text-align: center;
+}
+#page-home .prayer-section .prayer-title { font-size: 11.5px; font-weight: 700; line-height: 1.2; }
+#page-home .prayer-section .prayer-value { font-size: 11.5px; font-weight: 800; line-height: 1.2; white-space: nowrap; font-variant-numeric: tabular-nums; }
+#page-home .prayer-section .prayer-row.next { box-shadow: inset 0 -2px 0 var(--gold); }
+
+/* 7) آية وحديث اليوم جنب بعض: كل واحد بطاقة */
+#page-home .daily-content.card { gap: 10px; align-items: stretch; }
+#page-home .daily-content.card > .content-block:first-child,
+#page-home .daily-content.card > #dailyHadithBlock {
+  grid-column: auto; min-width: 0; padding: 12px 13px; border-radius: 18px;
+  border: 1px solid var(--line); background: var(--surface);
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+}
+:root:not([data-theme="dark"]) #page-home .daily-content.card > .content-block:first-child { background: linear-gradient(145deg,#fff,#fbfaf7); }
+#page-home .daily-content.card .card-title { font-size: 12px; margin-bottom: 6px; color: var(--gold-dark, #b8923f); font-weight: 800; }
+#page-home .daily-content.card .ayah,
+#page-home .daily-content.card #dailyHadithBlock .hadith-text,
+#page-home #dailyHadithBlock .hadith-text { font-size: 13.5px; line-height: 1.8; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; margin: 0; }
+#page-home .daily-content.card .reference { font-size: 11px; margin-top: 6px; }
+
+/* 8) أذكار الصباح/المساء أصغر */
+#page-home .daily-adhkar-card { padding: 12px 14px !important; }
+#page-home .daily-adhkar-mark { width: 36px; height: 36px; flex-basis: 36px; font-size: 18px; }
+#page-home .daily-adhkar-eyebrow { display: none; }
+#page-home .daily-adhkar-title { font-size: 16px; margin: 0; }
+#page-home .daily-adhkar-badge { padding: 4px 9px; font-size: 11px; }
+#page-home .daily-adhkar-text { margin: 10px 0 0; padding: 8px 10px; font-size: 13px; line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+#page-home .daily-adhkar-footer { margin-top: 10px; }
+#page-home .daily-adhkar-button { min-height: 36px; padding: 0 16px; font-size: 13px; }
+#page-home .daily-adhkar-card { min-height: 0 !important; border-radius: 20px !important; }
+#page-home .daily-adhkar-card::before { inset-block: 14px; }
+#page-home .daily-adhkar-hint { font-size: 11px; }
+
+/* 9) بطاقة الصلاة القادمة: تسلسل أوضح (الاسم ثم الوقت ثم المتبقي) */
+#page-home .next-prayer .next-label { color: #e3c98f; font-size: 12px; font-weight: 800; letter-spacing: .08em; opacity: .95; }
+#page-home .next-prayer .prayer-name { font-size: 40px; font-weight: 900; line-height: 1.15; margin-top: 6px; text-shadow: 0 2px 14px rgba(0,0,0,.55); }
+#page-home .next-prayer .prayer-time { font-size: 24px; font-weight: 700; line-height: 1.2; margin-top: 2px; color: #f6e6bf; text-shadow: 0 2px 12px rgba(0,0,0,.55); font-variant-numeric: tabular-nums; }
+#page-home .next-prayer .countdown { margin-top: 14px; font-size: 15px; padding: 6px 14px; }
+#page-home .next-prayer .prayer-city-chip { font-size: 13px; padding: 6px 12px; }
