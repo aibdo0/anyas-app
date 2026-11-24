@@ -153,3 +153,9 @@
 .quran-sheet .quran-group .quran-name { font-family: inherit; font-size: 17px; font-weight: 600; color: #2f2619; }
 :root[data-theme="dark"] .quran-sheet .quran-group .quran-name { color: #f0e8d8; }
 .quran-sheet .quran-group .quran-count { font-size: 13px; opacity: .6; }
+
+/* 1.1.26: التفسير الميسر */
+.quran-tafsir-title { margin: 10px 0 4px; font-size: 15px; color: #8a6a3f; text-align: right; border-top: 1px solid rgba(138,106,63,.3); padding-top: 12px; }
+.quran-tafsir { margin: 0 0 8px; font-size: 17px; line-height: 2; text-align: right; }
+.quran-versesheet { max-height: 72vh; }
+:root[data-theme="dark"] .quran-tafsir-title { color: #d1a95f; border-top-color: #44474a; }

@@ -111,6 +111,34 @@
     $("quranTbMark").setAttribute("aria-pressed", on ? "true" : "false");
     $("quranTbMark").classList.toggle("is-on", on);
   }
+  var tafsirLoading = null;
+  function loadTafsir() {
+    if (window.ANIAS_TAFSIR) return Promise.resolve();
+    if (tafsirLoading) return tafsirLoading;
+    tafsirLoading = new Promise(function (res, rej) {
+      var sc = document.createElement("script");
+      sc.src = "data/quran-tafsir.js?v=20261124-1";
+      sc.onload = res;
+      sc.onerror = function () { tafsirLoading = null; rej(new Error("tafsir-load")); };
+      document.head.appendChild(sc);
+    });
+    return tafsirLoading;
+  }
+  function showTafsir(s1, a1) {
+    var box = $("quranTafsir"), note = $("quranVerseNote");
+    if (!box) return;
+    var key = s1 + ":" + a1;
+    box.dataset.key = key;
+    box.textContent = "";
+    note.textContent = "جارٍ تحميل التفسير…";
+    loadTafsir().then(function () {
+      if (box.dataset.key !== key) return;
+      box.textContent = window.ANIAS_TAFSIR.items[s1 - 1][a1 - 1];
+      note.textContent = "التفسير الميسر، مجمع الملك فهد لطباعة المصحف الشريف، عبر موسوعة القرآن الكريم (QuranEnc.com)، الإصدار " + window.ANIAS_TAFSIR.version;
+    }, function () {
+      if (box.dataset.key === key) note.textContent = "تعذر تحميل التفسير. تحقق من الاتصال ثم أعد المحاولة.";
+    });
+  }
   function selectVerse(s1, a1) {
     var Q = window.ANIAS_QURAN;
     sel = { s: s1, a: a1 };
@@ -120,7 +148,7 @@
     if (a1 === 1 && s1 !== 1 && s1 !== 9 && t.indexOf(B + " ") === 0) t = t.slice(B.length + 1);
     $("quranVerseRef").textContent = "سورة " + Q.names[s1 - 1] + " · آية " + ar(a1);
     $("quranVerseText").textContent = t;
-    $("quranVerseNote").textContent = "التفسير قيد التجهيز وسيُضاف في إصدار قادم.";
+    showTafsir(s1, a1);
     var fav = getFavs().indexOf(s1 + ":" + a1) >= 0;
     $("quranFav").setAttribute("aria-pressed", fav ? "true" : "false");
     $("quranFav").classList.toggle("is-on", fav);
@@ -295,7 +323,7 @@
     });
     $("quranShare").addEventListener("click", function () {
       if (!sel || !window.anyasShareImage) return;
-      window.anyasShareImage.shareCustom(plainVerse(sel.s, sel.a), refLabel(sel.s + ":" + sel.a), function (m) { $("quranVerseNote").textContent = m || "التفسير قيد التجهيز وسيُضاف في إصدار قادم."; });
+      window.anyasShareImage.shareCustom(plainVerse(sel.s, sel.a), refLabel(sel.s + ":" + sel.a), function (m) { if (m) $("quranVerseNote").textContent = m; });
     });
     applyOrn();
     $("quranGear").addEventListener("click", openSettings);
