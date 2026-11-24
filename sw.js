@@ -29,7 +29,7 @@ const CORE_ASSETS = [
   "./css/first-run-onboarding.css",
   "./css/welcome.css",
   "./css/quran.css?v=20261124-26",
-  "./js/quran.js?v=20261124-26",
+  "./js/quran.js?v=20261125-1",
   "./data/quran-full.js",
   "./data/quran-pages.js",
   "./data/quran-tafsir.js?v=20261124-1",

@@ -414,22 +414,8 @@
     b.innerHTML = '<div><strong>' + ar(st.today) + '</strong><small>اليوم</small></div><div><strong>' + ar(st.week) + '</strong><small>آخر ٧ أيام</small></div><div><strong>' + ar(st.streak) + '</strong><small>أيام متتالية</small></div>';
   }
   function paintHomeResume() {
-    var home = document.getElementById("page-home"); if (!home) return;
-    var c = document.getElementById("homeResumeCard");
-    var lv = getLast(), pg = lv && lv.p ? lv.p : 0;
-    if (!pg) { if (c) c.hidden = true; return; }
-    if (!c) {
-      c = document.createElement("button"); c.type = "button"; c.id = "homeResumeCard"; c.className = "home-resume-card";
-      c.addEventListener("click", function () {
-        var n = document.querySelector('.nav-item[data-page="quran"]'); if (n) n.click();
-        setTimeout(function () { openPage(lastPage() || 1); }, 60);
-      });
-      var hd = home.querySelector(".main-header");
-      if (hd && hd.parentNode) hd.parentNode.insertBefore(c, hd.nextSibling); else home.insertBefore(c, home.firstChild);
-    }
-    var st = statsSummary();
-    c.hidden = false;
-    c.innerHTML = '<span class="hrc-icon" aria-hidden="true">ق</span><span class="hrc-text"><strong>أكمل القراءة</strong><small>' + (lv.n ? "سورة " + lv.n + " · " : "") + "صفحة " + ar(pg) + (st.today ? " · قرأت اليوم " + pagesWord(st.today) : "") + '</small></span>';
+    var old = document.getElementById("homeResumeCard");
+    if (old) old.remove();
   }
   var TJK = "anyas_quran_tajweed";
   function tjOn() { try { return localStorage.getItem(TJK) === "1"; } catch (e) { return false; } }
