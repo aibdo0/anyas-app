@@ -117,3 +117,39 @@
 :root[data-theme="dark"] .quran-find-row { border-bottom-color: #44474a; }
 :root[data-theme="dark"] .quran-find-ref, :root[data-theme="dark"] .quran-verse-head button { color: #d1a95f; border-color: #44474a; }
 :root[data-theme="dark"] .quran-verse-head h2 { color: #3fa59b; }
+/* 1.1.25: هدوء الألوان، هيدر مسطح، قائمة موحدة بنمط iOS */
+#page-quran .plain-header { min-height: 0 !important; padding: 12px 15px 14px !important; background: #2f271d !important; background-image: none !important; border: 1px solid rgba(240,215,164,.14) !important; box-shadow: none !important; }
+#page-quran .plain-header::after { display: none !important; }
+#page-quran .plain-header .brand::before { content: "أنياس"; padding-inline-start: 20px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d1b27a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 6c-2-1.4-4.5-2-8-2v14c3.5 0 6 .6 8 2 2-1.4 4.5-2 8-2V4c-3.5 0-6 .6-8 2Z'/%3E%3Cpath d='M12 6v14'/%3E%3C/svg%3E") no-repeat right center / 15px; }
+#page-quran .plain-header .brand { font-size: 22px; }
+.quran-gear { top: 12px; background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.14); color: #d9c196; }
+.quran-sheet { background: #f6f1e6; }
+:root[data-theme="dark"] .quran-sheet { background: #1f1b16; }
+.quran-sheet-title { color: #5a4a30; font-size: 18px; }
+:root[data-theme="dark"] .quran-sheet-title { color: #eadfca; }
+.quran-searchwrap { position: relative; display: block; margin: 0 0 12px; }
+.quran-searchwrap svg { position: absolute; top: 50%; inset-inline-start: 13px; transform: translateY(-50%); width: 19px; height: 19px; fill: none; stroke: #9a8a6c; stroke-width: 1.8; stroke-linecap: round; pointer-events: none; }
+.quran-sheet .quran-searchwrap .quran-search { margin: 0; padding: 11px 42px 11px 14px; border-radius: 12px; background: #ebe3d2; border: 1px solid transparent; }
+:root[data-theme="dark"] .quran-sheet .quran-searchwrap .quran-search { background: #2a251f; border-color: transparent; }
+.quran-sheet .quran-resume { display: block; width: 100%; margin: 0 0 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(176,138,79,.55); background: transparent; color: #5a4a30; font-weight: 500; text-align: right; }
+.quran-resume[hidden] { display: none !important; }
+.quran-sheet #quranMarkRow, .quran-sheet #quranFavRow { padding: 10px 14px; font-size: 14px; }
+:root[data-theme="dark"] .quran-sheet .quran-resume { color: #eadfca; border-color: rgba(209,169,95,.45); }
+.quran-rs-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.quran-rs-top strong { font-size: 15px; font-weight: 700; }
+.quran-rs-top em { font-style: normal; font-size: 14px; opacity: .8; }
+.quran-rs-sub { display: block; margin-top: 4px; font-size: 13px; opacity: .7; }
+.quran-rs-bar { display: block; height: 4px; margin-top: 9px; border-radius: 3px; background: rgba(176,138,79,.2); overflow: hidden; }
+.quran-rs-bar i { display: block; height: 100%; border-radius: 3px; background: #b08a4f; }
+.quran-sheet .quran-list.quran-group { padding: 0; margin-bottom: calc(24px + env(safe-area-inset-bottom)); border-radius: 16px; background: #fffaf0; border: 1px solid rgba(160,130,90,.22); flex: none; overflow: visible; }
+:root[data-theme="dark"] .quran-sheet .quran-list.quran-group { background: #2a251f; border-color: rgba(255,255,255,.07); }
+.quran-sheet .quran-list { overflow-y: auto; }
+.quran-sheet#quranListView { overflow-y: auto; }
+.quran-sheet .quran-group .quran-row { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 12px; padding: 12px 14px; border-bottom: 1px solid rgba(160,130,90,.2); }
+.quran-sheet .quran-group .quran-row:last-child { border-bottom: 0; }
+:root[data-theme="dark"] .quran-sheet .quran-group .quran-row { border-bottom-color: rgba(255,255,255,.07); }
+.quran-sheet .quran-group .quran-num { display: grid; place-items: center; width: 32px; height: 32px; min-width: 0; border-radius: 50%; background: rgba(160,130,90,.14); color: #6b5a3a; font-size: 14px; font-weight: 600; }
+:root[data-theme="dark"] .quran-sheet .quran-group .quran-num { background: rgba(255,255,255,.07); color: #cfc6b4; }
+.quran-sheet .quran-group .quran-name { font-family: inherit; font-size: 17px; font-weight: 600; color: #2f2619; }
+:root[data-theme="dark"] .quran-sheet .quran-group .quran-name { color: #f0e8d8; }
+.quran-sheet .quran-group .quran-count { font-size: 13px; opacity: .6; }

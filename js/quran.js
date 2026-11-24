@@ -46,9 +46,10 @@
     Q.names.forEach(function (name, i) {
       if (term && norm(name).indexOf(term) < 0 && String(i + 1) !== term && ar(i + 1) !== q.trim()) return;
       html += '<button type="button" class="quran-row" data-surah="' + i + '"><span class="quran-num">' + ar(i + 1) +
-        '</span><span class="quran-name">سورة ' + name + '</span></button>';
+        '</span><span class="quran-name">سورة ' + name + '</span><span class="quran-count">' + ar(Q.ayahs[i].length) + ' آية</span></button>';
     });
     box.innerHTML = html || '<p class="quran-empty">لا توجد سورة بهذا الاسم.</p>';
+    box.classList.toggle("quran-group", !!html);
   }
 
   function pageOfSurah(i) {
@@ -189,7 +190,8 @@
     if (pg > 0) {
       var first = window.ANIAS_QURAN_PAGES.pages[pg - 1];
       b.hidden = false;
-      b.textContent = "آخر قراءة: صفحة " + ar(pg) + " · سورة " + Q.names[first[0] - 1];
+      var pct = Math.max(1, Math.round(pg / 604 * 100));
+      b.innerHTML = '<span class="quran-rs-top"><strong>كمّل القراءة</strong><em>سورة ' + Q.names[first[0] - 1] + '</em></span><span class="quran-rs-sub">صفحة ' + ar(pg) + ' من ٦٠٤ · ' + ar(pct) + '٪</span><span class="quran-rs-bar"><i style="width:' + pct + '%"></i></span>';
       b.dataset.page = pg;
     } else b.hidden = true;
     var m = getMark(), mr = $("quranMarkRow");
