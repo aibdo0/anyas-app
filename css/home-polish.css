@@ -182,3 +182,28 @@ html[lang="en"] #page-home .next-prayer .countdown::before { content: "Remaining
 #page-home .daily-adhkar-card .home-continue-icon { width: 30px; height: 30px; flex-basis: 30px; border-radius: 10px; font-size: 11px; color: #f1d27a; }
 #page-home .daily-adhkar-card .home-continue-copy strong { font-size: 13.5px; color: #fff; }
 #page-home .daily-adhkar-card .home-continue-copy small { font-size: 11.5px; color: rgba(255,255,255,.75); }
+
+/* ===== الدفعة 1.1.17: الأذكار، يوم المسلم، المزيد (نفس الهوية، تباين وكثافة أفضل) ===== */
+/* الأذكار: شارات العدد أوضح، والبطاقات أكثر إحكامًا */
+#page-azkar .category-card { min-height: 0; padding-block: 12px; }
+#page-azkar .category-card-count {
+  color: #f0d9a3; background: rgba(222,192,126,.14); border: 1px solid rgba(222,192,126,.3);
+  font-size: 11.5px; font-weight: 800; padding: 4px 10px;
+}
+:root:not([data-theme="dark"]) #page-azkar .category-card-count { color: #7a5c24; background: #f8f0dc; border-color: #e5d5ab; }
+#page-azkar .category-card-title, #page-azkar .category-card h3 { font-size: 15px; line-height: 1.5; }
+
+/* يوم المسلم: ملخص أخف وأرقام أوضح */
+#page-tasks .daily-overview-card { padding: 14px 16px; }
+#page-tasks .daily-overview-score { font-size: 30px; font-weight: 900; color: #f0d9a3; }
+#page-tasks .daily-overview-heading h2 { font-size: 22px; }
+#page-tasks .daily-overview-message { margin: 8px 0 10px; color: rgba(255,255,255,.82); font-size: 13px; }
+#page-tasks .daily-overview-metrics { margin-top: 10px; gap: 8px; }
+#page-tasks .daily-overview-metrics > div { padding: 8px 6px; background: rgba(0,0,0,.28); border: 1px solid rgba(222,192,126,.28); }
+#page-tasks .daily-overview-metrics strong { color: #fff; font-size: 18px; font-weight: 900; }
+#page-tasks .daily-overview-metrics span { color: rgba(255,255,255,.78); font-size: 11.5px; font-weight: 700; }
+#page-tasks .daily-overview-eyebrow { color: #e3c98f; font-size: 12px; }
+#page-tasks .daily-overview-focus { margin-top: 8px; color: #f0d9a3; font-size: 12px; }
+
+/* المزيد: مساحة سفلية كافية فوق الشريط السفلي */
+#page-more { padding-bottom: calc(150px + env(safe-area-inset-bottom)) !important; }
