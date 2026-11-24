@@ -35,6 +35,58 @@ const PRAYER_DEFINITIONS = [
 ];
 
 
+
+// =====================================================
+// المنطقة الزمنية للمدينة المختارة يدويًا
+// =====================================================
+
+function getActiveTimeZone() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("anyas_manual_location") || "null");
+    const zone = saved && saved.timezone;
+    if (zone) {
+      new Intl.DateTimeFormat("en", { timeZone: zone });
+      return zone;
+    }
+  } catch (error) { /* invalid or missing zone: fall back to the device zone */ }
+  return null;
+}
+
+function zonedParts(date, zone) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: zone, year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"
+  }).formatToParts(date);
+  const out = {};
+  parts.forEach(part => { out[part.type] = part.value; });
+  return { year: +out.year, month: +out.month, day: +out.day, hour: +out.hour, minute: +out.minute, second: +out.second };
+}
+
+// Converts a wall-clock time in an IANA zone to an absolute Date.
+function zonedTimeToDate(year, month, day, hour, minute, zone) {
+  const target = Date.UTC(year, month - 1, day, hour, minute);
+  let guess = target;
+  for (let i = 0; i < 3; i++) {
+    const p = zonedParts(new Date(guess), zone);
+    guess += target - Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second);
+  }
+  return new Date(guess);
+}
+
+// Calendar day (in the active zone, or the device zone) as { year, month, day }.
+function getPrayerDay(dayOffset = 0) {
+  const zone = getActiveTimeZone();
+  const base = zone ? zonedParts(new Date(), zone) : (() => { const n = new Date(); return { year: n.getFullYear(), month: n.getMonth() + 1, day: n.getDate() }; })();
+  const shifted = new Date(Date.UTC(base.year, base.month - 1, base.day + dayOffset));
+  return { year: shifted.getUTCFullYear(), month: shifted.getUTCMonth() + 1, day: shifted.getUTCDate() };
+}
+
+// Adhan methods supported locally. Keys are the Aladhan method ids used for the online request.
+const ADHAN_METHOD_FACTORIES = {
+  1: "Karachi", 2: "NorthAmerica", 3: "MuslimWorldLeague", 4: "UmmAlQura", 5: "Egyptian",
+  7: "Tehran", 9: "Kuwait", 10: "Qatar", 11: "Singapore", 13: "Turkey", 15: "MoonsightingCommittee", 16: "Dubai"
+};
+
 // =====================================================
 // تحديد طريقة حساب مواقيت الصلاة
 // =====================================================
@@ -300,14 +352,17 @@ async function fetchCityName(
 
 async function loadPrayerTimes(latitude, longitude) {
   const now = new Date();
-  const day = String(now.getDate()).padStart(2, "0");
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const year = now.getFullYear();
+  const zone = getActiveTimeZone();
+  const today = getPrayerDay();
+  const day = String(today.day).padStart(2, "0");
+  const month = String(today.month).padStart(2, "0");
+  const year = today.year;
   const dateKey = `${year}-${month}-${day}`;
+  window.anyasPrayerDateKey = `${dateKey}|${zone || "device"}`;
   const method = getCalculationMethod();
   const madhab = getAsrMadhab();
   const school = madhab === "hanafi" ? 1 : 0;
-  const cacheKey = `anyas_prayer_cache_${dateKey}_${Number(latitude).toFixed(3)}_${Number(longitude).toFixed(3)}_${method}_${madhab}`;
+  const cacheKey = `anyas_prayer_cache_${dateKey}_${Number(latitude).toFixed(3)}_${Number(longitude).toFixed(3)}_${method}_${madhab}_${zone || "device"}`;
   const cacheMetaKey = `${cacheKey}_meta`;
   const statusElement = document.getElementById("prayerDataStatus");
   const setDataStatus = (source, timestamp = Date.now()) => {
@@ -340,12 +395,12 @@ async function loadPrayerTimes(latitude, longitude) {
   const calculateLocally = () => {
     if (!window.adhan) throw new Error("مكتبة حساب الصلاة المحلية غير متاحة");
     const coordinates = new window.adhan.Coordinates(Number(latitude), Number(longitude));
-    const parameters = method === 3
-      ? window.adhan.CalculationMethod.MuslimWorldLeague()
-      : window.adhan.CalculationMethod.Egyptian();
+    const factory = ADHAN_METHOD_FACTORIES[method] || "Egyptian";
+    const parameters = (window.adhan.CalculationMethod[factory] || window.adhan.CalculationMethod.Egyptian)();
     parameters.madhab = madhab === "hanafi" ? window.adhan.Madhab.Hanafi : window.adhan.Madhab.Shafi;
-    const prayerTimes = new window.adhan.PrayerTimes(coordinates, now, parameters);
-    const format = value => value.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+    const prayerTimes = new window.adhan.PrayerTimes(coordinates, zone ? new Date(today.year, today.month - 1, today.day, 12) : now, parameters);
+    const zoneOption = zone ? { timeZone: zone } : {};
+    const format = value => value.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", ...zoneOption });
     return {
       Fajr: format(prayerTimes.fajr),
       Sunrise: format(prayerTimes.sunrise),
@@ -377,6 +432,12 @@ async function loadPrayerTimes(latitude, longitude) {
     const data = await response.json();
     if (!data?.data?.timings) throw new Error("بيانات المواقيت غير متاحة");
     rawTimings = data.data.timings;
+    const learnedZone = data.data.meta && data.data.meta.timezone;
+    if (learnedZone && rememberManualLocationZone(learnedZone)) {
+      // The chosen city had no saved zone: store it and redraw in the city's own time.
+      loadPrayerTimes(latitude, longitude);
+      return;
+    }
     try {
       localStorage.setItem(cacheKey, JSON.stringify(rawTimings));
       localStorage.setItem(cacheMetaKey, JSON.stringify({ fetchedAt: Date.now(), source: "online" }));
@@ -386,6 +447,18 @@ async function loadPrayerTimes(latitude, longitude) {
   } catch (error) {
     console.info("استخدام حساب مواقيت الصلاة المحلي:", error.message);
   }
+}
+
+// Saves the IANA zone on a manually chosen city (only if it has none yet). Returns true if saved.
+function rememberManualLocationZone(zone) {
+  try {
+    const saved = JSON.parse(localStorage.getItem("anyas_manual_location") || "null");
+    if (!saved || saved.timezone) return false;
+    new Intl.DateTimeFormat("en", { timeZone: zone });
+    saved.timezone = zone;
+    localStorage.setItem("anyas_manual_location", JSON.stringify(saved));
+    return true;
+  } catch (error) { return false; }
 }
 
 // =====================================================
@@ -692,56 +765,25 @@ function createPrayerDate(
   time,
   dayOffset = 0
 ) {
-
   if (!time) {
     return null;
   }
-
-
-  const parts =
-    String(time).split(":");
-
-
-  const hour =
-    Number(parts[0]);
-
-
-  const minute =
-    Number(parts[1]);
-
-
-  if (
-    Number.isNaN(hour) ||
-    Number.isNaN(minute)
-  ) {
-
+  const parts = String(time).split(":");
+  const hour = Number(parts[0]);
+  const minute = Number(parts[1]);
+  if (Number.isNaN(hour) || Number.isNaN(minute)) {
     return null;
-
   }
-
-
-  const date =
-    new Date();
-
-
-  date.setDate(
-    date.getDate() +
-    dayOffset
-  );
-
-
-  date.setHours(
-    hour,
-    minute,
-    0,
-    0
-  );
-
-
+  const zone = getActiveTimeZone();
+  if (zone) {
+    const day = getPrayerDay(dayOffset);
+    return zonedTimeToDate(day.year, day.month, day.day, hour, minute, zone);
+  }
+  const date = new Date();
+  date.setDate(date.getDate() + dayOffset);
+  date.setHours(hour, minute, 0, 0);
   return date;
-
 }
-
 
 // =====================================================
 // تحديد الصلاة القادمة
@@ -788,7 +830,8 @@ function updateNextPrayer(
 
       nextPrayer = {
         ...prayer,
-        time: prayerTime
+        time: prayerTime,
+        raw: timings[prayer.key]
       };
 
 
@@ -866,12 +909,8 @@ function updateNextPrayer(
 
     timeElement.textContent =
       convertTo12Hour(
-        `${String(
-          nextPrayer.time.getHours()
-        ).padStart(2, "0")}:` +
-        `${String(
-          nextPrayer.time.getMinutes()
-        ).padStart(2, "0")}`
+        (String(nextPrayer.raw || "").match(/\d{1,2}:\d{2}/) || [""])[0] ||
+        `${String(nextPrayer.time.getHours()).padStart(2, "0")}:${String(nextPrayer.time.getMinutes()).padStart(2, "0")}`
       );
 
   }

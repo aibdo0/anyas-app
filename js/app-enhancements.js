@@ -144,6 +144,7 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     };
     const selectCity = location => {
       const safeLocation = { latitude: Number(location.latitude), longitude: Number(location.longitude), city: location.city || "موقعك الحالي", country: location.country || "" };
+      if (location.timezone) safeLocation.timezone = location.timezone;
       localStorage.setItem("anyas_manual_location", JSON.stringify(safeLocation));
       localStorage.setItem("anyas_city_name", safeLocation.country ? `${safeLocation.city}، ${safeLocation.country}` : safeLocation.city);
       localStorage.setItem("anyas_location_start_choice", "manual");

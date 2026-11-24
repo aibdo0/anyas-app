@@ -65,9 +65,23 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(() => {
     updatePrayerTrackingUI();
     applyManualPrayerOffsets();
+    reloadPrayerTimesIfDayChanged();
   }, 60 * 1000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) reloadPrayerTimesIfDayChanged(); });
 
 });
+
+// The app can stay open across midnight (or the city's midnight): reload times for the new day.
+function reloadPrayerTimesIfDayChanged() {
+  if (typeof loadPrayerTimes !== "function" || typeof getPrayerDay !== "function" || !window.anyasPrayerDateKey) return;
+  const day = getPrayerDay();
+  const zone = typeof getActiveTimeZone === "function" ? getActiveTimeZone() : null;
+  const key = `${day.year}-${String(day.month).padStart(2, "0")}-${String(day.day).padStart(2, "0")}|${zone || "device"}`;
+  if (key === window.anyasPrayerDateKey) return;
+  const latitude = Number(window.currentLatitude);
+  const longitude = Number(window.currentLongitude);
+  if (Number.isFinite(latitude) && Number.isFinite(longitude)) loadPrayerTimes(latitude, longitude);
+}
 
 function setupGlobalTouchFeedback() {
   let lastFeedbackAt = 0;
