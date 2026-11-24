@@ -670,3 +670,27 @@ document.addEventListener(
 
   }
 );
+
+
+// بطاقة ورد الوقت: صباحًا «ابدأ ورد الصباح» وبعد الظهر «ورد المساء».
+(function () {
+  function update() {
+    const card = document.getElementById("azkarSmartCard");
+    if (!card) return;
+    const alt = document.getElementById("azkarSmartAlt");
+    const hour = new Date().getHours();
+    const morning = hour >= 3 && hour < 15;
+    card.dataset.openWird = morning ? "morning" : "evening";
+    if (alt) {
+      alt.dataset.openWird = morning ? "evening" : "morning";
+      alt.textContent = morning ? "أذكار المساء" : "أذكار الصباح";
+    }
+    document.getElementById("azkarSmartTitle").textContent = morning ? "ابدأ ورد الصباح" : "ورد المساء";
+    document.getElementById("azkarSmartSub").textContent = morning ? "ابدأ يومك بالذكر" : "اختم يومك بالذكر";
+    document.getElementById("azkarSmartIcon").textContent = morning ? "☀" : "☾";
+  }
+  document.addEventListener("DOMContentLoaded", update);
+  document.addEventListener("visibilitychange", update);
+  window.addEventListener("pageshow", update);
+  update();
+})();

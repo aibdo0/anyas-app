@@ -253,3 +253,12 @@
 .azkar-group-body .category-card { width: 100%; }
 :root[data-theme="dark"] .azkar-group { background: #1e2023; border-color: rgba(214,176,112,.22); }
 :root[data-theme="dark"] .azkar-group-head { color: #f1e6d3; }
+
+.azkar-smart { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; }
+.azkar-smart-main { flex: 1; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 18px; border: 1px solid rgba(227,201,143,.55); background: linear-gradient(135deg, #2a2113, #3a2c16); color: #f6e9c8; font: inherit; text-align: right; cursor: pointer; }
+.azkar-smart-icon { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-size: 22px; background: rgba(227,201,143,.18); color: #e3c98f; flex: none; }
+.azkar-smart-text { flex: 1; display: grid; gap: 2px; }
+.azkar-smart-text strong { font-size: 18px; font-weight: 800; }
+.azkar-smart-text small { font-size: 13px; opacity: .75; }
+.azkar-smart-go { width: 10px; height: 10px; border-left: 2px solid #e3c98f; border-bottom: 2px solid #e3c98f; transform: rotate(45deg); }
+.azkar-smart-alt { flex: none; padding: 10px 12px; border-radius: 14px; border: 1px solid rgba(160,130,90,.35); background: transparent; color: inherit; font: inherit; font-size: 13px; cursor: pointer; opacity: .85; }
