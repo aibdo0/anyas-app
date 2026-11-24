@@ -387,11 +387,44 @@
     });
     ["quranBackdrop", "quranToolbar"].concat(SHEETS).forEach(function (id) { document.body.appendChild($(id)); });
     document.querySelectorAll(".nav-item").forEach(function (n) { n.addEventListener("click", function () { closeSheet(); $("quranToolbar").hidden = true; }); });
-    $("quranReader").addEventListener("click", function (e) {
-      var v = e.target.closest(".quran-ayah");
-      if (v) { selectVerse(Number(v.dataset.s), Number(v.dataset.a)); return; }
+    var lpTimer = null, lpFired = false;
+    function lpCancel() { if (lpTimer) { clearTimeout(lpTimer); lpTimer = null; } }
+    function lpStart(e) {
+      var v = e.target.closest && e.target.closest(".quran-ayah");
+      lpFired = false;
+      lpCancel();
+      if (!v) return;
+      lpTimer = setTimeout(function () {
+        lpTimer = null;
+        lpFired = true;
+        selectVerse(Number(v.dataset.s), Number(v.dataset.a));
+        var t = $("quranTafsir");
+        if (t && t.scrollIntoView) t.scrollIntoView({ block: "start" });
+      }, 480);
+    }
+    var rd = $("quranReader");
+    rd.addEventListener("touchstart", lpStart, { passive: true });
+    rd.addEventListener("touchmove", lpCancel, { passive: true });
+    rd.addEventListener("touchend", lpCancel);
+    rd.addEventListener("touchcancel", lpCancel);
+    rd.addEventListener("mousedown", lpStart);
+    rd.addEventListener("mouseup", lpCancel);
+    rd.addEventListener("contextmenu", function (e) { if (e.target.closest(".quran-ayah")) e.preventDefault(); });
+    rd.addEventListener("click", function (e) {
+      if (lpFired) { lpFired = false; return; }
       var tb = $("quranToolbar");
+      var v = e.target.closest(".quran-ayah");
+      if (v) {
+        var s1 = Number(v.dataset.s), a1 = Number(v.dataset.a);
+        if (!tb.hidden && sel && sel.s === s1 && sel.a === a1) { tb.hidden = true; clearSel(); return; }
+        sel = { s: s1, a: a1 };
+        applySel();
+        tb.hidden = false;
+        syncToolbar();
+        return;
+      }
       tb.hidden = !tb.hidden;
+      if (tb.hidden) clearSel();
       syncToolbar();
     });
     $("quranTbGear").addEventListener("click", openSettings);

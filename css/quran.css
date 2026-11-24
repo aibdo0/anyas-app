@@ -221,3 +221,6 @@ button.quran-pill { font: inherit; cursor: pointer; -webkit-tap-highlight-color:
 .quran-tb-icons { display: flex; justify-content: space-around; border-top: 1px solid rgba(138,106,63,.25); padding-top: 4px; }
 :root[data-theme="dark"] .quran-tb-icons { border-top-color: #44474a; }
 :root[data-theme="dark"] .quran-toolbar .quran-tb-find { background: rgba(255,255,255,.07); color: #eadfca; }
+
+/* 1.1.33: ضغطة مطولة على الآية */
+.quran-ayah { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
