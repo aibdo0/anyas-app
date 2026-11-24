@@ -277,3 +277,27 @@
 .azkar-toast { position: fixed; left: 50%; bottom: 110px; transform: translateX(-50%) translateY(10px); background: #2c2015; color: #f6e9c8; border: 1px solid rgba(227,201,143,.5); padding: 10px 18px; border-radius: 999px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 6000; }
 .azkar-toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
 .zikr-text { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+
+/* ===== بطاقة الذكر الفاخرة 1.1.44 ===== */
+#page-azkar-detail .category-detail-header { display: flex !important; align-items: center; gap: 12px; margin: 4px 0 12px; }
+#page-azkar-detail .azkar-back { width: 44px; height: 44px; min-width: 44px; padding: 0 !important; border-radius: 50% !important; display: grid; place-items: center; border: 1px solid rgba(201,164,94,.6) !important; background: rgba(201,164,94,.12) !important; color: #c9a45e !important; font-size: 0; }
+#page-azkar-detail .azkar-back svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+#page-azkar-detail .category-detail-title { flex: 1; font-size: 22px !important; font-weight: 800; line-height: 1.4; }
+#page-azkar-detail .azkar-meaning-disclaimer { display: block; margin: 0 4px 8px; font-size: 12px; opacity: .6; text-align: center; }
+#page-azkar-detail #azkarList.azkar-pager-list > .zikr-card { position: relative; display: flex; flex-direction: column; min-height: min(68vh, 640px); padding: 40px 36px 22px !important; border-radius: 16px !important; border: 1px solid #d8c9a0 !important; background: #f7f1dc !important; box-shadow: inset 0 0 0 4px #f7f1dc, inset 0 0 0 5px #cdb987, 0 8px 24px rgba(80,60,20,.18) !important; overflow: hidden; }
+#page-azkar-detail .zikr-card::before { content: "" !important; position: absolute; inset: 0 !important; height: auto !important; border-radius: inherit !important; padding: 20px; pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='%23f3ead0'/%3E%3Cpath d='M10 1.5 18.5 10 10 18.5 1.5 10Z' fill='%232f8f86' stroke='%23b08a4f' stroke-width='1'/%3E%3Cpath d='M10 5.5 14.5 10 10 14.5 5.5 10Z' fill='%23f3ead0' stroke='%23b08a4f' stroke-width='.8'/%3E%3Ccircle cx='10' cy='10' r='1.6' fill='%23b08a4f'/%3E%3C/svg%3E") 0 0 / 20px 20px repeat !important; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); mask-composite: exclude; }
+#page-azkar-detail .zikr-card::after { content: ""; position: absolute; inset: 20px; border: 1.5px solid #b08a4f; pointer-events: none; }
+:root[data-theme="dark"] #page-azkar-detail #azkarList.azkar-pager-list > .zikr-card { background: #1b140d !important; border-color: rgba(214,176,112,.3) !important; box-shadow: inset 0 0 0 4px #1b140d, inset 0 0 0 5px rgba(214,176,112,.28), 0 8px 24px rgba(0,0,0,.5) !important; }
+:root[data-theme="dark"] #page-azkar-detail .zikr-card::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='%23231a10'/%3E%3Cpath d='M10 1.5 18.5 10 10 18.5 1.5 10Z' fill='%23b08a4f' stroke='%23e3bf84' stroke-width='1'/%3E%3Cpath d='M10 5.5 14.5 10 10 14.5 5.5 10Z' fill='%23231a10' stroke='%23b08a4f' stroke-width='.8'/%3E%3Ccircle cx='10' cy='10' r='1.6' fill='%23b08a4f'/%3E%3C/svg%3E") !important; }
+:root[data-theme="dark"] #page-azkar-detail .zikr-card::after { border-color: #c9a45e; }
+#page-azkar-detail .zikr-text { flex: 1; display: flex; align-items: center; justify-content: center; margin: 6px 0 14px !important; font-size: clamp(26px, 7.2vw, 34px) !important; line-height: 2.15 !important; text-align: center; color: #2a1d0a !important; }
+:root[data-theme="dark"] #page-azkar-detail .zikr-text { color: #f6ead2 !important; }
+#page-azkar-detail .zikr-meaning-wrap { position: relative; margin-top: 4px; background: rgba(176,138,79,.12) !important; border-color: rgba(176,138,79,.4) !important; }
+#page-azkar-detail .zikr-meaning { font-size: 14px; line-height: 1.8; }
+#page-azkar-detail .zikr-card > * { position: relative; z-index: 1; }
+.azkar-pager-pos { color: #c9a45e; }
+#page-azkar-detail #azkarList.azkar-pager-list > .zikr-card { min-height: min(60vh, 560px); }
+#page-azkar-detail .zikr-footer { display: grid !important; grid-template-columns: 44px auto 1fr; gap: 8px; align-items: center; }
+#page-azkar-detail .zikr-footer .zikr-count { justify-self: end; }
+#page-azkar-detail .zikr-footer .zikr-button { grid-column: 1 / -1; order: 5; min-height: 52px; font-size: 18px; font-weight: 800; border-radius: 16px; }
+#page-azkar-detail { padding-bottom: 130px; }

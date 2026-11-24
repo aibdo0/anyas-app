@@ -254,7 +254,7 @@ function openAzkarTopic(number, focusIndex = null, options = null) {
 
   if (titleElement) {
     titleElement.textContent = options?.title
-      || `${topic.number}. ${topic.title || "باب الأذكار"}`;
+      || (topic.title || "باب الأذكار");
   }
 
   window.__zikrIdx = 0;
