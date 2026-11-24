@@ -90,7 +90,7 @@ check("PWA install and offline shell are configured", () => {
   assert.match(index, /serviceWorker\.register\("\.\/sw\.js"\)/);
   assert.match(serviceWorker, /caches\.open\(CACHE_NAME\)/);
   assert.match(serviceWorker, /self\.addEventListener\("fetch"/);
-  assert.match(serviceWorker, /caches\.match\("\.\/index\.html"\)/);
+  assert.match(serviceWorker, /cache\.match\("\.\/index\.html", \{ ignoreSearch: true \}\)/);
   assert.match(index, /id="pwaStatusBanner"/);
   assert.match(index, /beforeinstallprompt/);
   assert.match(index, /addEventListener\("offline"/);

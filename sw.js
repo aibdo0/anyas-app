@@ -1,4 +1,7 @@
-const CACHE_NAME = "anyas-shell-v1.1.9";
+// The cache name follows data/app-version.js, so every release gets a fresh cache automatically.
+self.window = self;
+importScripts("./data/app-version.js");
+const CACHE_NAME = `anyas-shell-v${self.ANIAS_APP_VERSION || "0"}-${self.ANIAS_VERSION_CODE || 0}`;
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -45,11 +48,48 @@ const CORE_ASSETS = [
   "./js/app-enhancements.js",
   "./js/daily-devotions.js",
   "./js/app.js",
-  "./js/about.js"
+  "./js/about.js",
+  "./js/optional-audio.js",
+  "./js/duas.js",
+  "./data/common-cities.js",
+  "./data/en-ui-translations.json",
+  "./css/duas.css",
+  "./assets/fonts/Tajawal-400.ttf",
+  "./assets/fonts/Tajawal-500.ttf",
+  "./assets/fonts/Tajawal-700.ttf",
+  "./assets/fonts/Tajawal-800.ttf",
+  "./assets/fonts/Amiri-400.ttf",
+  "./assets/fonts/Amiri-700.ttf",
+  "./css/audio-library.css"
 ];
 
+
+// index.html loads css/js/data with ?v=... query strings. Cache those exact URLs too,
+// so the first offline start finds every file under the same URL the page asks for.
+async function versionedAssetsFromIndex() {
+  try {
+    const response = await fetch("./index.html", { cache: "no-store" });
+    const html = await response.text();
+    const urls = new Set();
+    for (const match of html.matchAll(/(?:href|src)="((?:css|js|data|assets)\/[^"#]+)"/g)) urls.add(`./${match[1]}`);
+    return [...urls];
+  } catch (_) {
+    return [];
+  }
+}
+
+// One missing file must not block the whole install.
+async function precache(cache, urls) {
+  await Promise.all(urls.map(url => cache.add(url).catch(error => console.info("sw: skipped", url, error && error.message))));
+}
+
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_ASSETS)).then(() => self.skipWaiting()));
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await precache(cache, CORE_ASSETS);
+    await precache(cache, (await versionedAssetsFromIndex()).filter(url => !CORE_ASSETS.includes(url)));
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener("activate", event => {
@@ -63,13 +103,14 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) return;
-  event.respondWith(
-    caches.match(request).then(cached => {
-      const refresh = fetch(request).then(response => {
-        if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put(request, response.clone()));
-        return response;
-      }).catch(() => cached || caches.match("./index.html"));
-      return cached || refresh;
-    })
-  );
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    // Exact URL first; if only another ?v= copy exists, use it rather than failing offline.
+    const cached = (await cache.match(request)) || (await cache.match(request, { ignoreSearch: true }));
+    const refresh = fetch(request).then(response => {
+      if (response.ok) cache.put(request, response.clone());
+      return response;
+    }).catch(() => cached || (request.mode === "navigate" ? cache.match("./index.html", { ignoreSearch: true }) : Response.error()));
+    return cached || refresh;
+  })());
 });

@@ -24,12 +24,13 @@
   };
 
   const topics = window.azkarTopics || [];
-  const todayKey = new Date().toLocaleDateString("en-CA");
-  const storageKey = `anyas_wird_progress_${todayKey}`;
+  const currentDayKey = () => new Date().toLocaleDateString("en-CA");
+  let activeDayKey = currentDayKey();
+  const storageKey = () => `anyas_wird_progress_${activeDayKey}`;
 
   function loadProgress() {
     try {
-      return JSON.parse(localStorage.getItem(storageKey) || "{}") || {};
+      return JSON.parse(localStorage.getItem(storageKey()) || "{}") || {};
     } catch (error) {
       console.warn("تعذر تحميل تقدم الورد اليومي:", error);
       return {};
@@ -38,9 +39,19 @@
 
   let progress = loadProgress();
 
+  // Day changed while the app stayed open: switch to the new day's record and redraw.
+  function rolloverIfNeeded() {
+    const key = currentDayKey();
+    if (key === activeDayKey) return false;
+    activeDayKey = key;
+    progress = loadProgress();
+    Object.keys(sections).forEach(renderSection);
+    return true;
+  }
+
   function saveProgress() {
     try {
-      localStorage.setItem(storageKey, JSON.stringify(progress));
+      localStorage.setItem(storageKey(), JSON.stringify(progress));
     } catch (error) {
       console.warn("تعذر حفظ تقدم الورد اليومي:", error);
     }
@@ -133,6 +144,7 @@
       button.setAttribute("aria-pressed", String(completed));
       button.textContent = completed ? "تم ✓" : "تمّ الذكر";
       button.addEventListener("click", () => {
+        if (rolloverIfNeeded()) return;
         progress[key] = !completed;
         saveProgress();
         renderSection(id);
@@ -210,5 +222,7 @@
     });
 
     updateProgress();
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) rolloverIfNeeded(); });
+    setInterval(rolloverIfNeeded, 60 * 1000);
   });
 })();
