@@ -301,3 +301,8 @@ html[lang="en"] #page-home .next-prayer .countdown::before { content: "Remaining
 .tqr-copy strong { font-size: 16px; }
 .tqr-copy small { font-size: 12px; opacity: .75; }
 .tqr-go { font-size: 22px; color: #e3bf84; }
+
+/* 1.1.57 تتبع الصلاة مرتبط بالمواقيت */
+#page-tasks .prayer-track-item.locked { opacity: .55; filter: grayscale(.4); }
+#page-tasks .prayer-track-item.missed { border-color: #c9694f !important; background: rgba(201,105,79,.12) !important; }
+#page-tasks .prayer-track-item.missed .track-status { color: #e8957f; }

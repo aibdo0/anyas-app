@@ -1023,7 +1023,26 @@ function setupPrayerTracking() {
 }
 
 
+function getPrayerWindowState(prayer) {
+  const t = window.todayTimings;
+  if (!t || typeof createPrayerDate !== "function") return { state: "open", at: "" };
+  const start = createPrayerDate(t[prayer]);
+  if (!start) return { state: "open", at: "" };
+  const endKey = { Fajr: "Sunrise", Dhuhr: "Asr", Asr: "Maghrib", Maghrib: "Isha" }[prayer];
+  const end = endKey ? createPrayerDate(t[endKey]) : null;
+  const now = new Date();
+  if (now < start) return { state: "locked", at: t[prayer] };
+  if (end && now > end) return { state: "missed", at: t[prayer] };
+  return { state: "open", at: t[prayer] };
+}
+
 function togglePrayerTracking(prayer) {
+
+  const wasDone = Boolean((getPrayerTrackingData()[getTodayKey()] || {})[prayer]);
+  if (!wasDone && getPrayerWindowState(prayer).state === "locked") {
+    updatePrayerTrackingUI();
+    return;
+  }
 
   const data =
     getPrayerTrackingData();
@@ -1050,6 +1069,12 @@ function togglePrayerTracking(prayer) {
 }
 
 
+if (!window.__prayerLockTimer) {
+  window.__prayerLockTimer = setInterval(() => {
+    if (typeof updatePrayerTrackingUI === "function" && !document.hidden) updatePrayerTrackingUI();
+  }, 60000);
+}
+
 function updatePrayerTrackingUI() {
 
   const data =
@@ -1075,9 +1100,17 @@ function updatePrayerTrackingUI() {
           todayData[prayer]
         );
 
+      const win = getPrayerWindowState(prayer);
+      const locked = !completed && win.state === "locked";
+      const missed = !completed && win.state === "missed";
+      button.classList.toggle("locked", locked);
+      button.classList.toggle("missed", missed);
+      button.setAttribute("aria-disabled", locked ? "true" : "false");
       const status = button.querySelector(".track-status");
       if (status) {
-        status.textContent = completed ? "تمّت ✓" : "لم تُسجّل";
+        status.textContent = completed ? "تمّت ✓"
+          : locked ? `يُفتح عند ${win.at}`
+          : missed ? "فاتت؟ سجّلها الآن" : "لم تُسجّل";
       }
 
       button.classList.toggle(
