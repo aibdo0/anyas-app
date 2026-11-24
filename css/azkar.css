@@ -240,3 +240,16 @@
 @media (prefers-reduced-motion: reduce) {
   .zikr-card, .zikr-favorite-button, .zikr-share-button, .zikr-button { transition: none; }
 }
+
+.category-grid { display: flex; flex-direction: column; gap: 10px; }
+.azkar-group { border: 1px solid rgba(160,130,90,.35); border-radius: 16px; background: #f3e8d6; overflow: hidden; }
+.azkar-group-head { width: 100%; display: flex; align-items: center; gap: 10px; padding: 16px 16px; background: none; border: 0; font: inherit; color: #4a3519; cursor: pointer; text-align: right; }
+.azkar-group-title { flex: 1; font-weight: 800; font-size: 17px; }
+.azkar-group-meta { font-size: 13px; opacity: .7; }
+.azkar-group-chev { width: 9px; height: 9px; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform .2s; opacity: .7; }
+.azkar-group.open .azkar-group-chev { transform: rotate(135deg); }
+.azkar-group-head.single .azkar-group-chev { transform: rotate(45deg); }
+.azkar-group-body { padding: 0 10px 10px; display: flex; flex-direction: column; gap: 6px; }
+.azkar-group-body .category-card { width: 100%; }
+:root[data-theme="dark"] .azkar-group { background: #1e2023; border-color: rgba(214,176,112,.22); }
+:root[data-theme="dark"] .azkar-group-head { color: #f1e6d3; }

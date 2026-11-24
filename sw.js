@@ -46,6 +46,7 @@ const CORE_ASSETS = [
   "./data/app-version.js?v=20261014-3",
   "./js/i18n.js?v=20261014-1",
   "./data/azkar-topics.js",
+  "./data/azkar-groups.js",
   "./data/azkar-benefits.js",
   "./data/daily-quran.js",
   "./data/daily-hadith-ids.js",

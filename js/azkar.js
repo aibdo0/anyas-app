@@ -15,39 +15,64 @@ function setupAzkarTopics() {
 
   if (!grid) return;
 
+  const groups = window.azkarGroups || [];
+  const byNumber = {};
+  topics.forEach(t => { byNumber[t.number] = t; });
+
   if (countElement) {
-    countElement.textContent =
-      `${topics.length} بابًا`;
+    countElement.textContent = groups.length
+      ? `${groups.length} أقسام`
+      : `${topics.length} بابًا`;
   }
 
   grid.innerHTML = "";
 
-
-  topics.forEach(topic => {
-
-    const card =
-      document.createElement("button");
-
+  const makeRow = topic => {
+    const card = document.createElement("button");
     card.type = "button";
     card.className = "category-card";
-
     card.innerHTML = `
-      <span class="category-card-title">
-        ${topic.number}. ${topic.title || "باب الأذكار"}
-      </span>
-
-      <span class="category-card-count">
-        ${topic.items ? topic.items.length : 0} أذكار
-      </span>
+      <span class="category-card-title">${topic.title || "باب الأذكار"}</span>
+      <span class="category-card-count">${topic.items ? topic.items.length : 0}</span>
     `;
+    card.addEventListener("click", () => openAzkarTopic(topic.number));
+    return card;
+  };
 
-    card.addEventListener("click", () => {
-      openAzkarTopic(topic.number);
+  if (!groups.length) {
+    topics.forEach(t => grid.appendChild(makeRow(t)));
+  } else {
+    groups.forEach(group => {
+      const list = group.topics.map(n => byNumber[n]).filter(Boolean);
+      if (!list.length) return;
+      const total = list.reduce((n, t) => n + (t.items ? t.items.length : 0), 0);
+      const box = document.createElement("div");
+      box.className = "azkar-group";
+      const head = document.createElement("button");
+      head.type = "button";
+      head.className = "azkar-group-head";
+      head.setAttribute("aria-expanded", "false");
+      head.innerHTML = `<span class="azkar-group-title">${group.title}</span><span class="azkar-group-meta">${total} ذكرًا</span><span class="azkar-group-chev" aria-hidden="true"></span>`;
+      const body = document.createElement("div");
+      body.className = "azkar-group-body";
+      body.hidden = true;
+      if (list.length === 1) {
+        head.addEventListener("click", () => openAzkarTopic(list[0].number));
+        head.classList.add("single");
+      } else {
+        list.forEach(t => body.appendChild(makeRow(t)));
+        head.addEventListener("click", () => {
+          const open = body.hidden;
+          body.hidden = !open;
+          head.setAttribute("aria-expanded", String(open));
+          box.classList.toggle("open", open);
+        });
+      }
+      box.appendChild(head);
+      box.appendChild(body);
+      grid.appendChild(box);
     });
-
-    grid.appendChild(card);
-
-  });
+  }
 
   window.azkarFavorites?.render();
   setupAzkarSearch(topics, grid, countElement);
