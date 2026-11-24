@@ -1,3 +1,25 @@
+// يطابق المعدود مع العدد: ١ مفرد، ٢ مثنى، ٣-١٠ جمع، ١١-٩٩ مفرد منصوب، والمئات مفرد مجرور.
+// forms: [مفرد, مثنى مرفوع, مثنى مجرور, جمع, مفرد منصوب, مفرد مجرور]
+window.arCount = function (n, f, oblique) {
+  n = Number(n) || 0;
+  const r = n % 100;
+  if (n < 100) {
+    if (n === 1) return `${f[0]} واحد`;
+    if (n === 2) return oblique ? f[2] : f[1];
+    if (n === 0) return `لا ${f[0]}`;
+    if (r >= 3 && r <= 10) return `${n} ${f[3]}`;
+    return `${n} ${f[4]}`;
+  }
+  if (r === 0 || r === 1 || r === 2) return `${n} ${f[5]}`;
+  if (r >= 3 && r <= 10) return `${n} ${f[3]}`;
+  return `${n} ${f[4]}`;
+};
+window.AR_NOUNS = {
+  dhikr: ["ذكر", "ذكران", "ذكرين", "أذكار", "ذكرًا", "ذكر"],
+  bab: ["باب", "بابان", "بابين", "أبواب", "بابًا", "باب"],
+  qism: ["قسم", "قسمان", "قسمين", "أقسام", "قسمًا", "قسم"]
+};
+
 // =====================================================
 // مَآبُ الأوَّاب
 // الأذكار والأبواب
@@ -21,8 +43,8 @@ function setupAzkarTopics() {
 
   if (countElement) {
     countElement.textContent = groups.length
-      ? `${groups.length} أقسام`
-      : `${topics.length} بابًا`;
+      ? window.arCount(groups.length, window.AR_NOUNS.qism)
+      : window.arCount(topics.length, window.AR_NOUNS.bab);
   }
 
   grid.innerHTML = "";
@@ -52,7 +74,7 @@ function setupAzkarTopics() {
       head.type = "button";
       head.className = "azkar-group-head";
       head.setAttribute("aria-expanded", "false");
-      head.innerHTML = `<span class="azkar-group-title">${group.title}</span><span class="azkar-group-meta">${total} ذكرًا</span><span class="azkar-group-chev" aria-hidden="true"></span>`;
+      head.innerHTML = `<span class="azkar-group-title">${group.title}</span><span class="azkar-group-meta">${window.arCount(total, window.AR_NOUNS.dhikr)}</span><span class="azkar-group-chev" aria-hidden="true"></span>`;
       const body = document.createElement("div");
       body.className = "azkar-group-body";
       body.hidden = true;
@@ -113,7 +135,7 @@ function setupAzkarSearch(topics, grid, countElement) {
     results.innerHTML = "";
 
     if (!query) {
-      if (countElement) countElement.textContent = `${topics.length} بابًا`;
+      if (countElement) countElement.textContent = window.arCount(topics.length, window.AR_NOUNS.bab);
       if (status) status.textContent = "";
       return;
     }
@@ -124,7 +146,7 @@ function setupAzkarSearch(topics, grid, countElement) {
       const title = normalizeAzkarSearchText(topic.title);
 
       if (terms.every(term => title.includes(term))) {
-        matches.push({ topic, index: null, text: `يحتوي هذا الباب على ${topic.items.length} ذكرًا.` });
+        matches.push({ topic, index: null, text: `يحتوي هذا الباب على ${window.arCount(topic.items.length, window.AR_NOUNS.dhikr, true)}.` });
         return;
       }
 

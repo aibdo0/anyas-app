@@ -101,7 +101,7 @@
 
     const summary = document.getElementById("wirdProgressText");
     const bar = document.getElementById("wirdProgressBar");
-    if (summary) summary.textContent = `${done} من ${total} ذكرًا مكتملًا اليوم`;
+    if (summary) summary.textContent = `أكملت ${done} من ${window.arCount ? window.arCount(total, window.AR_NOUNS.dhikr, true) : total + " ذكرًا"} اليوم`;
     if (bar) {
       const percent = total ? Math.round(done / total * 100) : 0;
       bar.style.width = `${percent}%`;
