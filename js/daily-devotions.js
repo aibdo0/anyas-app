@@ -196,6 +196,52 @@
     if (prayer) prayer.textContent = `${number(prayerCount)}/${number(prayerTotal)}`;
     if (dhikr) dhikr.textContent = `${number(dhikrDone)}/${number(catalog.adhkar.length)}`;
     if (sunnah) sunnah.textContent = `${number(sunnahDone)}/${number(catalog.sunnah.length)}`;
+    renderWeekReport();
+  }
+
+  const toAr = text => String(text).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+  const DAY_NOUN = ["يوم", "يومان", "يومين", "أيام", "يومًا", "يوم"];
+
+  function dayScore(date, isToday) {
+    const key = currentHijriKey(date);
+    let dev = { counts: {}, sunnah: {} };
+    if (isToday) dev = state;
+    else {
+      try { dev = JSON.parse(localStorage.getItem(`anyas_devotions_hijri_${key}`) || "null") || dev; } catch (error) { /* لا بيانات */ }
+    }
+    let prayers = 0;
+    try {
+      const all = typeof getPrayerTrackingData === "function" ? getPrayerTrackingData() : {};
+      const day = all[key] || {};
+      prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].filter(p => day[p]).length;
+    } catch (error) { /* لا بيانات */ }
+    const dhikr = catalog.adhkar.filter(item => (Number((dev.counts || {})[item.id]) || 0) >= item.goal).length;
+    const sunnah = catalog.sunnah.filter(item => (dev.sunnah || {})[item.id]).length;
+    const total = 5 + catalog.adhkar.length + catalog.sunnah.length;
+    return { prayers, pct: total ? Math.round((prayers + dhikr + sunnah) / total * 100) : 0, key };
+  }
+
+  function renderWeekReport() {
+    const bars = document.getElementById("weekReportBars");
+    if (!bars) return;
+    const names = new Intl.DateTimeFormat("ar-EG", { weekday: "long" });
+    const short = new Intl.DateTimeFormat("ar-EG", { weekday: "short" });
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(); date.setDate(date.getDate() - i);
+      days.push({ date, ...dayScore(date, i === 0) });
+    }
+    bars.innerHTML = days.map((d, i) => `<div class="week-bar${i === 6 ? " is-today" : ""}"><span class="week-bar-pct">${toAr(d.pct)}٪</span><span class="week-bar-fill"><i style="height:${Math.max(d.pct, 3)}%"></i></span><span class="week-bar-day">${short.format(d.date)}</span></div>`).join("");
+    const avg = Math.round(days.reduce((s, d) => s + d.pct, 0) / days.length);
+    const full = days.filter(d => d.prayers === 5).length;
+    const best = days.reduce((b, d) => (d.pct > b.pct ? d : b), days[0]);
+    const streak = typeof computePrayerStreaks === "function" ? computePrayerStreaks().current : 0;
+    const chip = document.getElementById("weekReportStreak");
+    if (chip) chip.textContent = streak > 0 ? `سلسلة: ${toAr(window.arCount ? window.arCount(streak, DAY_NOUN) : streak)}` : "ابدأ سلسلتك اليوم";
+    const summary = document.getElementById("weekReportSummary");
+    if (summary) summary.textContent = best.pct > 0
+      ? `متوسط الأسبوع ${toAr(avg)}٪. أفضل يوم: ${names.format(best.date)} (${toAr(best.pct)}٪). أكملت الصلوات الخمس في ${toAr(window.arCount ? window.arCount(full, DAY_NOUN, true) : full)} من ٧.`
+      : "لا يوجد تسجيل بعد هذا الأسبوع. ابدأ بتسجيل صلاة اليوم.";
   }
 
   window.updateDailyOverview = updateDailyOverview;

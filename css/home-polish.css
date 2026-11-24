@@ -258,3 +258,20 @@ html[lang="en"] #page-home .next-prayer .countdown::before { content: "Remaining
 #page-tasks .daily-prayer-card .prayer-track-item:last-child, #page-tasks .daily-prayer-card .prayer-track-item { grid-column: auto !important; width: auto !important; }
 #page-tasks .daily-prayer-card .daily-prayer-heading { margin-bottom: 0 !important; }
 #page-tasks .daily-prayer-card .prayer-tracker { margin-top: 6px !important; }
+
+/* 1.1.54: تقرير الأسبوع */
+.week-report-card { margin: 0 0 20px; padding: 16px 16px 12px; border: 1px solid rgba(222,192,126,.3); border-radius: 22px; background: linear-gradient(160deg, rgba(24,30,46,.96), rgba(16,21,34,.96)); color: #fff; }
+.week-report-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.week-report-head h2 { margin: 0; font-size: 18px; }
+.week-report-streak { padding: 5px 11px; border-radius: 99px; border: 1px solid rgba(227,191,132,.5); color: #f0d9a3; font-size: 12px; font-weight: 800; }
+.week-report-bars { display: flex; align-items: flex-end; justify-content: space-between; gap: 6px; height: 130px; margin: 14px 0 8px; direction: rtl; }
+.week-bar { flex: 1; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; gap: 4px; height: 100%; min-width: 0; }
+.week-bar-pct { font-size: 10px; opacity: .75; }
+.week-bar-fill { position: relative; width: 70%; max-width: 34px; border-radius: 9px; background: rgba(255,255,255,.1); overflow: hidden; }
+.week-bar-fill i { position: absolute; inset-inline: 0; bottom: 0; border-radius: 9px; background: linear-gradient(0deg, #9f7740, #e3bf84); }
+.week-bar-day { font-size: 11px; opacity: .8; }
+.week-bar.is-today .week-bar-day { color: #f0d9a3; font-weight: 800; opacity: 1; }
+.week-bar.is-today .week-bar-fill { outline: 1px solid rgba(227,191,132,.6); }
+.week-report-summary { margin: 6px 0 4px; font-size: 13px; line-height: 1.8; }
+.week-report-note { display: block; font-size: 11px; line-height: 1.6; opacity: .6; }
+#page-tasks .streak-inline { display: none; }
