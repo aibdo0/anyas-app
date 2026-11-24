@@ -323,7 +323,6 @@ function goToPage(pageId) {
     "privacy",
     "prayer-report",
     "worship",
-    "quran",
     "city-picker",
     "prayer-schedule",
     "mosques"

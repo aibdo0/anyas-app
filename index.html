@@ -49,7 +49,7 @@
 
 
 
-<link rel="stylesheet" href="css/theme-white-gold.css?v=20261013-34">
+<link rel="stylesheet" href="css/theme-white-gold.css?v=20261013-35">
 <link rel="stylesheet" href="css/tasks-ux.css?v=20261003-1">
 <link rel="stylesheet" href="css/tasks-structure.css?v=20261002-1">
 <link rel="stylesheet" href="css/home-structure.css?v=20260930-5">
@@ -59,7 +59,7 @@
 <link rel="stylesheet" href="css/app-design-system.css?v=20261013-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/welcome.css?v=20261124-2">
-<link rel="stylesheet" href="css/quran.css?v=20261124-3">
+<link rel="stylesheet" href="css/quran.css?v=20261124-4">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/home-header.css?v=20261124-1">
 <link rel="stylesheet" href="css/home-polish.css?v=20261124-9">
@@ -2026,7 +2026,7 @@ data-audio="fajrAudio"
 
 <main class="page" id="page-quran">
   <header class="plain-header">
-    <button class="back-button" type="button" id="quranBack" data-back-more>رجوع إلى المزيد</button>
+    <button class="back-button" type="button" id="quranBack" data-back-more hidden>السور</button>
     <div class="brand" id="quranTitle">القرآن الكريم</div>
     <div class="date" id="quranSub">اختر سورة للقراءة</div>
   </header>
@@ -2056,12 +2056,7 @@ data-audio="fajrAudio"
     <p>المواسم والسنن في مكان واحد</p>
   </div>
   <div class="more-menu">
-        <button type="button" class="more-menu-item" data-more-go="quran">
-      <span class="more-menu-icon more-menu-icon--about" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 6c-2-1.4-4.5-2-8-2v14c3.5 0 6 .6 8 2 2-1.4 4.5-2 8-2V4c-3.5 0-6 .6-8 2Z"/><path d="M12 6v14"/></svg></span>
-      <span class="more-menu-copy"><strong>القرآن الكريم</strong><small>اقرأ المصحف كاملًا بدون إنترنت</small></span>
-      <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
-    </button>
-    <button type="button" class="more-menu-item" data-more-go="worship">
+        <button type="button" class="more-menu-item" data-more-go="worship">
       <span class="more-menu-icon more-menu-icon--worship" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.5 14.2A8.7 8.7 0 0 1 9.8 3.5 8.8 8.8 0 1 0 20.5 14.2Z"/><path d="m17.5 3 .8 2 2.2.8-2.2.7-.8 2.1-.7-2.1-2.1-.7 2.1-.8.7-2Z"/></svg></span>
       <span class="more-menu-copy"><strong>العبادات والمواسم</strong><small>التاريخ الهجري والتذكيرات الموسمية</small></span>
       <span class="more-menu-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m14 18-6-6 6-6"/></svg></span>
@@ -2298,6 +2293,18 @@ type="button"
 
 <button
 class="nav-item"
+data-page="quran"
+aria-label="القرآن الكريم"
+type="button"
+>
+<span class="nav-icon">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6c-2-1.4-4.5-2-8-2v14c3.5 0 6 .6 8 2 2-1.4 4.5-2 8-2V4c-3.5 0-6 .6-8 2Z"/><path d="M12 6v14"/></svg>
+</span>
+</button>
+
+
+<button
+class="nav-item"
 data-page="tasks"
 aria-label="يوم المسلم"
 type="button"
@@ -2362,7 +2369,7 @@ type="button"
 <script src="js/daily-devotions.js?v=20261124-1"></script>
 <script src="js/home-extras.js?v=20261124-1"></script>
 <script src="js/share-image.js?v=20261124-1"></script>
-<script src="js/quran.js?v=20261124-3"></script>
+<script src="js/quran.js?v=20261124-4"></script>
 <script src="js/app.js?v=20261012-2"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script>

@@ -3,6 +3,7 @@
   var KEY = "anyas_quran_last";
   var loading = null;
   var cur = 0;
+  var JUZ = ["الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع","الثامن","التاسع","العاشر","الحادي عشر","الثاني عشر","الثالث عشر","الرابع عشر","الخامس عشر","السادس عشر","السابع عشر","الثامن عشر","التاسع عشر","العشرون","الحادي والعشرون","الثاني والعشرون","الثالث والعشرون","الرابع والعشرون","الخامس والعشرون","السادس والعشرون","السابع والعشرون","الثامن والعشرون","التاسع والعشرون","الثلاثون"].map(function (x) { return "الجزء " + x; });
   var $ = function (id) { return document.getElementById(id); };
 
   function ar(n) {
@@ -12,15 +13,21 @@
     return String(t).replace(/[\u064B-\u065F\u0670\u0640]/g, "").replace(/[أإآٱ]/g, "ا").replace(/ة/g, "ه").replace(/ى/g, "ي");
   }
   function load() {
-    if (window.ANIAS_QURAN) return Promise.resolve(window.ANIAS_QURAN);
+    if (window.ANIAS_QURAN && window.ANIAS_QURAN_PAGES) return Promise.resolve(window.ANIAS_QURAN);
     if (loading) return loading;
-    loading = new Promise(function (res, rej) {
-      var s = document.createElement("script");
-      s.src = "data/quran-full.js";
-      s.onload = function () { res(window.ANIAS_QURAN); };
-      s.onerror = function () { loading = null; rej(new Error("quran-load")); };
-      document.head.appendChild(s);
-    });
+    function one(src, ok) {
+      return ok() ? Promise.resolve() : new Promise(function (res, rej) {
+        var s = document.createElement("script");
+        s.src = src;
+        s.onload = res;
+        s.onerror = function () { rej(new Error("quran-load")); };
+        document.head.appendChild(s);
+      });
+    }
+    loading = Promise.all([
+      one("data/quran-full.js", function () { return window.ANIAS_QURAN; }),
+      one("data/quran-pages.js", function () { return window.ANIAS_QURAN_PAGES; })
+    ]).then(function () { return window.ANIAS_QURAN; }, function (e) { loading = null; throw e; });
     return loading;
   }
   function getLast() {
@@ -47,6 +54,7 @@
   function showList() {
     $("quranReadView").hidden = true;
     $("quranListView").hidden = false;
+    $("quranBack").hidden = true;
     $("quranTitle").textContent = "القرآن الكريم";
     $("quranSub").textContent = "اختر سورة للقراءة";
     updateResume();
@@ -70,17 +78,37 @@
     cur = i;
     var BISM = Q.ayahs[0][0];
     var v = Q.ayahs[i].slice();
-    var head = "";
-    if (i !== 0 && i !== 8) {
-      if (v[0].indexOf(BISM + " ") === 0) v[0] = v[0].slice(BISM.length + 1);
-      head = '<p class="quran-bism">' + BISM + "</p>";
+    var PG = window.ANIAS_QURAN_PAGES, n = v.length;
+    var hasBism = i !== 0 && i !== 8;
+    if (hasBism && v[0].indexOf(BISM + " ") === 0) v[0] = v[0].slice(BISM.length + 1);
+    // pages that start inside this surah, plus the page that holds ayah 1
+    var starts = [[1, 1]], s1 = i + 1, firstPage = 1;
+    PG.pages.forEach(function (p, k) {
+      if (p[0] < s1 || (p[0] === s1 && p[1] <= 1)) firstPage = k + 1;
+      else if (p[0] === s1) starts.push([p[1], k + 1]);
+    });
+    starts[0][1] = firstPage;
+    function juzOf(a) {
+      var j = 1;
+      PG.juz.forEach(function (x, k) { if (x[0] < s1 || (x[0] === s1 && x[1] <= a)) j = k + 1; });
+      return j;
     }
-    var body = v.map(function (t, k) {
-      return '<span class="quran-ayah">' + t + ' <span class="quran-end">﴿' + ar(k + 1) + "﴾</span></span>";
-    }).join(" ");
-    $("quranReader").innerHTML = '<h2 class="quran-surah-title">سورة ' + Q.names[i] + "</h2>" + head + '<p class="quran-text">' + body + "</p>";
+    var html = "";
+    starts.forEach(function (st, k) {
+      var from = st[0], to = k + 1 < starts.length ? starts[k + 1][0] - 1 : n;
+      var txt = "";
+      for (var a = from; a <= to; a++) {
+        txt += '<span class="quran-ayah">' + v[a - 1] + ' <span class="quran-end">' + ar(a) + "</span></span> ";
+      }
+      html += '<article class="quran-page"><div class="quran-pills"><span class="quran-pill">سورة ' + Q.names[i] +
+        '</span><span class="quran-pill">' + JUZ[juzOf(from) - 1] + "</span></div>" +
+        (k === 0 && hasBism ? '<p class="quran-bism">' + BISM + "</p>" : "") +
+        '<p class="quran-text">' + txt + '</p><div class="quran-pageno"><span>' + ar(st[1]) + "</span></div></article>";
+    });
+    $("quranReader").innerHTML = html;
     $("quranListView").hidden = true;
     $("quranReadView").hidden = false;
+    $("quranBack").hidden = false;
     $("quranTitle").textContent = "سورة " + Q.names[i];
     $("quranSub").textContent = ar(Q.ayahs[i].length) + " آية";
     $("quranPrev").hidden = i === 0;
@@ -101,7 +129,7 @@
   function init() {
     var page = $("page-quran");
     if (!page) return;
-    document.querySelectorAll('[data-more-go="quran"]').forEach(function (b) {
+    document.querySelectorAll('[data-page="quran"]').forEach(function (b) {
       b.addEventListener("click", function () {
         load().then(function () {
           renderList("");
