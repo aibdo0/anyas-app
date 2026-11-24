@@ -262,3 +262,6 @@
 .azkar-smart-text small { font-size: 13px; opacity: .75; }
 .azkar-smart-go { width: 10px; height: 10px; border-left: 2px solid #e3c98f; border-bottom: 2px solid #e3c98f; transform: rotate(45deg); }
 .azkar-smart-alt { flex: none; padding: 10px 12px; border-radius: 14px; border: 1px solid rgba(160,130,90,.35); background: transparent; color: inherit; font: inherit; font-size: 13px; cursor: pointer; opacity: .85; }
+
+.azkar-priority-heading[hidden], .azkar-favorites[hidden] { display: none; }
+.azkar-priority-section.no-favs:has(#azkarFridayCard[hidden]) { display: none; }

@@ -59,15 +59,14 @@
     container.replaceChildren();
     if (countElement) countElement.textContent = String(favorites.length);
 
-    if (!favorites.length) {
-      const empty = document.createElement("p");
-      empty.className = "azkar-favorites-empty";
-      empty.textContent = "اضغط ☆ بجوار أي ذكر لتجده هنا.";
-      container.appendChild(empty);
-      return;
-    }
+    const section = container.closest(".azkar-priority-section");
+    const heading = section && section.querySelector(".azkar-priority-heading");
+    if (section) section.classList.toggle("no-favs", !favorites.length);
+    if (heading) heading.hidden = !favorites.length;
+    container.hidden = !favorites.length;
+    if (!favorites.length) return;
 
-    favorites.forEach(favorite => {
+    favorites.slice(0, 3).forEach(favorite => {
       const topic = topics.find(item => Number(item.number) === Number(favorite.topicNumber));
       const item = topic.items[Number(favorite.itemIndex)];
       const card = document.createElement("article");
