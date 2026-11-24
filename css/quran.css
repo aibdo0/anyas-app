@@ -62,7 +62,7 @@
 .quran-sheet#quranListView { height: 78vh; }
 .quran-sheet .quran-list { scrollbar-width: none; }
 .quran-sheet .quran-list::-webkit-scrollbar { display: none; }
-.quran-setting-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 4px calc(26px + env(safe-area-inset-bottom)); border-top: 1px solid #d8c9a0; }
+.quran-setting-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 16px 4px 18px; border-top: 1px solid #d8c9a0; }
 .quran-setting-row strong { display: block; font-size: 17px; }
 .quran-setting-row small { opacity: .65; font-size: 13px; }
 .quran-switch { flex: none; width: 52px; height: 30px; padding: 3px; border-radius: 16px; border: 0; background: #c9bfa6; cursor: pointer; display: flex; justify-content: flex-start; transition: background .2s; }
@@ -276,3 +276,12 @@ button.quran-pill { font: inherit; cursor: pointer; -webkit-tap-highlight-color:
 .quran-tj-legend i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
 .quran-tj-legend i.tj-g { background: #1f8a4c; } .quran-tj-legend i.tj-d { background: #2b6cb0; } .quran-tj-legend i.tj-k { background: #b8741a; } .quran-tj-legend i.tj-i { background: #8e44ad; } .quran-tj-legend i.tj-m { background: #c0392b; } .quran-tj-legend i.tj-l { background: #a8231b; } .quran-tj-legend i.tj-q { background: #0e8a8a; } .quran-tj-legend i.tj-s { background: #8b8b8b; }
 .quran-tj-legend p { flex-basis: 100%; margin: 4px 0 0; font-size: 12px; opacity: .8; line-height: 1.6; }
+
+/* 1.1.50: شيت الإعدادات يتمرّر، وصفحة المصحف أعرض على الموبايل */
+.quran-sheet.quran-settings { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+.quran-sheet.quran-settings > * { flex: none; }
+@media (max-width: 600px) {
+  #page-quran:not(.quran-plain) .quran-page { padding: 30px 28px 14px; }
+  #page-quran .quran-text { font-size: var(--quran-fs, 23px); line-height: 2.05; }
+  #page-quran:not(.quran-plain) .quran-pills { margin-top: 18px; }
+}

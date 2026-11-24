@@ -428,7 +428,11 @@ window.anyasFetch = async function anyasFetch(url, options = {}, config = {}) {
     const manage = byId("manageNotificationsButton");
     const openSettingsFromEmpty = () => {
       openPage("settings");
-      window.setTimeout(() => byId("notificationSettingsHeading")?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+      window.setTimeout(() => {
+        const heading = byId("notificationSettingsHeading");
+        if (heading && heading.getAttribute("aria-expanded") === "false") heading.click();
+        heading?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 120);
     };
     let unreadOnly = false;
     const bellSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>';

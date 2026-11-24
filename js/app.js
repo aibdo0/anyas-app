@@ -1912,6 +1912,7 @@ function setupSettingsSectionTabs() {
     const toggle = document.createElement("button");
     toggle.type = "button";
     toggle.className = `${heading.className} settings-section-toggle`;
+    if (heading.id) toggle.id = heading.id;
     toggle.textContent = label;
     toggle.setAttribute("aria-controls", panelId);
     toggle.setAttribute("aria-expanded", "false");
