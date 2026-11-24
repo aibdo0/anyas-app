@@ -73,13 +73,23 @@
   function renderSunnah() {
     const list = document.getElementById("sunnahChecklist");
     if (!list) return;
-    list.innerHTML = catalog.sunnah.map(item => {
+    const RAK = { fajr: 2, dhuhrBefore: 4, dhuhrAfter: 2, maghribAfter: 2, ishaAfter: 2 };
+    const rawatib = catalog.sunnah.filter(item => RAK[item.id]);
+    const others = catalog.sunnah.filter(item => !RAK[item.id]);
+    const rakDone = rawatib.reduce((n, item) => n + (state.sunnah[item.id] ? RAK[item.id] : 0), 0);
+    const rakTotal = Object.values(RAK).reduce((a, b) => a + b, 0);
+    const card = item => {
       const done = Boolean(state.sunnah[item.id]);
       return `<button class="sunnah-task${done ? " is-done" : ""}" type="button" data-sunnah-id="${item.id}" aria-pressed="${done}">
         <span class="sunnah-task-check" aria-hidden="true">${done ? "✓" : ""}</span>
         <span class="sunnah-task-copy"><strong>${item.label}</strong><small>${item.detail}</small></span>
       </button>`;
-    }).join("");
+    };
+    list.innerHTML = `<div class="sunnah-group-head"><strong>السنن الرواتب</strong><span>${number(rakDone)} من ${number(rakTotal)} ركعة</span></div>
+      <div class="sunnah-group-bar" aria-hidden="true"><span style="width:${Math.round(rakDone / rakTotal * 100)}%"></span></div>
+      ${rawatib.map(card).join("")}
+      <div class="sunnah-group-head"><strong>نوافل أخرى</strong><span>الضحى والوتر والقيام</span></div>
+      ${others.map(card).join("")}`;
     list.querySelectorAll("[data-sunnah-id]").forEach(button => {
       button.addEventListener("click", () => {
         const id = button.dataset.sunnahId;

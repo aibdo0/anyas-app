@@ -67,3 +67,10 @@ html[lang="en"] #page-tasks .tasks-section-heading { direction: ltr; }
   #page-tasks .tasks-section-heading h2 { font-size: 15px; }
   #page-tasks .tasks-section-heading p { font-size: 10px; }
 }
+/* 1.1.52: السنن مجمّعة (الرواتب بعدّاد ركعات، ونوافل أخرى) */
+.sunnah-group-head { grid-column: 1 / -1; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 4px; }
+.sunnah-group-head strong { font-size: 14px; }
+.sunnah-group-head span { font-size: 12px; opacity: .75; }
+.sunnah-group-head ~ .sunnah-group-head { margin-top: 12px; }
+.sunnah-group-bar { grid-column: 1 / -1; height: 6px; border-radius: 4px; background: rgba(127,127,127,.25); overflow: hidden; }
+.sunnah-group-bar span { display: block; height: 100%; border-radius: 4px; background: #c9a24d; transition: width .25s; }
