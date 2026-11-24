@@ -1,7 +1,7 @@
 // مشاركة آية/حديث اليوم كصورة (مقاس ٩:١٦ مناسب لحالة واتساب) بنفس هوية التطبيق.
 (function () {
   "use strict";
-  var W = 1080, H = 1920, GOLD = "#e3c98f", GOLD2 = "#c6a363";
+  var W = 1080, H = 1920;
 
   function wrap(ctx, text, maxWidth) {
     var words = String(text).replace(/\s+/g, " ").trim().split(" "), lines = [], line = "";
@@ -22,7 +22,30 @@
     });
   }
 
-  async function render(kind, text, reference) {
+  var STYLES = {
+    photo: { name: "المسجد", chip: "#171821", fg: "#fff8e8", gold: "#e3c98f", gold2: "#c6a363", top: "#0d111c", bot: "#171821" },
+    emerald: { name: "زمردي", chip: "#0f4a3a", fg: "#fdf6e0", gold: "#e8cf8f", gold2: "#c6a363", top: "#0b3b2e", bot: "#126650", pattern: true },
+    night: { name: "ليل", chip: "#14183a", fg: "#fff8e8", gold: "#e3c98f", gold2: "#c6a363", top: "#070a1c", bot: "#1d2350", stars: true },
+    sand: { name: "رملي", chip: "#efe2c6", fg: "#3b2a14", gold: "#8a6a2e", gold2: "#a98443", top: "#f6ecd4", bot: "#e6d5ae", light: true },
+    ink: { name: "أسود", chip: "#000", fg: "#f4e7c4", gold: "#d8b96e", gold2: "#b8975a", top: "#000", bot: "#0b0b0b" }
+  };
+  function drawPattern(ctx, c) {
+    ctx.save(); ctx.strokeStyle = c; ctx.lineWidth = 2; var r = 90;
+    for (var y = -r; y < H + r; y += r) for (var x = -r; x < W + r; x += r) {
+      var ox = ((y / r) % 2 ? r / 2 : 0);
+      ctx.beginPath(); ctx.moveTo(x + ox, y - r / 2); ctx.lineTo(x + ox + r / 2, y); ctx.lineTo(x + ox, y + r / 2); ctx.lineTo(x + ox - r / 2, y); ctx.closePath(); ctx.stroke();
+    }
+    ctx.restore();
+  }
+  function drawStars(ctx) {
+    var seed = 7; function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    ctx.save();
+    for (var i = 0; i < 140; i++) { ctx.globalAlpha = .25 + rnd() * .6; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(rnd() * W, rnd() * H, .8 + rnd() * 2, 0, 7); ctx.fill(); }
+    ctx.restore();
+  }
+
+  async function render(kind, text, reference, styleKey) {
+    var ST = STYLES[styleKey] || STYLES.photo, GOLD = ST.gold, GOLD2 = ST.gold2;
     try {
       await Promise.all([document.fonts.load("700 60px Amiri"), document.fonts.load("800 40px Tajawal"), document.fonts.load("400 40px Amiri")]);
     } catch (e) { /* الخط الاحتياطي يكفي */ }
@@ -32,10 +55,12 @@
     ctx.direction = "rtl"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
 
     var bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, "#0d111c"); bg.addColorStop(1, "#171821");
+    bg.addColorStop(0, ST.top); bg.addColorStop(1, ST.bot);
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
 
-    var photo = await loadImage("assets/prayer-hero.jpg");
+    if (ST.pattern) { drawPattern(ctx, "rgba(232,207,143,.12)"); }
+    if (ST.stars) { drawStars(ctx); }
+    var photo = styleKey && styleKey !== "photo" ? null : await loadImage("assets/prayer-hero.jpg");
     if (photo) {
       var ph = 760, scale = Math.max(W / photo.width, ph / photo.height);
       var dw = photo.width * scale, dh = photo.height * scale;
@@ -55,7 +80,7 @@
     ctx.strokeRect(72, 72, W - 144, H - 144);
 
     // العنوان بين خطين ذهبيين
-    var title = kind === "ayah" ? "آية اليوم" : "حديث اليوم";
+    var title = kind === "verse" ? "من القرآن الكريم" : kind === "ayah" ? "آية اليوم" : "حديث اليوم";
     ctx.fillStyle = GOLD; ctx.font = "800 54px Tajawal, sans-serif";
     ctx.fillText(title, W / 2, 250);
     var tw = ctx.measureText(title).width;
@@ -65,15 +90,15 @@
 
     // النص: يصغَّر الخط تدريجيًا حتى يتّسع
     var body = kind === "ayah" ? text : text;
-    var maxW = W - 240, top = 340, bottom = 1130, size = kind === "ayah" ? 78 : 66, lines, lh;
+    var maxW = W - 240, top = 340, bottom = 1130, size = kind !== "hadith" ? 78 : 66, lines, lh;
     for (; size >= 34; size -= 2) {
       ctx.font = "700 " + size + "px Amiri, serif";
       lines = wrap(ctx, body, maxW); lh = size * 1.85;
       if (lines.length * lh <= bottom - top) break;
     }
     var blockH = lines.length * lh, y = top + (bottom - top - blockH) / 2 + size;
-    ctx.fillStyle = "#fff8e8";
-    ctx.shadowColor = "rgba(0,0,0,.5)"; ctx.shadowBlur = 12;
+    ctx.fillStyle = ST.fg;
+    ctx.shadowColor = ST.light ? "rgba(0,0,0,0)" : "rgba(0,0,0,.5)"; ctx.shadowBlur = 12;
     lines.forEach(function (l) { ctx.fillText(l, W / 2, y); y += lh; });
     ctx.shadowBlur = 0;
 
@@ -84,9 +109,9 @@
     }
 
     // الاسم
-    ctx.fillStyle = "#fff"; ctx.font = "800 64px Tajawal, sans-serif";
+    ctx.fillStyle = ST.light ? "#3b2a14" : "#fff"; ctx.font = "800 64px Tajawal, sans-serif";
     ctx.fillText("أنياس", W / 2, H - 150);
-    ctx.fillStyle = "rgba(255,255,255,.7)"; ctx.font = "500 32px Tajawal, sans-serif";
+    ctx.fillStyle = ST.light ? "rgba(59,42,20,.7)" : "rgba(255,255,255,.7)"; ctx.font = "500 32px Tajawal, sans-serif";
     ctx.fillText("رفيقك اليومي للصلاة والذكر", W / 2, H - 100);
     return canvas;
   }
@@ -133,16 +158,11 @@
     }
   }
 
-  async function shareCustom(text, ref, notify) {
-    var tell = notify || function () {};
-    if (!String(text || "").trim()) return;
-    tell("جارٍ تجهيز الصورة…");
+  async function sendCanvas(canvas, ref, tell) {
     try {
-      var canvas = await render("ayah", text, ref);
       if (window.AnyasAndroid && typeof window.AnyasAndroid.shareImage === "function") {
         window.AnyasAndroid.shareImage(toBase64(canvas), ref || "آية");
-        tell("");
-        return;
+        tell(""); return;
       }
       var blob = await toBlob(canvas);
       var file = new File([blob], "anyas-ayah.png", { type: "image/png" });
@@ -159,6 +179,38 @@
       if (e && e.name === "AbortError") { tell(""); return; }
       tell("تعذرت مشاركة الصورة. حاول مرة أخرى.");
     }
+  }
+
+  function shareCustom(text, ref, notify) {
+    var tell = notify || function () {};
+    if (!String(text || "").trim()) return;
+    var old = document.getElementById("shareStylePicker"); if (old) old.remove();
+    var cur = "photo", last = null;
+    var ov = document.createElement("div"); ov.id = "shareStylePicker"; ov.className = "share-picker";
+    ov.innerHTML = '<div class="share-picker-box" dir="rtl"><h2>اختر الخلفية</h2><div class="share-picker-prev"><canvas id="sharePickerCanvas"></canvas></div><div class="share-picker-chips"></div><div class="share-picker-actions"><button type="button" class="sp-cancel">إلغاء</button><button type="button" class="sp-go">مشاركة</button></div><p class="share-picker-note" aria-live="polite"></p></div>';
+    document.body.appendChild(ov);
+    var tb = document.getElementById("quranToolbar"); if (tb) tb.style.visibility = "hidden";
+    var obs = new MutationObserver(function () { if (!document.body.contains(ov)) { if (tb) tb.style.visibility = ""; obs.disconnect(); } }); obs.observe(document.body, { childList: true });
+    var chips = ov.querySelector(".share-picker-chips"), note = ov.querySelector(".share-picker-note"), pv = ov.querySelector("#sharePickerCanvas");
+    async function draw() {
+      note.textContent = "جارٍ التجهيز…";
+      var mine = cur, c = await render("verse", text, ref, mine);
+      if (mine !== cur) return;
+      last = c; pv.width = 270; pv.height = 480; pv.getContext("2d").drawImage(c, 0, 0, 270, 480); note.textContent = "";
+    }
+    Object.keys(STYLES).forEach(function (k) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "sp-chip" + (k === cur ? " on" : "");
+      b.style.background = STYLES[k].chip; b.style.color = STYLES[k].light ? "#3b2a14" : "#f4e7c4"; b.textContent = STYLES[k].name;
+      b.addEventListener("click", function () { cur = k; chips.querySelectorAll(".sp-chip").forEach(function (x) { x.classList.remove("on"); }); b.classList.add("on"); draw(); });
+      chips.appendChild(b);
+    });
+    ov.querySelector(".sp-cancel").addEventListener("click", function () { ov.remove(); });
+    ov.addEventListener("click", function (e) { if (e.target === ov) ov.remove(); });
+    ov.querySelector(".sp-go").addEventListener("click", async function () {
+      note.textContent = "جارٍ تجهيز الصورة…";
+      var c = await render("verse", text, ref, cur); ov.remove(); sendCanvas(c, ref, tell);
+    });
+    draw();
   }
 
   window.anyasShareImage = { render: render, share: share, shareCustom: shareCustom };

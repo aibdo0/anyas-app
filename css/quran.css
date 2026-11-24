@@ -238,3 +238,15 @@ button.quran-pill { font: inherit; cursor: pointer; -webkit-tap-highlight-color:
 .quran-tf-body { margin: 6px 0 0; font-size: 17px; line-height: 2; text-align: right; }
 :root[data-theme="dark"] .quran-tf-row { border-bottom-color: #44474a; }
 .quran-tb-icons button { width: 40px; }
+
+.share-picker { position: fixed; inset: 0; z-index: 5000; background: rgba(0,0,0,.6); display: flex; align-items: flex-end; justify-content: center; }
+.share-picker-box { width: 100%; max-width: 520px; background: #1b1d20; color: #f1e6d3; border-radius: 22px 22px 0 0; padding: 16px 16px 22px; text-align: center; }
+.share-picker-box h2 { margin: 0 0 10px; font-size: 18px; color: #e3c98f; }
+.share-picker-prev canvas { width: 120px; height: 213px; border-radius: 12px; border: 1px solid rgba(227,201,143,.4); }
+.share-picker-chips { display: flex; gap: 8px; justify-content: center; margin: 12px 0; flex-wrap: wrap; }
+.sp-chip { padding: 9px 14px; border-radius: 999px; border: 2px solid transparent; font: inherit; font-weight: 700; cursor: pointer; outline: 1px solid rgba(227,201,143,.3); }
+.sp-chip.on { border-color: #e3c98f; }
+.share-picker-actions { display: flex; gap: 10px; }
+.share-picker-actions button { flex: 1; padding: 13px; border-radius: 14px; font: inherit; font-weight: 800; border: 1px solid rgba(227,201,143,.4); background: #2c2015; color: #f1e6d3; cursor: pointer; }
+.share-picker-actions .sp-go { background: #e3c98f; color: #2a1d08; }
+.share-picker-note { min-height: 18px; margin: 8px 0 0; font-size: 13px; opacity: .7; }
