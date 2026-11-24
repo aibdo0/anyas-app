@@ -343,6 +343,15 @@
     $("page-quran").classList.toggle("quran-plain", !on);
     $("quranOrnToggle").setAttribute("aria-checked", on ? "true" : "false");
   }
+  var HFK = "anyas_quran_hifz";
+  function hifzOn() { try { return localStorage.getItem(HFK) === "1"; } catch (e) { return false; } }
+  function applyHifz() {
+    var on = hifzOn();
+    $("quranReader").classList.toggle("quran-hifz", on);
+    document.querySelectorAll(".quran-hifz-shown").forEach(function (e) { e.classList.remove("quran-hifz-shown"); });
+    var t = $("quranHifzToggle"); if (t) t.setAttribute("aria-checked", on ? "true" : "false");
+    var h = $("quranHifzHint"); if (h) h.hidden = !on;
+  }
   function openSettings() {
     showOnly("quranSettings");
     applyOrn();
@@ -457,6 +466,7 @@
       if (lpFired) { lpFired = false; return; }
       var tb = $("quranToolbar");
       var v = e.target.closest(".quran-ayah");
+      if (v && hifzOn()) { v.classList.toggle("quran-hifz-shown"); return; }
       if (v) {
         var s1 = Number(v.dataset.s), a1 = Number(v.dataset.a);
         if (!tb.hidden && sel && sel.s === s1 && sel.a === a1) { tb.hidden = true; clearSel(); return; }
@@ -556,6 +566,14 @@
       try { localStorage.setItem(ORN, ornOn() ? "false" : "true"); } catch (e) {}
       applyOrn();
     });
+    $("quranHifzToggle").addEventListener("click", function () {
+      try { localStorage.setItem(HFK, hifzOn() ? "0" : "1"); } catch (e) {}
+      var tb = $("quranToolbar"); if (tb) tb.hidden = true; clearSel();
+      applyHifz();
+    });
+    $("quranHifzHint").addEventListener("click", function () { applyHifz(); });
+    applyHifz();
+    new MutationObserver(function () { if (hifzOn()) document.querySelectorAll(".quran-hifz-shown").forEach(function (e) { e.classList.remove("quran-hifz-shown"); }); }).observe($("quranReader"), { childList: true });
     $("quranBack").addEventListener("click", function () { openSheet(); setSeg("surah"); });
     $("quranTbPage").addEventListener("click", function () { openSheet(); setSeg("surah"); });
     document.addEventListener("click", function (e) {

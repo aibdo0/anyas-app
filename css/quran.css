@@ -250,3 +250,8 @@ button.quran-pill { font: inherit; cursor: pointer; -webkit-tap-highlight-color:
 .share-picker-actions button { flex: 1; padding: 13px; border-radius: 14px; font: inherit; font-weight: 800; border: 1px solid rgba(227,201,143,.4); background: #2c2015; color: #f1e6d3; cursor: pointer; }
 .share-picker-actions .sp-go { background: #e3c98f; color: #2a1d08; }
 .share-picker-note { min-height: 18px; margin: 8px 0 0; font-size: 13px; opacity: .7; }
+
+.quran-hifz .quran-ayah:not(.quran-hifz-shown) { filter: blur(9px); opacity: .55; transition: filter .15s; cursor: pointer; }
+.quran-hifz .quran-ayah { cursor: pointer; }
+.quran-hifz-hint { display: block; width: 100%; margin: 0 0 10px; padding: 9px 12px; border-radius: 12px; border: 1px dashed rgba(227,201,143,.55); background: transparent; color: inherit; font: inherit; font-size: 13px; opacity: .85; cursor: pointer; }
+.quran-hifz-hint[hidden] { display: none; }
