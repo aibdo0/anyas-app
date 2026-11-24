@@ -101,7 +101,7 @@
     updateResume();
     renderList($("quranSearch").value || "");
   }
-  var SHEETS = ["quranSavedSheet", "quranNotesSheet", "quranListView", "quranSettings", "quranSearchSheet", "quranVerseSheet", "quranFavSheet"];
+  var SHEETS = ["quranTafsirSheet", "quranSavedSheet", "quranNotesSheet", "quranListView", "quranSettings", "quranSearchSheet", "quranVerseSheet", "quranFavSheet"];
   function closeSheet() {
     SHEETS.forEach(function (id) { if ($(id)) $(id).hidden = true; });
     $("quranBackdrop").hidden = true;
@@ -245,9 +245,27 @@
     return t;
   }
   var normCache = null;
+  var RSK = "anyas_quran_recent";
+  function getRecent() { try { return JSON.parse(localStorage.getItem(RSK) || "[]") || []; } catch (e) { return []; } }
+  function setRecent(v) { try { localStorage.setItem(RSK, JSON.stringify(v.slice(0, 12))); } catch (e) {} }
+  function addRecent(q) {
+    q = (q || "").trim();
+    if (norm(q).length < 2) return;
+    setRecent([q].concat(getRecent().filter(function (x) { return x !== q; })));
+  }
+  function renderRecent() {
+    var r = getRecent(), out = $("quranFindList");
+    $("quranFindCount").textContent = "";
+    if (!r.length) { out.innerHTML = ""; return; }
+    out.innerHTML = '<div class="quran-recent-head">مؤخرًا</div>' + r.map(function (t, i) {
+      return '<div class="quran-recent-row"><button type="button" class="quran-recent-term" data-ri="' + i + '"></button><button type="button" class="quran-recent-x" data-rx="' + i + '" aria-label="حذف">\u2715</button></div>';
+    }).join("");
+    out.querySelectorAll(".quran-recent-term").forEach(function (b, i) { b.textContent = r[i]; });
+  }
   function doFind(q) {
     var Q = window.ANIAS_QURAN, out = $("quranFindList"), term = norm(q);
     if (!normCache) normCache = Q.ayahs.map(function (arr, i) { return arr.map(function (t, k) { return norm(i !== 0 && i !== 8 && k === 0 ? t.replace(Q.ayahs[0][0], "") : t); }); });
+    if (!term) { renderRecent(); return; }
     if (term.length < 2) { out.innerHTML = ""; $("quranFindCount").textContent = term ? "اكتب حرفين على الأقل." : ""; return; }
     var hits = [], total = 0;
     for (var i = 0; i < 114; i++) for (var k = 0; k < normCache[i].length; k++) {
@@ -264,6 +282,33 @@
       var p = k.split(":");
       return '<button type="button" class="quran-find-row" data-fs="' + p[0] + '" data-fa="' + p[1] + '"><span class="quran-find-ref">' + refLabel(k) + '</span><span class="quran-find-text">' + plainVerse(Number(p[0]), Number(p[1])) + "</span></button>";
     }).join("") : '<p class="quran-empty">لا توجد آيات مفضلة بعد. اضغط على آية ثم النجمة.</p>';
+  }
+  function pageAyahList(pg) {
+    var PG = window.ANIAS_QURAN_PAGES, Q = window.ANIAS_QURAN;
+    var st = PG.pages[pg - 1], en = pg < 604 ? PG.pages[pg] : [115, 1], s = st[0], a = st[1], out = [];
+    while (s <= 114 && (s < en[0] || (s === en[0] && a < en[1]))) {
+      var n = Q.ayahs[s - 1].length;
+      for (; a <= n && (s < en[0] || a < en[1]); a++) out.push([s, a]);
+      if (a > n) { s++; a = 1; } else break;
+    }
+    return out;
+  }
+  function openTafsirSheet() {
+    var box = $("quranTafsirList");
+    $("quranTafsirSub").textContent = "صفحة " + ar(cur);
+    box.innerHTML = '<p class="quran-empty">جارٍ تحميل التفسير…</p>';
+    showOnly("quranTafsirSheet");
+    loadTafsir().then(function () {
+      var list = pageAyahList(cur);
+      box.innerHTML = list.map(function () { return '<div class="quran-tf-row"><span class="quran-find-ref"></span><span class="quran-find-text"></span><p class="quran-tf-body"></p></div>'; }).join("");
+      var rows = box.querySelectorAll(".quran-tf-row");
+      list.forEach(function (x, i) {
+        rows[i].querySelector(".quran-find-ref").textContent = refLabel(x[0] + ":" + x[1]);
+        rows[i].querySelector(".quran-find-text").textContent = plainVerse(x[0], x[1]);
+        rows[i].querySelector(".quran-tf-body").textContent = window.ANIAS_TAFSIR.items[x[0] - 1][x[1] - 1];
+      });
+      $("quranTafsirCredit").textContent = "التفسير الميسر، مجمع الملك فهد لطباعة المصحف الشريف، عبر موسوعة القرآن الكريم (QuranEnc.com)، الإصدار " + window.ANIAS_TAFSIR.version;
+    }, function () { box.innerHTML = '<p class="quran-empty">تعذر تحميل التفسير. تحقق من الاتصال ثم أعد المحاولة.</p>'; });
   }
   function renderSaved(which) {
     document.querySelectorAll("#quranSavedSeg button").forEach(function (b) { b.classList.toggle("is-on", b.dataset.sv === which); });
@@ -363,8 +408,6 @@
     closeSheet();
     $("quranTitle").textContent = "سورة " + Q.names[st[0] - 1];
     $("quranSub").textContent = "صفحة " + ar(pg) + " من ٦٠٤";
-    $("quranPrev").hidden = pg === 1;
-    $("quranNext").hidden = pg === 604;
     setLast({ p: pg });
     applySel();
     syncToolbar();
@@ -428,6 +471,12 @@
       syncToolbar();
     });
     $("quranTbGear").addEventListener("click", openSettings);
+    $("quranTbTafsir").addEventListener("click", openTafsirSheet);
+    $("quranTafsirGrip").addEventListener("click", closeSheet);
+    $("quranTbShare").addEventListener("click", function () {
+      if (!sel) { var lb = $("quranTbPage"), old = lb.textContent; lb.textContent = "المس آية أولًا"; setTimeout(function () { lb.textContent = old; }, 1800); return; }
+      if (window.anyasShareImage) window.anyasShareImage.shareCustom(plainVerse(sel.s, sel.a), refLabel(sel.s + ":" + sel.a), function () {});
+    });
     $("quranTbIndex").addEventListener("click", function () { openSheet(); setSeg("surah"); });
     $("quranTbSaved").addEventListener("click", function () { renderSaved("mark"); showOnly("quranSavedSheet"); });
     $("quranSavedGrip").addEventListener("click", closeSheet);
@@ -435,7 +484,7 @@
       var b = e.target.closest("button[data-sv]");
       if (b) renderSaved(b.dataset.sv);
     });
-    $("quranTbSearch").addEventListener("click", function () { showOnly("quranSearchSheet"); $("quranFind").focus(); });
+    $("quranTbSearch").addEventListener("click", function () { showOnly("quranSearchSheet"); doFind($("quranFind").value); $("quranFind").focus(); });
     $("quranTbMark").addEventListener("click", function () {
       try { if (getMark() === cur) localStorage.removeItem(KS.mark); else localStorage.setItem(KS.mark, String(cur)); } catch (e) {}
       syncToolbar();
@@ -445,7 +494,11 @@
     $("quranFavRow").addEventListener("click", function () { renderFavs(); showOnly("quranFavSheet"); });
     ["quranSearchGrip", "quranVerseGrip", "quranFavGrip"].forEach(function (id) { $(id).addEventListener("click", closeSheet); });
     document.addEventListener("click", function (e) {
+      var rt = e.target.closest(".quran-recent-term"), rx = e.target.closest(".quran-recent-x");
+      if (rt) { var tx = getRecent()[Number(rt.dataset.ri)]; $("quranFind").value = tx; doFind(tx); return; }
+      if (rx) { var arr = getRecent(); arr.splice(Number(rx.dataset.rx), 1); setRecent(arr); renderRecent(); return; }
       var r = e.target.closest(".quran-find-row");
+      if (r && r.closest("#quranFindList")) addRecent($("quranFind").value);
       if (r) goVerse(Number(r.dataset.fs), Number(r.dataset.fa));
     });
     $("quranFav").addEventListener("click", function () {
@@ -513,6 +566,12 @@
       setSeg(p.dataset.open);
     }, true);
     $("quranBackdrop").addEventListener("click", closeSheet);
+    document.addEventListener("click", function (e) {
+      var open = ["quranVerseSheet", "quranTafsirSheet", "quranSavedSheet", "quranNotesSheet", "quranFavSheet", "quranSettings"].filter(function (id) { return $(id) && !$(id).hidden; });
+      if (!open.length) return;
+      if (e.target.closest(".quran-sheet") || e.target.closest("#quranToolbar")) return;
+      closeSheet();
+    }, true);
     $("quranGrip").addEventListener("click", closeSheet);
     var tx = null;
     var rv = $("quranReadView");
@@ -531,8 +590,6 @@
       var rs = e.target.closest("#quranResume");
       if (rs) openPage(Number(rs.dataset.page));
     });
-    $("quranNext").addEventListener("click", function () { openPage(cur + 1); });
-    $("quranPrev").addEventListener("click", function () { openPage(cur - 1); });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
