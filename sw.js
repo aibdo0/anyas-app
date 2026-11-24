@@ -28,6 +28,7 @@ const CORE_ASSETS = [
   "./css/app-design-system.css",
   "./css/first-run-onboarding.css",
   "./css/privacy.css",
+  "./css/home-header.css",
   "./data/app-version.js?v=20261014-3",
   "./js/i18n.js?v=20261014-1",
   "./data/azkar-topics.js",

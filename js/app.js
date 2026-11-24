@@ -1969,20 +1969,15 @@ function setupUpdateBanner() {
 
 
   const currentVersion =
-    "2.0";
+    window.ANIAS_APP_VERSION || "1";
 
-
-  if (
-    dismissedVersion !==
-    currentVersion
-  ) {
-
-    banner.hidden = false;
-
-  } else {
-
-    banner.hidden = true;
-
+  // يظهر التنبيه فقط عندما يُثبَّت إصدار جديد فعلًا بعد أن كان التطبيق مفتوحًا بإصدار سابق.
+  banner.hidden = true;
+  if ("serviceWorker" in navigator) {
+    const hadController = Boolean(navigator.serviceWorker.controller);
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (hadController && dismissedVersion !== currentVersion) banner.hidden = false;
+    });
   }
 
 
