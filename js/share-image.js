@@ -80,7 +80,7 @@
     ctx.strokeRect(72, 72, W - 144, H - 144);
 
     // العنوان بين خطين ذهبيين
-    var title = kind === "verse" ? "من القرآن الكريم" : kind === "ayah" ? "آية اليوم" : "حديث اليوم";
+    var title = kind === "dhikr" ? "من حصن المسلم" : kind === "verse" ? "من القرآن الكريم" : kind === "ayah" ? "آية اليوم" : "حديث اليوم";
     ctx.fillStyle = GOLD; ctx.font = "800 54px Tajawal, sans-serif";
     ctx.fillText(title, W / 2, 250);
     var tw = ctx.measureText(title).width;
@@ -90,7 +90,7 @@
 
     // النص: يصغَّر الخط تدريجيًا حتى يتّسع
     var body = kind === "ayah" ? text : text;
-    var maxW = W - 240, top = 340, bottom = 1130, size = kind !== "hadith" ? 78 : 66, lines, lh;
+    var maxW = W - 240, top = 340, bottom = 1130, size = kind === "ayah" || kind === "verse" ? 78 : 66, lines, lh;
     for (; size >= 34; size -= 2) {
       ctx.font = "700 " + size + "px Amiri, serif";
       lines = wrap(ctx, body, maxW); lh = size * 1.85;
@@ -181,7 +181,8 @@
     }
   }
 
-  function shareCustom(text, ref, notify) {
+  function shareCustom(text, ref, notify, kind) {
+    kind = kind || "verse";
     var tell = notify || function () {};
     if (!String(text || "").trim()) return;
     var old = document.getElementById("shareStylePicker"); if (old) old.remove();
@@ -194,7 +195,7 @@
     var chips = ov.querySelector(".share-picker-chips"), note = ov.querySelector(".share-picker-note"), pv = ov.querySelector("#sharePickerCanvas");
     async function draw() {
       note.textContent = "جارٍ التجهيز…";
-      var mine = cur, c = await render("verse", text, ref, mine);
+      var mine = cur, c = await render(kind, text, ref, mine);
       if (mine !== cur) return;
       last = c; pv.width = 270; pv.height = 480; pv.getContext("2d").drawImage(c, 0, 0, 270, 480); note.textContent = "";
     }
@@ -208,7 +209,7 @@
     ov.addEventListener("click", function (e) { if (e.target === ov) ov.remove(); });
     ov.querySelector(".sp-go").addEventListener("click", async function () {
       note.textContent = "جارٍ تجهيز الصورة…";
-      var c = await render("verse", text, ref, cur); ov.remove(); sendCanvas(c, ref, tell);
+      var c = await render(kind, text, ref, cur); ov.remove(); sendCanvas(c, ref, tell);
     });
     draw();
   }

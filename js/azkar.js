@@ -449,6 +449,21 @@ function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
       || "توضيح معنى هذا الذكر غير متاح حاليًا.";
     card.querySelector(".zikr-meaning").textContent = meaning;
 
+    (function () {
+      const tx = card.querySelector(".zikr-text");
+      let timer = null;
+      const stop = () => { if (timer) { clearTimeout(timer); timer = null; } };
+      const start = () => { stop(); timer = setTimeout(() => { timer = null; copyZikrText(String(zikr.text || "").replace(/\s+/g, " ").trim()); }, 550); };
+      tx.addEventListener("touchstart", start, { passive: true });
+      tx.addEventListener("touchmove", stop, { passive: true });
+      tx.addEventListener("touchend", stop);
+      tx.addEventListener("touchcancel", stop);
+      tx.addEventListener("mousedown", start);
+      tx.addEventListener("mouseup", stop);
+      tx.addEventListener("mouseleave", stop);
+      tx.addEventListener("contextmenu", e => e.preventDefault());
+    })();
+
     card.querySelector(".zikr-share-button").addEventListener("click", () => {
       shareAzkarItem(topic, zikr, meaning, titleOverride);
     });
@@ -521,8 +536,35 @@ function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
 }
 
 
+function azkarToast(msg) {
+  let t = document.getElementById("azkarToast");
+  if (!t) { t = document.createElement("div"); t.id = "azkarToast"; t.className = "azkar-toast"; document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add("on");
+  clearTimeout(azkarToast.timer);
+  azkarToast.timer = setTimeout(() => t.classList.remove("on"), 2000);
+}
+
+async function copyZikrText(text) {
+  try {
+    if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
+    else {
+      const f = document.createElement("textarea");
+      f.value = text; f.setAttribute("readonly", ""); f.style.position = "fixed"; f.style.opacity = "0";
+      document.body.appendChild(f); f.select();
+      const ok = document.execCommand("copy"); f.remove();
+      if (!ok) throw new Error("copy");
+    }
+    azkarToast("تم نسخ الذكر");
+  } catch (_) { azkarToast("تعذّر النسخ"); }
+}
+
 async function shareAzkarItem(topic, zikr, meaning, titleOverride = null) {
   const displayTitle = titleOverride || topic.title;
+  const plain = String(zikr.text || "").replace(/\s+/g, " ").trim();
+  if (window.anyasShareImage && plain && plain.length <= 650) {
+    window.anyasShareImage.shareCustom(plain, displayTitle, m => { if (m) azkarToast(m); }, "dhikr");
+    return;
+  }
   const payload = `${displayTitle}\n\n${String(zikr.text || "").trim()}\n\nالمعنى والفائدة: ${meaning}\n\nمن تطبيق أنياس — حصن المسلم`;
   const status = document.getElementById("azkarShareStatus");
   const announce = message => {
