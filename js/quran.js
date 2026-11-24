@@ -353,6 +353,7 @@
     var h = $("quranHifzHint"); if (h) h.hidden = !on;
   }
   function openSettings() {
+    paintStats();
     showOnly("quranSettings");
     applyOrn();
   }
@@ -386,11 +387,56 @@
     return j;
   }
 
+  var STK = "anyas_quran_stats";
+  function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function readStats() { try { var o = JSON.parse(localStorage.getItem(STK) || "{}"); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; } }
+  function recordRead(pg) {
+    try {
+      var o = readStats(), k = dayKey(), arr = o[k] || [];
+      if (arr.indexOf(pg) < 0) arr.push(pg);
+      o[k] = arr;
+      var keys = Object.keys(o).sort();
+      while (keys.length > 90) delete o[keys.shift()];
+      localStorage.setItem(STK, JSON.stringify(o));
+    } catch (e) {}
+  }
+  function statsSummary() {
+    var o = readStats(), today = (o[dayKey()] || []).length, week = 0, streak = 0, i, d;
+    for (i = 0; i < 7; i++) { d = new Date(); d.setDate(d.getDate() - i); week += (o[dayKey(d)] || []).length; }
+    for (i = 0; i < 90; i++) { d = new Date(); d.setDate(d.getDate() - i); if ((o[dayKey(d)] || []).length) streak++; else if (i > 0) break; }
+    return { today: today, week: week, streak: streak };
+  }
+  function pagesWord(n) { return window.arCount ? window.arCount(n, ["صفحة", "صفحتان", "صفحتين", "صفحات", "صفحة", "صفحة"], false) : n + " صفحة"; }
+  function daysWord(n) { return window.arCount ? window.arCount(n, ["يوم", "يومان", "يومين", "أيام", "يومًا", "يوم"], false) : n + " يوم"; }
+  function paintStats() {
+    var b = $("quranStatsBox"); if (!b) return;
+    var st = statsSummary();
+    b.innerHTML = '<div><strong>' + ar(st.today) + '</strong><small>اليوم</small></div><div><strong>' + ar(st.week) + '</strong><small>آخر ٧ أيام</small></div><div><strong>' + ar(st.streak) + '</strong><small>أيام متتالية</small></div>';
+  }
+  function paintHomeResume() {
+    var home = document.getElementById("page-home"); if (!home) return;
+    var c = document.getElementById("homeResumeCard");
+    var lv = getLast(), pg = lv && lv.p ? lv.p : 0;
+    if (!pg) { if (c) c.hidden = true; return; }
+    if (!c) {
+      c = document.createElement("button"); c.type = "button"; c.id = "homeResumeCard"; c.className = "home-resume-card";
+      c.addEventListener("click", function () {
+        var n = document.querySelector('.nav-item[data-page="quran"]'); if (n) n.click();
+        setTimeout(function () { openPage(lastPage() || 1); }, 60);
+      });
+      var hd = home.querySelector(".main-header");
+      if (hd && hd.parentNode) hd.parentNode.insertBefore(c, hd.nextSibling); else home.insertBefore(c, home.firstChild);
+    }
+    var st = statsSummary();
+    c.hidden = false;
+    c.innerHTML = '<span class="hrc-icon" aria-hidden="true">ق</span><span class="hrc-text"><strong>أكمل القراءة</strong><small>' + (lv.n ? "سورة " + lv.n + " · " : "") + "صفحة " + ar(pg) + (st.today ? " · قرأت اليوم " + pagesWord(st.today) : "") + '</small></span>';
+  }
   function openPage(pg, keepScroll) {
     var Q = window.ANIAS_QURAN, PG = window.ANIAS_QURAN_PAGES;
     if (!Q || !PG) return;
     pg = Math.max(1, Math.min(604, pg));
     cur = pg;
+    recordRead(pg);
     var BISM = Q.ayahs[0][0];
     var st = PG.pages[pg - 1];
     var en = pg < 604 ? PG.pages[pg] : [115, 1];
@@ -417,7 +463,8 @@
     closeSheet();
     $("quranTitle").textContent = "سورة " + Q.names[st[0] - 1];
     $("quranSub").textContent = "صفحة " + ar(pg) + " من ٦٠٤";
-    setLast({ p: pg });
+    setLast({ p: pg, n: Q.names[st[0] - 1] });
+    paintHomeResume();
     applySel();
     syncToolbar();
     if (!keepScroll) window.scrollTo(0, 0);
@@ -573,6 +620,8 @@
     });
     $("quranHifzHint").addEventListener("click", function () { applyHifz(); });
     applyHifz();
+    paintHomeResume();
+    document.addEventListener("visibilitychange", paintHomeResume);
     new MutationObserver(function () { if (hifzOn()) document.querySelectorAll(".quran-hifz-shown").forEach(function (e) { e.classList.remove("quran-hifz-shown"); }); }).observe($("quranReader"), { childList: true });
     $("quranBack").addEventListener("click", function () { openSheet(); setSeg("surah"); });
     $("quranTbPage").addEventListener("click", function () { openSheet(); setSeg("surah"); });

@@ -255,3 +255,14 @@ button.quran-pill { font: inherit; cursor: pointer; -webkit-tap-highlight-color:
 .quran-hifz .quran-ayah { cursor: pointer; }
 .quran-hifz-hint { display: block; width: 100%; margin: 0 0 10px; padding: 9px 12px; border-radius: 12px; border: 1px dashed rgba(227,201,143,.55); background: transparent; color: inherit; font: inherit; font-size: 13px; opacity: .85; cursor: pointer; }
 .quran-hifz-hint[hidden] { display: none; }
+
+.quran-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.quran-stats > div { text-align: center; padding: 10px 6px; border-radius: 14px; border: 1px solid rgba(201,164,94,.4); background: rgba(201,164,94,.1); }
+.quran-stats strong { display: block; font-size: 22px; color: #c9a45e; }
+.quran-stats small { font-size: 12px; opacity: .8; }
+.home-resume-card { display: flex; align-items: center; gap: 12px; width: 100%; margin: 4px 0 12px; padding: 14px 16px; border-radius: 18px; border: 1px solid rgba(227,201,143,.55); background: linear-gradient(135deg, #2a2113, #3a2c16); color: #f6e9c8; font: inherit; text-align: right; cursor: pointer; }
+.home-resume-card[hidden] { display: none; }
+.hrc-icon { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-size: 20px; background: rgba(227,201,143,.18); flex: none; }
+.hrc-text { display: grid; gap: 2px; }
+.hrc-text strong { font-size: 17px; font-weight: 800; }
+.hrc-text small { font-size: 13px; opacity: .8; }
