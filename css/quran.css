@@ -159,3 +159,19 @@
 .quran-tafsir { margin: 0 0 8px; font-size: 17px; line-height: 2; text-align: right; }
 .quran-versesheet { max-height: 72vh; }
 :root[data-theme="dark"] .quran-tafsir-title { color: #d1a95f; border-top-color: #44474a; }
+
+/* 1.1.27: ملاحظات، أجزاء وسجدات، حجم الخط */
+.quran-text { font-size: var(--quran-fs, 25px); }
+.quran-sajda { margin-inline-start: 4px; color: #b3893f; font-size: .8em; }
+.quran-notedot { display: inline-block; width: 7px; height: 7px; margin-inline-start: 5px; border-radius: 50%; background: #c9a24d; vertical-align: middle; }
+.quran-notearea { width: 100%; box-sizing: border-box; min-height: 74px; padding: 10px 12px; border: 1px solid rgba(138,106,63,.35); border-radius: 12px; background: rgba(255,255,255,.4); color: inherit; font: inherit; font-size: 16px; line-height: 1.7; resize: vertical; text-align: right; }
+.quran-note-preview { display: block; margin-top: 6px; font-size: 14px; color: #8a6a3f; white-space: pre-wrap; }
+:root[data-theme="dark"] .quran-notearea { background: #2a2118; border-color: #44474a; }
+:root[data-theme="dark"] .quran-note-preview, :root[data-theme="dark"] .quran-sajda { color: #d1a95f; }
+.quran-seg { display: flex; gap: 4px; margin: 10px 0 8px; padding: 3px; border-radius: 12px; background: rgba(138,106,63,.14); }
+.quran-seg button { flex: 1; padding: 8px 4px; border: 0; border-radius: 9px; background: none; color: inherit; font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; opacity: .75; }
+.quran-seg button.is-on { background: rgba(201,162,77,.28); opacity: 1; }
+.quran-searchwrap[hidden] { display: none !important; }
+.quran-stepper { display: flex; gap: 8px; }
+.quran-stepper button { min-width: 48px; height: 44px; border: 1px solid rgba(138,106,63,.4); border-radius: 12px; background: none; color: inherit; font: inherit; font-weight: 700; cursor: pointer; }
+.quran-stepper button:disabled { opacity: .35; }

@@ -37,10 +37,38 @@
     try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) {}
   }
 
+  var SAJDA = [[7,206],[13,15],[16,50],[17,109],[19,58],[22,18],[22,77],[25,60],[27,26],[32,15],[38,24],[41,38],[53,62],[84,21],[96,19]];
+  function isSajda(s1, a1) { return SAJDA.some(function (x) { return x[0] === s1 && x[1] === a1; }); }
+  var seg = "surah";
+  function setSeg(v) {
+    seg = v;
+    document.querySelectorAll("#quranSeg button").forEach(function (b) {
+      var on = b.dataset.seg === v;
+      b.classList.toggle("is-on", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    document.querySelector(".quran-searchwrap").hidden = v !== "surah";
+    renderList($("quranSearch").value || "");
+  }
+  function renderSegList(box) {
+    var Q = window.ANIAS_QURAN, PG = window.ANIAS_QURAN_PAGES, html = "";
+    if (seg === "juz") {
+      PG.juz.forEach(function (x, k) {
+        html += '<button type="button" class="quran-row" data-gs="' + x[0] + '" data-ga="' + x[1] + '"><span class="quran-num">' + ar(k + 1) + '</span><span class="quran-name">' + JUZ[k] + '</span><span class="quran-count">سورة ' + Q.names[x[0] - 1] + ' · ' + ar(x[1]) + '</span></button>';
+      });
+    } else {
+      SAJDA.forEach(function (x, k) {
+        html += '<button type="button" class="quran-row" data-gs="' + x[0] + '" data-ga="' + x[1] + '"><span class="quran-num">' + ar(k + 1) + '</span><span class="quran-name">سورة ' + Q.names[x[0] - 1] + '</span><span class="quran-count">آية ' + ar(x[1]) + ' · صفحة ' + ar(pageOfAyah(x[0], x[1])) + '</span></button>';
+      });
+    }
+    box.innerHTML = html;
+    box.classList.add("quran-group");
+  }
   function renderList(q) {
     var Q = window.ANIAS_QURAN;
     var box = $("quranList");
     if (!Q || !box) return;
+    if (seg !== "surah") { renderSegList(box); return; }
     var term = norm(q || "").trim();
     var html = "";
     Q.names.forEach(function (name, i) {
@@ -72,7 +100,7 @@
     updateResume();
     renderList($("quranSearch").value || "");
   }
-  var SHEETS = ["quranListView", "quranSettings", "quranSearchSheet", "quranVerseSheet", "quranFavSheet"];
+  var SHEETS = ["quranNotesSheet", "quranListView", "quranSettings", "quranSearchSheet", "quranVerseSheet", "quranFavSheet"];
   function closeSheet() {
     SHEETS.forEach(function (id) { if ($(id)) $(id).hidden = true; });
     $("quranBackdrop").hidden = true;
@@ -86,6 +114,37 @@
   function getMark() { try { return Number(localStorage.getItem(KS.mark)) || 0; } catch (e) { return 0; } }
   function getFavs() { try { return JSON.parse(localStorage.getItem(KS.fav) || "[]"); } catch (e) { return []; } }
   function setFavs(v) { try { localStorage.setItem(KS.fav, JSON.stringify(v)); } catch (e) {} }
+  var NOTEK = "anyas_quran_notes";
+  function allNotes() { try { return JSON.parse(localStorage.getItem(NOTEK) || "{}") || {}; } catch (e) { return {}; } }
+  function getNote(k) { return allNotes()[k] || ""; }
+  function setNote(k, v) {
+    var n = allNotes();
+    if (v.trim()) n[k] = v; else delete n[k];
+    try { localStorage.setItem(NOTEK, JSON.stringify(n)); } catch (e) {}
+  }
+  function renderNotes() {
+    var n = allNotes(), ks = Object.keys(n);
+    $("quranNotesList").innerHTML = ks.length ? ks.map(function (k) {
+      var p = k.split(":");
+      return '<button type="button" class="quran-find-row" data-fs="' + p[0] + '" data-fa="' + p[1] + '"><span class="quran-find-ref">' + refLabel(k) + '</span><span class="quran-find-text">' + plainVerse(Number(p[0]), Number(p[1])) + '</span><span class="quran-note-preview"></span></button>';
+    }).join("") : '<p class="quran-empty">لا توجد ملاحظات بعد. اضغط على آية ثم اكتب ملاحظتك.</p>';
+    var rows = $("quranNotesList").querySelectorAll(".quran-find-row");
+    ks.forEach(function (k, i) { rows[i].querySelector(".quran-note-preview").textContent = n[k]; });
+  }
+  var FSK = "anyas_quran_fs", FSS = [20, 22, 25, 28, 32];
+  function fsIdx() { try { var v = Number(localStorage.getItem(FSK)); return v >= 0 && v < FSS.length && localStorage.getItem(FSK) !== null ? v : 2; } catch (e) { return 2; } }
+  function applyFs() {
+    var i = fsIdx();
+    $("page-quran").style.setProperty("--quran-fs", FSS[i] + "px");
+    $("quranFsLabel").textContent = "المستوى " + ar(i + 1) + " من " + ar(FSS.length);
+    $("quranFsDown").disabled = i === 0;
+    $("quranFsUp").disabled = i === FSS.length - 1;
+  }
+  function stepFs(d) {
+    var i = Math.max(0, Math.min(FSS.length - 1, fsIdx() + d));
+    try { localStorage.setItem(FSK, String(i)); } catch (e) {}
+    applyFs();
+  }
   var sel = null;
   function clearSel() {
     sel = null;
@@ -149,6 +208,7 @@
     $("quranVerseRef").textContent = "سورة " + Q.names[s1 - 1] + " · آية " + ar(a1);
     $("quranVerseText").textContent = t;
     showTafsir(s1, a1);
+    $("quranNoteArea").value = getNote(s1 + ":" + a1);
     var fav = getFavs().indexOf(s1 + ":" + a1) >= 0;
     $("quranFav").setAttribute("aria-pressed", fav ? "true" : "false");
     $("quranFav").classList.toggle("is-on", fav);
@@ -227,6 +287,9 @@
       mr.hidden = false; mr.dataset.page = m;
       mr.textContent = "علامتك: صفحة " + ar(m) + " · سورة " + Q.names[window.ANIAS_QURAN_PAGES.pages[m - 1][0] - 1];
     } else mr.hidden = true;
+    var nr = $("quranNotesRow"), nc = Object.keys(allNotes()).length;
+    nr.hidden = !nc;
+    nr.textContent = "ملاحظاتي (" + ar(nc) + ")";
     var fr = $("quranFavRow"), fc = getFavs().length;
     fr.hidden = !fc;
     fr.textContent = "الآيات المفضلة (" + ar(fc) + ")";
@@ -256,7 +319,7 @@
       for (; a <= n && (s < en[0] || a < en[1]); a++) {
         var t = Q.ayahs[s - 1][a - 1];
         if (a === 1 && s !== 1 && s !== 9 && t.indexOf(BISM + " ") === 0) t = t.slice(BISM.length + 1);
-        txt += '<span class="quran-ayah" data-s="' + s + '" data-a="' + a + '">' + t + ' <span class="quran-end">' + ar(a) + "</span></span> ";
+        txt += '<span class="quran-ayah" data-s="' + s + '" data-a="' + a + '">' + t + ' <span class="quran-end">' + ar(a) + "</span>" + (isSajda(s, a) ? '<span class="quran-sajda" title="موضع سجدة تلاوة">\u06E9</span>' : "") + (getNote(s + ":" + a) ? '<span class="quran-notedot" title="لديك ملاحظة"></span>' : "") + "</span> ";
       }
       body += '<p class="quran-text">' + txt + "</p>";
       if (a > n) { s++; a = 1; } else break;
@@ -324,6 +387,26 @@
     $("quranShare").addEventListener("click", function () {
       if (!sel || !window.anyasShareImage) return;
       window.anyasShareImage.shareCustom(plainVerse(sel.s, sel.a), refLabel(sel.s + ":" + sel.a), function (m) { if (m) $("quranVerseNote").textContent = m; });
+    });
+    applyFs();
+    $("quranFsDown").addEventListener("click", function () { stepFs(-1); });
+    $("quranFsUp").addEventListener("click", function () { stepFs(1); });
+    $("quranNoteArea").addEventListener("input", function (e) {
+      if (!sel) return;
+      setNote(sel.s + ":" + sel.a, e.target.value);
+      var el = document.querySelector('.quran-ayah[data-s="' + sel.s + '"][data-a="' + sel.a + '"]');
+      if (el) {
+        var d = el.querySelector(".quran-notedot");
+        if (e.target.value.trim() && !d) { d = document.createElement("span"); d.className = "quran-notedot"; el.appendChild(d); }
+        else if (!e.target.value.trim() && d) d.remove();
+      }
+    });
+    $("quranNotesRow").addEventListener("click", function () { renderNotes(); showOnly("quranNotesSheet"); });
+    $("quranNotesGrip").addEventListener("click", closeSheet);
+    document.querySelectorAll("#quranSeg button").forEach(function (b) { b.addEventListener("click", function () { setSeg(b.dataset.seg); }); });
+    $("quranList").addEventListener("click", function (e) {
+      var r = e.target.closest(".quran-row[data-gs]");
+      if (r) openPage(pageOfAyah(Number(r.dataset.gs), Number(r.dataset.ga)));
     });
     applyOrn();
     $("quranGear").addEventListener("click", openSettings);

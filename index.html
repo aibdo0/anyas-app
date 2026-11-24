@@ -59,7 +59,7 @@
 <link rel="stylesheet" href="css/app-design-system.css?v=20261013-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/welcome.css?v=20261124-2">
-<link rel="stylesheet" href="css/quran.css?v=20261124-11">
+<link rel="stylesheet" href="css/quran.css?v=20261124-12">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/home-header.css?v=20261124-1">
 <link rel="stylesheet" href="css/home-polish.css?v=20261124-9">
@@ -2054,6 +2054,8 @@ data-audio="fajrAudio"
     <div class="quran-grip" id="quranVerseGrip" aria-hidden="true"></div>
     <div class="quran-verse-head"><button type="button" id="quranFav" aria-label="إضافة إلى المفضلة" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="m12 3 2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7Z"/></svg></button><h2 id="quranVerseRef"></h2><button type="button" id="quranShare" aria-label="مشاركة الآية كصورة"><svg viewBox="0 0 24 24"><path d="M12 15V3m0 0L8 7m4-4 4 4M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></button></div>
     <p class="quran-verse-text" id="quranVerseText"></p>
+    <h3 class="quran-tafsir-title quran-note-title">ملاحظتي</h3>
+    <textarea class="quran-notearea" id="quranNoteArea" rows="3" maxlength="2000" placeholder="اكتب ملاحظتك على هذه الآية. تُحفظ على جهازك فقط."></textarea>
     <h3 class="quran-tafsir-title">التفسير الميسر</h3>
     <p class="quran-tafsir" id="quranTafsir" dir="rtl"></p>
     <p class="quran-verse-note" id="quranVerseNote"></p>
@@ -2063,12 +2065,21 @@ data-audio="fajrAudio"
     <h2 class="quran-sheet-title">الآيات المفضلة</h2>
     <div class="quran-list" id="quranFavList"></div>
   </section>
+  <section class="quran-sheet quran-favsheet" id="quranNotesSheet" role="dialog" aria-label="ملاحظاتي" hidden>
+    <div class="quran-grip" id="quranNotesGrip" aria-hidden="true"></div>
+    <h2 class="quran-sheet-title">ملاحظاتي</h2>
+    <div class="quran-list" id="quranNotesList"></div>
+  </section>
   <section class="quran-sheet quran-settings" id="quranSettings" role="dialog" aria-label="إعدادات القرآن" hidden>
     <div class="quran-grip" id="quranSetGrip" aria-hidden="true"></div>
     <h2 class="quran-sheet-title">إعدادات القرآن</h2>
     <div class="quran-setting-row">
       <div><strong>الزخرفة</strong><small>إطار المصحف وعلامات الآيات المزخرفة</small></div>
       <button type="button" class="quran-switch" id="quranOrnToggle" role="switch" aria-checked="true" aria-label="الزخرفة"><span></span></button>
+    </div>
+    <div class="quran-setting-row">
+      <div><strong>حجم الخط</strong><small id="quranFsLabel"></small></div>
+      <div class="quran-stepper"><button type="button" id="quranFsDown" aria-label="تصغير الخط">أ−</button><button type="button" id="quranFsUp" aria-label="تكبير الخط">أ+</button></div>
     </div>
   </section>
   <section class="quran-sheet" id="quranListView" role="dialog" aria-label="فهرس السور" hidden>
@@ -2078,6 +2089,8 @@ data-audio="fajrAudio"
     <button type="button" class="quran-resume" id="quranResume" aria-label="كمّل القراءة" hidden></button>
     <button type="button" class="quran-resume" id="quranMarkRow" aria-label="العلامة المحفوظة" hidden></button>
     <button type="button" class="quran-resume" id="quranFavRow" aria-label="الآيات المفضلة" hidden></button>
+    <button type="button" class="quran-resume" id="quranNotesRow" aria-label="ملاحظاتي" hidden></button>
+    <div class="quran-seg" id="quranSeg" role="tablist"><button type="button" data-seg="surah" class="is-on" role="tab" aria-selected="true">السور</button><button type="button" data-seg="juz" role="tab" aria-selected="false">الأجزاء</button><button type="button" data-seg="sajda" role="tab" aria-selected="false">السجدات</button></div>
     <div class="quran-list" id="quranList"></div>
   </section>
 </main>
@@ -2409,7 +2422,7 @@ type="button"
 <script src="js/daily-devotions.js?v=20261124-1"></script>
 <script src="js/home-extras.js?v=20261124-1"></script>
 <script src="js/share-image.js?v=20261124-2"></script>
-<script src="js/quran.js?v=20261124-11"></script>
+<script src="js/quran.js?v=20261124-12"></script>
 <script src="js/app.js?v=20261124-5"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script>
