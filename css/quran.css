@@ -266,3 +266,13 @@ button.quran-pill { font: inherit; cursor: pointer; -webkit-tap-highlight-color:
 .hrc-text { display: grid; gap: 2px; }
 .hrc-text strong { font-size: 17px; font-weight: 800; }
 .hrc-text small { font-size: 13px; opacity: .8; }
+/* ألوان التجويد */
+.quran-tj { --tj-g:#1f8a4c; --tj-d:#2b6cb0; --tj-k:#b8741a; --tj-i:#8e44ad; --tj-m:#c0392b; --tj-l:#a8231b; --tj-q:#0e8a8a; --tj-s:#8b8b8b; }
+#page-quran[data-mushaf="night"] .quran-tj, :root[data-theme="dark"] #page-quran:not([data-mushaf="paper"]):not([data-mushaf="white"]):not([data-mushaf="green"]) .quran-tj { --tj-g:#4cd08a; --tj-d:#6fb1f2; --tj-k:#f0a640; --tj-i:#c98ae6; --tj-m:#ff7b6b; --tj-l:#ff5a4a; --tj-q:#4fd6d6; --tj-s:#8e8e8e; }
+.tj-g { color: var(--tj-g); } .tj-d { color: var(--tj-d); } .tj-k { color: var(--tj-k); } .tj-i { color: var(--tj-i); } .tj-m { color: var(--tj-m); } .tj-l { color: var(--tj-l); font-weight: 700; } .tj-q { color: var(--tj-q); } .tj-s { color: var(--tj-s); }
+.quran-tj-legend { display: flex; flex-wrap: wrap; gap: 8px 14px; padding: 4px 4px 12px; font-size: 13px; }
+.quran-tj-legend[hidden] { display: none; }
+.quran-tj-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.quran-tj-legend i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.quran-tj-legend i.tj-g { background: #1f8a4c; } .quran-tj-legend i.tj-d { background: #2b6cb0; } .quran-tj-legend i.tj-k { background: #b8741a; } .quran-tj-legend i.tj-i { background: #8e44ad; } .quran-tj-legend i.tj-m { background: #c0392b; } .quran-tj-legend i.tj-l { background: #a8231b; } .quran-tj-legend i.tj-q { background: #0e8a8a; } .quran-tj-legend i.tj-s { background: #8b8b8b; }
+.quran-tj-legend p { flex-basis: 100%; margin: 4px 0 0; font-size: 12px; opacity: .8; line-height: 1.6; }

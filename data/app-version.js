@@ -1,3 +1,3 @@
 // مصدر الإصدار الوحيد للواجهة ونسخة Android.
-window.ANIAS_APP_VERSION = "1.1.46";
-window.ANIAS_VERSION_CODE = 47;
+window.ANIAS_APP_VERSION = "1.1.47";
+window.ANIAS_VERSION_CODE = 48;

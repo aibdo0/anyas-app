@@ -431,6 +431,36 @@
     c.hidden = false;
     c.innerHTML = '<span class="hrc-icon" aria-hidden="true">ق</span><span class="hrc-text"><strong>أكمل القراءة</strong><small>' + (lv.n ? "سورة " + lv.n + " · " : "") + "صفحة " + ar(pg) + (st.today ? " · قرأت اليوم " + pagesWord(st.today) : "") + '</small></span>';
   }
+  var TJK = "anyas_quran_tajweed";
+  function tjOn() { try { return localStorage.getItem(TJK) === "1"; } catch (e) { return false; } }
+  function tjHtml(s, a, t, shift) {
+    var sp = window.ANIAS_TAJWEED[s + ":" + a];
+    if (!sp) return t;
+    var cp = Array.from(t), out = "", pos = 0;
+    sp.split(",").forEach(function (x) {
+      var m = /^(\d+)-(\d+)(\w)$/.exec(x);
+      if (!m) return;
+      var b = Number(m[1]) - shift, e = Number(m[2]) - shift;
+      if (b < pos || e <= b || e > cp.length) return;
+      out += cp.slice(pos, b).join("") + '<span class="tj-' + m[3] + '">' + cp.slice(b, e).join("") + "</span>";
+      pos = e;
+    });
+    return out + cp.slice(pos).join("");
+  }
+  function tjLoad(then) {
+    if (window.ANIAS_TAJWEED) return then();
+    var sc = document.createElement("script");
+    sc.src = "data/quran-tajweed.js?v=20261124-1";
+    sc.onload = then;
+    sc.onerror = function () { var r = $("quranTjHint"); if (r) r.textContent = "تعذّر تحميل ألوان التجويد. حاول مرة أخرى."; };
+    document.head.appendChild(sc);
+  }
+  function applyTj() {
+    var on = tjOn(), t = $("quranTjToggle");
+    if (t) t.setAttribute("aria-checked", on ? "true" : "false");
+    var lg = $("quranTjLegend"); if (lg) lg.hidden = !on;
+    $("quranReader").classList.toggle("quran-tj", on);
+  }
   function openPage(pg, keepScroll) {
     var Q = window.ANIAS_QURAN, PG = window.ANIAS_QURAN_PAGES;
     if (!Q || !PG) return;
@@ -449,7 +479,9 @@
       var txt = "";
       for (; a <= n && (s < en[0] || a < en[1]); a++) {
         var t = Q.ayahs[s - 1][a - 1];
-        if (a === 1 && s !== 1 && s !== 9 && t.indexOf(BISM + " ") === 0) t = t.slice(BISM.length + 1);
+        var shift = 0;
+        if (a === 1 && s !== 1 && s !== 9 && t.indexOf(BISM + " ") === 0) { t = t.slice(BISM.length + 1); shift = Array.from(BISM).length + 1; }
+        if (tjOn() && window.ANIAS_TAJWEED) t = tjHtml(s, a, t, shift);
         var one = '<span class="quran-ayah" data-s="' + s + '" data-a="' + a + '">' + t + ' <span class="quran-end">' + ar(a) + "</span>" + (isSajda(s, a) ? '<span class="quran-sajda" title="موضع سجدة تلاوة">\u06E9</span>' : "") + (getNote(s + ":" + a) ? '<span class="quran-notedot" title="لديك ملاحظة"></span>' : "") + "</span> ";
         if (viewMode() === "verse") body += '<div class="quran-vcard"><p class="quran-text">' + one + '</p><div class="quran-vref">سورة ' + Q.names[s - 1] + " · آية " + ar(a) + "</div></div>";
         else txt += one;
@@ -619,6 +651,15 @@
       applyHifz();
     });
     $("quranHifzHint").addEventListener("click", function () { applyHifz(); });
+    $("quranTjToggle").addEventListener("click", function () {
+      var turnOn = !tjOn();
+      try { localStorage.setItem(TJK, turnOn ? "1" : "0"); } catch (e) {}
+      applyTj();
+      var redo = function () { if (cur) openPage(cur, true); };
+      if (turnOn) tjLoad(redo); else redo();
+    });
+    applyTj();
+    if (tjOn()) tjLoad(function () { if (cur) openPage(cur, true); });
     applyHifz();
     paintHomeResume();
     document.addEventListener("visibilitychange", paintHomeResume);
