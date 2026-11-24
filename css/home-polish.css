@@ -207,3 +207,54 @@ html[lang="en"] #page-home .next-prayer .countdown::before { content: "Remaining
 
 /* المزيد: مساحة سفلية كافية فوق الشريط السفلي */
 #page-more { padding-bottom: calc(150px + env(safe-area-inset-bottom)) !important; }
+
+/* 1.1.53: يوم المسلم بتصميم غني: هيرو المسجد، حلقة تقدّم، وبلاطات الفرائض */
+#page-tasks .tasks-hero-card { position: relative; min-height: 232px; display: flex; align-items: flex-end; overflow: hidden; margin: 0 0 16px; padding: 22px 20px 20px; border: 0; border-radius: 26px; color: #fff;
+  background: linear-gradient(270deg, rgba(10,16,30,.86) 0%, rgba(10,16,30,.5) 52%, rgba(10,16,30,0) 100%), linear-gradient(0deg, rgba(10,16,30,.7) 0%, rgba(10,16,30,0) 45%), url("../assets/anyas-tasks-hero.jpg") 8% 40% / auto 135% no-repeat, #0d1424; box-shadow: 0 14px 32px rgba(0,0,0,.28); }
+#page-tasks .tasks-hero-copy { position: relative; z-index: 1; display: grid; gap: 6px; width: 100%; text-align: right; }
+#page-tasks .tasks-hero-copy strong { font-size: 38px; line-height: 1.15; font-weight: 800; text-shadow: 0 2px 14px rgba(0,0,0,.45); }
+#page-tasks .tasks-hero-copy small { color: rgba(255,255,255,.85); font-size: 15px; line-height: 1.6; }
+.tasks-hero-orn { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+.tasks-hero-orn i { width: 70px; height: 1px; background: linear-gradient(90deg, transparent, #e3bf84); }
+.tasks-hero-orn i:last-child { background: linear-gradient(270deg, transparent, #e3bf84); }
+.tasks-hero-orn b { width: 8px; height: 8px; background: #e3bf84; transform: rotate(45deg); }
+#page-tasks .daily-overview-card { padding: 16px 18px 14px; background-image: none !important; background: linear-gradient(160deg, rgba(24,30,46,.96), rgba(16,21,34,.96)) !important; }
+#page-tasks .daily-overview-heading h2 { font-size: 20px; margin: 0; }
+#page-tasks .daily-overview-message { margin: 4px 0 12px; }
+.daily-overview-body { display: flex; align-items: center; gap: 14px; direction: rtl; }
+.daily-overview-ring { --p: 0; flex: none; position: relative; width: 112px; height: 112px; border-radius: 50%; display: grid; place-content: center; text-align: center;
+  background: conic-gradient(#e3bf84 calc(var(--p) * 1%), rgba(255,255,255,.14) 0); }
+.daily-overview-ring::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: #131a2b; }
+.daily-overview-ring > * { position: relative; z-index: 1; }
+.daily-overview-ring .daily-overview-score { font-size: 26px; line-height: 1.1; }
+.daily-overview-ring small { font-size: 11px; opacity: .8; }
+#page-tasks .daily-overview-metrics { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 0; }
+#page-tasks .daily-overview-metrics > div { display: grid; gap: 4px; justify-items: center; padding: 6px 2px; border: 0; border-radius: 0; background: none; }
+#page-tasks .daily-overview-metrics > div + div { border-inline-start: 1px solid rgba(255,255,255,.14); }
+#page-tasks .daily-overview-metrics strong { font-size: 18px; }
+#page-tasks .daily-overview-metrics span { font-size: 12px; opacity: .8; }
+#page-tasks .daily-prayer-heading { align-items: flex-start; }
+#page-tasks .daily-prayer-heading h2 { font-size: 20px; margin: 0; }
+#page-tasks .daily-prayer-sub { margin: 4px 0 0; font-size: 13px; opacity: .75; }
+#page-tasks .prayer-tracker { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+#page-tasks .prayer-track-item { flex-direction: column; justify-content: center; gap: 6px; min-height: 84px; padding: 10px 2px; text-align: center; border-radius: 16px; }
+#page-tasks .pt-icon { display: block; width: 26px; height: 26px; color: #e3bf84; }
+#page-tasks .pt-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+#page-tasks .prayer-track-item > span:not(.track-status) { font-size: 13px; font-weight: 800; }
+#page-tasks .prayer-track-item .track-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+#page-tasks .prayer-track-item { position: relative; }
+#page-tasks .prayer-track-item.completed { background: rgba(227,191,132,.16); border-color: #e3bf84; }
+#page-tasks .prayer-track-item.completed::after { content: "✓"; position: absolute; top: 5px; inset-inline-start: 7px; font-size: 12px; color: #e3bf84; font-weight: 900; }
+#page-tasks .daily-overview-metrics > div { border: 0 !important; background: none !important; box-shadow: none !important; }
+#page-tasks .daily-overview-metrics > div + div { border-inline-start: 1px solid rgba(255,255,255,.16) !important; }
+#page-tasks .daily-prayer-card { display: flex; flex-direction: column; }
+#page-tasks .daily-prayer-card .prayer-tracker { order: 2; margin-top: 12px; }
+#page-tasks .daily-prayer-card .prayer-day-summary { order: 3; margin-top: 12px; padding: 0; border: 0 !important; background: none !important; box-shadow: none !important; }
+#page-tasks .daily-prayer-card .prayer-day-summary > span { font-size: 12px; opacity: .8; font-weight: 700; }
+#page-tasks .daily-overview-metrics > div { border-radius: 0 !important; padding: 6px 2px !important; }
+#page-tasks .daily-overview-metrics { gap: 0 !important; }
+#page-tasks .daily-prayer-card .prayer-tracker { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 6px !important; }
+#page-tasks .daily-prayer-card .prayer-track-item { min-height: 82px !important; padding: 10px 2px !important; flex-direction: column !important; }
+#page-tasks .daily-prayer-card .prayer-track-item:last-child, #page-tasks .daily-prayer-card .prayer-track-item { grid-column: auto !important; width: auto !important; }
+#page-tasks .daily-prayer-card .daily-prayer-heading { margin-bottom: 0 !important; }
+#page-tasks .daily-prayer-card .prayer-tracker { margin-top: 6px !important; }

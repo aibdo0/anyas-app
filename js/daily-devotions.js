@@ -183,6 +183,8 @@
     const focus = document.getElementById("dailyOverviewFocus");
     if (score) score.textContent = `${number(percent)}٪`;
     if (progress) progress.style.width = `${percent}%`;
+    const ring = document.getElementById("dailyOverviewRing");
+    if (ring) ring.style.setProperty("--p", percent);
     if (message) message.textContent = percent === 100 ? "أحسنت، أتممت مهام يومك." : percent >= 60 ? "أحسنت، تبقّى القليل وأنت قريب." : "ابدأ بما تيسّر لك، والقليل الدائم خير.";
     if (focus) {
       const current = window.anyasDailyAdhkar?.getCurrentPeriod?.();

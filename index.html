@@ -62,7 +62,7 @@
 <link rel="stylesheet" href="css/quran.css?v=20261125-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/home-header.css?v=20261124-1">
-<link rel="stylesheet" href="css/home-polish.css?v=20261124-9">
+<link rel="stylesheet" href="css/home-polish.css?v=20261125-1">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -365,21 +365,28 @@
 ===================================================== -->
 
 <main class="page" id="page-tasks">
+<section class="tasks-hero-card" aria-labelledby="tasksHeroTitle">
+  <div class="tasks-hero-copy">
+    <strong id="tasksHeroTitle">يوم المسلم</strong>
+    <small>عبادتك وتنظيم يومك بخطوات واضحة</small>
+    <span class="tasks-hero-orn" aria-hidden="true"><i></i><b></b><i></i></span>
+  </div>
+</section>
+
 <section class="daily-overview-card" aria-labelledby="dailyOverviewHeading">
   <div class="daily-overview-heading">
-    <div>
-      <span class="daily-overview-eyebrow">خطوة بخطوة</span>
-      <h2 id="dailyOverviewHeading">ملخص يومك</h2>
-    </div>
-    <div class="daily-overview-score" id="dailyOverviewScore">٠٪</div>
+    <h2 id="dailyOverviewHeading">ملخص يومك</h2>
   </div>
   <p class="daily-overview-message" id="dailyOverviewMessage">ابدأ بما تيسّر لك، والقليل الدائم خير.</p>
-  <div class="daily-overview-progress"><span id="dailyOverviewProgress"></span></div>
-  <div class="daily-overview-metrics">
-    <div><strong id="dailyOverviewPrayerCount">٠/٥</strong><span>الصلوات</span></div>
-    <div><strong id="dailyOverviewDhikrCount">٠/٠</strong><span>الأذكار</span></div>
-    <div><strong id="dailyOverviewSunnahCount">٠/٨</strong><span>السنن</span></div>
+  <div class="daily-overview-body">
+    <div class="daily-overview-ring" id="dailyOverviewRing" style="--p:0"><div class="daily-overview-score" id="dailyOverviewScore">٠٪</div><small>من المهام</small></div>
+    <div class="daily-overview-metrics">
+      <div><strong id="dailyOverviewPrayerCount">٠/٥</strong><span>الصلوات</span></div>
+      <div><strong id="dailyOverviewDhikrCount">٠/٠</strong><span>الأذكار</span></div>
+      <div><strong id="dailyOverviewSunnahCount">٠/٨</strong><span>السنن</span></div>
+    </div>
   </div>
+  <div class="daily-overview-progress" hidden><span id="dailyOverviewProgress"></span></div>
   <div class="daily-overview-focus" id="dailyOverviewFocus">وردك المناسب لوقتك سيظهر هنا</div>
 </section>
 
@@ -387,7 +394,8 @@
 <section class="daily-prayer-card" aria-labelledby="dailyPrayerHeading">
   <div class="daily-prayer-heading">
     <div>
-      <h2 id="dailyPrayerHeading">متابعة صلوات اليوم</h2>
+      <h2 id="dailyPrayerHeading">الفرائض أولًا</h2>
+      <p class="daily-prayer-sub">سجّل صلواتك الخمس وتابع تقدمك خلال اليوم.</p>
       <span class="streak-inline" id="homeStreakBadge"></span>
     </div>
     <button class="more-button" id="openPrayerReportButton" type="button">التقرير</button>
@@ -399,11 +407,11 @@
     </div>
   </div>
   <div class="prayer-tracker" id="todayPrayerTracker">
-    <button class="prayer-track-item" data-track-prayer="Fajr" type="button"><span>الفجر</span><span class="track-status">لم تُسجل</span></button>
-    <button class="prayer-track-item" data-track-prayer="Dhuhr" type="button"><span>الظهر</span><span class="track-status">لم تُسجل</span></button>
-    <button class="prayer-track-item" data-track-prayer="Asr" type="button"><span>العصر</span><span class="track-status">لم تُسجل</span></button>
-    <button class="prayer-track-item" data-track-prayer="Maghrib" type="button"><span>المغرب</span><span class="track-status">لم تُسجل</span></button>
-    <button class="prayer-track-item" data-track-prayer="Isha" type="button"><span>العشاء</span><span class="track-status">لم تُسجل</span></button>
+    <button class="prayer-track-item" data-track-prayer="Fajr" type="button"><i class="pt-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18M6 18a6 6 0 0 1 12 0M12 5v3M4.6 9.6l2 2M19.4 9.6l-2 2"/></svg></i><span>الفجر</span><span class="track-status">لم تُسجل</span></button>
+    <button class="prayer-track-item" data-track-prayer="Dhuhr" type="button"><i class="pt-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg></i><span>الظهر</span><span class="track-status">لم تُسجل</span></button>
+    <button class="prayer-track-item" data-track-prayer="Asr" type="button"><i class="pt-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18M6 18a6 6 0 0 1 12 0M12 5v3M4.6 9.6l2 2M19.4 9.6l-2 2"/></svg></i><span>العصر</span><span class="track-status">لم تُسجل</span></button>
+    <button class="prayer-track-item" data-track-prayer="Maghrib" type="button"><i class="pt-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18M6 18a6 6 0 0 1 12 0M12 5v3M4.6 9.6l2 2M19.4 9.6l-2 2"/></svg></i><span>المغرب</span><span class="track-status">لم تُسجل</span></button>
+    <button class="prayer-track-item" data-track-prayer="Isha" type="button"><i class="pt-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></i><span>العشاء</span><span class="track-status">لم تُسجل</span></button>
   </div>
 </section>
 </section>
@@ -2459,7 +2467,7 @@ type="button"
 <script src="js/settings.js?v=20261124-1"></script>
 <script src="js/qibla.js?v=20261008-1"></script>
 <script src="js/app-enhancements.js?v=20261125-1"></script>
-<script src="js/daily-devotions.js?v=20261125-1"></script>
+<script src="js/daily-devotions.js?v=20261125-2"></script>
 <script src="js/home-extras.js?v=20261124-1"></script>
 <script src="js/share-image.js?v=20261124-4"></script>
 <script src="js/quran.js?v=20261125-1"></script>
