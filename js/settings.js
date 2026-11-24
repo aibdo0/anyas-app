@@ -1428,6 +1428,7 @@ function setupNotifications() {
     "notifyAyatKursi",
     "notificationSound",
     "notifyHadith",
+    "notifyDailyAyah",
     "notifyDuha",
     "notifySalawat",
     "notifyBaqiyat",
@@ -1626,9 +1627,26 @@ function setupReminderScheduleSettings() {
   });
 }
 
+let anyasTafsirSyncTried = false;
+function anyasDailyAyahPayload() {
+  const verses = window.dailyQuranSelection || [];
+  if (verses.length < 354 || typeof getHijriDayOfYear !== "function") return [];
+  const tf = window.ANIAS_TAFSIR && window.ANIAS_TAFSIR.items;
+  const out = [];
+  for (let i = 0; i < 14; i += 1) {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    const v = verses[getHijriDayOfYear(d) - 1];
+    if (!v) continue;
+    const ymd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    out.push({ d: ymd, t: v.text, r: `﴿ سورة ${v.surahName} · آية ${v.ayah} ﴾`, f: tf && tf[v.surah - 1] ? String(tf[v.surah - 1][v.ayah - 1] || "") : "" });
+  }
+  return out;
+}
+
 function syncAndroidNotificationSettings() {
   if (!window.AnyasAndroid || !window.AnyasAndroid.syncSettings) return;
-  const ids = ["notifyPrayerSoon", "notifySunrise", "notifyLastThird", "notifyAyatKursi", "notifyHadith", "notifyDuha", "notifyBaqiyat", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyRainSunnah", "beforeFajrReminder", "notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyFridayKahf", "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat"];
+  const ids = ["notifyPrayerSoon", "notifySunrise", "notifyLastThird", "notifyAyatKursi", "notifyHadith", "notifyDailyAyah", "notifyDuha", "notifyBaqiyat", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyRainSunnah", "beforeFajrReminder", "notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyFridayKahf", "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat"];
   const enabled = {};
   ids.forEach(id => {
     const element = document.getElementById(id);
@@ -1655,7 +1673,15 @@ function syncAndroidNotificationSettings() {
     const time = timeControl && anyasIsReminderTimeValid(id, timeControl.value) ? anyasNormalizeClock(timeControl.value) : saved.time;
     schedules[id] = { mode, time };
   });
+  if (enabled.notifyDailyAyah && !window.ANIAS_TAFSIR && !anyasTafsirSyncTried) {
+    anyasTafsirSyncTried = true;
+    const sc = document.createElement("script");
+    sc.src = "data/quran-tafsir.js?v=20261124-1";
+    sc.onload = () => syncAndroidNotificationSettings();
+    document.head.appendChild(sc);
+  }
   window.AnyasAndroid.syncSettings(JSON.stringify({
+    dailyAyahs: enabled.notifyDailyAyah ? anyasDailyAyahPayload() : [],
     enabled,
     prayers,
     city: document.getElementById("prayerHeroCity")?.textContent || localStorage.getItem("anyas_cityName") || "مدينتك",

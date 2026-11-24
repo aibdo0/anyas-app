@@ -7,10 +7,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 final class ReminderScheduler {
     static final String PREFS = "anyas_reminders";
@@ -40,6 +42,7 @@ final class ReminderScheduler {
             addCustomizableDaily(reminders, enabled, schedules, "notifyWardSleep", "أذكار النوم", "20:00", "18:00", "23:59", "adhkar-sleep-mishary-alafasy.mp3");
             addDaily(reminders, enabled, "notifyWardSahar", "استغفار السحر", "02:00", "qiyam-al-layl-reminder.mp3");
             addDaily(reminders, enabled, "notifyHadith", "حديث اليوم", "12:30", "hadith-reminder.mp3");
+            addDailyAyah(reminders, enabled, data);
             addDaily(reminders, enabled, "notifyBaqiyat", "الباقيات الصالحات", "14:00", "baqiyat-as-salihat-reminder.mp3");
             addDaily(reminders, enabled, "notifySalawat_1", "الصلاة على النبي ﷺ", "10:00", "salawat-reminder-1.mp3");
             addDaily(reminders, enabled, "notifySalawat_2", "الصلاة على النبي ﷺ", "17:00", "salawat-reminder-2.mp3");
@@ -124,6 +127,35 @@ final class ReminderScheduler {
         if (enabled(enabled, key)) list.add(new Reminder(key, title, time, reminderBody(key, title), soundFile, weekday));
     }
 
+    private static void addDailyAyah(List<Reminder> list, JSONObject enabled, JSONObject data) {
+        if (!enabled(enabled, "notifyDailyAyah")) return;
+        Calendar target = Calendar.getInstance();
+        target.set(Calendar.HOUR_OF_DAY, 8);
+        target.set(Calendar.MINUTE, 0);
+        target.set(Calendar.SECOND, 0);
+        target.set(Calendar.MILLISECOND, 0);
+        if (target.getTimeInMillis() <= System.currentTimeMillis()) target.add(Calendar.DAY_OF_YEAR, 1);
+        String day = String.format(Locale.US, "%04d-%02d-%02d", target.get(Calendar.YEAR), target.get(Calendar.MONTH) + 1, target.get(Calendar.DAY_OF_MONTH));
+        String body = "افتح أنياس لتقرأ آية اليوم.";
+        JSONArray items = data.optJSONArray("dailyAyahs");
+        if (items != null) {
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject item = items.optJSONObject(i);
+                if (item == null || !day.equals(item.optString("d"))) continue;
+                String text = item.optString("t", "").trim();
+                if (text.isEmpty()) break;
+                StringBuilder sb = new StringBuilder(text);
+                String ref = item.optString("r", "").trim();
+                if (!ref.isEmpty()) sb.append("\n").append(ref);
+                String tafsir = item.optString("f", "").trim();
+                if (!tafsir.isEmpty()) sb.append("\n\nالتفسير الميسر: ").append(tafsir);
+                body = sb.toString();
+                break;
+            }
+        }
+        list.add(new Reminder("notifyDailyAyah", "آية اليوم", "08:00", body, null, DAILY));
+    }
+
     private static void addWeekly(List<Reminder> list, String key, String title, String time, String soundFile, int weekday) {
         list.add(new Reminder(key, title, time, reminderBody(key, title), soundFile, weekday));
     }
@@ -176,7 +208,7 @@ final class ReminderScheduler {
     }
 
     static void cancelKnown(Context context, AlarmManager alarm) {
-        String[] ids = {"notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyHadith", "notifyBaqiyat", "notifySalawat_1", "notifySalawat_2", "notifyAyatKursi", "notifySunrise", "notifyDuha", "beforeFajrReminder", "notifyLastThird", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyFridayKahf", "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat", "prayer_Fajr", "prayer_Dhuhr", "prayer_Asr", "prayer_Maghrib", "prayer_Isha"};
+        String[] ids = {"notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyHadith", "notifyDailyAyah", "notifyBaqiyat", "notifySalawat_1", "notifySalawat_2", "notifyAyatKursi", "notifySunrise", "notifyDuha", "beforeFajrReminder", "notifyLastThird", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyFridayKahf", "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat", "prayer_Fajr", "prayer_Dhuhr", "prayer_Asr", "prayer_Maghrib", "prayer_Isha"};
         for (String id : ids) cancel(context, alarm, id);
     }
 
