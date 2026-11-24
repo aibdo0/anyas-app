@@ -208,3 +208,6 @@
 #page-quran > .plain-header { display: none !important; }
 #page-quran { padding-top: 10px; }
 .quran-tb-page { background: none; border: 0; color: inherit; font-family: inherit; cursor: pointer; padding: 0 4px; }
+
+/* 1.1.31: زرا الجزء والسورة أعلى الصفحة */
+button.quran-pill { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }

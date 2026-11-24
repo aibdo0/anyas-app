@@ -48,6 +48,7 @@
       b.setAttribute("aria-selected", on ? "true" : "false");
     });
     document.querySelector(".quran-searchwrap").hidden = v !== "surah";
+    document.querySelector("#quranListView .quran-sheet-title").textContent = v === "juz" ? "فهرس الأجزاء" : v === "sajda" ? "مواضع السجدات" : "فهرس السور";
     renderList($("quranSearch").value || "");
   }
   function renderSegList(box) {
@@ -339,8 +340,8 @@
       if (txt) body += '<p class="quran-text">' + txt + "</p>";
       if (a > n) { s++; a = 1; } else break;
     }
-    $("quranReader").innerHTML = '<article class="quran-page' + (viewMode() === "verse" ? " quran-verses" : "") + '"><div class="quran-pills"><span class="quran-pill">سورة ' + Q.names[st[0] - 1] +
-      '</span><span class="quran-pill">' + JUZ[juzOf(st[0], st[1]) - 1] + "</span></div>" + body +
+    $("quranReader").innerHTML = '<article class="quran-page' + (viewMode() === "verse" ? " quran-verses" : "") + '"><div class="quran-pills"><button type="button" class="quran-pill" data-open="surah">سورة ' + Q.names[st[0] - 1] +
+      '</button><button type="button" class="quran-pill" data-open="juz">' + JUZ[juzOf(st[0], st[1]) - 1] + "</button></div>" + body +
       '<div class="quran-pageno"><span>' + ar(pg) + "</span></div></article>";
     closeSheet();
     $("quranTitle").textContent = "سورة " + Q.names[st[0] - 1];
@@ -445,8 +446,15 @@
       try { localStorage.setItem(ORN, ornOn() ? "false" : "true"); } catch (e) {}
       applyOrn();
     });
-    $("quranBack").addEventListener("click", openSheet);
-    $("quranTbPage").addEventListener("click", openSheet);
+    $("quranBack").addEventListener("click", function () { openSheet(); setSeg("surah"); });
+    $("quranTbPage").addEventListener("click", function () { openSheet(); setSeg("surah"); });
+    document.addEventListener("click", function (e) {
+      var p = e.target.closest(".quran-pill[data-open]");
+      if (!p) return;
+      e.stopPropagation();
+      openSheet();
+      setSeg(p.dataset.open);
+    }, true);
     $("quranBackdrop").addEventListener("click", closeSheet);
     $("quranGrip").addEventListener("click", closeSheet);
     var tx = null;
