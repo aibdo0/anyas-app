@@ -144,3 +144,7 @@
   .daily-adhkar-title { font-size: 17px; }
   .daily-adhkar-badge { padding-inline: 8px; }
 }
+.daily-adhkar-remind { display: block; margin: 10px auto 0; padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,.4); background: transparent; color: inherit; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+.daily-adhkar-remind[hidden] { display: none; }
+.reminder-flash { animation: reminderFlash 2.2s ease; }
+@keyframes reminderFlash { 0%, 60% { box-shadow: 0 0 0 3px rgba(227,191,132,.85); border-radius: 14px; } 100% { box-shadow: 0 0 0 3px rgba(227,191,132,0); } }

@@ -46,7 +46,36 @@
     const mark = card.querySelector(".daily-adhkar-mark");
     if (mark) mark.textContent = period.icon;
     openButton.dataset.adhkarAction = period.action;
+    updateRemind(period);
   }
+
+  const REMIND_IDS = { awakening: "notifyWardAwakening", morning: "notifyWardMorning", evening: "notifyWardEvening", sleep: "notifyWardSleep" };
+  const remindButton = document.getElementById("dailyAdhkarRemindButton");
+  function updateRemind(period) {
+    if (!remindButton) return;
+    const id = REMIND_IDS[period.id];
+    remindButton.hidden = !id;
+    if (!id) return;
+    remindButton.dataset.target = id;
+    const on = document.getElementById(id)?.checked;
+    remindButton.textContent = on ? "ضبط التذكير" : "فعّل التذكير";
+  }
+  remindButton?.addEventListener("click", () => {
+    const id = remindButton.dataset.target;
+    if (typeof window.goToPage === "function") window.goToPage("settings");
+    window.setTimeout(() => {
+      const input = document.getElementById(id);
+      if (!input) return;
+      const panel = input.closest(".settings-card[id], [id^='settingsSectionPanel']");
+      if (panel && panel.hidden) document.querySelector('[aria-controls="' + panel.id + '"]')?.click();
+      const group = input.closest("details.notification-settings-group");
+      if (group) group.open = true;
+      const row = input.closest(".setting-row") || input;
+      row.scrollIntoView({ behavior: "smooth", block: "center" });
+      row.classList.add("reminder-flash");
+      window.setTimeout(() => row.classList.remove("reminder-flash"), 2200);
+    }, 200);
+  });
 
   openButton.addEventListener("click", () => {
     const action = openButton.dataset.adhkarAction;
