@@ -1,0 +1,55 @@
+/* تحسينات الصفحة الرئيسية: نفس الهوية (داكن + ذهبي + صورة المسجد)، مع تناسق أفضل. */
+
+/* 1) بطاقة «أقرب مسجد» كانت فاتحة وعنوانها غير مقروء في المظهر الداكن، وتختلف عن بطاقة القبلة.
+      الآن تشبه بطاقة القبلة تمامًا في المظهرين. */
+#page-home #nearbyMosqueButton::before,
+#page-home #nearbyMosqueButton::after { display: none; content: none; }
+#page-home #nearbyMosqueButton.home-qibla-card {
+  border: 1px solid #eee5d2 !important;
+  background: #faf7f0 !important;
+}
+#page-home #nearbyMosqueButton .mosque-icon { color: var(--gold-dark); }
+#page-home #nearbyMosqueButton .mosque-title { color: var(--ink) !important; }
+:root[data-theme="dark"] #page-home #nearbyMosqueButton.home-qibla-card,
+:root[data-time-scene="night"] #page-home #nearbyMosqueButton.home-qibla-card {
+  border-color: rgba(222,192,126,.2) !important;
+  background: rgba(255,255,255,.04) !important;
+}
+:root[data-theme="dark"] #page-home #nearbyMosqueButton .mosque-icon,
+:root[data-time-scene="night"] #page-home #nearbyMosqueButton .mosque-icon { color: #e3c98f; }
+:root[data-theme="dark"] #page-home #nearbyMosqueButton .mosque-title,
+:root[data-time-scene="night"] #page-home #nearbyMosqueButton .mosque-title { color: #fff !important; }
+#page-home .home-qibla-card .mosque-icon {
+  display: grid; width: 44px; height: 44px; flex: 0 0 44px; place-items: center;
+  border: 1px solid rgba(196,154,85,.28); border-radius: 14px; font-size: 20px;
+}
+#page-home .home-qibla-card .mosque-arrow { margin-inline-start: auto; color: var(--gold); font-size: 20px; }
+
+/* 2) العدّ التنازلي في بطاقة الصلاة القادمة: كان صغيرًا جدًا. صار أوضح مع كلمة «متبقي». */
+#page-home .next-prayer .countdown {
+  align-self: flex-start;
+  display: inline-flex; align-items: baseline; gap: 8px;
+  margin-top: 8px; padding: 5px 12px;
+  border: 1px solid rgba(240,215,164,.28); border-radius: 999px;
+  color: #f6e6bf !important; background: rgba(15,13,10,.42);
+  font-size: 16px; font-weight: 800; letter-spacing: .02em;
+  font-variant-numeric: tabular-nums;
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+#page-home .next-prayer .countdown::before {
+  content: "متبقي"; color: rgba(255,255,255,.7); font-size: 11px; font-weight: 700; letter-spacing: 0;
+}
+html[lang="en"] #page-home .next-prayer .countdown { direction: ltr; }
+html[lang="en"] #page-home .next-prayer .countdown::before { content: "Remaining"; }
+
+/* 3) شريط التقدم: أنحف وأنظف. */
+#page-home .prayer-progress { height: 4px; border-radius: 99px; }
+#page-home .prayer-progress-bar { border-radius: 99px; }
+
+/* 4) مسافات متناسقة بين بطاقات الصفحة الرئيسية. */
+#page-home .section { margin-bottom: 14px; }
+
+/* 5) تقليل الحركة لمن يفضّل ذلك. */
+@media (prefers-reduced-motion: reduce) {
+  #page-home * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
