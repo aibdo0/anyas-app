@@ -203,3 +203,8 @@
 .quran-vref { margin-top: 4px; text-align: center; font-size: 13px; color: #8a6a3f; opacity: .85; }
 :root[data-theme="dark"] .quran-vref { color: #d1a95f; }
 :root[data-theme="dark"] .quran-verses .quran-vcard { border-bottom-color: rgba(214,176,112,.22); }
+
+/* 1.1.30: إخفاء كارت العنوان العلوي، والفهرس من الشريط السفلي */
+#page-quran > .plain-header { display: none !important; }
+#page-quran { padding-top: 10px; }
+.quran-tb-page { background: none; border: 0; color: inherit; font-family: inherit; cursor: pointer; padding: 0 4px; }

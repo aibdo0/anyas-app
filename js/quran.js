@@ -446,6 +446,7 @@
       applyOrn();
     });
     $("quranBack").addEventListener("click", openSheet);
+    $("quranTbPage").addEventListener("click", openSheet);
     $("quranBackdrop").addEventListener("click", closeSheet);
     $("quranGrip").addEventListener("click", closeSheet);
     var tx = null;
