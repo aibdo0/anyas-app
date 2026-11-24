@@ -62,7 +62,7 @@
 <link rel="stylesheet" href="css/quran.css?v=20261125-1">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/home-header.css?v=20261124-1">
-<link rel="stylesheet" href="css/home-polish.css?v=20261125-2">
+<link rel="stylesheet" href="css/home-polish.css?v=20261125-4">
 </head>
 <body>
 <a class="skip-link" href="#page-home">تجاوز إلى المحتوى الرئيسي</a>
@@ -423,8 +423,61 @@
 </section>
 </section>
 
+<section class="tasks-section-group" aria-labelledby="tasksOptionalHeading">
+<div class="tasks-section-heading"><span class="tasks-section-index" aria-hidden="true">١</span><div><h2 id="tasksOptionalHeading">السنن والمهام الأسبوعية</h2><p>متابعة اختيارية لما تيسّر من النوافل وأعمال الجمعة.</p></div></div>
+<section class="devotion-section sunnah-section" aria-labelledby="sunnahTrackerHeading">
+  <div class="devotion-section-heading">
+    <div>
+      <h2 id="sunnahTrackerHeading">السنن والنوافل</h2>
+      <p>متابعة اختيارية؛ الفرائض أولًا</p>
+    </div>
+    <span class="sunnah-total" id="sunnahProgressText">٠ / ٤</span>
+  </div>
+  <div class="sunnah-checklist" id="sunnahChecklist"></div>
+  <div class="sunnah-virtue" id="sunnahVirtue">
+    <span class="sunnah-virtue-icon" aria-hidden="true">✧</span>
+    <p>المحافظة على اثنتي عشرة ركعة من السنن الرواتب في اليوم والليلة ورد فيها وعد ببيت في الجنة. ابدأ بما تستطيع، وتدرّج برفق.</p>
+  </div>
+</section>
+<section class="friday-tasks-card" id="fridayTasksCard" aria-labelledby="fridayTasksHeading" hidden>
+  <div class="friday-tasks-heading">
+    <div>
+      <span class="friday-tasks-eyebrow">تذكيرات أسبوعية</span>
+      <h2 id="fridayTasksHeading">مهام الجمعة</h2>
+      <p id="fridayTasksStatus">تظهر مهام الجمعة هنا كل أسبوع</p>
+    </div>
+    <span class="friday-tasks-progress" id="fridayTasksProgress">٠ / ٣</span>
+  </div>
+  <div class="friday-task-list">
+    <button class="friday-task-item" type="button" data-friday-task="kahf" aria-pressed="false">
+      <span class="friday-task-icon" aria-hidden="true">ك</span><span><strong>قراءة سورة الكهف</strong><small>يمكن قراءتها في أي وقت من يوم الجمعة</small></span><span class="friday-task-check" aria-hidden="true">○</span>
+    </button>
+    <button class="friday-task-item" type="button" data-friday-task="prayer" aria-pressed="false">
+      <span class="friday-task-icon" aria-hidden="true">ص</span><span><strong>صلاة الجمعة</strong><small>تذكير بموعد الصلاة بحسب توقيت المسجد</small></span><span class="friday-task-check" aria-hidden="true">○</span>
+    </button>
+    <button class="friday-task-item" type="button" data-friday-task="salawat" aria-pressed="false">
+      <span class="friday-task-icon" aria-hidden="true">ﷺ</span><span><strong>الصلاة على النبي ﷺ</strong><small>من مغرب الخميس إلى نهاية يوم الجمعة</small></span><span class="friday-task-check" aria-hidden="true">○</span>
+    </button>
+  </div>
+  <div class="friday-answer-hour"><span aria-hidden="true">⌛</span><span><strong>ساعة الإجابة</strong><small>من بعد العصر إلى المغرب، أكثر من الدعاء فيها</small></span></div>
+</section>
+</section>
+
+<section class="tasks-quick-rows" aria-label="ورد القرآن وأذكار الوقت">
+  <button class="tasks-quick-row" id="tasksQuranRow" type="button">
+    <span class="tqr-icon" aria-hidden="true">ق</span>
+    <span class="tqr-copy"><strong>ورد القرآن</strong><small id="tasksQuranRowSub">اقرأ من آخر صفحة وصلت إليها</small></span>
+    <span class="tqr-go" aria-hidden="true">‹</span>
+  </button>
+  <button class="tasks-quick-row" id="tasksNowRow" type="button">
+    <span class="tqr-icon" id="tasksNowIcon" aria-hidden="true">☀</span>
+    <span class="tqr-copy"><strong id="tasksNowTitle">أذكار الوقت</strong><small id="tasksNowSub">وردك المناسب لوقتك الآن</small></span>
+    <span class="tqr-go" aria-hidden="true">‹</span>
+  </button>
+</section>
+
 <section class="tasks-section-group" aria-labelledby="tasksAdhkarHeading">
-<div class="tasks-section-heading"><span class="tasks-section-index" aria-hidden="true">١</span><div><h2 id="tasksAdhkarHeading">الأذكار والورد اليومي</h2><p>الأذكار العامة، والمسبحة، والأوراد حسب وقتها.</p></div></div>
+<div class="tasks-section-heading"><span class="tasks-section-index" aria-hidden="true">٢</span><div><h2 id="tasksAdhkarHeading">الأذكار والورد اليومي</h2><p>الأذكار العامة، والمسبحة، والأوراد حسب وقتها.</p></div></div>
 <section class="devotion-section" aria-labelledby="dailyDhikrTrackerHeading">
   <div class="devotion-section-heading">
     <div>
@@ -476,46 +529,6 @@
     <span>أذكار النوم</span><span class="wird-section-meta" data-wird-count="beforeSleep"></span><span aria-hidden="true">+</span>
   </button>
   <div class="wird-items" id="wird-items-beforeSleep" hidden></div>
-</section>
-</section>
-
-<section class="tasks-section-group" aria-labelledby="tasksOptionalHeading">
-<div class="tasks-section-heading"><span class="tasks-section-index" aria-hidden="true">٢</span><div><h2 id="tasksOptionalHeading">السنن والمهام الأسبوعية</h2><p>متابعة اختيارية لما تيسّر من النوافل وأعمال الجمعة.</p></div></div>
-<section class="devotion-section sunnah-section" aria-labelledby="sunnahTrackerHeading">
-  <div class="devotion-section-heading">
-    <div>
-      <h2 id="sunnahTrackerHeading">السنن والنوافل</h2>
-      <p>متابعة اختيارية؛ الفرائض أولًا</p>
-    </div>
-    <span class="sunnah-total" id="sunnahProgressText">٠ / ٤</span>
-  </div>
-  <div class="sunnah-checklist" id="sunnahChecklist"></div>
-  <div class="sunnah-virtue" id="sunnahVirtue">
-    <span class="sunnah-virtue-icon" aria-hidden="true">✧</span>
-    <p>المحافظة على اثنتي عشرة ركعة من السنن الرواتب في اليوم والليلة ورد فيها وعد ببيت في الجنة. ابدأ بما تستطيع، وتدرّج برفق.</p>
-  </div>
-</section>
-<section class="friday-tasks-card" id="fridayTasksCard" aria-labelledby="fridayTasksHeading" hidden>
-  <div class="friday-tasks-heading">
-    <div>
-      <span class="friday-tasks-eyebrow">تذكيرات أسبوعية</span>
-      <h2 id="fridayTasksHeading">مهام الجمعة</h2>
-      <p id="fridayTasksStatus">تظهر مهام الجمعة هنا كل أسبوع</p>
-    </div>
-    <span class="friday-tasks-progress" id="fridayTasksProgress">٠ / ٣</span>
-  </div>
-  <div class="friday-task-list">
-    <button class="friday-task-item" type="button" data-friday-task="kahf" aria-pressed="false">
-      <span class="friday-task-icon" aria-hidden="true">ك</span><span><strong>قراءة سورة الكهف</strong><small>يمكن قراءتها في أي وقت من يوم الجمعة</small></span><span class="friday-task-check" aria-hidden="true">○</span>
-    </button>
-    <button class="friday-task-item" type="button" data-friday-task="prayer" aria-pressed="false">
-      <span class="friday-task-icon" aria-hidden="true">ص</span><span><strong>صلاة الجمعة</strong><small>تذكير بموعد الصلاة بحسب توقيت المسجد</small></span><span class="friday-task-check" aria-hidden="true">○</span>
-    </button>
-    <button class="friday-task-item" type="button" data-friday-task="salawat" aria-pressed="false">
-      <span class="friday-task-icon" aria-hidden="true">ﷺ</span><span><strong>الصلاة على النبي ﷺ</strong><small>من مغرب الخميس إلى نهاية يوم الجمعة</small></span><span class="friday-task-check" aria-hidden="true">○</span>
-    </button>
-  </div>
-  <div class="friday-answer-hour"><span aria-hidden="true">⌛</span><span><strong>ساعة الإجابة</strong><small>من بعد العصر إلى المغرب، أكثر من الدعاء فيها</small></span></div>
 </section>
 </section>
 </main>
@@ -2474,10 +2487,10 @@ type="button"
 <script src="js/settings.js?v=20261124-1"></script>
 <script src="js/qibla.js?v=20261008-1"></script>
 <script src="js/app-enhancements.js?v=20261125-1"></script>
-<script src="js/daily-devotions.js?v=20261125-3"></script>
+<script src="js/daily-devotions.js?v=20261125-4"></script>
 <script src="js/home-extras.js?v=20261124-1"></script>
 <script src="js/share-image.js?v=20261124-4"></script>
-<script src="js/quran.js?v=20261125-1"></script>
+<script src="js/quran.js?v=20261125-2"></script>
 <script src="js/app.js?v=20261125-1"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script>

@@ -197,7 +197,18 @@
     if (dhikr) dhikr.textContent = `${number(dhikrDone)}/${number(catalog.adhkar.length)}`;
     if (sunnah) sunnah.textContent = `${number(sunnahDone)}/${number(catalog.sunnah.length)}`;
     renderWeekReport();
+    const nowPeriod = window.anyasDailyAdhkar?.getCurrentPeriod?.();
+    const nowTitle = document.getElementById("tasksNowTitle");
+    if (nowPeriod && nowTitle) {
+      nowTitle.textContent = nowPeriod.title;
+      const nowSub = document.getElementById("tasksNowSub"); if (nowSub) nowSub.textContent = nowPeriod.hint;
+      const nowIcon = document.getElementById("tasksNowIcon"); if (nowIcon) nowIcon.textContent = nowPeriod.icon;
+    }
   }
+
+  document.getElementById("tasksNowRow")?.addEventListener("click", () => {
+    document.getElementById("openDailyAdhkarButton")?.click();
+  });
 
   const toAr = text => String(text).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
   const DAY_NOUN = ["يوم", "يومان", "يومين", "أيام", "يومًا", "يوم"];

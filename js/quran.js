@@ -416,6 +416,11 @@
   function paintHomeResume() {
     var old = document.getElementById("homeResumeCard");
     if (old) old.remove();
+    var sub = document.getElementById("tasksQuranRowSub");
+    if (!sub) return;
+    var lv = getLast(), pg = lv && lv.p ? lv.p : 0, st = statsSummary();
+    if (!pg) { sub.textContent = "ابدأ القراءة من أول المصحف"; return; }
+    sub.textContent = (lv.n ? "سورة " + lv.n + " · " : "") + "صفحة " + ar(pg) + (st.today ? " · قرأت اليوم " + pagesWord(st.today) : "");
   }
   var TJK = "anyas_quran_tajweed";
   function tjOn() { try { return localStorage.getItem(TJK) === "1"; } catch (e) { return false; } }
@@ -649,6 +654,11 @@
     applyHifz();
     paintHomeResume();
     document.addEventListener("visibilitychange", paintHomeResume);
+    var qr = $("tasksQuranRow");
+    if (qr) qr.addEventListener("click", function () {
+      var n = document.querySelector('.nav-item[data-page="quran"]'); if (n) n.click();
+      setTimeout(function () { openPage(lastPage() || 1); }, 60);
+    });
     new MutationObserver(function () { if (hifzOn()) document.querySelectorAll(".quran-hifz-shown").forEach(function (e) { e.classList.remove("quran-hifz-shown"); }); }).observe($("quranReader"), { childList: true });
     $("quranBack").addEventListener("click", function () { openSheet(); setSeg("surah"); });
     $("quranTbPage").addEventListener("click", function () { openSheet(); setSeg("surah"); });

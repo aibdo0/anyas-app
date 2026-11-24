@@ -275,3 +275,29 @@ html[lang="en"] #page-home .next-prayer .countdown::before { content: "Remaining
 .week-report-summary { margin: 6px 0 4px; font-size: 13px; line-height: 1.8; }
 .week-report-note { display: block; font-size: 11px; line-height: 1.6; opacity: .6; }
 #page-tasks .streak-inline { display: none; }
+
+/* 1.1.55: كل بلاطات يوم المسلم صفوف بعرض كامل، صف لكل عنصر */
+#page-tasks .daily-prayer-card .prayer-tracker { grid-template-columns: 1fr !important; gap: 8px !important; }
+#page-tasks .daily-prayer-card .prayer-track-item { flex-direction: row !important; justify-content: flex-start !important; align-items: center !important; gap: 12px !important; min-height: 58px !important; padding: 10px 14px !important; text-align: right; }
+#page-tasks .daily-prayer-card .prayer-track-item .pt-icon { width: 26px; height: 26px; flex: none; }
+#page-tasks .daily-prayer-card .prayer-track-item > span:not(.track-status) { font-size: 16px; }
+#page-tasks .daily-prayer-card .prayer-track-item .track-status { position: static; width: auto; height: auto; overflow: visible; clip: auto; margin-inline-start: auto; font-size: 12px; opacity: .75; }
+#page-tasks .daily-prayer-card .prayer-track-item.completed .track-status { color: #e3bf84; opacity: 1; font-weight: 800; }
+#page-tasks .daily-prayer-card .prayer-track-item.completed::after { content: none; }
+#page-tasks .sunnah-checklist { grid-template-columns: 1fr !important; gap: 8px !important; }
+#page-tasks .sunnah-task { min-height: 58px; padding: 10px 14px; }
+#page-tasks .sunnah-task-copy { grid-auto-flow: column; grid-template-columns: auto 1fr; align-items: baseline; gap: 10px; }
+#page-tasks .sunnah-task-copy strong { font-size: 15px; }
+#page-tasks .sunnah-task-copy small { font-size: 12px; }
+/* 1.1.55: مؤشرات الملخص صفوف أيضًا */
+#page-tasks .daily-overview-metrics { grid-template-columns: 1fr !important; gap: 4px !important; }
+#page-tasks .daily-overview-metrics > div { display: flex !important; justify-content: space-between; align-items: center; flex-direction: row-reverse; padding: 7px 4px !important; }
+#page-tasks .daily-overview-metrics > div + div { border-inline-start: 0 !important; border-top: 1px solid rgba(255,255,255,.14) !important; }
+#page-tasks .daily-overview-metrics > div strong { order: 0; }
+.tasks-quick-rows { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 0 0 22px; }
+.tasks-quick-row { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 62px; padding: 10px 14px; border-radius: 18px; border: 1px solid rgba(222,192,126,.3); background: linear-gradient(160deg, rgba(24,30,46,.96), rgba(16,21,34,.96)); color: #fff; font: inherit; text-align: right; cursor: pointer; }
+.tqr-icon { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 19px; color: #e3bf84; background: rgba(227,191,132,.14); }
+.tqr-copy { flex: 1; display: grid; gap: 2px; min-width: 0; }
+.tqr-copy strong { font-size: 16px; }
+.tqr-copy small { font-size: 12px; opacity: .75; }
+.tqr-go { font-size: 22px; color: #e3bf84; }
