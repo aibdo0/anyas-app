@@ -152,6 +152,12 @@
     $("page-quran").setAttribute("data-mushaf", v);
     document.querySelectorAll("#quranThemes button").forEach(function (b) { b.setAttribute("aria-checked", b.dataset.mt === v ? "true" : "false"); });
   }
+  var VMK = "anyas_quran_view";
+  function viewMode() { try { return localStorage.getItem(VMK) === "verse" ? "verse" : "page"; } catch (e) { return "page"; } }
+  function applyView() {
+    var v = viewMode();
+    document.querySelectorAll("#quranView button").forEach(function (b) { b.setAttribute("aria-checked", b.dataset.vm === v ? "true" : "false"); });
+  }
   var sel = null;
   function clearSel() {
     sel = null;
@@ -326,12 +332,14 @@
       for (; a <= n && (s < en[0] || a < en[1]); a++) {
         var t = Q.ayahs[s - 1][a - 1];
         if (a === 1 && s !== 1 && s !== 9 && t.indexOf(BISM + " ") === 0) t = t.slice(BISM.length + 1);
-        txt += '<span class="quran-ayah" data-s="' + s + '" data-a="' + a + '">' + t + ' <span class="quran-end">' + ar(a) + "</span>" + (isSajda(s, a) ? '<span class="quran-sajda" title="موضع سجدة تلاوة">\u06E9</span>' : "") + (getNote(s + ":" + a) ? '<span class="quran-notedot" title="لديك ملاحظة"></span>' : "") + "</span> ";
+        var one = '<span class="quran-ayah" data-s="' + s + '" data-a="' + a + '">' + t + ' <span class="quran-end">' + ar(a) + "</span>" + (isSajda(s, a) ? '<span class="quran-sajda" title="موضع سجدة تلاوة">\u06E9</span>' : "") + (getNote(s + ":" + a) ? '<span class="quran-notedot" title="لديك ملاحظة"></span>' : "") + "</span> ";
+        if (viewMode() === "verse") body += '<div class="quran-vcard"><p class="quran-text">' + one + '</p><div class="quran-vref">سورة ' + Q.names[s - 1] + " · آية " + ar(a) + "</div></div>";
+        else txt += one;
       }
-      body += '<p class="quran-text">' + txt + "</p>";
+      if (txt) body += '<p class="quran-text">' + txt + "</p>";
       if (a > n) { s++; a = 1; } else break;
     }
-    $("quranReader").innerHTML = '<article class="quran-page"><div class="quran-pills"><span class="quran-pill">سورة ' + Q.names[st[0] - 1] +
+    $("quranReader").innerHTML = '<article class="quran-page' + (viewMode() === "verse" ? " quran-verses" : "") + '"><div class="quran-pills"><span class="quran-pill">سورة ' + Q.names[st[0] - 1] +
       '</span><span class="quran-pill">' + JUZ[juzOf(st[0], st[1]) - 1] + "</span></div>" + body +
       '<div class="quran-pageno"><span>' + ar(pg) + "</span></div></article>";
     closeSheet();
@@ -394,6 +402,14 @@
     $("quranShare").addEventListener("click", function () {
       if (!sel || !window.anyasShareImage) return;
       window.anyasShareImage.shareCustom(plainVerse(sel.s, sel.a), refLabel(sel.s + ":" + sel.a), function (m) { if (m) $("quranVerseNote").textContent = m; });
+    });
+    applyView();
+    $("quranView").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-vm]");
+      if (!b) return;
+      try { localStorage.setItem(VMK, b.dataset.vm); } catch (x) {}
+      applyView();
+      if (cur) openPage(cur, true);
     });
     applyMt();
     $("quranThemes").addEventListener("click", function (e) {

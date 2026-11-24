@@ -59,7 +59,7 @@
 <link rel="stylesheet" href="css/app-design-system.css?v=20261013-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/welcome.css?v=20261124-2">
-<link rel="stylesheet" href="css/quran.css?v=20261124-13">
+<link rel="stylesheet" href="css/quran.css?v=20261124-14">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/home-header.css?v=20261124-1">
 <link rel="stylesheet" href="css/home-polish.css?v=20261124-9">
@@ -2078,6 +2078,13 @@ data-audio="fajrAudio"
       <button type="button" class="quran-switch" id="quranOrnToggle" role="switch" aria-checked="true" aria-label="الزخرفة"><span></span></button>
     </div>
     <div class="quran-setting-row quran-setting-col">
+      <div><strong>طريقة العرض</strong><small>صفحة المصحف كاملة، أو آية آية</small></div>
+      <div class="quran-themes quran-views" id="quranView" role="radiogroup" aria-label="طريقة العرض">
+        <button type="button" role="radio" data-vm="page" aria-checked="true">صفحات</button>
+        <button type="button" role="radio" data-vm="verse" aria-checked="false">آية آية</button>
+      </div>
+    </div>
+    <div class="quran-setting-row quran-setting-col">
       <div><strong>مظهر المصحف</strong><small>لون الورقة والخط أثناء القراءة</small></div>
       <div class="quran-themes" id="quranThemes" role="radiogroup" aria-label="مظهر المصحف">
         <button type="button" role="radio" data-mt="auto" aria-checked="true"><i class="mt-auto"></i>تلقائي</button>
@@ -2432,7 +2439,7 @@ type="button"
 <script src="js/daily-devotions.js?v=20261124-1"></script>
 <script src="js/home-extras.js?v=20261124-1"></script>
 <script src="js/share-image.js?v=20261124-2"></script>
-<script src="js/quran.js?v=20261124-13"></script>
+<script src="js/quran.js?v=20261124-14"></script>
 <script src="js/app.js?v=20261124-5"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script>

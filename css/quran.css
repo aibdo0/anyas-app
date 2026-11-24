@@ -193,3 +193,13 @@
 #page-quran[data-mushaf="paper"] .quran-text, #page-quran[data-mushaf="paper"] .quran-bism, #page-quran[data-mushaf="white"] .quran-text, #page-quran[data-mushaf="white"] .quran-bism, #page-quran[data-mushaf="green"] .quran-text, #page-quran[data-mushaf="green"] .quran-bism, #page-quran[data-mushaf="night"] .quran-text, #page-quran[data-mushaf="night"] .quran-bism { color: var(--mq-fg); }
 #page-quran[data-mushaf="paper"] .quran-pill, #page-quran[data-mushaf="white"] .quran-pill, #page-quran[data-mushaf="green"] .quran-pill, #page-quran[data-mushaf="night"] .quran-pill, #page-quran[data-mushaf="paper"] .quran-pageno span, #page-quran[data-mushaf="white"] .quran-pageno span, #page-quran[data-mushaf="green"] .quran-pageno span, #page-quran[data-mushaf="night"] .quran-pageno span { background: var(--mq-pill); color: var(--mq-fg); border-color: var(--mq-line); }
 #page-quran[data-mushaf="paper"] .quran-surah-banner, #page-quran[data-mushaf="white"] .quran-surah-banner, #page-quran[data-mushaf="green"] .quran-surah-banner, #page-quran[data-mushaf="night"] .quran-surah-banner { color: var(--mq-fg); border-color: var(--mq-line); background: none; }
+
+/* 1.1.29: عرض آية آية */
+.quran-views { grid-template-columns: repeat(2, 1fr); }
+.quran-views button { padding: 11px 4px; font-size: 14px; }
+.quran-verses .quran-vcard { padding: 14px 4px 10px; border-bottom: 1px solid rgba(138,106,63,.28); }
+.quran-verses .quran-vcard:last-of-type { border-bottom: 0; }
+.quran-verses .quran-text { text-align: center; text-align-last: center; line-height: 2.3; }
+.quran-vref { margin-top: 4px; text-align: center; font-size: 13px; color: #8a6a3f; opacity: .85; }
+:root[data-theme="dark"] .quran-vref { color: #d1a95f; }
+:root[data-theme="dark"] .quran-verses .quran-vcard { border-bottom-color: rgba(214,176,112,.22); }
