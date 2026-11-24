@@ -175,3 +175,21 @@
 .quran-stepper { display: flex; gap: 8px; }
 .quran-stepper button { min-width: 48px; height: 44px; border: 1px solid rgba(138,106,63,.4); border-radius: 12px; background: none; color: inherit; font: inherit; font-weight: 700; cursor: pointer; }
 .quran-stepper button:disabled { opacity: .35; }
+
+/* 1.1.28: مظاهر المصحف */
+.quran-setting-col { flex-direction: column; align-items: stretch; gap: 10px; }
+.quran-themes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.quran-themes button { display: grid; justify-items: center; gap: 5px; padding: 8px 2px; border: 1px solid rgba(138,106,63,.3); border-radius: 12px; background: none; color: inherit; font: inherit; font-size: 12px; cursor: pointer; }
+.quran-themes button[aria-checked="true"] { border-color: #c9a24d; background: rgba(201,162,77,.18); font-weight: 700; }
+.quran-themes i { width: 26px; height: 26px; border-radius: 50%; border: 1px solid rgba(0,0,0,.25); }
+.mt-auto { background: linear-gradient(90deg, #f7f1dc 50%, #1b140d 50%); }
+.mt-paper { background: #f1e1b4; } .mt-white { background: #fff; } .mt-green { background: #dfecd3; } .mt-night { background: #101214; }
+#page-quran[data-mushaf="paper"] { --mq-bg: #f1e1b4; --mq-fg: #2a2110; --mq-line: #c9ae6a; --mq-pill: #e6d19a; }
+#page-quran[data-mushaf="white"] { --mq-bg: #ffffff; --mq-fg: #111111; --mq-line: #d9d4c7; --mq-pill: #f1eee6; }
+#page-quran[data-mushaf="green"] { --mq-bg: #dfecd3; --mq-fg: #1b2a16; --mq-line: #a9c394; --mq-pill: #cddfbd; }
+#page-quran[data-mushaf="night"] { --mq-bg: #0f1113; --mq-fg: #d6cdb9; --mq-line: #3a3a36; --mq-pill: #1c1f22; }
+#page-quran[data-mushaf="paper"] .quran-page, #page-quran[data-mushaf="white"] .quran-page, #page-quran[data-mushaf="green"] .quran-page, #page-quran[data-mushaf="night"] .quran-page { background: var(--mq-bg); color: var(--mq-fg); border-color: var(--mq-line); box-shadow: inset 0 0 0 4px var(--mq-bg), inset 0 0 0 5px var(--mq-line), 0 6px 18px rgba(0,0,0,.18); }
+#page-quran[data-mushaf="paper"].quran-plain .quran-page, #page-quran[data-mushaf="white"].quran-plain .quran-page, #page-quran[data-mushaf="green"].quran-plain .quran-page, #page-quran[data-mushaf="night"].quran-plain .quran-page { background: var(--mq-bg); box-shadow: none; border-color: transparent; }
+#page-quran[data-mushaf="paper"] .quran-text, #page-quran[data-mushaf="paper"] .quran-bism, #page-quran[data-mushaf="white"] .quran-text, #page-quran[data-mushaf="white"] .quran-bism, #page-quran[data-mushaf="green"] .quran-text, #page-quran[data-mushaf="green"] .quran-bism, #page-quran[data-mushaf="night"] .quran-text, #page-quran[data-mushaf="night"] .quran-bism { color: var(--mq-fg); }
+#page-quran[data-mushaf="paper"] .quran-pill, #page-quran[data-mushaf="white"] .quran-pill, #page-quran[data-mushaf="green"] .quran-pill, #page-quran[data-mushaf="night"] .quran-pill, #page-quran[data-mushaf="paper"] .quran-pageno span, #page-quran[data-mushaf="white"] .quran-pageno span, #page-quran[data-mushaf="green"] .quran-pageno span, #page-quran[data-mushaf="night"] .quran-pageno span { background: var(--mq-pill); color: var(--mq-fg); border-color: var(--mq-line); }
+#page-quran[data-mushaf="paper"] .quran-surah-banner, #page-quran[data-mushaf="white"] .quran-surah-banner, #page-quran[data-mushaf="green"] .quran-surah-banner, #page-quran[data-mushaf="night"] .quran-surah-banner { color: var(--mq-fg); border-color: var(--mq-line); background: none; }

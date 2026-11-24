@@ -145,6 +145,13 @@
     try { localStorage.setItem(FSK, String(i)); } catch (e) {}
     applyFs();
   }
+  var MTK = "anyas_quran_mushaf", MTS = ["auto", "paper", "white", "green", "night"];
+  function mtVal() { try { var v = localStorage.getItem(MTK); return MTS.indexOf(v) >= 0 ? v : "auto"; } catch (e) { return "auto"; } }
+  function applyMt() {
+    var v = mtVal();
+    $("page-quran").setAttribute("data-mushaf", v);
+    document.querySelectorAll("#quranThemes button").forEach(function (b) { b.setAttribute("aria-checked", b.dataset.mt === v ? "true" : "false"); });
+  }
   var sel = null;
   function clearSel() {
     sel = null;
@@ -387,6 +394,13 @@
     $("quranShare").addEventListener("click", function () {
       if (!sel || !window.anyasShareImage) return;
       window.anyasShareImage.shareCustom(plainVerse(sel.s, sel.a), refLabel(sel.s + ":" + sel.a), function (m) { if (m) $("quranVerseNote").textContent = m; });
+    });
+    applyMt();
+    $("quranThemes").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-mt]");
+      if (!b) return;
+      try { localStorage.setItem(MTK, b.dataset.mt); } catch (x) {}
+      applyMt();
     });
     applyFs();
     $("quranFsDown").addEventListener("click", function () { stepFs(-1); });

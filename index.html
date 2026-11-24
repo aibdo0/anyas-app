@@ -59,7 +59,7 @@
 <link rel="stylesheet" href="css/app-design-system.css?v=20261013-1">
 <link rel="stylesheet" href="css/first-run-onboarding.css?v=20261007-1">
 <link rel="stylesheet" href="css/welcome.css?v=20261124-2">
-<link rel="stylesheet" href="css/quran.css?v=20261124-12">
+<link rel="stylesheet" href="css/quran.css?v=20261124-13">
 <link rel="stylesheet" href="css/privacy.css?v=20261008-1">
 <link rel="stylesheet" href="css/home-header.css?v=20261124-1">
 <link rel="stylesheet" href="css/home-polish.css?v=20261124-9">
@@ -2077,6 +2077,16 @@ data-audio="fajrAudio"
       <div><strong>الزخرفة</strong><small>إطار المصحف وعلامات الآيات المزخرفة</small></div>
       <button type="button" class="quran-switch" id="quranOrnToggle" role="switch" aria-checked="true" aria-label="الزخرفة"><span></span></button>
     </div>
+    <div class="quran-setting-row quran-setting-col">
+      <div><strong>مظهر المصحف</strong><small>لون الورقة والخط أثناء القراءة</small></div>
+      <div class="quran-themes" id="quranThemes" role="radiogroup" aria-label="مظهر المصحف">
+        <button type="button" role="radio" data-mt="auto" aria-checked="true"><i class="mt-auto"></i>تلقائي</button>
+        <button type="button" role="radio" data-mt="paper" aria-checked="false"><i class="mt-paper"></i>ورق أصفر</button>
+        <button type="button" role="radio" data-mt="white" aria-checked="false"><i class="mt-white"></i>أبيض</button>
+        <button type="button" role="radio" data-mt="green" aria-checked="false"><i class="mt-green"></i>أخضر فاتح</button>
+        <button type="button" role="radio" data-mt="night" aria-checked="false"><i class="mt-night"></i>ليلي</button>
+      </div>
+    </div>
     <div class="quran-setting-row">
       <div><strong>حجم الخط</strong><small id="quranFsLabel"></small></div>
       <div class="quran-stepper"><button type="button" id="quranFsDown" aria-label="تصغير الخط">أ−</button><button type="button" id="quranFsUp" aria-label="تكبير الخط">أ+</button></div>
@@ -2422,7 +2432,7 @@ type="button"
 <script src="js/daily-devotions.js?v=20261124-1"></script>
 <script src="js/home-extras.js?v=20261124-1"></script>
 <script src="js/share-image.js?v=20261124-2"></script>
-<script src="js/quran.js?v=20261124-12"></script>
+<script src="js/quran.js?v=20261124-13"></script>
 <script src="js/app.js?v=20261124-5"></script>
 <script src="js/about.js?v=20261002-2"></script>
 <script>
