@@ -304,5 +304,5 @@ html[lang="en"] #page-home .next-prayer .countdown::before { content: "Remaining
 
 /* 1.1.57 تتبع الصلاة مرتبط بالمواقيت */
 #page-tasks .prayer-track-item.locked { opacity: .55; filter: grayscale(.4); }
-#page-tasks .prayer-track-item.missed { border-color: #c9694f !important; background: rgba(201,105,79,.12) !important; }
-#page-tasks .prayer-track-item.missed .track-status { color: #e8957f; }
+#page-tasks .prayer-track-item.unlogged { border-color: #c9694f !important; background: rgba(201,105,79,.12) !important; }
+#page-tasks .prayer-track-item.unlogged .track-status { color: #e8957f; }

@@ -1023,17 +1023,23 @@ function setupPrayerTracking() {
 }
 
 
-function getPrayerWindowState(prayer) {
-  const t = window.todayTimings;
-  if (!t || typeof createPrayerDate !== "function") return { state: "open", at: "" };
-  const start = createPrayerDate(t[prayer]);
+// حالة نافذة الصلاة: locked قبل دخول الوقت، open داخله، unlogged بعد خروجه دون تسجيل.
+// التطبيق لا يعرف هل صلّى المستخدم، فـ unlogged تعني «لم تُسجَّل» فقط وليست «فاتت».
+// نهاية العشاء: منتصف الليل (نهاية يوم التتبع نفسه)، لأن التسجيل مفهرس بتاريخ اليوم.
+function prayerWindowStateAt(timings, prayer, now, toDate) {
+  const start = toDate(timings && timings[prayer]);
   if (!start) return { state: "open", at: "" };
   const endKey = { Fajr: "Sunrise", Dhuhr: "Asr", Asr: "Maghrib", Maghrib: "Isha" }[prayer];
-  const end = endKey ? createPrayerDate(t[endKey]) : null;
-  const now = new Date();
-  if (now < start) return { state: "locked", at: t[prayer] };
-  if (end && now > end) return { state: "missed", at: t[prayer] };
-  return { state: "open", at: t[prayer] };
+  let end = endKey ? toDate(timings[endKey]) : null;
+  if (!end) { end = new Date(start); end.setHours(24, 0, 0, 0); }
+  if (now < start) return { state: "locked", at: timings[prayer] };
+  if (now >= end) return { state: "unlogged", at: timings[prayer] };
+  return { state: "open", at: timings[prayer] };
+}
+
+function getPrayerWindowState(prayer) {
+  if (!window.todayTimings || typeof createPrayerDate !== "function") return { state: "open", at: "" };
+  return prayerWindowStateAt(window.todayTimings, prayer, new Date(), t => createPrayerDate(t));
 }
 
 function togglePrayerTracking(prayer) {
@@ -1102,15 +1108,15 @@ function updatePrayerTrackingUI() {
 
       const win = getPrayerWindowState(prayer);
       const locked = !completed && win.state === "locked";
-      const missed = !completed && win.state === "missed";
+      const missed = !completed && win.state === "unlogged";
       button.classList.toggle("locked", locked);
-      button.classList.toggle("missed", missed);
+      button.classList.toggle("unlogged", missed);
       button.setAttribute("aria-disabled", locked ? "true" : "false");
       const status = button.querySelector(".track-status");
       if (status) {
         status.textContent = completed ? "تمّت ✓"
           : locked ? `يُفتح عند ${win.at}`
-          : missed ? "فاتت؟ سجّلها الآن" : "لم تُسجّل";
+          : missed ? "لم تُسجَّل · سجّلها الآن" : "لم تُسجّل";
       }
 
       button.classList.toggle(

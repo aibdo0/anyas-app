@@ -129,3 +129,25 @@ check("wird day key is read at use-time, with a midnight rollover", () => {
 });
 
 console.log(`\n${passed} batch-1 checks passed`);
+
+// Prayer window boundaries (1.1.57): locked, open, unlogged, Isha ends at midnight.
+{
+  const src = fs.readFileSync(path.join(root, "js/app.js"), "utf8");
+  const m = src.match(/function prayerWindowStateAt[\s\S]*?\n}\n/);
+  const ctx = { Date }; vm.createContext(ctx); vm.runInContext(m[0], ctx);
+  const day = new Date(2026, 10, 25);
+  const toDate = t => { if (!t) return null; const [h, mi] = t.split(":").map(Number); const d = new Date(day); d.setHours(h, mi, 0, 0); return d; };
+  const T = { Fajr: "04:40", Sunrise: "06:00", Dhuhr: "11:50", Asr: "14:45", Maghrib: "17:10", Isha: "18:30" };
+  const at = (h, mi) => { const d = new Date(day); d.setHours(h, mi, 0, 0); return d; };
+  const st = (p, d) => ctx.prayerWindowStateAt(T, p, d, toDate).state;
+  check("prayer window: locked before, open at start, unlogged at end", () => {
+    assert.equal(st("Dhuhr", at(11, 49)), "locked");
+    assert.equal(st("Dhuhr", at(11, 50)), "open");
+    assert.equal(st("Dhuhr", at(14, 44)), "open");
+    assert.equal(st("Dhuhr", at(14, 45)), "unlogged");
+  });
+  check("prayer window: Isha open until midnight then unlogged", () => {
+    assert.equal(st("Isha", at(23, 59)), "open");
+    assert.equal(st("Isha", new Date(2026, 10, 26, 0, 0)), "unlogged");
+  });
+}
