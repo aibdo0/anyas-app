@@ -72,6 +72,17 @@ final class ReminderScheduler {
                 }
             }
 
+            if (enabled(enabled, "notifyPrayerLog") && prayers != null) {
+                // بعد انتهاء وقت كل صلاة بعشر دقائق قبل التالية؛ العشاء بعد ساعة من دخول وقتها. الصياغة محايدة: لا نعرف هل صُلّيت.
+                String[][] logTimes = {{"Fajr", "Sunrise", "الفجر"}, {"Dhuhr", "Asr", "الظهر"}, {"Asr", "Maghrib", "العصر"}, {"Maghrib", "Isha", "المغرب"}};
+                for (String[] p : logTimes) {
+                    String end = time(prayers, p[1]);
+                    if (end != null) addDaily(reminders, "prayerlog_" + p[0], "تسجيل صلاة " + p[2], minusMinutes(end, 10), null);
+                }
+                String isha = time(prayers, "Isha");
+                if (isha != null) addDaily(reminders, "prayerlog_Isha", "تسجيل صلاة العشاء", plusMinutes(isha, 60), null);
+            }
+
             addWeekly(reminders, enabled, "notifyFastingThursday1", "صيام الخميس", "fasting-thursday-reminder-1.mp3", Calendar.WEDNESDAY, "20:00");
             addWeekly(reminders, enabled, "notifyFastingThursday2", "صيام الخميس", "fasting-thursday-reminder-2.mp3", Calendar.WEDNESDAY, "20:00");
             addWeekly(reminders, enabled, "notifyFastingMonday", "صيام الاثنين", "fasting-monday-reminder.mp3", Calendar.SUNDAY, "20:00");
@@ -161,6 +172,7 @@ final class ReminderScheduler {
     }
 
     private static String reminderBody(String key, String title) {
+        if (key.startsWith("prayerlog_")) return "هل تريد تسجيل صلاتك؟";
         if (key.startsWith("prayer_")) return "تبقّى ١٥ دقيقة على موعد الصلاة.";
         if ("beforeFajrReminder".equals(key)) return "تبقّى ٣٠ دقيقة على الفجر؛ استعد للصلاة.";
         if (key.startsWith("notifyWard")) return "حان وقت وردك؛ خذ دقيقة للذكر وافتح أنياس.";
@@ -208,7 +220,7 @@ final class ReminderScheduler {
     }
 
     static void cancelKnown(Context context, AlarmManager alarm) {
-        String[] ids = {"notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyHadith", "notifyDailyAyah", "notifyBaqiyat", "notifySalawat_1", "notifySalawat_2", "notifyAyatKursi", "notifySunrise", "notifyDuha", "beforeFajrReminder", "notifyLastThird", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyFridayKahf", "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat", "prayer_Fajr", "prayer_Dhuhr", "prayer_Asr", "prayer_Maghrib", "prayer_Isha"};
+        String[] ids = {"notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyHadith", "notifyDailyAyah", "notifyBaqiyat", "notifySalawat_1", "notifySalawat_2", "notifyAyatKursi", "notifySunrise", "notifyDuha", "beforeFajrReminder", "notifyLastThird", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyFridayKahf", "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat", "prayer_Fajr", "prayer_Dhuhr", "prayer_Asr", "prayer_Maghrib", "prayer_Isha", "prayerlog_Fajr", "prayerlog_Dhuhr", "prayerlog_Asr", "prayerlog_Maghrib", "prayerlog_Isha"};
         for (String id : ids) cancel(context, alarm, id);
     }
 

@@ -1429,6 +1429,7 @@ function setupNotifications() {
     "notificationSound",
     "notifyHadith",
     "notifyDailyAyah",
+    "notifyPrayerLog",
     "notifyDuha",
     "notifySalawat",
     "notifyBaqiyat",
@@ -1646,7 +1647,7 @@ function anyasDailyAyahPayload() {
 
 function syncAndroidNotificationSettings() {
   if (!window.AnyasAndroid || !window.AnyasAndroid.syncSettings) return;
-  const ids = ["notifyPrayerSoon", "notifySunrise", "notifyLastThird", "notifyAyatKursi", "notifyHadith", "notifyDailyAyah", "notifyDuha", "notifyBaqiyat", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyRainSunnah", "beforeFajrReminder", "notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyFridayKahf", "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat"];
+  const ids = ["notifyPrayerSoon", "notifySunrise", "notifyLastThird", "notifyAyatKursi", "notifyHadith", "notifyDailyAyah", "notifyPrayerLog", "notifyDuha", "notifyBaqiyat", "notifyFastingThursday1", "notifyFastingThursday2", "notifyFastingMonday", "notifyFastingFisabilillah", "notifyRainSunnah", "beforeFajrReminder", "notifyWardAwakening", "notifyWardMorning", "notifyWardGeneral", "notifyWardEvening", "notifyWardSleep", "notifyWardSahar", "notifyFridayKahf", "notifyFridayPrayer", "notifyFridayHour", "notifyFridaySalawat"];
   const enabled = {};
   ids.forEach(id => {
     const element = document.getElementById(id);

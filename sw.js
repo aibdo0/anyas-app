@@ -63,7 +63,7 @@ const CORE_ASSETS = [
   "./js/favorites.js",
   "./js/azkar.js",
   "./js/wird.js",
-  "./js/settings.js?v=20261124-1",
+  "./js/settings.js?v=20261125-1",
   "./js/qibla.js",
   "./js/app-enhancements.js",
   "./js/daily-devotions.js",
