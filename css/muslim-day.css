@@ -160,3 +160,40 @@ html body #page-tasks .week-bar-fill { background: #232927 !important; }
 html body #page-tasks .week-bar.is-today .week-bar-day { color: #7fd8b8 !important; }
 html body #page-tasks .week-bar.is-today .week-bar-fill { outline: 1px solid rgba(127,216,184,.55) !important; }
 html body #page-tasks .week-bar-pct, html body #page-tasks .week-bar-day { color: var(--md-mut) !important; }
+/* 1.1.60 horizontal layout: side-by-side tiles and swipe rows instead of long vertical lists */
+html body #page-tasks .daily-prayer-card .prayer-tracker { grid-template-columns: repeat(5, minmax(0,1fr)) !important; gap: 6px !important; }
+html body #page-tasks .daily-prayer-card .prayer-track-item { flex-direction: column !important; justify-content: center !important; gap: 4px !important; min-height: 78px !important; padding: 10px 2px 8px !important; border: 1px solid var(--md-line) !important; border-radius: 14px !important; background: #1e2321 !important; text-align: center !important; }
+html body #page-tasks .daily-prayer-card .prayer-track-item > span:not(.track-status) { font-size: 12.5px !important; }
+html body #page-tasks .daily-prayer-card .prayer-track-item .track-status { margin: 0 !important; font-size: 9.5px !important; white-space: nowrap; }
+html body #page-tasks .daily-prayer-card .prayer-track-item.completed { background: #153b31 !important; border-color: rgba(127,216,184,.45) !important; }
+html body #page-tasks .daily-prayer-card .prayer-track-item.unlogged { background: #1e2321 !important; }
+/* sunnah: tiles */
+html body #page-tasks .sunnah-checklist { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+html body #page-tasks .sunnah-group-head, html body #page-tasks .sunnah-group-bar { grid-column: 1 / -1 !important; }
+html body #page-tasks .sunnah-task { border: 1px solid var(--md-line) !important; border-radius: 14px !important; background: #1e2321 !important; padding: 10px 10px !important; gap: 8px !important; }
+html body #page-tasks .sunnah-task.is-done { background: #153b31 !important; border-color: rgba(127,216,184,.45) !important; }
+html body #page-tasks .sunnah-task-copy strong { font-size: 13px !important; }
+html body #page-tasks .sunnah-task-copy small { font-size: 10.5px !important; line-height: 1.35; }
+html body #page-tasks .sunnah-task-check { width: 20px !important; height: 20px !important; min-width: 20px !important; }
+/* quran + now side by side */
+html body #page-tasks .tasks-quick-rows { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+html body #page-tasks .tasks-quick-row { flex-direction: column !important; align-items: flex-start !important; text-align: start; gap: 8px !important; padding: 12px !important; position: relative; }
+html body #page-tasks .tasks-quick-row .tqr-go { position: absolute; top: 12px; inset-inline-end: 12px; }
+html body #page-tasks .tqr-copy small { font-size: 10.5px !important; }
+/* general dhikr: swipe row */
+html body #page-tasks .dhikr-goal-list { display: flex !important; gap: 8px !important; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; margin-inline: -2px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+html body #page-tasks .dhikr-goal-list::-webkit-scrollbar { display: none; }
+html body #page-tasks .dhikr-goal-card { flex: 0 0 62% !important; scroll-snap-align: start; border: 1px solid var(--md-line) !important; border-radius: 14px !important; background: #1e2321 !important; padding: 12px !important; }
+html body #page-tasks .dhikr-goal-top { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+html body #page-tasks .dhikr-goal-top h3 { font-size: 15px !important; }
+html body #page-tasks .dhikr-goal-card .dhikr-goal-top .dhikr-goal-add { align-self: stretch; width: 100% !important; }
+/* group grid: wird sections two per row */
+html body #page-tasks .tasks-section-group:last-of-type { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }
+html body #page-tasks .tasks-section-group:last-of-type > * { grid-column: 1 / -1; margin: 0 !important; }
+html body #page-tasks .tasks-section-group:last-of-type > .wird-section { grid-column: auto; }
+html body #page-tasks .tasks-section-group:last-of-type > .wird-section:has([aria-expanded="true"]) { grid-column: 1 / -1; }
+html body #page-tasks .wird-section-toggle { flex-wrap: wrap; gap: 6px !important; padding: 12px !important; }
+/* compact week report */
+html body #page-tasks .week-report-bars { height: 78px !important; margin: 8px 0 6px !important; }
+html body #page-tasks .week-report-note { display: none !important; }
+html body #page-tasks .daily-overview-focus { margin-top: 10px !important; }
