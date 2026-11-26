@@ -68,6 +68,7 @@ const CORE_ASSETS = [
   "./js/qibla.js",
   "./js/app-enhancements.js",
   "./js/daily-devotions.js",
+  "./js/muslim-day-glance.js",
   "./js/app.js?v=20261125-3",
   "./js/about.js",
   "./js/optional-audio.js",

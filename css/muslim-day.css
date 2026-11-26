@@ -197,3 +197,45 @@ html body #page-tasks .wird-section-toggle { flex-wrap: wrap; gap: 6px !importan
 html body #page-tasks .week-report-bars { height: 78px !important; margin: 8px 0 6px !important; }
 html body #page-tasks .week-report-note { display: none !important; }
 html body #page-tasks .daily-overview-focus { margin-top: 10px !important; }
+/* glance strip */
+html body #page-tasks .tasks-hero-card { height: 104px !important; }
+html body #page-tasks .tasks-hero-copy strong { font-size: 25px !important; }
+html body #page-tasks .tasks-hero-copy small { font-size: 12px !important; }
+html body #page-tasks .tasks-hero-orn { display: none !important; }
+html body #page-tasks .md-glance { margin: 0 0 10px !important; }
+html body #page-tasks .md-glance-head h2 { margin: 0 4px 8px !important; font-size: 13px !important; color: #7fd8b8 !important; }
+html body #page-tasks .md-glance-row { display: flex !important; gap: 8px !important; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -2px; padding: 0 2px 2px; }
+html body #page-tasks .md-glance-row::-webkit-scrollbar { display: none; }
+html body #page-tasks .md-tile { flex: 0 0 74%; scroll-snap-align: start; min-height: 132px; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; text-align: start; border-radius: 18px; border: 1px solid var(--md-line); background: #171a18; color: var(--md-ink); font-family: inherit; }
+html body #page-tasks .md-tile small { color: #7fd8b8; font-size: 11.5px; font-weight: 800; }
+html body #page-tasks .md-tile p { margin: 0; font-size: 15.5px; line-height: 1.9; color: var(--md-ink); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+html body #page-tasks .md-tile > span { margin-top: auto; font-size: 11px; color: var(--md-mut); }
+html body #page-tasks .md-ayah { background: linear-gradient(150deg,#0e4a3b,#0a3329) !important; border-color: rgba(127,216,184,.22) !important; }
+html body #page-tasks .md-istighfar, html body #page-tasks .md-mushaf { flex-basis: 46%; }
+html body #page-tasks .md-tile strong { font-size: 24px; color: var(--md-ink); line-height: 1.3; }
+html body #page-tasks .md-istighfar { align-items: flex-start; }
+html body #page-tasks .md-istighfar:active { background: #153b31; }
+html body #page-tasks .md-mushaf i { display: block; height: 5px; border-radius: 3px; background: #2a302d; overflow: hidden; }
+html body #page-tasks .md-mushaf i b { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg,#34c79c,#7fd8b8); }
+/* tighten to keep the page short */
+html body #page-tasks .daily-overview-message { display: none !important; }
+html body #page-tasks .daily-overview-card { padding: 12px 14px !important; }
+html body #page-tasks .daily-overview-heading h2 { margin-bottom: 8px !important; }
+html body #page-tasks .daily-overview-ring { width: 62px !important; height: 62px !important; flex-basis: 62px !important; }
+html body #page-tasks .daily-overview-ring::before { inset: 6px !important; }
+html body #page-tasks .daily-overview-score { font-size: 14px !important; }
+html body #page-tasks .daily-overview-metrics strong { font-size: 15px !important; }
+html body #page-tasks .daily-overview-focus { margin-top: 8px !important; padding: 6px 10px !important; font-size: 12px !important; }
+html body #page-tasks .week-report-summary { display: none !important; }
+html body #page-tasks .week-report-head { margin-bottom: 0; }
+html body #page-tasks .week-report-bars { height: 52px !important; }
+html body #page-tasks .daily-prayer-sub, html body #page-tasks .devotion-section-heading p { display: none !important; }
+html body #page-tasks .daily-prayer-card .prayer-track-item { min-height: 66px !important; padding: 8px 2px 6px !important; }
+html body #page-tasks .daily-prayer-card .prayer-track-item .pt-icon, html body #page-tasks .daily-prayer-card .prayer-track-item .pt-icon svg { width: 20px !important; height: 20px !important; }
+html body #page-tasks .sunnah-task { padding: 8px 10px !important; }
+html body #page-tasks .sunnah-virtue { padding: 8px 10px !important; }
+html body #page-tasks .sunnah-virtue p { font-size: 11px !important; line-height: 1.6 !important; }
+html body #page-tasks .md-tile { min-height: 118px; }
+html body #page-tasks .md-tile p { font-size: 15px; line-height: 1.8; }
+html body #page-tasks :is(.daily-overview-card,.week-report-card,.daily-prayer-card,.devotion-section,.tasks-tasbeeh-card,.wird-summary-card) { margin-bottom: 8px !important; padding: 12px !important; }
+html body #page-tasks .tasks-section-heading { margin: 12px 4px 6px !important; }
