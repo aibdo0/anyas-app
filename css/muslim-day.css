@@ -265,3 +265,6 @@ html body #page-tasks .mdc-txt small { display: block; font-size: 11px; color: #
 html body #page-tasks .mdc-row.is-done .mdc-txt strong { color: #9a9486; text-decoration: line-through; text-decoration-color: rgba(212,179,111,.5); }
 html body #page-tasks .mdc-go { flex: 0 0 auto; border: 0; background: transparent; color: #d4b36f; font-size: 22px; line-height: 1; padding: 4px 6px; cursor: pointer; }
 html body #page-tasks .mdc-go { display: grid !important; place-items: center; width: 30px; height: 30px; padding: 0 0 4px !important; align-self: center; }
+
+/* v1.1.67: the يوم المسلم page is intentionally empty (base for a new design). Old content is in branches v1.1.62-v1.1.66. */
+html body #page-tasks > * { display: none !important; }
