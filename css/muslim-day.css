@@ -126,11 +126,11 @@ html body #page-tasks .daily-overview-card :is(.daily-overview-message,.daily-ov
 html body #page-tasks .daily-overview-ring { background: conic-gradient(#d4b36f calc(var(--p,0) * 1%), rgba(255,255,255,.16) 0) !important; }
 html body #page-tasks .daily-overview-ring::before { background: #0b4a3d !important; }
 html body #page-tasks .daily-overview-metrics > div + div { border-color: rgba(255,255,255,.16) !important; }
-html body #page-tasks .daily-overview-card .daily-overview-focus { background: rgba(0,0,0,.24) !important; color: #7ff0d6 !important; }
+html body #page-tasks .daily-overview-card .daily-overview-focus { background: rgba(0,0,0,.24) !important; color: #d4b36f !important; }
 html body #page-tasks .tasks-tasbeeh-card { background: linear-gradient(150deg,#0f2a24,#0b1a17) !important; }
 html body #page-tasks .tasks-tasbeeh-button { background: linear-gradient(135deg,#b89a5c,#80653b) !important; color: #1c1608 !important; box-shadow: 0 6px 16px rgba(184,154,92,.25) !important; }
 html body #page-tasks .tasks-tasbeeh-button span { color: #1c1608 !important; }
-html body #page-tasks .tasks-tasbeeh-dhikr { color: #7ff0d6 !important; }
+html body #page-tasks .tasks-tasbeeh-dhikr { color: #d4b36f !important; }
 html body #page-tasks :is(.sunnah-task-check) { border-color: rgba(212,179,111,.35) !important; background: transparent !important; }
 html body #page-tasks .sunnah-task.is-done .sunnah-task-check { background: #b89a5c !important; color: #1c1608 !important; border-color: #b89a5c !important; }
 html body #page-tasks .daily-prayer-card .prayer-track-item.completed .track-status { color: #3fd9b0 !important; }
