@@ -241,3 +241,27 @@ html body #page-tasks :is(.daily-overview-card,.week-report-card,.daily-prayer-c
 html body #page-tasks .tasks-section-heading { margin: 12px 4px 6px !important; }
 html body #page-tasks .daily-overview-ring::before { background: #3d3019 !important; }
 html body #page-tasks .daily-overview-focus, html body #page-tasks .daily-overview-focus * { color: #d4b36f !important; }
+/* v1.1.62: simple checklist; everything else on the page is hidden */
+html body #page-tasks > :not(#mdChecklist) { display: none !important; }
+html body #page-tasks .mdc { display: block; padding: 4px 2px 12px; color: #f4ecd8; }
+html body #page-tasks .mdc-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: 18px; background: linear-gradient(150deg,#5a4627,#3d3019); border: 1px solid rgba(212,179,111,.25); margin-bottom: 12px; }
+html body #page-tasks .mdc-head h1 { margin: 0; font-size: 22px; font-weight: 800; color: #fff8e8; }
+html body #page-tasks .mdc-head p { margin: 3px 0 0; font-size: 12.5px; color: #e6d3a4; }
+html body #page-tasks .mdc-next { text-align: end; }
+html body #page-tasks .mdc-next small { display: block; font-size: 11px; color: #e6d3a4; }
+html body #page-tasks .mdc-next strong { font-size: 20px; font-weight: 800; color: #fff8e8; font-variant-numeric: tabular-nums; direction: ltr; display: inline-block; }
+html body #page-tasks .mdc-list { background: #171a18; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; overflow: hidden; }
+html body #page-tasks .mdc-row { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-top: 1px solid rgba(255,255,255,.07); }
+html body #page-tasks .mdc-row:first-child { border-top: 0; }
+html body #page-tasks .mdc-check { flex: 0 0 26px; width: 26px; height: 26px; border-radius: 50%; border: 1.6px solid rgba(212,179,111,.55); background: transparent; display: grid; place-items: center; padding: 0; cursor: pointer; }
+html body #page-tasks .mdc-check svg { width: 16px; height: 16px; fill: none; stroke: #1c1608; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+html body #page-tasks .mdc-row.is-done .mdc-check { background: #d4b36f; border-color: #d4b36f; }
+html body #page-tasks .mdc-row.is-done .mdc-check svg { opacity: 1; }
+html body #page-tasks .mdc-ico { flex: 0 0 22px; width: 22px; height: 22px; color: #d4b36f; }
+html body #page-tasks .mdc-ico svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+html body #page-tasks .mdc-txt { flex: 1; min-width: 0; }
+html body #page-tasks .mdc-txt strong { display: block; font-size: 15px; font-weight: 700; color: #f4ecd8; }
+html body #page-tasks .mdc-txt small { display: block; font-size: 11px; color: #9aa6a1; margin-top: 1px; }
+html body #page-tasks .mdc-row.is-done .mdc-txt strong { color: #9a9486; text-decoration: line-through; text-decoration-color: rgba(212,179,111,.5); }
+html body #page-tasks .mdc-go { flex: 0 0 auto; border: 0; background: transparent; color: #d4b36f; font-size: 22px; line-height: 1; padding: 4px 6px; cursor: pointer; }
+html body #page-tasks .mdc-go { display: grid !important; place-items: center; width: 30px; height: 30px; padding: 0 0 4px !important; align-self: center; }
