@@ -1,0 +1,16 @@
+/* آية وحديث اليوم: بطاقتان مرتبتان رأسيًا، نص مقروء، مصدر واضح، مشاركة صغيرة */
+html:root[data-theme] body #page-home .daily-content.card { display: flex !important; flex-direction: column; gap: 10px; padding: 0 !important; background: transparent !important; border: 0 !important; box-shadow: none !important; }
+html:root[data-theme] body #page-home .daily-content.card > .content-block {
+  display: grid !important; grid-template-columns: 1fr auto; column-gap: 10px; row-gap: 6px; align-items: center;
+  grid-column: auto !important; cursor: default; padding: 14px 16px !important; border-radius: 18px !important;
+}
+#page-home .daily-content.card > .content-block .card-title { grid-column: 1 / -1; margin: 0 0 2px; font-size: 13px; }
+#page-home .daily-content.card > .content-block .ayah,
+#page-home .daily-content.card > .content-block .hadith-text { grid-column: 1 / -1; margin: 0 !important; font-size: 16px !important; line-height: 1.95 !important; -webkit-line-clamp: 4 !important; }
+#page-home .daily-content.card > .content-block .ayah { -webkit-line-clamp: 5 !important; }
+#page-home .daily-content.card > .content-block.expanded .ayah,
+#page-home .daily-content.card > .content-block.expanded .hadith-text { display: block !important; -webkit-line-clamp: unset !important; overflow: visible !important; }
+#page-home .daily-more-button { grid-column: 1 / -1; justify-self: start; padding: 2px 0; border: 0; background: none; color: var(--gold-dark, #b8923f); font: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer; }
+:root[data-theme="dark"] #page-home .daily-more-button { color: #e3c98f; }
+#page-home .daily-content.card > .content-block .reference { grid-column: 1; margin: 4px 0 0 !important; padding-top: 8px; border-top: 1px solid var(--line); font-size: 11.5px !important; opacity: .85; align-self: center; }
+#page-home .daily-content.card > .content-block .daily-share-button { grid-column: 2; margin: 4px 0 0 !important; padding: 4px 10px; font-size: 11px; font-weight: 700; opacity: .85; align-self: center; }
