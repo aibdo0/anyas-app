@@ -48,3 +48,107 @@
 @media (max-width: 390px) {
   :root #page-home .main-header { padding: 8px 12px 8px 8px; border-radius: 18px; }
 }
+
+/* v1.1.70: ترويسة مسطّحة وهادئة بدل البطاقة الثقيلة. نفس الألوان، بخط فاصل رفيع ولمسة ذهبية قصيرة. */
+html:root body #page-home .main-header {
+  background: none !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(196, 154, 85, .28) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  margin: 0 0 16px !important;
+  padding: 4px 2px 12px !important;
+  position: relative;
+}
+html:root body #page-home .main-header::after {
+  display: block !important;
+  content: "";
+  position: absolute;
+  inset-block-end: -1px;
+  inset-inline-start: 2px;
+  width: 44px;
+  height: 2px;
+  border-radius: 2px;
+  background: #c49a55;
+  opacity: 1;
+  inset-inline-end: auto;
+  top: auto;
+}
+html:root body #page-home .home-brand { font-size: 26px; font-weight: 800; letter-spacing: 0; }
+html:root body #page-home .date-line { font-size: 12.5px; gap: 8px; }
+html:root body #page-home .date-line .date-separator { display: inline-block; width: 1px; height: 12px; overflow: hidden; font-size: 0; background: currentColor; opacity: .35; }
+html:root body #page-home .theme-toggle,
+html:root body #page-home .notification-bell-button {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: transparent !important;
+  border: 1px solid rgba(196, 154, 85, .38) !important;
+  box-shadow: none !important;
+}
+html:root body #page-home .main-header::before { display: none !important; }
+html:root body #page-home .main-header { overflow: visible !important; }
+html:root[data-theme="light"]:not([data-time-scene="night"]) body #page-home .home-brand { color: var(--ink) !important; }
+html:root[data-theme="light"]:not([data-time-scene="night"]) body #page-home .date-line { color: var(--muted) !important; }
+html:root[data-theme="light"]:not([data-time-scene="night"]) body #page-home :is(.theme-toggle,.notification-bell-button) { color: var(--gold-dark) !important; }
+html:root:is([data-theme="dark"],[data-time-scene="night"]) body #page-home .home-brand { color: #fff !important; }
+html:root:is([data-theme="dark"],[data-time-scene="night"]) body #page-home .date-line { color: rgba(255,255,255,.72) !important; }
+
+/* هوية أنياس في البداية: شعار التطبيق بإطار ذهبي بجانب الاسم والتاريخ. */
+html:root body #page-home .main-header { padding: 6px 2px 14px !important; row-gap: 2px !important; }
+html:root body #page-home .home-brand,
+html:root body #page-home .date-line { padding-inline-start: 58px; }
+html:root body #page-home .home-brand { position: relative; font-size: 28px !important; line-height: 1.2; }
+html:root body #page-home .home-brand::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 2px;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: url("../assets/icons/icon-192.png") center / cover no-repeat;
+  border: 1px solid rgba(196, 154, 85, .55);
+  box-shadow: 0 4px 14px rgba(196, 154, 85, .22);
+}
+html:root body #page-home .main-header {
+  grid-template-areas: "brand toggle bell" "date date date" !important;
+  row-gap: 10px !important;
+}
+html:root body #page-home .home-brand { min-height: 48px; display: flex; align-items: center; }
+html:root body #page-home .home-brand::before { top: 1px; }
+html:root body #page-home .date-line { grid-column: 1 / -1; padding-inline-start: 2px; white-space: nowrap; font-size: 12.5px; }
+
+/* أزرار الوضع والتنبيهات: أيقونات صغيرة بسيطة بلا إطار ثقيل. */
+html:root body #page-home .theme-toggle,
+html:root body #page-home .notification-bell-button {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 0 !important;
+  background: rgba(196, 154, 85, .12) !important;
+}
+html:root body #page-home #themeToggleIcon { width: 22px; height: 22px; font-size: 18px; line-height: 22px; }
+html:root body #page-home .notification-bell-icon { width: 17px; height: 17px; }
+
+/* v1.1.70: إزالة حلقات الزينة القديمة خلف الترويسة، وأيقونات الوضع والتنبيه بهندسة واحدة وتوسيط حقيقي. */
+html:root body #page-home .main-header::after { box-shadow: none !important; border: 0 !important; }
+html:root body #page-home .theme-toggle,
+html:root body #page-home .notification-bell-button {
+  position: relative; width: 38px; height: 38px; padding: 0;
+  display: grid !important; place-items: center;
+}
+html:root body #page-home #themeToggleIcon {
+  display: block; width: 20px; height: 20px; padding: 0; margin: 0;
+  font-size: 0 !important; line-height: 0; overflow: hidden;
+  position: absolute; inset: 0; margin: auto !important;
+  background-color: currentColor;
+  -webkit-mask: var(--ico) center / 20px 20px no-repeat; mask: var(--ico) center / 20px 20px no-repeat;
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z'/%3E%3C/svg%3E");
+}
+html:root[data-theme="dark"] body #page-home #themeToggleIcon {
+  --ico: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6'/%3E%3C/svg%3E");
+}
+html:root body #page-home .theme-toggle { color: var(--gold-dark); }
+html:root[data-theme="dark"] body #page-home .theme-toggle, html:root[data-time-scene="night"] body #page-home .theme-toggle { color: #e4c27b; }
+html:root body #page-home .notification-bell-icon { width: 20px; height: 20px; stroke-width: 1.8; }
+html:root body #page-home .notification-bell-icon { stroke: currentColor !important; fill: none; }
+html:root[data-theme="light"]:not([data-time-scene="night"]) body #page-home .notification-bell-button { color: var(--gold-dark) !important; }
+html:root:is([data-theme="dark"],[data-time-scene="night"]) body #page-home .notification-bell-button { color: #e4c27b !important; }
