@@ -400,6 +400,21 @@
       localStorage.setItem(STK, JSON.stringify(o));
     } catch (e) {}
   }
+  // قراءة مقصودة لـ«يوم المسلم»: لا تُحسب الصفحة بمجرد عرضها، بل بعد بقائها ظاهرة مدة كافية.
+  var INTENT_KEY = "anyas_yawm_qread", INTENT_MS = 25000, intentTimer = null;
+  function watchIntentRead(pg) {
+    clearTimeout(intentTimer);
+    intentTimer = setTimeout(function () {
+      var pageEl = document.getElementById("page-quran");
+      if (document.hidden || !pageEl || !pageEl.classList.contains("active") || cur !== pg) return;
+      try {
+        var o = JSON.parse(localStorage.getItem(INTENT_KEY) || "{}"), k = dayKey(), arr = o[k] || [];
+        if (arr.indexOf(pg) < 0) arr.push(pg);
+        var n = {}; n[k] = arr;
+        localStorage.setItem(INTENT_KEY, JSON.stringify(n));
+      } catch (e) {}
+    }, INTENT_MS);
+  }
   function statsSummary() {
     var o = readStats(), today = (o[dayKey()] || []).length, week = 0, streak = 0, i, d;
     for (i = 0; i < 7; i++) { d = new Date(); d.setDate(d.getDate() - i); week += (o[dayKey(d)] || []).length; }
@@ -458,6 +473,7 @@
     pg = Math.max(1, Math.min(604, pg));
     cur = pg;
     recordRead(pg);
+    watchIntentRead(pg);
     var BISM = Q.ayahs[0][0];
     var st = PG.pages[pg - 1];
     var en = pg < 604 ? PG.pages[pg] : [115, 1];
