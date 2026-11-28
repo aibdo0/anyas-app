@@ -1,0 +1,59 @@
+/* بطاقة الصلاة القادمة في الرئيسية: أقصر، صورة المسجد خافتة في الخلفية،
+   اسم الصلاة ووقتها في سطر واحد، والعدّ التنازلي بأرقام ثابتة العرض تحتهما. */
+html:root[data-theme][data-home-scene] body #page-home .next-prayer,
+html:root[data-theme] body #page-home .next-prayer {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "meta meta" "name count" "time sun" "note note" "bar bar" "strip strip";
+  align-items: baseline;
+  column-gap: 12px; row-gap: 2px;
+  min-height: 0 !important;
+  padding: 12px 16px 12px !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(229, 198, 132, .26) !important;
+  background-image: linear-gradient(180deg, rgba(16, 13, 10, .58), rgba(16, 13, 10, .88)), url("../assets/prayer-hero.jpg") !important;
+  background-position: center 40% !important;
+  box-shadow: 0 10px 26px rgba(20, 15, 8, .22) !important;
+}
+html:root body #page-home .next-prayer::after { display: none !important; }
+html:root body #page-home .next-prayer .prayer-hero-meta { grid-area: meta; align-items: center; margin: 0 0 4px; }
+html:root body #page-home .next-prayer .next-label { font-size: 12px; font-weight: 700; letter-spacing: .04em; color: #e3c98f !important; }
+html:root body #page-home .next-prayer .prayer-city-chip {
+  font-size: 12px; padding: 4px 10px; gap: 5px;
+  background: rgba(255, 255, 255, .08) !important; border-color: rgba(255, 255, 255, .18) !important; box-shadow: none !important;
+}
+html:root body #page-home .next-prayer .prayer-name { grid-area: name; margin: 0; font-size: 34px !important; font-weight: 800; line-height: 1.15; align-self: end; }
+html:root body #page-home .next-prayer .prayer-time { grid-area: time; align-self: start; margin: 0; font-size: 20px !important; font-weight: 700; color: #e9cf94 !important; letter-spacing: 0; text-shadow: none; }
+html:root body #page-home .next-prayer .countdown {
+  grid-area: count; align-self: center; justify-self: end;
+  display: flex; flex-direction: row-reverse; align-items: baseline; gap: 8px;
+  margin: 0; padding: 0;
+  border: 0; border-radius: 0; background: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  font-size: 25px !important; font-weight: 800; letter-spacing: 0; line-height: 1.15; direction: ltr;
+  font-variant-numeric: tabular-nums; color: #f6e6bf !important;
+}
+html:root body #page-home .next-prayer .countdown::before { font-size: 12px; color: rgba(255, 255, 255, .66); }
+html:root body #page-home .next-prayer .prayer-state-note { grid-area: note; }
+html:root body #page-home .next-prayer .prayer-state-note:empty { display: none; }
+html:root body #page-home .next-prayer .prayer-progress { grid-area: bar; height: 3px; margin-top: 8px; background: rgba(255, 255, 255, .22) !important; }
+html:root body #page-home .next-prayer .prayer-progress-bar { background: linear-gradient(90deg, #d9b872, #f0d9a0) !important; }
+html:root[data-theme] body #page-home .next-prayer .prayer-city-chip, html:root[data-theme] body #page-home .next-prayer .prayer-city-chip * { color: #f3e6c8 !important; text-shadow: none !important; }
+html:root body #page-home .next-prayer .prayer-time { text-shadow: 0 1px 6px rgba(0,0,0,.5) !important; }
+html:root body #page-home .next-prayer .hero-strip { grid-area: strip; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; margin-top: 10px; padding: 3px; border-radius: 16px; background: rgba(255,255,255,.07); border: 1px solid rgba(229,198,132,.16); }
+html:root body #page-home .next-prayer .hero-strip-item { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 0 3px; border-radius: 12px; font-size: 11.5px; color: rgba(255,255,255,.66); }
+html:root body #page-home .next-prayer .hero-strip-item b { font-size: 12.5px; font-weight: 700; color: #f1e4c4; font-variant-numeric: tabular-nums; direction: ltr; }
+html:root body #page-home .next-prayer .hero-strip-item.is-next { background: linear-gradient(180deg, #e2c27c, #c9a255); color: #3b2c0e; font-weight: 700; }
+html:root body #page-home .next-prayer .hero-strip-item.is-next b { color: #2a1e06; }
+html:root body #page-home .next-prayer .countdown::before { direction: rtl; }
+html:root body #page-home .next-prayer .hero-sunrise { grid-area: sun; justify-self: end; align-self: center; font-size: 12px; color: rgba(255,255,255,.7); direction: rtl; }
+html:root body #page-home .next-prayer .hero-sunrise:empty { display: none; }
+html:root body #page-home .next-prayer .hero-strip-item { border: 0; background: transparent; font-family: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+html:root body #page-home .next-prayer .hero-strip-item.is-next { background: linear-gradient(180deg, #e2c27c, #c9a255); }
+html:root body #page-home .next-prayer .hero-pop { position: absolute; z-index: 5; top: 12px; left: 16px; right: 16px; padding: 12px 14px 14px; border-radius: 16px; background: rgba(20,16,11,.94); border: 1px solid rgba(229,198,132,.4); box-shadow: 0 10px 24px rgba(0,0,0,.4); }
+html:root body #page-home .next-prayer .hero-pop[hidden] { display: none; }
+html:root body #page-home .next-prayer .hero-pop-head { display: flex; align-items: center; gap: 12px; }
+html:root body #page-home .next-prayer .hero-pop-head b { font-size: 22px; color: #fff; }
+html:root body #page-home .next-prayer .hero-pop-head span { font-size: 18px; font-weight: 700; color: #e9cf94; margin-inline-end: auto; }
+html:root body #page-home .next-prayer .hero-pop-x { width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(229,198,132,.35); background: rgba(255,255,255,.06); color: #f3e6c8; font-size: 18px; line-height: 1; padding: 0; }
+html:root body #page-home .next-prayer .hero-pop-rel { margin-top: 6px; font-size: 14px; color: rgba(255,255,255,.82); }
