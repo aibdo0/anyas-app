@@ -61,3 +61,5 @@ html[data-theme="dark"] .yw-tl li.is-past strong { color: #cbbd9c; }
 html[data-theme="dark"] .yw-tl li.is-now strong, html[data-theme="dark"] .yw-tl li.is-now small { color: var(--gold); }
 /* الوضع الفاتح مع مشهد الليل: خلفية فاتحة متسقة خلف يوم المسلم */
 :root[data-theme="light"][data-time-scene="night"] body:has(#page-tasks.active) { background: var(--page) !important; }
+.yw-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 2px; }
+.yw-note { margin: 4px 0 0; font-size: 12px; color: var(--gold-dark); }

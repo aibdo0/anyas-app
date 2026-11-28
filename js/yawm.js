@@ -68,7 +68,7 @@
     r.innerHTML =
       '<header class="yw-head"><p class="yw-greet" id="ywGreet"></p><h1>يوم المسلم</h1><p class="yw-dates"><span id="ywHijri"></span><i></i><span id="ywGreg"></span></p></header>' +
       '<section class="yw-card yw-next"><div class="yw-row"><div><small>الصلاة القادمة</small><strong id="ywNextName">—</strong></div><div class="yw-left"><b id="ywNextTime">--:--</b><span id="ywCount">--:--:--</span></div></div>' +
-      '<div class="yw-bar" aria-hidden="true"><i id="ywBar"></i></div><button type="button" class="yw-link" id="ywSchedule">مواقيت الصلاة كاملة ‹</button></section>' +
+      '<div class="yw-bar" aria-hidden="true"><i id="ywBar"></i></div><div class="yw-links"><button type="button" class="yw-link" id="ywSchedule">مواقيت الصلاة كاملة ‹</button><button type="button" class="yw-link" id="ywShare">مشاركة المواقيت</button><button type="button" class="yw-link" id="ywAdjust">ضبط المواقيت</button></div><p class="yw-note" id="ywShareNote" hidden></p></section>' +
       '<section class="yw-card"><div class="yw-title"><h2>وِردك اليوم</h2><span class="yw-badge" id="ywWirdBadge"></span></div><div id="ywWird"></div></section>' +
       '<section class="yw-sec"><h2 class="yw-h">زاد يومك</h2><div id="ywZad"></div></section>' +
       '<section class="yw-card"><h2 class="yw-h2">محطات يومك</h2><ol class="yw-tl" id="ywTl"></ol></section>' +
@@ -76,6 +76,17 @@
       '<section class="yw-card yw-sleep"><h2 class="yw-h2">قبل أن تنام</h2><p id="ywSum"></p><button type="button" class="yw-btn" id="ywSleepGo">أذكار النوم</button></section>';
     page.appendChild(r);
     $("ywSchedule").addEventListener("click", function () { go("prayer-schedule"); });
+    $("ywShare").addEventListener("click", function () { var b = $("sharePrayerTimesButton"); if (b) b.click(); });
+    $("ywAdjust").addEventListener("click", function () { var b = $("openManualPrayerSettings"); if (b) b.click(); });
+    (function () {
+      var src = $("prayerShareStatus"), note = $("ywShareNote"), timer = null;
+      if (!src || !note) return;
+      new MutationObserver(function () {
+        var t = (src.textContent || "").trim();
+        note.textContent = t; note.hidden = !t;
+        clearTimeout(timer); if (t) timer = setTimeout(function () { note.hidden = true; }, 4000);
+      }).observe(src, { childList: true, characterData: true, subtree: true });
+    })();
     $("ywSleepGo").addEventListener("click", function () { openWird("sleep"); });
     r.addEventListener("click", onClick);
     paintStatic(); paintWird(); paintTasks(); paintZad(); paintSum();
