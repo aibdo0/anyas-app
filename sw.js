@@ -45,6 +45,7 @@ const CORE_ASSETS = [
   "./css/home-header.css",
   "./css/home-polish.css",
   "./css/home-hero.css",
+  "./css/adhkar-card.css",
   "./js/home-hero.js",
   "./css/yawm.css",
   "./data/app-version.js?v=20261014-3",

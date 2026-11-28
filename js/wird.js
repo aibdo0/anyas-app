@@ -117,8 +117,28 @@
     if (typeof Event === "function") document.dispatchEvent(new Event("anyas:wird-progress"));
   }
 
+  // تقدّم قارئ الأذكار الحقيقي: عدّادات كل ذكر كما يحفظها azkar.js لليوم (مفتاح مستقل للصباح والمساء).
+  function readerState(id) {
+    const section = sections[id];
+    if (!section) return null;
+    const topic = topics.find(item => Number(item.number) === section.topicNumber);
+    if (!topic || !Array.isArray(topic.items)) return null;
+    const scope = section.topicNumber === 27 ? "_" + section.title : "";
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(`anyas_topic_${section.topicNumber}_${new Date().toDateString()}${scope}`) || "{}") || {}; } catch (error) { saved = {}; }
+    const entries = section.itemIndexes.map(index => ({ index, item: topic.items[index] })).filter(entry => entry.item);
+    let done = 0;
+    let resumeIndex = null;
+    entries.forEach(({ index, item }) => {
+      const count = Number(item.count) || 1;
+      if ((Number(saved[index]) || 0) >= count) done += 1;
+      else if (resumeIndex === null) resumeIndex = index;
+    });
+    return { id, title: section.title, topicNumber: section.topicNumber, itemIndexes: [...section.itemIndexes], done, total: entries.length, resumeIndex };
+  }
   window.anyasWird = {
-    sections: () => Object.keys(sections).map(id => ({ id, title: sections[id].title, ...sectionProgress(id) }))
+    sections: () => Object.keys(sections).map(id => ({ id, title: sections[id].title, ...sectionProgress(id) })),
+    reader: readerState
   };
 
   function renderSection(id) {

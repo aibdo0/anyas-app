@@ -64,6 +64,7 @@
 <link rel="stylesheet" href="css/home-header.css?v=20261128-2">
 <link rel="stylesheet" href="css/home-polish.css?v=20261125-6">
 <link rel="stylesheet" href="css/home-hero.css?v=20261128-4">
+<link rel="stylesheet" href="css/adhkar-card.css?v=20261128-1">
 <link rel="stylesheet" href="css/yawm.css?v=20261128-2">
 </head>
 <body>
@@ -191,7 +192,15 @@
       </div>
       <span class="daily-adhkar-badge" id="dailyAdhkarBadge">الصباح</span>
     </div>
+    <div class="adhkar-tabs" id="adhkarTabs" role="tablist" aria-label="اختر الورد">
+      <button type="button" role="tab" data-wird-tab="morning">الصباح</button>
+      <button type="button" role="tab" data-wird-tab="evening">المساء</button>
+    </div>
     <p class="daily-adhkar-text" id="dailyAdhkarText">يُحدَّد الورد المناسب اعتمادًا على ساعة جهازك المحلية.</p>
+    <div class="adhkar-progress" id="adhkarProgress" hidden>
+      <div class="adhkar-progress-meta"><span id="adhkarProgressLabel"></span><b id="adhkarProgressCount"></b></div>
+      <div class="adhkar-progress-track" aria-hidden="true"><div class="adhkar-progress-fill" id="adhkarProgressFill"></div></div>
+    </div>
     <button class="home-continue-card" id="homeContinueCard" type="button" hidden>
       <span class="home-continue-icon" aria-hidden="true">▶</span>
       <span class="home-continue-copy"><strong data-continue-title>كمّل من وقفت</strong><small data-continue-meta></small></span>
@@ -2479,13 +2488,13 @@ type="button"
 <script src="data/common-cities.js?v=20261008-1"></script>
 <script src="js/vendor/adhan.umd.min.js"></script>
 <script src="js/prayer.js?v=20261007-1"></script>
-<script src="js/daily-adhkar.js?v=20261125-1"></script>
+<script src="js/daily-adhkar.js?v=20261128-2"></script>
 <script src="js/home-expand.js?v=20261124-1"></script>
 <script src="js/quiet-hours.js?v=20261014-1"></script>
 <script src="js/friday.js?v=20261014-1"></script>
 <script src="js/favorites.js?v=20261124-1"></script>
-<script src="js/azkar.js?v=20261124-11"></script>
-<script src="js/wird.js?v=20261124-2"></script>
+<script src="js/azkar.js?v=20261128-12"></script>
+<script src="js/wird.js?v=20261128-3"></script>
 <script src="js/optional-audio.js?v=20261014-2"></script>
 <script src="js/settings.js?v=20261125-1"></script>
 <script src="js/qibla.js?v=20261008-1"></script>
