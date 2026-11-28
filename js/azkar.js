@@ -335,6 +335,7 @@ function saveTopicProgress(number, progress, scope = "") {
       key,
       JSON.stringify(progress)
     );
+    document.dispatchEvent(new Event("anyas:reader-progress"));
 
   } catch (error) {
 

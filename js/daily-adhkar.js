@@ -31,8 +31,19 @@
     return periods.find(period => comparableMinutes >= period.start && comparableMinutes < period.end) || periods[0];
   }
 
+  // ورد الأذكار المرتبط بكل فترة، وتقدّمه الحقيقي من js/wird.js (محفوظ لكل يوم).
+  const WIRD_OF_PERIOD = { morning: "morning", evening: "evening" };
+  const WIRD_LABEL = { morning: "الصباح", evening: "المساء" };
+  const WIRD_HINT = { morning: "05:30 – 12:00", evening: "15:30 – 20:00", beforeSleep: "20:00 – 02:00" };
+  let selectedWird = null;
+  let lastPeriodId = null;
+  const tabs = byId("adhkarTabs");
+  const progressBox = byId("adhkarProgress");
+  const num = n => Number(n || 0).toLocaleString("ar-EG");
+
   function showPeriod() {
     const period = getCurrentPeriod();
+    if (period.id !== lastPeriodId) { selectedWird = null; lastPeriodId = period.id; }
     section.dataset.adhkarPeriod = period.id;
     card.dataset.adhkarPeriod = period.id;
     card.classList.remove("is-transitioning");
@@ -47,7 +58,44 @@
     if (mark) mark.textContent = period.icon;
     openButton.dataset.adhkarAction = period.action;
     updateRemind(period);
+    applyWird(period);
   }
+
+  function applyWird(period) {
+    const wid = selectedWird || WIRD_OF_PERIOD[period.id] || null;
+    tabs?.querySelectorAll("[data-wird-tab]").forEach(tab => {
+      const on = tab.dataset.wirdTab === wid;
+      tab.setAttribute("aria-selected", String(on));
+      tab.classList.toggle("is-active", on);
+    });
+    card.dataset.wird = wid || "";
+    const sec = wid && window.anyasWird?.reader ? window.anyasWird.reader(wid) : null;
+    if (!sec || !sec.total) { if (progressBox) progressBox.hidden = true; return; }
+    const label = WIRD_LABEL[wid];
+    const complete = sec.done >= sec.total;
+    const started = sec.done > 0 && !complete;
+    title.textContent = "أذكار " + label;
+    badge.textContent = label;
+    hint.textContent = WIRD_HINT[wid];
+    text.textContent = complete ? "أتممت أذكار " + label + " اليوم، تقبّل الله منك." : started ? "أكمل من حيث توقفت." : "ابدأ ورد " + label + " بهدوء.";
+    openButton.dataset.adhkarAction = wid;
+    openButton.textContent = complete ? "تمّت أذكار " + label + " ✓" : started ? "كمّل أذكار " + label : "ابدأ أذكار " + label;
+    card.dataset.wirdState = complete ? "done" : started ? "started" : "new";
+    if (progressBox) {
+      progressBox.hidden = false;
+      byId("adhkarProgressLabel").textContent = (complete ? "تمّت" : "تقدّم اليوم");
+      byId("adhkarProgressCount").textContent = num(sec.done) + " من " + num(sec.total) + " ذكرًا";
+      byId("adhkarProgressFill").style.width = Math.round(sec.done / sec.total * 100) + "%";
+    }
+  }
+  tabs?.addEventListener("click", event => {
+    const tab = event.target.closest("[data-wird-tab]");
+    if (!tab) return;
+    selectedWird = tab.dataset.wirdTab;
+    showPeriod();
+  });
+  document.addEventListener("anyas:wird-progress", () => showPeriod());
+  document.addEventListener("anyas:reader-progress", () => showPeriod());
 
   const REMIND_IDS = { awakening: "notifyWardAwakening", morning: "notifyWardMorning", evening: "notifyWardEvening", sleep: "notifyWardSleep" };
   const remindButton = document.getElementById("dailyAdhkarRemindButton");
@@ -79,6 +127,14 @@
 
   openButton.addEventListener("click", () => {
     const action = openButton.dataset.adhkarAction;
+    if (["morning", "evening"].includes(action) && window.anyasWird?.reader && typeof window.openAzkarTopic === "function") {
+      // استكمال من أول ذكر لم يكتمل عدّه؛ وإن اكتمل الورد يُفتح من أوله للمراجعة.
+      const state = window.anyasWird.reader(action);
+      if (state) {
+        window.openAzkarTopic(state.topicNumber, state.resumeIndex, { title: state.title, itemIndexes: state.itemIndexes });
+        return;
+      }
+    }
     if (["morning", "evening", "beforeSleep"].includes(action)) {
       window.openWirdCategory?.(action);
       return;

@@ -1,0 +1,53 @@
+/* بطاقة الأذكار في الرئيسية: أخف ومتناسقة مع بطاقة الصلاة، مع تبديل صباح/مساء/نوم وتقدّم حقيقي. */
+html:root[data-theme] body #page-home .daily-adhkar-card {
+  display: grid !important; gap: 10px; padding: 14px 16px 14px !important; min-height: 0 !important;
+  border-radius: 22px !important; border: 1px solid rgba(196, 154, 85, .38) !important;
+  background: linear-gradient(180deg, #fffdf8, #f6efe1) !important;
+  box-shadow: 0 8px 22px rgba(120, 92, 40, .12) !important; color: #2f2a22 !important;
+}
+html:root[data-theme="dark"] body #page-home .daily-adhkar-card,
+html:root[data-theme][data-time-scene="night"] body #page-home .daily-adhkar-card {
+  background: linear-gradient(180deg, #221b14, #19140f) !important;
+  border-color: rgba(229, 198, 132, .24) !important; box-shadow: 0 10px 26px rgba(0, 0, 0, .28) !important; color: #fff !important;
+}
+html:root[data-theme] body #page-home .daily-adhkar-card::before,
+html:root[data-theme] body #page-home .daily-adhkar-card::after { display: none !important; }
+html:root[data-theme] body #page-home .daily-adhkar-heading-row { display: flex !important; align-items: center; gap: 10px; margin: 0 !important; padding: 0 !important; }
+html:root[data-theme] body #page-home .daily-adhkar-mark { width: 36px; height: 36px; flex: none; border-radius: 12px !important; font-size: 18px; display: grid; place-items: center; color: #8a6a2f !important; background: rgba(196, 154, 85, .16) !important; border: 1px solid rgba(196, 154, 85, .34) !important; box-shadow: none !important; }
+html:root[data-theme] body #page-home .daily-adhkar-eyebrow { display: none !important; }
+html:root[data-theme] body #page-home .daily-adhkar-title { margin: 0 !important; font-size: 20px !important; font-weight: 800; color: #2b251c !important; text-shadow: none !important; }
+html:root[data-theme] body #page-home .daily-adhkar-badge { display: none !important; }
+html:root[data-theme] body #page-home .daily-adhkar-text { margin: 0 !important; font-size: 13.5px !important; line-height: 1.6; color: #6f6250 !important; text-shadow: none !important; }
+html:root[data-theme] body #page-home .daily-adhkar-text { background: none !important; border: 0 !important; padding: 0 !important; box-shadow: none !important; }
+html:root[data-theme] body #page-home .adhkar-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; padding: 3px; border-radius: 14px; background: rgba(196, 154, 85, .14); border: 1px solid rgba(196, 154, 85, .26); }
+html:root[data-theme] body #page-home .adhkar-tabs button { border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 700; color: #7a6a4c; padding: 7px 0; border-radius: 11px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+html:root[data-theme] body #page-home .adhkar-tabs button.is-active { background: linear-gradient(180deg, #e2c27c, #c9a255); color: #2a1e06; }
+html:root[data-theme] body #page-home .adhkar-progress[hidden] { display: none; }
+html:root[data-theme] body #page-home .adhkar-progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: #8c7a58; margin-bottom: 5px; }
+html:root[data-theme] body #page-home .adhkar-progress-meta b { color: #6b4f1d; font-variant-numeric: tabular-nums; }
+html:root[data-theme] body #page-home .adhkar-progress-track { height: 4px; border-radius: 4px; background: rgba(196, 154, 85, .22); overflow: hidden; }
+html:root[data-theme] body #page-home .adhkar-progress-fill { height: 100%; width: 0; border-radius: 4px; background: linear-gradient(90deg, #c9a255, #e8cd8d); transition: width .3s; }
+html:root[data-theme] body #page-home .daily-adhkar-footer { display: flex !important; flex-direction: column-reverse; align-items: stretch; gap: 6px; margin: 0 !important; padding: 0 !important; border: 0 !important; }
+html:root[data-theme] body #page-home .daily-adhkar-hint { text-align: center; font-size: 12px; color: #8c7a58 !important; }
+html:root[data-theme] body #page-home .daily-adhkar-button { width: 100%; min-height: 46px; border-radius: 14px !important; font-size: 15px; font-weight: 800; color: #2a1e06 !important; background: linear-gradient(180deg, #ecd08f, #cfa85a) !important; border: 0 !important; box-shadow: 0 4px 12px rgba(160, 120, 40, .25) !important; }
+html:root[data-theme] body #page-home .daily-adhkar-card[data-wird-state="done"] .daily-adhkar-button { background: rgba(196, 154, 85, .16) !important; color: #6b4f1d !important; box-shadow: none !important; border: 1px solid rgba(196, 154, 85, .4) !important; }
+html:root[data-theme] body #page-home .daily-adhkar-remind { justify-self: center; border: 0 !important; background: none !important; box-shadow: none !important; padding: 2px 8px !important; font-size: 12.5px !important; font-weight: 600; color: #8a6a2f !important; text-decoration: underline; text-underline-offset: 3px; }
+html:root[data-theme] body #page-home .home-continue-card { display: none !important; }
+/* الوضع الداكن / مشهد الليل */
+html:root[data-theme="dark"] body #page-home .daily-adhkar-title, html:root[data-theme][data-time-scene="night"] body #page-home .daily-adhkar-title { color: #fff !important; }
+html:root[data-theme="dark"] body #page-home .daily-adhkar-mark, html:root[data-theme][data-time-scene="night"] body #page-home .daily-adhkar-mark { color: #e9cf94 !important; background: rgba(229, 198, 132, .12) !important; border-color: rgba(229, 198, 132, .3) !important; }
+html:root[data-theme="dark"] body #page-home .daily-adhkar-text, html:root[data-theme][data-time-scene="night"] body #page-home .daily-adhkar-text { color: rgba(255, 255, 255, .72) !important; }
+html:root[data-theme="dark"] body #page-home .adhkar-tabs, html:root[data-theme][data-time-scene="night"] body #page-home .adhkar-tabs { background: rgba(255, 255, 255, .06); border-color: rgba(229, 198, 132, .2); }
+html:root[data-theme="dark"] body #page-home .adhkar-tabs button, html:root[data-theme][data-time-scene="night"] body #page-home .adhkar-tabs button { color: rgba(255, 255, 255, .66); }
+html:root[data-theme="dark"] body #page-home .adhkar-tabs button.is-active, html:root[data-theme][data-time-scene="night"] body #page-home .adhkar-tabs button.is-active { color: #2a1e06; }
+html:root[data-theme="dark"] body #page-home .adhkar-progress-meta, html:root[data-theme][data-time-scene="night"] body #page-home .adhkar-progress-meta { color: rgba(255, 255, 255, .6); }
+html:root[data-theme="dark"] body #page-home .adhkar-progress-meta b, html:root[data-theme][data-time-scene="night"] body #page-home .adhkar-progress-meta b { color: #f1e4c4; }
+html:root[data-theme="dark"] body #page-home .adhkar-progress-track, html:root[data-theme][data-time-scene="night"] body #page-home .adhkar-progress-track { background: rgba(255, 255, 255, .14); }
+html:root[data-theme="dark"] body #page-home .daily-adhkar-hint, html:root[data-theme][data-time-scene="night"] body #page-home .daily-adhkar-hint { color: rgba(255, 255, 255, .55) !important; }
+html:root[data-theme="dark"] body #page-home .daily-adhkar-remind, html:root[data-theme][data-time-scene="night"] body #page-home .daily-adhkar-remind { color: #e9cf94 !important; }
+html:root[data-theme="dark"] body #page-home .daily-adhkar-card[data-wird-state="done"] .daily-adhkar-button, html:root[data-theme][data-time-scene="night"] body #page-home .daily-adhkar-card[data-wird-state="done"] .daily-adhkar-button { color: #f1e4c4 !important; background: rgba(229, 198, 132, .12) !important; border-color: rgba(229, 198, 132, .35) !important; }
+html:root[data-theme] body #page-home .daily-adhkar-card:not([data-wird=""]) .daily-adhkar-text,
+html:root[data-theme] body #page-home .daily-adhkar-card:not([data-wird=""]) .daily-adhkar-hint { display: none !important; }
+html:root[data-theme] body #page-home .daily-adhkar-card { position: relative; }
+html:root[data-theme] body #page-home .daily-adhkar-remind { position: absolute; top: 20px; left: 14px; justify-self: auto; }
+html:root[data-theme] body #page-home .adhkar-progress-meta span { direction: rtl; }
