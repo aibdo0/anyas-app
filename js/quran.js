@@ -400,6 +400,26 @@
       localStorage.setItem(STK, JSON.stringify(o));
     } catch (e) {}
   }
+  // تأكيد قراءة صريح لـ«يوم المسلم»: لا شيء يُحسب بالفتح أو بمرور الوقت. المستخدم وحده يؤكد الصفحة.
+  var INTENT_KEY = "anyas_yawm_qread";
+  function readConfirmed(pg) {
+    try { var o = JSON.parse(localStorage.getItem(INTENT_KEY) || "{}"); return (o[dayKey()] || []).indexOf(pg) >= 0; } catch (e) { return false; }
+  }
+  function toggleConfirm(pg) {
+    try {
+      var o = JSON.parse(localStorage.getItem(INTENT_KEY) || "{}"), k = dayKey(), arr = o[k] || [], i = arr.indexOf(pg);
+      if (i >= 0) arr.splice(i, 1); else arr.push(pg);
+      var n = {}; n[k] = arr;
+      localStorage.setItem(INTENT_KEY, JSON.stringify(n));
+    } catch (e) {}
+  }
+  function confirmLabel(pg) { return readConfirmed(pg) ? "✓ تمت قراءة هذه الصفحة" : "أتممتُ قراءة هذه الصفحة"; }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-read-confirm]");
+    if (!b) return;
+    var pg = cur; toggleConfirm(pg);
+    b.textContent = confirmLabel(pg); b.setAttribute("aria-pressed", readConfirmed(pg) ? "true" : "false");
+  });
   function statsSummary() {
     var o = readStats(), today = (o[dayKey()] || []).length, week = 0, streak = 0, i, d;
     for (i = 0; i < 7; i++) { d = new Date(); d.setDate(d.getDate() - i); week += (o[dayKey(d)] || []).length; }
@@ -482,7 +502,7 @@
     }
     $("quranReader").innerHTML = '<article class="quran-page' + (viewMode() === "verse" ? " quran-verses" : "") + '"><div class="quran-pills"><button type="button" class="quran-pill" data-open="surah">سورة ' + Q.names[st[0] - 1] +
       '</button><button type="button" class="quran-pill" data-open="juz">' + JUZ[juzOf(st[0], st[1]) - 1] + "</button></div>" + body +
-      '<div class="quran-pageno"><span>' + ar(pg) + "</span></div></article>";
+      '<div class="quran-pageno"><span>' + ar(pg) + '</span></div><button type="button" class="quran-read-confirm" data-read-confirm aria-pressed="' + (readConfirmed(pg) ? "true" : "false") + '">' + confirmLabel(pg) + "</button></article>";
     closeSheet();
     $("quranTitle").textContent = "سورة " + Q.names[st[0] - 1];
     $("quranSub").textContent = "صفحة " + ar(pg) + " من ٦٠٤";

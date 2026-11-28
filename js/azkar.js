@@ -276,12 +276,12 @@ window.openAzkarTopic = openAzkarTopic;
 // مفتاح حفظ التقدم
 // =====================================================
 
-function getTopicStorageKey(number) {
+function getTopicStorageKey(number, scope = "") {
 
   const today =
     new Date().toDateString();
 
-  return `anyas_topic_${number}_${today}`;
+  return `anyas_topic_${number}_${today}${scope ? "_" + scope : ""}`;
 
 }
 
@@ -290,10 +290,10 @@ function getTopicStorageKey(number) {
 // تحميل تقدم الباب
 // =====================================================
 
-function loadTopicProgress(number) {
+function loadTopicProgress(number, scope = "") {
 
   const key =
-    getTopicStorageKey(number);
+    getTopicStorageKey(number, scope);
 
   try {
 
@@ -324,10 +324,10 @@ function loadTopicProgress(number) {
 // حفظ تقدم الباب
 // =====================================================
 
-function saveTopicProgress(number, progress) {
+function saveTopicProgress(number, progress, scope = "") {
 
   const key =
-    getTopicStorageKey(number);
+    getTopicStorageKey(number, scope);
 
   try {
 
@@ -369,8 +369,11 @@ function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
 
   list.innerHTML = "";
 
+  // الصباح والمساء يشتركان في الباب 27؛ نفصل تقدّم كل ورد حتى لا يكتمل أحدهما بالآخر.
+  const scope = Number(number) === 27 && titleOverride ? titleOverride : "";
+
   const progress =
-    loadTopicProgress(number);
+    loadTopicProgress(number, scope);
 
   const allItems =
     Array.isArray(topic.items)
@@ -501,7 +504,8 @@ function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
 
           saveTopicProgress(
             number,
-            progress
+            progress,
+            scope
           );
 
           if (
@@ -527,6 +531,8 @@ function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
 
   setupZikrPager(list, items.length);
 
+  markWirdComplete(number, titleOverride, items, progress);
+
   if (itemIndexes) {
     document.getElementById("azkarTopicNavigation")?.replaceChildren();
   } else {
@@ -535,6 +541,16 @@ function renderAzkarTopic(number, itemIndexes = null, titleOverride = null) {
 
 }
 
+
+// علامة اكتمال يقرؤها «يوم المسلم»: تُكتب هنا فقط حين يصل عدّاد كل أذكار الورد المعروض إلى نهايته.
+function markWirdComplete(number, title, items, progress) {
+  const ids = { "أذكار الصباح": "morning", "أذكار المساء": "evening", "أذكار النوم": "sleep" };
+  const id = ids[title] || (Number(number) === 28 && !title ? "sleep" : null);
+  if (!id || !items.length) return;
+  const done = items.every(({ item, sourceIndex }) => (Number(progress[sourceIndex]) || 0) >= (Number(item.count) || 1));
+  if (!done) return;
+  try { localStorage.setItem(`anyas_yawm_wird-${id}-${new Date().toLocaleDateString("en-CA")}`, "1"); } catch (error) { /* storage optional */ }
+}
 
 function azkarToast(msg) {
   let t = document.getElementById("azkarToast");
