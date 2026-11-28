@@ -285,3 +285,7 @@ button.quran-pill { font: inherit; cursor: pointer; -webkit-tap-highlight-color:
   #page-quran .quran-text { font-size: var(--quran-fs, 23px); line-height: 2.05; }
   #page-quran:not(.quran-plain) .quran-pills { margin-top: 18px; }
 }
+.quran-read-confirm { display: block; margin: 12px auto 4px; padding: 7px 18px; border-radius: 99px; border: 1px solid var(--gold, #c49a55); background: transparent; color: var(--gold-dark, #8a6a2e); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.quran-read-confirm[aria-pressed="true"] { background: var(--gold-pale, #f3e8cf); }
+:root[data-theme="dark"] .quran-read-confirm { color: #e3bf84; border-color: rgba(214,176,112,.45); }
+:root[data-theme="dark"] .quran-read-confirm[aria-pressed="true"] { background: rgba(214,176,112,.16); }

@@ -115,7 +115,7 @@
       var st = s[w[0]], sub, extra = "";
       if (st.done) n++;
       if (w[0] === "quran") {
-        if (!st.goal) sub = "حدّد هدفك اليومي ليُحسب تلقائيًا";
+        if (!st.goal) sub = "حدّد هدفك اليومي، وأكّد قراءة كل صفحة";
         else sub = ar(Math.min(st.pages, st.goal)) + " من " + ar(st.goal) + (st.goal <= 2 ? " صفحة" : " صفحات") + (st.done ? " · مكتمل" : "");
         extra = '<button type="button" class="yw-chip" data-goal>' + (st.goal ? "الهدف: " + ar(st.goal) : "الهدف") + "</button>";
       } else sub = st.done ? "مكتمل" : "لم يكتمل بعد";
