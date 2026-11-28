@@ -57,3 +57,6 @@ html:root body #page-home .next-prayer .hero-pop-head b { font-size: 22px; color
 html:root body #page-home .next-prayer .hero-pop-head span { font-size: 18px; font-weight: 700; color: #e9cf94; margin-inline-end: auto; }
 html:root body #page-home .next-prayer .hero-pop-x { width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(229,198,132,.35); background: rgba(255,255,255,.06); color: #f3e6c8; font-size: 18px; line-height: 1; padding: 0; }
 html:root body #page-home .next-prayer .hero-pop-rel { margin-top: 6px; font-size: 14px; color: rgba(255,255,255,.82); }
+
+/* قسم مواقيت الصلاة أسفل بطاقة الأذكار مخفي بطلب المستخدم؛ المواقيت في بطاقة الصلاة أعلى الصفحة. العناصر باقية لأن منطق المواقيت يقرأ منها. */
+html:root body #page-home .prayer-section { display: none !important; }
