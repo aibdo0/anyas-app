@@ -706,7 +706,7 @@ async function setupDailyHadith() {
     const cached = JSON.parse(localStorage.getItem(cacheKey) || "null");
     if (cached?.hadeeth) {
       textElement.textContent = cached.hadeeth;
-      if (referenceElement) referenceElement.textContent = cached.grade || `اليوم ${day} هجريًا`;
+      if (referenceElement) referenceElement.textContent = [cached.attribution, cached.grade].filter(Boolean).join(" · ") || `اليوم ${day} هجريًا`;
     } else {
       textElement.textContent = "سيُحمّل حديث اليوم عند توفر الاتصال، ثم يبقى محفوظًا على جهازك.";
     }
@@ -722,10 +722,10 @@ async function setupDailyHadith() {
     if (!response.ok) throw new Error(`HadeethEnc HTTP ${response.status}`);
     const hadith = await response.json();
     if (!hadith || !hadith.hadeeth) throw new Error("HadeethEnc returned no Arabic text");
-    try { localStorage.setItem(cacheKey, JSON.stringify({ hadeeth: hadith.hadeeth, grade: hadith.grade || "" })); } catch (_) { }
+    try { localStorage.setItem(cacheKey, JSON.stringify({ hadeeth: hadith.hadeeth, grade: hadith.grade || "", attribution: hadith.attribution || "" })); } catch (_) { }
     textElement.textContent = hadith.hadeeth;
     if (referenceElement) {
-      referenceElement.textContent = hadith.grade || "";
+      referenceElement.textContent = [hadith.attribution, hadith.grade].filter(Boolean).join(" · ");
     }
   } catch (error) {
     console.info("الحديث يعرض من ذاكرة الجهاز عند الانقطاع:", error.message);
